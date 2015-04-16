@@ -103,21 +103,6 @@
 	height: 60px;
 }
 
-.sender-message {
-	float: right;
-	padding: 5px 10px 5px 10px;
-	background: #5FA0D4;
-	color: #fff;
-}
-
-.recipient-message {
-	float: left;
-	background: #E5EAEB;
-	color: #000;
-	padding: 5px 10px 5px 10px;
-	margin: 0;
-}
-
 .message-chat {
 	background: #fff;
 	position: relative;
@@ -125,9 +110,27 @@
   margin-left: 7%;
 }
 
-.message-text {
-	padding-right: 40px;
-	padding-bottom: 15px;
+.message-username {
+	padding: 0;
+}
+
+.sender-message {
+	font-size: 14px;
+	color: #B976DA;
+}
+
+p.sender-message {
+	float: left;
+	font-weight: 600;
+}
+
+p.sender-message span {
+	color: #0c0c0c;
+	font-weight: 300;
+}
+
+.chat-message {
+	float: left;
 }
 
 .message-chats {
@@ -158,19 +161,22 @@
   padding-left: 15px;
 }
 
-.message-time {
-	position: absolute;
-}
+
 
 .message-content {
-	position: relative;
+  width: 87.33333%;
+  padding-left: 0;
 }
 
-.message-time-date {
-  font-size: 10px;
+.message-time {
+  width: 12.666667%;
+  padding-right: 0;
+}
+
+.message-time p {
+	margin: 0;
+	font-size: 10px;
   color: #aaa;
-  clear: both;
-  min-height: 18px;
 }
 
 .sender-img {
