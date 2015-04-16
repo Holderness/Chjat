@@ -110,10 +110,6 @@
   margin-left: 7%;
 }
 
-.message-username {
-	padding: 0;
-}
-
 .sender-message {
 	font-size: 14px;
 	color: #B976DA;
@@ -125,6 +121,7 @@ p.sender-message {
 }
 
 p.sender-message span {
+	margin-left: 15px;
 	color: #0c0c0c;
 	font-weight: 300;
 }
