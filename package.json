@@ -21,6 +21,7 @@
     "express": "^4.10.2",
     "morgan": "^1.5.2",
     "nodemon": "^1.3.7",
-    "shrinkwrap": "^0.4.0"
+    "shrinkwrap": "^0.4.0",
+    "socket.io": "^1.3.5"
   }
 }
