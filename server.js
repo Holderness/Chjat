@@ -19,7 +19,10 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-  console.log('mothafucka, you connected');
+  console.log('a mothafucka is connected');
+  socket.on('disconnect', function(){
+    console.log('he gone.');
+  });
 });
 
 http.listen(3000, function(){
