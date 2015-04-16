@@ -177,13 +177,9 @@
   position: relative;
   bottom: 0;
   background: #fff;
-  border-top: 2px solid #ddd;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-#post-content .form-group {
-	padding-bottom: 0;
+  padding: 10px 10px 10px 10px;
+  width: 95%;
+  margin-left: 2.5%;
 }
 
 .message-time {
@@ -213,16 +209,11 @@
   padding-right: 15px;
 }
 
-.form-group.message-text {
-	border-top: 2px solid #ddd;
-}
-
 input#message-input {
-	border: none;
+	border: 2px solid #ccc;
 	background-image: none;
 	background: #F7F9FB;
 	height: 40px;
-	padding-left: 15px;
 	width: 100%;
 	outline: none;
 }
