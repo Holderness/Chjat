@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400);
+
 .header {
 	background: #329932;
 	color: #fff;
@@ -110,20 +112,42 @@
   margin-left: 7%;
 }
 
+p.message-timestamp {
+	margin-top: 5px
+}
+
+.message-content {
+  width: 87.33333%;
+  padding-left: 0;
+}
+
+.message-time {
+  width: 12.666667%;
+  padding-right: 0;
+}
+
+.message-time p {
+	font-size: 10px;
+  color: #aaa;
+  margin-bottom: 0;
+}
+
 .sender-message {
-	font-size: 14px;
+	font-size: 15px;
 	color: #B976DA;
 }
 
 p.sender-message {
 	float: left;
 	font-weight: 600;
+	margin-bottom: 0;
 }
 
 p.sender-message span {
-	margin-left: 15px;
+	font-family: 'Source Sans Pro', sans-serif;
+	margin-left: 10px;
 	color: #0c0c0c;
-	font-weight: 300;
+	font-weight: lighter;
 }
 
 .chat-message {
@@ -156,24 +180,6 @@ p.sender-message span {
   float: none;
   padding-right: 15px;
   padding-left: 15px;
-}
-
-
-
-.message-content {
-  width: 87.33333%;
-  padding-left: 0;
-}
-
-.message-time {
-  width: 12.666667%;
-  padding-right: 0;
-}
-
-.message-time p {
-	margin: 0;
-	font-size: 10px;
-  color: #aaa;
 }
 
 .sender-img {
