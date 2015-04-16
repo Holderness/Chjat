@@ -44,7 +44,7 @@
   border-bottom: 2px solid #ddd;
 }
 
-.activity-feed {
+.users-list {
   background: #fff;
   height: 88vh;
   overflow-y: auto;
@@ -74,8 +74,9 @@
 	border-bottom: 2px solid #ddd;
 }
 
-#sidebar form .form-control {
-	width: 104.5%;
+input.form-control.sidebar-input:focus {
+	border-color: #fff;
+	border: 1px solid #ccc;
 }
 
 .sidebar-item {
@@ -242,7 +243,7 @@ input#message-input {
 
 @media (max-width: 1050px) {
   
-  .activity-feed {
+  .users-list {
     display: none;
   }
 }
