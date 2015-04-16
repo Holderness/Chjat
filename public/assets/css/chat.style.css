@@ -20,6 +20,14 @@
 	margin-top: 25px;
 }
 
+.user-directory-item {
+	float: left;
+}
+
+.user-online {
+	color: #329932;
+}
+
 
 .unread-counter {
 	line-height: 2em;

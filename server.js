@@ -11,9 +11,6 @@ var io = require('socket.io')(http);
 // });
 
 
-
-
-
 app.get('/', function(req, res){
   res.sendfile('test.html');
 });
