@@ -68,6 +68,8 @@
 	overflow-x: hidden;
 	height: 87vh;
 	background: #fff;
+	border-right: 2px solid #ddd;
+	border-bottom: 2px solid #ddd;
 }
 
 #sidebar form .form-control {
@@ -116,34 +118,6 @@
 	margin: 0;
 }
 
-.compose-message {
-  text-align: center;
-}
-
-.compose-message-btn {
-  background: #f3733c;
-  border: none;
-  border-bottom: 2px solid #b94721;
-  color: #fff;
-  border-radius: 2px;
-  outline: 0;
-}
-
-.compose-message-btn:hover {
-  border-bottom: 2px solid #f3733c;
-  border-top: 2px solid #fff;
-  background: #f3733c;
-  color: #fff;
-  border-radius: 4px;
-  margin-bottom: -2px;
-}
-
-.compose-message-btn:focus {
-	background: #f3733c;
-  border-bottom: 2px solid #b94721;
-  color: #fff;
-}
-
 .message-chat {
 	background: #fff;
 	position: relative;
@@ -174,6 +148,7 @@
   bottom: 0;
   background: #fff;
   padding-bottom: 25px;
+  border-bottom: 2px solid #ddd;
 }
 
 .input-group[class*="col-"] {
@@ -222,7 +197,6 @@ input#message-input {
 	background: #E5EAEB;
 	padding-top: 1%;
 	padding-bottom: 3.33333333%;
-	margin-bottom: 0px;
 	margin-bottom: 0px;
 }
 
