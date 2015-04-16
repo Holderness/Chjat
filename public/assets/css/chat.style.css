@@ -167,6 +167,7 @@ p.sender-message span {
   height: 370px;
   bottom: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   border-top: 2px solid #E5EAEB;
 }
 
