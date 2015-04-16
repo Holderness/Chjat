@@ -3,7 +3,7 @@ var Sidebar = Backbone.View.extend({
 	chatMessageTpl	 : _.template($('#chat-message-template').html()),
 	chatboxTpl: _.template($('#chatbox-template').html()),
 	events: {
-		'click .find-user': 'compose'
+		'click .find-user': 'chatbox'
 	},
 	initialize: function() {
 		$sidebar = $('#sidebar-items');
@@ -19,9 +19,9 @@ var Sidebar = Backbone.View.extend({
 		for (var i = 0; i < inbox.length; i++) {
 			this.addSidebarItem(inbox[i])			
 		}
+		this.chatbox();
 	},
-	compose: function(e) {
-		e.preventDefault();
+	chatbox: function() {
 		$('.chatbox').html(this.chatboxTpl());
 		return this;
 	},
