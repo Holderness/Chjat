@@ -1,10 +1,17 @@
-var app = require('express')();
-var http = require('http').Server(app);
+var express = require('express');
+var app = express();
 
-app.get('/', function(req, res){
-  res.send('<h1>Hello world</h1>');
+
+
+
+app.use(express.static(__dirname + '/public'));
+
+app.set('view engine', 'html');
+
+app.get('/test', function(req, res){
+  res.render('test');
 });
 
-http.listen(3000, function(){
+app.listen(3000, function(){
   console.log('listening on *:3000');
 });

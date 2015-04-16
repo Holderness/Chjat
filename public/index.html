@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>Hamburger</title>
+	<link rel="stylesheet" href="assets/css/lib/bootstrap.css">
+	<link rel="stylesheet" href="assets/css/lib/bootstrap-theme.css">
+	<link rel="stylesheet" href="assets/css/lib/font-awesome.css">
+  <link rel="stylesheet" href="assets/css/lib/extralayers.css">
+	<link rel="stylesheet" href="assets/css/lib/animate.css">
+	<link rel="stylesheet" href="assets/css/lib/et-line.css">
+	<link rel="stylesheet" href="assets/css/lib/style.css">
+	<link rel="stylesheet" href="assets/css/chat.style.css">
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+</head>
+<body>
+	
+	<div class="wrapper message-view">
+
+	  <header class="header">
+	    <div id="multimenu" class="menu-wrapper">
+	      <nav class="navbar yamm navbar-default" role="navigation">
+	        <div class="container-fluid">
+	          <div class="navbar-header">
+	            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	              <span class="sr-only">Toggle navigation</span>
+		            <span class="fa fa-bars"></span>
+	            </button>
+	            <a class="navbar-brand" href="#"><img class="img-responsive nav-logo" src="assets/img/burger-w.png"></a>
+	          </div>
+	          <div id="navbar" class="navbar-collapse collapse">
+	            <ul id="head-font" class="nav navbar-nav navbar-left">
+	              <!-- <li><a href="#">Hamburger</a></li>     -->                 
+	            </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><i class="fa fa-power-off fa-2x"></i></li>
+              </ul>
+		        </div><!--/.nav-collapse -->
+		      </div><!--/.container-fluid -->
+	      </nav>
+	    </div><!-- end menu-wrapper -->
+	  </header><!-- end header -->
+
+    <section id="page-content" class="clearfix">
+      <div class="container-fluid">
+        <div class="row">
+        	<div id="sidebar" class="col-md-2 col-sm-2 col-xs-2 pull-left">
+          	<form>
+              <input type="text" placeholder="Search" class="form-control find-user" autocomplete="off">
+            </form>
+            <div id="sidebar-items">
+<!-- sidebar-items -->
+            </div>
+	        </div>
+
+          <div class="col-md-2 text-center pull-right activity-feed">
+<!-- activity feed -->
+            <p>Online</p>
+          </div>
+
+          <div id="post-content" class="col-md-8 col-sm-8 col-xs-8 chatbox">
+<!-- chatbox -->
+      		</div>
+        </div>
+ 	    </div>
+    </section>
+
+  </div>
+
+  <script type="text/template" id="chatbox-template">
+    <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 wow fadeIn message-chat">
+      <h3 class="page-header"><small><em>To:  </em></small>  Tom Jones</h3>
+      <div class="message-chats">
+
+      </div>
+      <div class="message-textbox col-xs-12 col-sm-12 col-md-12 form-group">
+        <input id="message-input" placeholder="" type="text">
+      </div>
+    </div>
+  </script> 
+
+
+  <script type="text/template" id="chat-message-template">
+    <div class="col-xs-12 col-sm-12 col-md-12 message-text">
+        <img class="img-responsive message-av sender-img" src="<%= sender.avatar %>">
+        <div class="message-content">
+          <p class="sender-message"><%= content %></p>
+          <div class="message-time">
+            <p class="message-time-date" data-livestamp="<%= moment(timestamp).unix() %>"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
+
+
+  <script type="text/template" id="sidebar-message-template">
+    <div class="row sidebar-item">
+      <div class="col-xs-8 col-sm-8 col-md-8 message-info-preview">
+        <p><strong class="preview-username"><%= sender.name %></strong></p>
+      </div>
+      <div class="col-xs-3 col-sm-3 col-md-3 text-center unread-counter">
+        <label class="badge">0</label>
+      </div>
+        <!-- <p class="preview-message"><%= content %></p> -->
+    </div>
+  </script>
+
+  <script src="assets/js/lib/jquery.js"></script>
+  <script src="assets/js/lib/underscore.js"></script>
+  <script src="assets/js/lib/backbone.js"></script>
+  <script src="assets/js/lib/bootstrap.js"></script>
+  <script src="assets/js/lib/moment.js"></script>
+  <script src="assets/js/lib/livestamp.js"></script>
+  <script src="assets/js/lib/wow.js"></script>
+  <script src="assets/js/lib/progressbar.js"></script>
+  <script src="assets/js/models/chat-models.js"></script>
+  <script src="assets/js/views/chatbox.js"></script>
+  <script src="assets/js/views/sidebar-item.js"></script>
+  <script src="assets/js/views/sidebar.js"></script>
+  <script src="assets/js/main.js"></script>
+
+</body>
+</html>
