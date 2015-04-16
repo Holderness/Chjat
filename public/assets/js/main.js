@@ -3,13 +3,13 @@
 var thomJones =
 		{
 			name: 'Thom Jones',
-			avatar: 'http://nuruinternational.org/annual-report/wp-content/uploads/2014/07/Jake.jpg',
+			avatar: 'assets/img/thom-jones.jpg',
 			id: 1
 		};
 var tomJones = 
 		{
 			name: 'Tom Jones',
-			avatar: 'http://a5.files.biography.com/image/upload/c_fill,cs_srgb,dpr_1.0,g_face,h_300,q_80,w_300/MTE1ODA0OTcyMDA1Njg4ODQ1.jpg',
+			avatar: 'assets/img/tom-jones.jpg',
 			id: 2
 		};
 var ev = 

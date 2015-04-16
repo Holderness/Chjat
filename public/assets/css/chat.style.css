@@ -90,11 +90,6 @@
 	background: #ccc;
 }
 
-.message-user-av {
-	float: left;
-	padding-right: 0;
-}
-
 .sidebar-item {
 	background: #fff;
 	border-bottom: 1px solid #e8e8e8;
@@ -177,9 +172,6 @@
   position: relative;
   bottom: 0;
   background: #fff;
-  padding: 10px 10px 10px 10px;
-  width: 95%;
-  margin-left: 2.5%;
 }
 
 .message-time {
@@ -232,10 +224,16 @@ input#message-input {
   color: #a8a8a8;
   font-family: 'Open-Sans', sans-serif;
   margin: 0;
-  padding-top: 5px;
+  padding-top: 10px;
   padding-bottom: 0;
 }
 
+.message-user-av {
+	float: left;
+	height: 40px;
+	padding-top: 10px;
+	padding-left: 15px;
+}
 
 @media (max-width: 1050px) {
   
