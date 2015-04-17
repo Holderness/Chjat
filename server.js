@@ -19,9 +19,17 @@ io.on('connection', function(socket){
   console.log('a mothafucka is connected');
   socket.on('disconnect', function(){
     console.log('he gone.');
+  })
+  .on('chat message', function(msg){
+    console.log('message: ' + msg);
   });
+});
+
+io.on('connection', function(socket){
+
 });
 
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });
+
