@@ -195,18 +195,6 @@
   <script src="assets/js/views/direct-messages.js"></script>
   <script src="assets/js/main.js"></script>
 
-  <script>
-    var socket = io();
-    $('form').submit(function(){
-      socket.emit('chat message', $('#message-input').val());
-      $('#message-input').val('');
-      return false;
-    });
-    socket.on('chat message', function(msg){
-      $('#messages').append($('<li>').text(msg));
-    });
-
-  </script>
 
 </body>
 </html>

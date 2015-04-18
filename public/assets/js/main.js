@@ -94,7 +94,7 @@ var u1 = new User({
 		});
 
 
-new DirectMessages({model: u1});
+new Chatbox();
 
 new WOW(
     { offset: 120 }
