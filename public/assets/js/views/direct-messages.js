@@ -3,7 +3,7 @@ var DirectMessages = Backbone.View.extend({
 	chatMessageTpl	 : _.template($('#chat-message-template').html()),
 	chatboxTpl: _.template($('#chatbox-template').html()),
 	events: {
-		'click .find-user': 'chatbox'
+		'click .chat-search-input': 'chatbox'
 	},
 	initialize: function() {
 		$directMessagesContainer = $('.direct-messages-container');
