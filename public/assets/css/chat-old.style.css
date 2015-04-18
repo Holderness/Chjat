@@ -1,22 +1,6 @@
 
 
-.header {
-	background: #329932;
-	color: #fff;
-}
 
-.message-header {
-	background: #fff;
-}
-
-.navbar-brand {
-	padding-top: 20px;
-	background: transparent;
-}
-
-#multimenu .navbar-default {
-	padding-top: 0;
-}
 
 .navbar-right {
 	margin-top: 25px;
@@ -50,11 +34,6 @@
   overflow-y: auto;
   border-left: 2px solid #ddd;
   border-bottom: 2px solid #ddd;
-}
-
-#head-font > li > a {
-  font-family: 'Nunito', sans-serif;
-  color: #8B939A !important;
 }
 
 #page-content {
@@ -108,9 +87,7 @@ input.form-control.sidebar-input:focus {
 }
 
 
-.nav-logo {
-	height: 60px;
-}
+
 
 .message-chat {
 	background: #fff;

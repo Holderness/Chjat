@@ -4,6 +4,33 @@
 
 /*nav*/
 
+.navbar {
+  border-bottom: 2px solid #ddd;
+}
+
+.nav-header {
+	background: #329932;
+	color: #fff;
+	padding-top: 0;
+}
+
+.navbar-brand {
+	padding-top: 20px;
+	background: transparent;
+}
+
+.nav-logo {
+	height: 60px;
+}
+
+.navbar-left > a {
+  font-family: 'Nunito', sans-serif;
+  color: #8B939A !important;
+}
+
+.navbar-right {
+	margin-top: 25px;
+}
 
 /*chat-box*/
 
