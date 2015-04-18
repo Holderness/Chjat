@@ -23,22 +23,34 @@ var Chatbox = Backbone.View.extend({
 	send: function(e) {
 		if (e.which === 13  && $input.val() !== '') {
 			e.preventDefault();
-			var content = $input.val();
-			var user = this.model.get('users');
-			var message = Object.create({
-				content: content,
-				sender: user[0],
-				timestamp: new Date(),
-			});
-			$('.chatbox-content').append(this.chatMessageTpl(message));	
+			var socket = io();
+			socket.emit('chat message', $input.val());
+			// var user = this.model.get('users');
+			// var message = Object.create({
+			// 	content: content,
+			// 	sender: user[0],
+			// 	timestamp: new Date(),
+			// });
+			socket.on('chat message', function(msg){
+				var content = {content: msg};
+				console.log(content);
+				$('.chatbox-content').append(this.chatMessageTpl(content.toJSON()));
+    	});
 				var messages = this.model.get('messages');
-				messages.push(message);
+				// messages.push(message);
 			$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
 	  	$input.val('');
 			$input.focus();
-			console.log('message', message);
-			console.log('messages', messages);
+			// console.log('message', message);
+			// console.log('messages', messages);
+    return false;
   	}
 	},
+
+
+    
+      
+    
+    
 
 });
