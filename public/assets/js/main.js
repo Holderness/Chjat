@@ -94,7 +94,7 @@ var u1 = new User({
 		});
 
 
-new Sidebar({model: u1});
+new DirecMessages{model: u1});
 
 new WOW(
     { offset: 120 }
