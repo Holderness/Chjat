@@ -144,6 +144,18 @@ label.badge.unread-messages {
 
 /*user-directory*/
 
+.user-directory {
+  background: #fff;
+  height: 88vh;
+  overflow-y: auto;
+  border-left: 2px solid #ddd;
+  border-bottom: 2px solid #ddd;
+}
+
+.user-directory-username {
+  float: left;
+}
+
 .offline-users {
 
 }

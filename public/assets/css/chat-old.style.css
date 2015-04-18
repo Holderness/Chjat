@@ -4,55 +4,16 @@
 
 
 
-.user-directory-item {
-	float: left;
-}
-
-
-
-.unread-counter {
-	line-height: 2em;
-	padding-right: 0;
-}
 
 .preview-username {
 	line-height: 2em;
 	float: right;
 }
 
-.users-list {
-  background: #fff;
-  height: 88vh;
-  overflow-y: auto;
-  border-left: 2px solid #ddd;
-  border-bottom: 2px solid #ddd;
-}
 
 
 
-#sidebar {
 
-}
-
-input.form-control.sidebar-input:focus {
-	border-color: #fff;
-	border: 1px solid #ccc;
-}
-
-.row.direct-message {
-	cursor: pointer;
-}
-
-.row.direct-message:hover {
-	background: #ccc;
-}
-
-.row.direct-message {
-	background: #fff;
-	border-bottom: 1px solid #e8e8e8;
-	border-right: 1px solid #e8e8e8;
-	line-height: 1.2em;
-}
 
 
 
