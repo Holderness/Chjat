@@ -22,6 +22,7 @@ var Chatbox = Backbone.View.extend({
 	},
 	send: function(e) {
 		if (e.which === 13  && $input.val() !== '') {
+			e.preventDefault();
 			var content = $input.val();
 			var user = this.model.get('users');
 			var message = Object.create({
