@@ -31,15 +31,7 @@
 
 
 #sidebar {
-	padding-left: 0;
-	padding-right: 0;
-	margin-left: 0;
-	overflow-y: auto;
-	overflow-x: hidden;
-	height: 87vh;
-	background: #fff;
-	border-right: 2px solid #ddd;
-	border-bottom: 2px solid #ddd;
+
 }
 
 input.form-control.sidebar-input:focus {
@@ -47,23 +39,15 @@ input.form-control.sidebar-input:focus {
 	border: 1px solid #ccc;
 }
 
-.sidebar-item {
+.row.direct-message {
 	cursor: pointer;
 }
 
-.sidebar-row {
-	background: #fff;
-	padding: 15px 15px 15px 15px;
-	border-bottom: 1px solid #e8e8e8;
-	border-right: 1px solid #e8e8e8;
-	line-height: 1.2em;
-}
-
-.sidebar-item:hover {
+.row.direct-message:hover {
 	background: #ccc;
 }
 
-.sidebar-item {
+.row.direct-message {
 	background: #fff;
 	border-bottom: 1px solid #e8e8e8;
 	border-right: 1px solid #e8e8e8;
@@ -71,9 +55,6 @@ input.form-control.sidebar-input:focus {
 }
 
 
-#sidebar-items label.badge {
-	background: #B976DA;
-}
 
 
 
