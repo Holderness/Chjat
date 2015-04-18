@@ -128,8 +128,10 @@
 
       <div class="row">
         <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 message-textbox input-group">
-          <span class="input-group-addon"><i class="fa fa-image"></i></span>
-          <input id="message-input" placeholder="" type="text">
+            <span class="input-group-addon"><i class="fa fa-image"></i></span>
+          <form>
+            <input id="message-input" placeholder="" type="text">
+          </form>
         </div>
       </div>
     </div>
@@ -165,6 +167,11 @@
     </div>
   </script>
 
+
+
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
   <script src="assets/js/lib/jquery.js"></script>
   <script src="assets/js/lib/underscore.js"></script>
   <script src="assets/js/lib/backbone.js"></script>
@@ -178,6 +185,19 @@
   <script src="assets/js/views/sidebar-item.js"></script>
   <script src="assets/js/views/sidebar.js"></script>
   <script src="assets/js/main.js"></script>
+
+  <script>
+    var socket = io();
+    $('form').submit(function(){
+      socket.emit('chat message', $('#m').val());
+      $('#m').val('');
+      return false;
+    });
+    socket.on('chat message', function(msg){
+    $('#messages').append($('<li>').text(msg));
+  });
+
+  </script>
 
 </body>
 </html>
