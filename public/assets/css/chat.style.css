@@ -47,6 +47,7 @@
     border:none;
 }
 
+
 /* parent view */
 
 #page-content {
@@ -122,7 +123,6 @@
   width: 87.33333%;
   padding-left: 0;
 }
-
 
 .chatbox-message {
 	font-size: 15px;
