@@ -19,7 +19,7 @@
 }
 
 .navbar-default {
-  padding-top: 10px;
+
 }
 
 .nav-logo {
@@ -33,6 +33,25 @@
 
 .navbar-right {
 	margin-top: 25px;
+}
+
+.navbar-default {
+    box-shadow:none;
+    background:transparent;
+    padding: 10px 20px 40px 20px;
+}
+
+.navbar {
+    background: transparent;
+    margin:0;
+    border:none;
+}
+
+/* parent view */
+
+#page-content {
+	padding-top: 0px;
+	background: #EBEFF0;
 }
 
 /*chat-box*/
