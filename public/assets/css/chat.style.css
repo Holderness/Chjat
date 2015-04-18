@@ -1,5 +1,72 @@
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400);
 
+
+
+/*nav*/
+
+
+/*chat-box*/
+
+.chat-box-header {
+
+}
+
+.chat-box-content {
+
+}
+
+.chat-box-input {
+
+}
+
+.chat-box-message {
+
+}
+
+
+/*chat-directory*/
+
+.chat-search {
+
+}
+
+.public-room-container {
+
+}
+
+.private-room-container {
+
+}
+
+.direct-message-container {
+
+}
+
+.chat-directory-item {
+
+}
+
+
+/*user-directory*/
+
+.offline-users {
+
+}
+
+.online-users {
+
+}
+
+.idle-users {
+
+}
+
+.user-directory-itemEEE {
+
+}
+
+
+
 .header {
 	background: #329932;
 	color: #fff;
