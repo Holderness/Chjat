@@ -11,7 +11,7 @@ var DirectMessages = Backbone.View.extend({
 		this.addSidebar();
 	},
 	addSidebarItem: function(conversation) {
-		var view = new SidebarItem({model: conversation});
+		var view = new DirectMessage({model: conversation});
 		$directMessagesContainer.append(view.el)
 	},
 	addSidebar: function() {

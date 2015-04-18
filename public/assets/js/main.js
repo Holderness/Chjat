@@ -94,7 +94,7 @@ var u1 = new User({
 		});
 
 
-new DirecMessages{model: u1});
+new DirectMessages({model: u1});
 
 new WOW(
     { offset: 120 }
