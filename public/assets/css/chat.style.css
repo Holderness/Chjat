@@ -102,13 +102,28 @@
 
 }
 
+.row.user-offline {
+
+}
+
+
 .online-users {
 
 }
 
+.user-online {
+	color: #329932;
+}
+
+.row.user-online {
+
+}
+
+
 .idle-users {
 
 }
+
 
 .user-directory-itemEEE {
 
