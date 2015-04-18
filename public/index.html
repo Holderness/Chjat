@@ -45,12 +45,22 @@
     <section id="page-content" class="clearfix">
       <div class="container-fluid">
         <div class="row">
-        	<div id="sidebar" class="col-md-2 col-sm-2 col-xs-2 pull-left">
+        	<div class="col-md-2 col-sm-2 col-xs-2 pull-left chat-directory">
           	<form>
-              <input type="text" placeholder="Search" class="form-control sidebar-input" autocomplete="off">
+              <input type="text" placeholder="Search" class="form-control chat-search-input" autocomplete="off">
             </form>
-            <div id="sidebar-items">
+            <div class="public-rooms-container">
+
+
+            </div>
+
+            <div class="direct-messages-container">
 <!-- sidebar-items -->
+            </div>
+
+            <div class="private-rooms-container">
+
+
             </div>
 	        </div>
 
@@ -131,13 +141,13 @@
   </script>
 
 
-  <script type="text/template" id="sidebar-message-template">
-    <div class="row sidebar-item">
+  <script type="text/template" id="direct-message-template">
+    <div class="row direct-message">
       <div class="col-xs-8 col-sm-8 col-md-8 message-info-preview">
         <p><strong class="preview-username"><%= sender.name %></strong></p>
       </div>
-      <div class="col-xs-3 col-sm-3 col-md-3 text-center unread-counter">
-        <label class="badge">3</label>
+      <div class="col-xs-3 col-sm-3 col-md-3 text-center">
+        <label class="badge unread-messages">3</label>
       </div>
         <!-- <p class="preview-message"><%= content %></p> -->
     </div>
@@ -182,8 +192,8 @@
   <script src="assets/js/lib/progressbar.js"></script>
   <script src="assets/js/models/chat-models.js"></script>
   <script src="assets/js/views/chatbox.js"></script>
-  <script src="assets/js/views/sidebar-item.js"></script>
-  <script src="assets/js/views/sidebar.js"></script>
+  <script src="assets/js/views/direct-message.js"></script>
+  <script src="assets/js/views/direct-messages.js"></script>
   <script src="assets/js/main.js"></script>
 
   <script>
