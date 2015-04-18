@@ -121,6 +121,7 @@ input.form-control.chat-search-input:focus {
 }
 
 label.badge.unread-messages {
+	margin-top: 5px;
 	background: #B976DA;
 }
 
