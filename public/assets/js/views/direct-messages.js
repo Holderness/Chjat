@@ -1,6 +1,5 @@
 var DirectMessages = Backbone.View.extend({
 	el: '.chat-directory',
-	chatMessageTpl	 : _.template($('#chat-message-template').html()),
 	chatboxTpl: _.template($('#chatbox-template').html()),
 	events: {
 		'click .chat-search-input': 'chatbox'
