@@ -32,10 +32,10 @@ var Chatbox = Backbone.View.extend({
 			// 	timestamp: new Date(),
 			// });
 			socket.on('chat message', function(msg){
-				var content = {content: msg};
+				var content = {content: msg, timestamp: "333333"};
 				console.log(content);
-				$('.chatbox-content').append(this.chatMessageTpl(content.toJSON()));
-    	});
+				$('.chatbox-content').append(this.chatMessageTpl(content));
+      }.bind(this));
 				var messages = this.model.get('messages');
 				// messages.push(message);
 			$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
