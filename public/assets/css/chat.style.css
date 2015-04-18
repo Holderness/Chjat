@@ -54,23 +54,119 @@
 	background: #EBEFF0;
 }
 
-/*chat-box*/
 
-.chat-box-header {
+/*chatbox*/
 
+.chatbox {
+	background: #E5EAEB;
+	padding-top: 1%;
+	padding-bottom: 3.33333333%;
+	margin-bottom: 0px;
 }
 
-.chat-box-content {
-
+.page-header {
+	background: #fff;
+	position: relative;
+  width: 86%;
+  margin-left: 7%;
+  color: #a8a8a8;
+  margin: 0;
+  padding-top: 10px;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
-.chat-box-input {
-
+.chatbox-header-avatar {
+	float: left;
+	height: 50px;
+	padding-left: 15px;
+	padding-right: 15px;
+	border-radius: 50%;
 }
 
-.chat-box-message {
-
+.chatbox-header-username {
+	color: #a8a8a8;
+	font-family: 'Open-Sans', sans-serif;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
+
+.row.chatbox-content {
+  width: 86%;
+  margin-left: 7%;
+  background: #fff;
+  height: 370px;
+  bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-top: 2px solid #E5EAEB;
+}
+
+.chatbox-message-container {
+	float: left;
+}
+
+.chatbox-message-timestamp {
+  width: 12.666667%;
+  padding-right: 0;
+}
+
+.chatbox-message-timestamp p {
+	font-size: 10px;
+  color: #aaa;
+  margin-bottom: 0;
+  margin-top: 5px;
+}
+
+.chatbox-message-content {
+  width: 87.33333%;
+  padding-left: 0;
+}
+
+
+.chatbox-message {
+	font-size: 15px;
+	color: #B976DA;
+}
+
+p.chatbox-message {
+	float: left;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+p.chatbox-message span {
+	font-family: 'Source Sans Pro', sans-serif;
+	margin-left: 10px;
+	color: #0c0c0c;
+	font-weight: lighter;
+}
+
+
+.chatbox-input-container {
+  position: relative;
+  bottom: 0;
+  background: #fff;
+  padding-bottom: 25px;
+  border-bottom: 2px solid #ddd;
+}
+
+.input-group[class*="col-"] {
+  float: none;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+input.message-input {
+	border: 2px solid #ccc;
+	background-image: none;
+	background: #fff;
+	height: 40px;
+	width: 100%;
+	outline: none;
+}
+
+
 
 
 /*chat-directory*/
@@ -140,6 +236,11 @@ label.badge.unread-messages {
 	line-height: 1.2em;
 }
 
+.direct-message-username {
+	line-height: 2em;
+	float: right;
+}
+
 
 
 /*user-directory*/
@@ -182,4 +283,26 @@ label.badge.unread-messages {
 .user-directory-itemEEE {
 
 }
+
+
+
+
+
+
+
+@media (max-width: 1050px) {
+  
+  .users-list {
+    display: none;
+  }
+}
+
+
+
+
+
+
+
+
+
 
