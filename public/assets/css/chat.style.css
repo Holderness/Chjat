@@ -15,8 +15,11 @@
 }
 
 .navbar-brand {
-	padding-top: 20px;
 	background: transparent;
+}
+
+.navbar-default {
+  padding-top: 10px;
 }
 
 .nav-logo {
