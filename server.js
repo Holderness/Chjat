@@ -11,6 +11,11 @@ app.get('/', function(req, res){
   res.render('index');
 });
 
+app.get('/test', function(req, res){
+  res.render('test');
+});
+
+
 io.on('connection', function(socket){
   console.log('a mothafucka is connected');
   socket

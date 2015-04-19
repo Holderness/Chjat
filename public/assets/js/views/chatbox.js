@@ -1,3 +1,6 @@
+
+var socket = io();
+
 var Chatbox = Backbone.View.extend({
 	el: '.chatbox',
 	chatboxTpl: _.template($('#chatbox-template').html()),
@@ -5,6 +8,12 @@ var Chatbox = Backbone.View.extend({
 	initialize: function() {
 		this.render();
 		$input = $('.message-input');
+		socket.on('chat message', function(msg){
+			var content = {content: msg, timestamp: new Date()};
+			$('.chatbox-content').append(this.chatMessageTpl(content));
+			$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
+			$input.focus();
+    }.bind(this));
 	},
 	events: {
 		'keypress .message-input' : 'send',
@@ -17,21 +26,13 @@ var Chatbox = Backbone.View.extend({
   send: function(e) {
     if (e.which === 13  && $input.val() !== '') {
 			e.preventDefault();
-			var socket = io();
 			socket.emit('chat message', $input.val());
-			console.log(	socket.emit('chat message', $input.val()))
-			socket.on('chat message', function(msg){
-				var content = {content: msg, timestamp: new Date()};
-				$('.chatbox-content').append(this.chatMessageTpl(content));
-				console.log(content);
-      }.bind(this));
-	  	$input.val('');
-			$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
-			$input.focus();
-    return false;
+			$input.val('');
+      return false;
     }
   }
 });
+
 
 
   // <script>
