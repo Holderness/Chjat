@@ -1,101 +1,220 @@
 
+$(document).ready(function() {
+  var mainController = new MainController();
+  mainController.init();
+});
 
-var thomJones =
-		{
-			name: 'Thom Jones',
-			avatar: 'assets/img/thom-jones.jpg',
-			id: 1
-		};
-var tomJones = 
-		{
-			name: 'Tom Jones',
-			avatar: 'assets/img/tom-jones.jpg',
-			id: 2
-		};
-var ev = 
-		{
-			name: 'Evan Turner',
-			avatar: 'http://evturn.com/assets/img/ev-winter-yellow.jpg',
-			id: 3
-		};
 
-var convo1 = new Conversation({				
-					users: [tomJones, thomJones],
-					messages:	[
-							{
-								timestamp: new Date(),
-								content: 'Craig, it\'s important. I just spilled salsa all over my filas.',
-								sender: tomJones
-							},
-							{
-								timestamp: new Date(),
-								content: 'I\m not Craig!',
-								sender: thomJones
-							},
-							{
-								timestamp: new Date(),
-								content: 'Fuck the hell off!',
-								sender: thomJones
-							}
-						]
-					});
-var convo2 = new Conversation({
-				users: [tomJones, thomJones],			
-				messages:	[
-						{
-							timestamp: new Date(),
-							content: 'Craig, it\'s important. I just spilled salsa all over my filas.',
-							sender: tomJones
-						},
-						{
-							timestamp: new Date(),
-							content: 'I\m not Craig!',
-							sender: thomJones
-						},
-						{
-							timestamp: new Date(),
-							content: 'Just ate a bisquit',
-							sender: tomJones
-						}
-					]
-				});
-var convo3 = new Conversation({
-				users: [ev, thomJones],
-				messages:	[
-						{
-							timestamp: new Date(),
-							content: 'Craig, it\'s important. I just spilled salsa all over my filas.',
-							sender: tomJones
-						},
-						{
-							timestamp: new Date(),
-							content: 'I\m not Craig!',
-							sender: thomJones
-						},
-						{
-							timestamp: new Date(),
-							content: 'Please leave my wife in this',
-							sender: ev
-						}
-					]});
+var MainController = function() {
+  // MainController
+	var self = this;
 
-var u2 = new User(thomJones);
+	// creates EventBuses to handle events
+	self.appEventBus = _.extend({}, Backbone.Events);
+	self.viewEventBus = _.extend({}, Backbone.Events);
 
-var u1 = new User({
-			name: 'Tom Jones',
-			avatar: 'http://a5.files.biography.com/image/upload/c_fill,cs_srgb,dpr_1.0,g_face,h_300,q_80,w_300/MTE1ODA0OTcyMDA1Njg4ODQ1.jpg',
-			inbox: 
-				[
-					convo1,
-					convo2,
-					convo3
-				],	
-			id: 1
+  // MainController.init()
+	self.init = function() {
+		// creates ChatClient from socketclient.js, passes in 
+		// appEventBus as vent, connects
+		self.chatClient = new ChatClient({ vent: self.appEventBus });
+		self.chatClient.connect();
+
+    // loginModel
+		self.loginModel = new LoginModel();
+
+    // uses ContainerModel to pass in a viewState, LoginView, which
+    // is the login page. That LoginView takes the viewEventBus as a vent
+    // and the LoginModel as a model.
+		self.containerModel = new ContainerModel({ viewState: new LoginView({vent: self.viewEventBus, model: self.loginModel})});
+
+		// next, a new ContainerView is intialized with the newly created containerModel
+		// the login page is then rendered.
+		self.containerView = new ContainerView({ model: self.containerModel });
+		self.containerView.render();
+	};
+
+
+
+  ////////////  Busses ////////////
+    // The Busses listen to the socketclient
+
+
+  //// viewEventBus Listeners /////
+  
+	self.viewEventBus.on("login", function(name) {
+    // socketio login, sends name to socketclient, socketclient sends it to chatserver
+    self.chatClient.login(name);
+  });
+	self.viewEventBus.on("chat", function(chat) {
+    // socketio chat, sends chat to socketclient, socketclient to chatserver
+    self.chatClient.chat(chat);
+  });
+
+
+  //// appEventBus Listeners ////
+
+  // after the 'welcome' event emits, the loginDone event triggers.
+	self.appEventBus.on("loginDone", function() {
+
+		// new model and view created for chatroom home
+		self.homeModel = new HomeModel();
+		self.homeView  = new HomeView({vent: self.viewEventBus, model: self.homeModel });
+
+		// viewstate is changed to chatroom home after login.
+		self.containerModel.set("viewState", self.homeView);
+	});
+
+  // error listeners
+	self.appEventBus.on("loginNameBad", function(name) {
+		self.loginModel.set("error", "Invalid Name");
+	});
+	self.appEventBus.on("loginNameExists", function(name) {
+		self.loginModel.set("error", "Name already exists");
+	});
+
+
+  // after 'onlineUsers' event emits, the 'usersInfo' event triggers
+	self.appEventBus.on("usersInfo", function(data) {
+
+    //data is an array of usernames, including the new user
+
+		// gets users collection from homeModel
+		var onlineUsers = self.homeModel.get("onlineUsers");
+		// onlineUsers is the collection
+
+		var users = _.map(data, function(item) {
+			return new UserModel({name: item});
 		});
+    // users is array of the current user models
+
+    // this resets the collection with the updated array of users
+		onlineUsers.reset(users);
+	});
+
+  // adds new user to users collection, sends default joining message
+	self.appEventBus.on("userJoined", function(username) {
+		self.homeModel.addUser(username);
+		self.homeModel.addChat({sender: "", message: username + " joined room." });
+	});
+
+	// removes user from users collection, sends default leaving message
+	self.appEventBus.on("userLeft", function(username) {
+		self.homeModel.removeUser(username);
+		self.homeModel.addChat({sender: "", message: username + " left room." });
+	});
+
+	// chat passed from socketclient, adds a new chat message using homeModel method
+	self.appEventBus.on("chatReceived", function(chat) {
+		self.homeModel.addChat(chat);
+	});
+};
 
 
-new Chatbox();
 
-new WOW(
-    { offset: 120 }
-).init();
+
+
+
+
+
+
+
+// var thomJones =
+// 		{
+// 			name: 'Thom Jones',
+// 			avatar: 'assets/img/thom-jones.jpg',
+// 			id: 1
+// 		};
+// var tomJones = 
+// 		{
+// 			name: 'Tom Jones',
+// 			avatar: 'assets/img/tom-jones.jpg',
+// 			id: 2
+// 		};
+// var ev = 
+// 		{
+// 			name: 'Evan Turner',
+// 			avatar: 'http://evturn.com/assets/img/ev-winter-yellow.jpg',
+// 			id: 3
+// 		};
+
+// var convo1 = new Conversation({				
+// 					users: [tomJones, thomJones],
+// 					messages:	[
+// 							{
+// 								timestamp: new Date(),
+// 								content: 'Craig, it\'s important. I just spilled salsa all over my filas.',
+// 								sender: tomJones
+// 							},
+// 							{
+// 								timestamp: new Date(),
+// 								content: 'I\m not Craig!',
+// 								sender: thomJones
+// 							},
+// 							{
+// 								timestamp: new Date(),
+// 								content: 'Fuck the hell off!',
+// 								sender: thomJones
+// 							}
+// 						]
+// 					});
+// var convo2 = new Conversation({
+// 				users: [tomJones, thomJones],			
+// 				messages:	[
+// 						{
+// 							timestamp: new Date(),
+// 							content: 'Craig, it\'s important. I just spilled salsa all over my filas.',
+// 							sender: tomJones
+// 						},
+// 						{
+// 							timestamp: new Date(),
+// 							content: 'I\m not Craig!',
+// 							sender: thomJones
+// 						},
+// 						{
+// 							timestamp: new Date(),
+// 							content: 'Just ate a bisquit',
+// 							sender: tomJones
+// 						}
+// 					]
+// 				});
+// var convo3 = new Conversation({
+// 				users: [ev, thomJones],
+// 				messages:	[
+// 						{
+// 							timestamp: new Date(),
+// 							content: 'Craig, it\'s important. I just spilled salsa all over my filas.',
+// 							sender: tomJones
+// 						},
+// 						{
+// 							timestamp: new Date(),
+// 							content: 'I\m not Craig!',
+// 							sender: thomJones
+// 						},
+// 						{
+// 							timestamp: new Date(),
+// 							content: 'Please leave my wife in this',
+// 							sender: ev
+// 						}
+// 					]});
+
+// var u2 = new User(thomJones);
+
+// var u1 = new User({
+// 			name: 'Tom Jones',
+// 			avatar: 'http://a5.files.biography.com/image/upload/c_fill,cs_srgb,dpr_1.0,g_face,h_300,q_80,w_300/MTE1ODA0OTcyMDA1Njg4ODQ1.jpg',
+// 			inbox: 
+// 				[
+// 					convo1,
+// 					convo2,
+// 					convo3
+// 				],	
+// 			id: 1
+// 		});
+
+
+// new Chatbox();
+
+// new WOW(
+//     { offset: 120 }
+// ).init();
