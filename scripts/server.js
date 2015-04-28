@@ -1,20 +1,20 @@
+
 var express = require('express');
 var app = express();
+
 var http = require('http');
+var path = require('path');
+
 var server = http.Server(app);
 var io = require('socket.io')(server);
 
-app.use(express.static(__dirname + '/public'));
 
-app.set('view engine', 'html');
+app.use(express.static(path.join(__dirname, '../public')));
 
-app.get('/', function(req, res){
-  res.render('index');
-});
+app.set('view engine', 'ejs');
 
-app.get('/test', function(req, res){
-  res.render('test');
-});
+var index = require('../routes/index');
+app.use('/', index);
 
 
 io.on('connection', function(socket){
@@ -31,7 +31,6 @@ io.on('connection', function(socket){
     });
 });
 
-// A: not sure if we'll be using heroku, but set up the env.port anyway
 var port = process.env.PORT || 3000;
 server.listen(port, function() {
   console.log('listening on *:' + port);
