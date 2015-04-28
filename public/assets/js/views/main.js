@@ -9,6 +9,39 @@ var ContainerView = Backbone.View.extend({
 	}
 });
 
+var LoginView = Backbone.View.extend({
+	template: _.template($('#login-template').html()),
+	events: {
+		'click #nameBtn': 'onLogin'
+	},
+	initialize: function(options) {
+		// gets passed the viewEventBus when the MainController is initialized
+		this.vent = options.vent;
+		// telling the view to listen to an event on its model,
+		// if there's an error, the callback (this.render) is called with the  
+		// view as context
+		this.listenTo(this.model, "change:error", this.render, this);
+	},
+	render: function() {
+		this.$el.html(this.template(this.model.toJSON()));
+		//so, this is Ladda, a UI component for form buttons.
+		// Ladda incorporates the spinning wheel into the submit button
+		// as the request is being processed.
+		if (!this.l) {
+			this.l = Ladda.create(this.$("#nameBtn").get(0));
+		} else {
+			this.l.stop();
+		}
+		return this;
+	},
+	onLogin: function() {
+		// Ladda again, starting the animation.
+		this.l.start();
+		// triggering the login event and passing the username data to js/main.js
+		this.vent.trigger("login", this.$('#nameText').val());
+	}
+});
+
 
 
 var HomeView = Backbone.View.extend({

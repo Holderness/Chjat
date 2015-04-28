@@ -6,14 +6,12 @@ $(document).ready(function() {
 
 
 var MainController = function() {
-  // MainController
+
 	var self = this;
 
-	// creates EventBuses to handle events
 	self.appEventBus = _.extend({}, Backbone.Events);
 	self.viewEventBus = _.extend({}, Backbone.Events);
 
-  // MainController.init()
 	self.init = function() {
 		// creates ChatClient from socketclient.js, passes in 
 		// appEventBus as vent, connects
