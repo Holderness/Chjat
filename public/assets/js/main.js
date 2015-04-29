@@ -94,13 +94,13 @@ var MainController = function() {
   // adds new user to users collection, sends default joining message
 	self.appEventBus.on("userJoined", function(username) {
 		self.chatroomModel.addUser(username);
-		self.chatroomModel.addChat({sender: "", message: username + " joined room." });
+		self.chatroomModel.addChat({sender: "Mayor McCheese", message: username + " joined room." });
 	});
 
 	// removes user from users collection, sends default leaving message
 	self.appEventBus.on("userLeft", function(username) {
 		self.chatroomModel.removeUser(username);
-		self.chatroomModel.addChat({sender: "", message: username + " left room." });
+		self.chatroomModel.addChat({sender: "Grimace", message: username + " left room." });
 	});
 
 	// chat passed from socketclient, adds a new chat message using chatroomModel method
