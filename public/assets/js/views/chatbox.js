@@ -2,15 +2,15 @@
 var socket = io();
 
 var Chatbox = Backbone.View.extend({
-	el: '.chatbox',
-	chatboxTpl: _.template($('#chatbox-template').html()),
-	chatMessageTpl	 : _.template($('#chatbox-message-template').html()),
+	el: '#chatroom-container',
+	chatroomTemplate: _.template($('#chatroom-template').html()),
+	chatMessageTemplate: _.template($('#chatbox-message-template').html()),
 	initialize: function() {
 		this.render();
 		$input = $('.message-input');
 		socket.on('chat message', function(msg){
 			var content = {content: msg, timestamp: new Date()};
-			$('.chatbox-content').append(this.chatMessageTpl(content));
+			$('.chatbox-content').append(this.chatMessageTemplate(content));
 			$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
 			$input.focus();
     }.bind(this));
@@ -19,7 +19,7 @@ var Chatbox = Backbone.View.extend({
 		'keypress .message-input' : 'send',
 	},
   render: function() {
-    this.$el.html(this.chatboxTpl());
+    this.$el.html(this.chatroomTemplate);
     $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
     return this;
   },

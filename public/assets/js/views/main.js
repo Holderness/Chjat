@@ -24,27 +24,16 @@ var LoginView = Backbone.View.extend({
 	},
 	render: function() {
 		this.$el.html(this.template(this.model.toJSON()));
-		//so, this is Ladda, a UI component for form buttons.
-		// Ladda incorporates the spinning wheel into the submit button
-		// as the request is being processed.
-		if (!this.l) {
-			this.l = Ladda.create(this.$("#nameBtn").get(0));
-		} else {
-			this.l.stop();
-		}
 		return this;
 	},
 	onLogin: function() {
-		// Ladda again, starting the animation.
-		this.l.start();
 		// triggering the login event and passing the username data to js/main.js
 		this.vent.trigger("login", this.$('#nameText').val());
 	}
 });
 
 
-
-var HomeView = Backbone.View.extend({
+var ChatRoomView = Backbone.View.extend({
 	template: _.template($("#home-template").html()),
 	events: {
 		'keypress #chatInput': 'chatInputPressed'
