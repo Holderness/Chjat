@@ -6,7 +6,7 @@ var UserCollection = Backbone.Collection.extend({model: UserModel});
 var ChatModel = Backbone.Model.extend({});
 var ChatCollection = Backbone.Collection.extend({model: ChatModel});
 
-var ChatRoomModel = Backbone.Model.extend({
+var ChatroomModel = Backbone.Model.extend({
   defaults: {
     onlineUsers: new UserCollection(),
     userChats: new ChatCollection([
