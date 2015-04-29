@@ -1,5 +1,5 @@
 var ContainerView = Backbone.View.extend({
-	el: '#container',
+	el: '#view-container',
 	initialize: function(options) {
 		this.model.on("change:viewState", this.render, this);
 	},
@@ -34,9 +34,9 @@ var LoginView = Backbone.View.extend({
 
 
 var ChatRoomView = Backbone.View.extend({
-	template: _.template($("#home-template").html()),
+	template: _.template($('#chatroom-template').html()),
 	events: {
-		'keypress #chatInput': 'chatInputPressed'
+		'keypress .message-input': 'messageInputPressed'
 	},
 	// initialized after the 'loginDone' event
 	initialize: function(options) {
@@ -57,7 +57,6 @@ var ChatRoomView = Backbone.View.extend({
 		this.listenTo(userChats, "remove", this.renderChats, this);
 		this.listenTo(userChats, "reset", this.renderChats, this);
 	},
-	// render
 	render: function() {
 		var onlineUsers = this.model.get("onlineUsers");
 		this.$el.html(this.template());
@@ -67,35 +66,35 @@ var ChatRoomView = Backbone.View.extend({
 	},
 	// renders on events, called just above
 	renderUsers: function() {
-		this.$('#userList').empty();
+		this.$('.online-users').empty();
 		this.model.get("onlineUsers").each(function (user) {
 			this.renderUser(user);
 		}, this);
 	},
 	renderUser: function(model) {
 		var template = _.template("<a class='list-group-item'><%= name %></a>");
-		this.$('#userList').append(template(model.toJSON()));
-		this.$('#userCount').html(this.model.get("onlineUsers").length);
-		this.$('.nano').nanoScroller();
+		this.$('.online-users').append(template(model.toJSON()));
+		this.$('.user-count').html(this.model.get("onlineUsers").length);
+		// this.$('.nano').nanoScroller();
 	},
 	renderChats: function() {
-		this.$('#chatList').empty();
+		this.$('.chatbox-content').empty();
 		this.model.get('userChats').each(function(chat) {
 			this.renderChat(chat);
 		}, this);
 	},
 	renderChat: function(model) {
-		var template = _.template("<a class='list-group-item'><span class='text-info'><%= sender %></span>:<%= message %></a>");
+		var template = _.template($('#chatbox-message-template').html());
 		var element = $(template(model.toJSON()));
-		element.appendTo(this.$('#chatList')).hide().fadeIn().slideDown();
-		this.$('.nano').nanoScroller();
-		this.$('.nano').nanoScroller({ scroll: 'bottom' });
+		element.appendTo(this.$('.chatbox-content')).hide().fadeIn().slideDown();
+		// this.$('.nano').nanoScroller();
+		// this.$('.nano').nanoScroller({ scroll: 'bottom' });
 	},
 	//events
-	chatInputPressed: function(evt) {
-		if (evt.keyCode == 13) {
-			this.vent.trigger("chat", this.$('#chatInput').val());
-			this.$('#chatInput').val('');
+	messageInputPressed: function(evt) {
+		if (evt.keyCode == 13 && $('.message-input').val() !== '') {
+			this.vent.trigger("chat message", this.$('.message-input').val());
+			this.$('.message-input').val('');
 			return false;
 		}
 	}

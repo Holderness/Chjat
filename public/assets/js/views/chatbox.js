@@ -2,7 +2,7 @@
 var socket = io();
 
 var Chatbox = Backbone.View.extend({
-	el: '#chatroom-container',
+	el: '#view-container',
 	chatroomTemplate: _.template($('#chatroom-template').html()),
 	chatMessageTemplate: _.template($('#chatbox-message-template').html()),
 	initialize: function() {
