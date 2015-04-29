@@ -37,7 +37,6 @@ var ChatClient = function(options) {
       // data is undefined at this point because it's the first to
       // fire off an event chain that will append the new user to 
       // the onlineUser collection
-
       // appEventBus listens on main.js
       self.vent.trigger("loginDone", data);
     });

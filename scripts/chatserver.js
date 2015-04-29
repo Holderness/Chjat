@@ -50,7 +50,6 @@ self.io.on('connection', function(socket){
       if (nameExists) {
         socket.emit("loginNameExists", username);
       } else {
-
         // if username does not exist, create user, passes in user name and the socket
         var newUser = new User({ username: username, socket: socket });
 
@@ -103,7 +102,7 @@ self.io.on('connection', function(socket){
 var User = function(args) {
   var self = this;
   self.socket = args.socket;
-  self.user = args.user;
+  self.username = args.username;
 };
 
 // allows export to chatserver.js
