@@ -17,19 +17,19 @@ var index = require('../routes/index');
 app.use('/', index);
 
 
-io.on('connection', function(socket){
-  console.log('a mothafucka is connected');
-  socket
-    .on('disconnect', function(){
-      console.log('he gone.');
-    })
-    .on('chat message', function(msg){
-      console.log('message: ' + msg);
-    })
-    .on('chat message', function(msg){
-      io.emit('chat message', msg);
-    });
-});
+// io.on('connection', function(socket){
+//   console.log('a mothafucka is connected');
+//   socket
+//     .on('disconnect', function(){
+//       console.log('he gone.');
+//     })
+//     .on('chat message', function(msg){
+//       console.log('message: ' + msg);
+//     })
+//     .on('chat message', function(msg){
+//       io.emit('chat message', msg);
+//     });
+// });
 
 var port = process.env.PORT || 3000;
 server.listen(port, function() {
@@ -37,6 +37,6 @@ server.listen(port, function() {
 });
 
 
-// var ChatServer = require('./chatserver');
+var ChatServer = require('./chatserver');
 
-// new ChatServer({ io: io }).init();
+new ChatServer({ io: io }).init();

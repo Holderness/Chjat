@@ -9,8 +9,6 @@ var ChatClient = function(options) {
   // connects to socket, sets response listeners
 	self.connect = function() {
 		self.socket = io.connect(self.hostname);
-		console.log(io);
-		// calls own method, passes in server connection (socket)
 		self.setResponseListeners(self.socket);
 	};
 

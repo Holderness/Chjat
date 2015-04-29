@@ -1,37 +1,37 @@
 
-var socket = io();
+// var socket = io();
 
-var Chatbox = Backbone.View.extend({
-	el: '#view-container',
-	chatroomTemplate: _.template($('#chatroom-template').html()),
-	chatMessageTemplate: _.template($('#chatbox-message-template').html()),
-	initialize: function() {
-		this.render();
-		$input = $('.message-input');
-		socket.on('chat message', function(msg){
-			var content = {content: msg, timestamp: new Date()};
-			$('.chatbox-content').append(this.chatMessageTemplate(content));
-			$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
-			$input.focus();
-    }.bind(this));
-	},
-	events: {
-		'keypress .message-input' : 'send',
-	},
-  render: function() {
-    this.$el.html(this.chatroomTemplate);
-    $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
-    return this;
-  },
-  send: function(e) {
-    if (e.which === 13  && $input.val() !== '') {
-			e.preventDefault();
-			socket.emit('chat message', $input.val());
-			$input.val('');
-      return false;
-    }
-  }
-});
+// var Chatbox = Backbone.View.extend({
+// 	el: '#view-container',
+// 	chatroomTemplate: _.template($('#chatroom-template').html()),
+// 	chatMessageTemplate: _.template($('#chatbox-message-template').html()),
+// 	initialize: function() {
+// 		this.render();
+// 		$input = $('.message-input');
+// 		socket.on('chat message', function(msg){
+// 			var content = {content: msg, timestamp: new Date()};
+// 			$('.chatbox-content').append(this.chatMessageTemplate(content));
+// 			$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
+// 			$input.focus();
+//     }.bind(this));
+// 	},
+// 	events: {
+// 		'keypress .message-input' : 'send',
+// 	},
+//   render: function() {
+//     this.$el.html(this.chatroomTemplate);
+//     $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
+//     return this;
+//   },
+//   send: function(e) {
+//     if (e.which === 13  && $input.val() !== '') {
+// 			e.preventDefault();
+// 			socket.emit('chat message', $input.val());
+// 			$input.val('');
+//       return false;
+//     }
+//   }
+// });
 
 
 
