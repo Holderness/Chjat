@@ -87,38 +87,10 @@
 
         <div class="col-md-2 text-center pull-right user-directory">
           <p>Users</p>
-          <div class="row user-online">
-            <div class="col-xs-3 col-sm-3 col-md-1 text-center">
-              <span><i class="fa fa-circle"></i></span>
-            </div>
-            <div class="col-xs-8 col-sm-8 col-md-10">
-              <p><strong class="user-directory-username">@TomJones</strong></p>
-            </div>
-          </div>
-          <div class="row user-online">
-            <div class="col-xs-3 col-sm-3 col-md-1 text-center">
-              <span><i class="fa fa-circle"></i></span>
-            </div>
-            <div class="col-xs-8 col-sm-8 col-md-10">
-              <p><strong class="user-directory-username">@ThomJones</strong></p>
-            </div>
-          </div>
-        <div class="row user-online">
-          <div class="col-xs-3 col-sm-3 col-md-1 text-center">
-            <span><i class="fa fa-circle-o"></i></span>
-          </div>
-          <div class="col-xs-8 col-sm-8 col-md-10">
-            <p><strong class="user-directory-username">@Dogman</strong></p>
-          </div>
-        </div>
-        <div class="row user-online">
-          <div class="col-xs-3 col-sm-3 col-md-1 text-center">
-            <span><i class="fa fa-circle-o"></i></span>
-          </div>
-          <div class="col-xs-8 col-sm-8 col-md-10">
-            <p><strong class="user-directory-username">@Wolfgang</strong></p>
-          </div>
-        </div>
+          <div class="online-users"></div>
+          
+
+
         <p>Offline</p>
         <div class="row user-offline">
           <div class="col-xs-3 col-sm-3 col-md-1 text-center">
@@ -180,6 +152,16 @@
   </div>
   </script>
 
+<script type="text/template" id="online-users-list-template">
+  <div class="row user-online">
+    <div class="col-xs-3 col-sm-3 col-md-1 text-center">
+      <span><i class="fa fa-circle"></i></span>
+    </div>
+    <div class="col-xs-8 col-sm-8 col-md-10">
+      <p><strong class="user-directory-username">@<%= name %></strong></p>
+    </div>
+  </div>
+</script>
 
 
   <script type="text/template" id="direct-message-template">

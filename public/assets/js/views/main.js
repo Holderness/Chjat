@@ -68,11 +68,15 @@ var ChatroomView = Backbone.View.extend({
 	renderUsers: function() {
 		this.$('.online-users').empty();
 		this.model.get("onlineUsers").each(function (user) {
+			console.log('-------users----------');
+			console.log(user);
 			this.renderUser(user);
 		}, this);
 	},
 	renderUser: function(model) {
-		var template = _.template("<a class='list-group-item'><%= name %></a>");
+		var template = _.template($("#online-users-list-template").html());
+		console.log('-------user----------');
+		console.log(model);
 		this.$('.online-users').append(template(model.toJSON()));
 		this.$('.user-count').html(this.model.get("onlineUsers").length);
 		// this.$('.nano').nanoScroller();
