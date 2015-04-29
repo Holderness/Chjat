@@ -57,7 +57,7 @@ var MainController = function() {
 
 		// new model and view created for chatroom
 		self.chatroomModel = new ChatroomModel();
-		self.chatroomView  = new chatroomView({vent: self.viewEventBus, model: self.chatroomModel });
+		self.chatroomView  = new ChatroomView({vent: self.viewEventBus, model: self.chatroomModel });
 
 		// viewstate is changed to chatroom after login.
 		self.containerModel.set("viewState", self.chatroomView);
@@ -83,6 +83,8 @@ var MainController = function() {
 
 		var users = _.map(data, function(item) {
 			return new UserModel({name: item});
+			console.log('-----------------------------------')
+			console.log(item)
 		});
     // users is array of the current user models
 

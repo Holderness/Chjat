@@ -33,7 +33,7 @@ var LoginView = Backbone.View.extend({
 });
 
 
-var ChatRoomView = Backbone.View.extend({
+var ChatroomView = Backbone.View.extend({
 	template: _.template($('#chatroom-template').html()),
 	events: {
 		'keypress .message-input': 'messageInputPressed'

@@ -32,20 +32,26 @@ var ChatroomModel = Backbone.Model.extend({
 });
 
 
-
-
-
-var User = Backbone.Model.extend({
-	defaults: {
-		username: '',
-		avatar: '',
-		inbox: [],
-	},
+// LoginModel
+var LoginModel = Backbone.Model.extend({
+  defaults: {
+    error: ""
+  }
 });
 
-var Conversation = Backbone.Model.extend({
-	defaults: {
-		users: [],
-		messages: [],
-	},
-});
+
+
+// var User = Backbone.Model.extend({
+// 	defaults: {
+// 		username: '',
+// 		avatar: '',
+// 		inbox: [],
+// 	},
+// });
+
+// var Conversation = Backbone.Model.extend({
+// 	defaults: {
+// 		users: [],
+// 		messages: [],
+// 	},
+// });
