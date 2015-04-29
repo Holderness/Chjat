@@ -16,8 +16,6 @@ var ChatroomModel = Backbone.Model.extend({
   addUser: function(username) {
     this.get('onlineUsers').add(new UserModel({ username: username }));
     console.log("--adding-user---");
-    console.log(this.get('onlineUsers').add(new UserModel({ username: username })));
-    console.log("-----");
   },
   removeUser: function(username) {
     var onlineUsers = this.get('onlineUsers');

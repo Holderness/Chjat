@@ -40,9 +40,9 @@ var MainController = function() {
 
   //// viewEventBus Listeners /////
   
-	self.viewEventBus.on("login", function(name) {
+	self.viewEventBus.on("login", function(username) {
     // socketio login, sends name to socketclient, socketclient sends it to chatserver
-    self.chatClient.login(name);
+    self.chatClient.login(username);
   });
 	self.viewEventBus.on("chat", function(chat) {
     // socketio chat, sends chat to socketclient, socketclient to chatserver
@@ -64,10 +64,10 @@ var MainController = function() {
 	});
 
   // error listeners
-	self.appEventBus.on("loginNameBad", function(name) {
+	self.appEventBus.on("loginNameBad", function(username) {
 		self.loginModel.set("error", "Invalid Name");
 	});
-	self.appEventBus.on("loginNameExists", function(name) {
+	self.appEventBus.on("loginNameExists", function(username) {
 		self.loginModel.set("error", "Name already exists");
 	});
 
@@ -82,10 +82,9 @@ var MainController = function() {
 		// onlineUsers is the collection
 
 		var users = _.map(data, function(item) {
-			return new UserModel({name: item});
-			console.log('-----------------------------------')
-			console.log(item)
+			return new UserModel({username: item});
 		});
+
     // users is array of the current user models
 
     // this resets the collection with the updated array of users

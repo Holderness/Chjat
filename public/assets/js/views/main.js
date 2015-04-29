@@ -12,7 +12,8 @@ var ContainerView = Backbone.View.extend({
 var LoginView = Backbone.View.extend({
 	template: _.template($('#login-template').html()),
 	events: {
-		'click #nameBtn': 'onLogin'
+		'click #nameBtn': 'onLogin',
+		'keypress #nameText': 'onHitEnter'
 	},
 	initialize: function(options) {
 		// gets passed the viewEventBus when the MainController is initialized
@@ -21,6 +22,7 @@ var LoginView = Backbone.View.extend({
 		// if there's an error, the callback (this.render) is called with the  
 		// view as context
 		this.listenTo(this.model, "change:error", this.render, this);
+
 	},
 	render: function() {
 		this.$el.html(this.template(this.model.toJSON()));
@@ -29,6 +31,12 @@ var LoginView = Backbone.View.extend({
 	onLogin: function() {
 		// triggering the login event and passing the username data to js/main.js
 		this.vent.trigger("login", this.$('#nameText').val());
+	},
+	onHitEnter: function(e) {
+    if(e.keyCode == 13) {
+      this.onLogin();
+      return false;
+    }
 	}
 });
 
@@ -68,17 +76,13 @@ var ChatroomView = Backbone.View.extend({
 	renderUsers: function() {
 		this.$('.online-users').empty();
 		this.model.get("onlineUsers").each(function (user) {
-			console.log('-------users----------');
-			console.log(user);
 			this.renderUser(user);
 		}, this);
 	},
 	renderUser: function(model) {
 		var template = _.template($("#online-users-list-template").html());
-		console.log('-------user----------');
-		console.log(model);
 		this.$('.online-users').append(template(model.toJSON()));
-		this.$('.user-count').html(this.model.get("onlineUsers").length);
+		// this.$('.user-count').html(this.model.get("onlineUsers").length);
 		// this.$('.nano').nanoScroller();
 	},
 	renderChats: function() {
@@ -95,8 +99,8 @@ var ChatroomView = Backbone.View.extend({
 		// this.$('.nano').nanoScroller({ scroll: 'bottom' });
 	},
 	//events
-	messageInputPressed: function(evt) {
-		if (evt.keyCode == 13 && $('.message-input').val() !== '') {
+	messageInputPressed: function(e) {
+		if (e.keyCode == 13 && $('.message-input').val() !== '') {
 			this.vent.trigger("chat message", this.$('.message-input').val());
 			this.$('.message-input').val('');
 			return false;
