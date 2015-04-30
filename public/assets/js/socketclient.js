@@ -60,8 +60,6 @@ var ChatClient = function(options) {
 		// the user collection.
 		socket.on('onlineUsers', function(data) {
 			// this data is an array with all the online user's usernames.
-			console.log('onlineUsers2: ');
-			console.log(data);
 			self.vent.trigger("usersInfo", data);
 		});
 

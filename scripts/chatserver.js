@@ -1,35 +1,27 @@
 _ = require('underscore');
 
 
+
+// the chatserver listens to the chatclient
 var Server = function(options) {
-  
+
+  // Server
 	var self = this;
+  // io from server.js
 	self.io = options.io;
+  // server's online user list
 	self.users = [];
 
 
   self.init = function() {
     // Fired upon a connection
-    // self.io.on("connection", function(socket) {
-    //   self.handleConnection(socket);
-    // });
-self.io.on('connection', function(socket){
-	console.log('a mothafucka is connected');
-
-	socket
-	.on('disconnect', function(){
-		console.log('he gone.');
-	})
-	// .on('chat message', function(msg){
-	// 	console.log('message: ' + msg);
-	// })
-	// .on('chat message', function(msg){
-	// 	io.emit('chat message', msg);
-	// });
-
-  self.manageConnection(socket);
-
-  });
+    self.io.on('connection', function(socket){
+     console.log('a mothafucka is connected');
+     // ManageConnection handles username validations.
+     // If validations pass, sets response listeners that 
+     // listen to the socketclient.
+     self.manageConnection(socket);
+   });
 };
 
   self.manageConnection = function(socket) {
@@ -51,12 +43,14 @@ self.io.on('connection', function(socket){
         socket.emit("loginNameExists", username);
       } else {
         // if username does not exist, create user, passes in user name and the socket
+        // keep in mind this model is not a backbone UserModel, it's a server User model
+        // defined at the bottom of this page
         var newUser = new User({ username: username, socket: socket });
 
-        //push users to user to online user array
+        //pushes User model to online user array
         self.users.push(newUser);
 
-        // calls method directly below
+        // calls method below
         self.setResponseListeners(newUser);
 
         // emits 'welcome' and 'userJoined' to the socketclient
@@ -69,26 +63,29 @@ self.io.on('connection', function(socket){
 
   self.setResponseListeners = function(user) {
 
-    // listens for disconnect, removes user from online user array
+    // listens for a user socket to disconnect, removes that user
+    // from the online user array
     user.socket.on('disconnect', function() {
       self.users.splice(self.users.indexOf(user), 1);
       self.io.sockets.emit("userLeft", user.username);
+      console.log('he gone.');
     });
 
     // listens to the 'onlineUsers' event, updates the online users array on
     // a change from the client.
     user.socket.on("onlineUsers", function() {
-      // creates new array of online usernames, stores in var users
+      // creates new array of online usernames
       var users = _.map(self.users, function(user) {
         return user.username;
       });
-      // emits new online usernames array to client
+      // emits updated online usernames array to chatclient
       user.socket.emit("onlineUsers", users);
     });
 
-    // another recursive function, listening for a 'chat' event from client,
+    // listening for a 'chat' event from client, 
     // if there is a chat event, emit an object containing the username
-    // and chat message to all the other sockets.
+    // and chat message to the collection of sockets connected to the server.
+    // Basically, this does the job of 'broadcast'.
     user.socket.on("chat", function(chat) {
       if (chat) {
         self.io.sockets.emit("chat", { sender: user.username, message: chat });
@@ -107,3 +104,6 @@ var User = function(args) {
 
 // allows export to chatserver.js
 module.exports = Server;
+
+
+
