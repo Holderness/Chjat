@@ -16,9 +16,10 @@ var LoginView = Backbone.View.extend({
 		'keypress #nameText': 'onHitEnter'
 	},
 	initialize: function(options) {
-		// gets passed the viewEventBus when the MainController is initialized
+		// LoginView gets passed the viewEventBus when the MainController is initialized
 		this.vent = options.vent;
-		// telling the view to listen to an event on its model,
+
+		// This tells the view to listen to an event on its model,
 		// if there's an error, the callback (this.render) is called with the  
 		// view as context
 		this.listenTo(this.model, "change:error", this.render, this);
@@ -29,7 +30,7 @@ var LoginView = Backbone.View.extend({
 		return this;
 	},
 	onLogin: function() {
-		// triggering the login event and passing the username data to js/main.js
+		// triggers the login event and passing the username data to js/main.js
 		this.vent.trigger("login", this.$('#nameText').val());
 	},
 	onHitEnter: function(e) {
@@ -52,7 +53,7 @@ var ChatroomView = Backbone.View.extend({
 		// passed the viewEventBus
 		this.vent = options.vent;
 
-    // requests to the socketclient
+    // these get the collection of onlineUsers and userChats from the chatroomModel
 		var onlineUsers = this.model.get('onlineUsers');
 		var userChats = this.model.get('userChats');
 
@@ -101,7 +102,9 @@ var ChatroomView = Backbone.View.extend({
 	//events
 	messageInputPressed: function(e) {
 		if (e.keyCode == 13 && $('.message-input').val() !== '') {
-			this.vent.trigger("chat message", this.$('.message-input').val());
+			// fun fact: separate events with a space in trigger's first arg and you
+			// can trigger multiple events.
+			this.vent.trigger("chat", this.$('.message-input').val());
 			this.$('.message-input').val('');
 			return false;
 		}
