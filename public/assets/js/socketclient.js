@@ -1,30 +1,46 @@
+
+// The ChatClient is implemented on main.js.
+// The chatclient is a constructor function on the MainController.
+// It both listens to and emits events on the socket, eg:
+// It has its own methods that, when called, emit to the socket w/ data.
+// It also sets response listeners on connection, these response listeners
+// listen to the socket and trigger events on the appEventBus on the 
+// MainController
 var ChatClient = function(options) {
 
 	var self = this;
-
+  
+  // this vent holds the appEventBus
 	self.vent = options.vent;
 
 	self.hostname = 'http://' + window.location.host;
 
   // connects to socket, sets response listeners
 	self.connect = function() {
+		// this io might be a little confusing... where is it coming from?
+		// it's coming from the static middleware on server.js bc everything
+		// in the /public folder has been attached to the server, and visa
+		// versa.
 		self.socket = io.connect(self.hostname);
 		self.setResponseListeners(self.socket);
 	};
 
+    ///// ViewEventBus methods ////
+    // methods that emit to the chatserver
 		// emits login event to chatserver
 	self.login = function(name) {
 		self.socket.emit("login", name);
 	};
-
     // emits chat event to chatserver
 	self.chat = function(chat) {
 		self.socket.emit("chat", chat);
 	};
 
 
+  // chatserver listeners
+  // these guys listen to the chatserver/socket and emit data to main.js,
+  // specifically to the appEventBus.
 	self.setResponseListeners = function(socket) {
-
 		// client listeners that listen to the chatserver and itself.
 		// Each server event triggers an appEventBus event paired with 
 		// relevant data.
@@ -32,26 +48,21 @@ var ChatClient = function(options) {
 		socket.on('welcome', function(data) {
       // emits event to recalibrate onlineUsers collection
       socket.emit("onlineUsers");
-			console.log('onlineUsers1: ');
-			console.log(data);
+			console.log('onlineUsers1: ', data);
       // data is undefined at this point because it's the first to
       // fire off an event chain that will append the new user to 
       // the onlineUser collection
-      // appEventBus listens on main.js
       self.vent.trigger("loginDone", data);
     });
 
-
 		socket.on('loginNameExists', function(data) {
       // data === string of used username
-			console.log('loginNameExists: ');
-			console.log(data);
+			console.log('loginNameExists: ', data);
 			self.vent.trigger("loginNameExists", data);
 		});
 		socket.on('loginNameBad', function(data) {
 			// data === string of bad username
-			console.log('loginNameBad: ');
-			console.log(data);
+			console.log('loginNameBad: ', data);
 			self.vent.trigger("loginNameBad", data);
 		});
 
@@ -65,20 +76,17 @@ var ChatClient = function(options) {
 
 		socket.on('userJoined', function(data) {
 			// data === username of user joined
-			console.log('userJoined: ');
-			console.log(data);
+			console.log('userJoined: ', data);
 			self.vent.trigger("userJoined", data);
 		});
 		socket.on('userLeft', function(data) {
 			// data === username of user removed
-			console.log('userLeft: ');
-			console.log(data);
+			console.log('userLeft: ', data);
 			self.vent.trigger("userLeft", data);
 		});
 		socket.on('chat', function(data) {
 			// data === chat message object
-			console.log('chat: ');
-			console.log(data);
+			console.log('chat: ', data);
 			self.vent.trigger("chatReceived", data);
 		});
 	};

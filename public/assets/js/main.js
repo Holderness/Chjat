@@ -9,6 +9,8 @@ var MainController = function() {
 
 	var self = this;
 
+
+  //These allows us to bind and trigger on the object from anywhere in the app.
 	self.appEventBus = _.extend({}, Backbone.Events);
 	self.viewEventBus = _.extend({}, Backbone.Events);
 
@@ -21,9 +23,9 @@ var MainController = function() {
     // loginModel
 		self.loginModel = new LoginModel();
 
-    // uses ContainerModel to pass in a viewState, LoginView, which
-    // is the login page. That LoginView takes the viewEventBus as a vent
-    // and the LoginModel as a model.
+    // The ContainerModel gets passed a viewState, LoginView, which
+    // is the login page. That LoginView gets passed the viewEventBus
+    // and the LoginModel.
 		self.containerModel = new ContainerModel({ viewState: new LoginView({vent: self.viewEventBus, model: self.loginModel})});
 
 		// next, a new ContainerView is intialized with the newly created containerModel
@@ -35,7 +37,8 @@ var MainController = function() {
 
 
   ////////////  Busses ////////////
-    // The Busses listen to the socketclient
+    // These Busses listen to the socketclient
+   //    ---------------------------------
 
 
   //// viewEventBus Listeners /////
@@ -52,7 +55,7 @@ var MainController = function() {
 
   //// appEventBus Listeners ////
 
-  // after the 'welcome' event emits, the loginDone event triggers.
+  // after the 'welcome' event triggers on the sockeclient, the loginDone event triggers.
 	self.appEventBus.on("loginDone", function() {
 
 		// new model and view created for chatroom
@@ -77,15 +80,14 @@ var MainController = function() {
 
     //data is an array of usernames, including the new user
 
-		// gets users collection from chatroomModel
-		var onlineUsers = self.chatroomModel.get("onlineUsers");
+		// This method gets the online users collection from chatroomModel.
 		// onlineUsers is the collection
+		var onlineUsers = self.chatroomModel.get("onlineUsers");
 
+   // users is array of the current user models
 		var users = _.map(data, function(item) {
 			return new UserModel({username: item});
 		});
-
-    // users is array of the current user models
 
     // this resets the collection with the updated array of users
 		onlineUsers.reset(users);

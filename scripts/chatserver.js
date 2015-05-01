@@ -102,7 +102,7 @@ var User = function(args) {
   self.username = args.username;
 };
 
-// allows export to chatserver.js
+// allows export to server.js
 module.exports = Server;
 
 
