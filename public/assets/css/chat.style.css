@@ -65,12 +65,10 @@
 	margin-bottom: 0px;
 }
 
-.page-header {
+.chatbox-header {
 	background: #fff;
 	position: relative;
-  width: 86%;
   color: #a8a8a8;
-  margin: 0 0 0 7%;
   padding-top: 10px;
   border-bottom: none;
 }
@@ -91,8 +89,6 @@
 }
 
 .row.chatbox-content {
-  width: 86%;
-  margin-left: 7%;
   background: #fff;
   height: 370px;
   bottom: 0;
@@ -172,8 +168,10 @@ input.message-input {
 /*  display: none;*/
   font: 10px;
   font-style: italic;
-  color: #eee;
+  color: #C4C4C4;
   display: block;
+  height: 25px;
+  background: #fff;
 }
 
 

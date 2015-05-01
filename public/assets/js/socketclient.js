@@ -41,11 +41,11 @@ var ChatClient = function(options) {
 
 	self.addChatTyping = function(data) {
     var message = data.username + ' is typing';
-    $('.typetypetype').text(message).show();
+    $('.typetypetype').text(message);
 	};
 
 	self.removeChatTyping = function(data) {
-    $('.typetypetype').hide();
+    $('.typetypetype').empty();
 	};
 
   self.updateTyping = function() {
@@ -53,7 +53,6 @@ var ChatClient = function(options) {
       if (!typing) {
         typing = true;
         self.socket.emit('typee');
-        console.log('bbb');
       }
       lastTypingTime = (new Date()).getTime();
 
