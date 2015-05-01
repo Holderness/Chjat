@@ -164,8 +164,16 @@ input.message-input {
 	outline: none;
 }
 
+.is-typing-container {
+  background: #fff;
+}
+
 .typetypetype {
-  display: none;
+/*  display: none;*/
+  font: 10px;
+  font-style: italic;
+  color: #eee;
+  display: block;
 }
 
 
