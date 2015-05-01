@@ -137,27 +137,40 @@ p.chatbox-message span {
 }
 
 
+
+
+
+input.message-input {
+	border: 2px solid #E5EAEB;
+	border-right-color: #fff;  
+	border-bottom: none;
+	background-image: none;
+	height: 40px;
+	width: 100%;
+	outline: none;
+	padding: 0 10px;
+}
+
 .chatbox-input-container {
   position: relative;
   bottom: 0;
   background: #fff;
-  padding-bottom: 25px;
-  border-bottom: 2px solid #ddd;
+  padding: 0;
+  text-align: center;
 }
 
-.input-group[class*="col-"] {
-  float: none;
-  padding-right: 15px;
-  padding-left: 15px;
+.chatbox-input-container a {
+  border-top: 2px solid #E5EAEB;
+  border-radius: 0;
+  margin: 0;
+  float: left;
+  width: 10%;
+  padding-top: 10px;
 }
 
-input.message-input {
-	border: 2px solid #ccc;
-	background-image: none;
-	background: #fff;
-	height: 40px;
-	width: 100%;
-	outline: none;
+.chatbox-input-container form {
+  float: right;
+  width: 90%;
 }
 
 .is-typing-container {
@@ -172,6 +185,7 @@ input.message-input {
   display: block;
   height: 25px;
   background: #fff;
+  padding-left: 65px;
 }
 
 
