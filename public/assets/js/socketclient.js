@@ -52,7 +52,7 @@ var ChatClient = function(options) {
     if (self.socket) {
       if (!typing) {
         typing = true;
-        self.socket.emit('typee');
+        self.socket.emit('typing');
       }
       lastTypingTime = (new Date()).getTime();
 
@@ -60,7 +60,7 @@ var ChatClient = function(options) {
         var typingTimer = (new Date()).getTime();
         var timeDiff = typingTimer - lastTypingTime;
         if (timeDiff >= TYPING_TIMER_LENGTH && typing) {
-           self.socket.emit('stoptyping');
+           self.socket.emit('stop typing');
            typing = false;
         }
       }, TYPING_TIMER_LENGTH);
@@ -123,11 +123,11 @@ var ChatClient = function(options) {
 		});
 
 
-    socket.on('typee', function(data) {
+    socket.on('typing', function(data) {
       self.addChatTyping(data);
     });
 
-    socket.on('stoptyping', function(data) {
+    socket.on('stop typing', function(data) {
       self.removeChatTyping(data);
     });
 

@@ -93,12 +93,12 @@ var Server = function(options) {
       }
     });
 
-    user.socket.on("typee", function() {
-      self.io.sockets.emit("typee", { username: user.username });
+    user.socket.on("typing", function() {
+      user.socket.broadcast.emit("typing", { username: user.username });
     });
 
-    user.socket.on("stoptyping", function() {
-      self.io.sockets.emit("stoptyping", { username: user.username });
+    user.socket.on("stop typing", function() {
+      user.socket.broadcast.emit("stop typing", { username: user.username });
     });
 
 
