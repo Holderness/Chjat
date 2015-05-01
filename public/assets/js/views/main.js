@@ -107,6 +107,11 @@ var ChatroomView = Backbone.View.extend({
 			this.vent.trigger("chat", this.$('.message-input').val());
 			this.$('.message-input').val('');
 			return false;
+		} else {
+      this.vent.trigger("typing");
+      console.log('wut');
 		}
 	}
+
+
 });

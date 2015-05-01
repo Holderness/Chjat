@@ -48,9 +48,11 @@ var MainController = function() {
     self.chatClient.login(username);
   });
 	self.viewEventBus.on("chat", function(chat) {
-		console.log(chat);
     // socketio chat, sends chat to socketclient, socketclient to chatserver
     self.chatClient.chat(chat);
+  });
+  self.viewEventBus.on("typing", function() {
+    self.chatClient.updateTyping();
   });
 
 

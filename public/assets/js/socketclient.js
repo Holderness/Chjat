@@ -9,6 +9,9 @@
 var ChatClient = function(options) {
 
 	var self = this;
+	var TYPING_TIMER_LENGTH = 400; // ms
+  var typing = false;
+  var lastTypingTime;
   
   // this vent holds the appEventBus
 	self.vent = options.vent;
@@ -35,6 +38,36 @@ var ChatClient = function(options) {
 	self.chat = function(chat) {
 		self.socket.emit("chat", chat);
 	};
+
+	self.addChatTyping = function(data) {
+    var message = data.username + ' is typing';
+    $('.typetypetype').text(message).show();
+	};
+
+	self.removeChatTyping = function(data) {
+    $('.typetypetype').hide();
+	};
+
+  self.updateTyping = function() {
+    if (self.socket) {
+      if (!typing) {
+        typing = true;
+        self.socket.emit('typee');
+        console.log('bbb');
+      }
+      lastTypingTime = (new Date()).getTime();
+
+      setTimeout(function() {
+        var typingTimer = (new Date()).getTime();
+        var timeDiff = typingTimer - lastTypingTime;
+        if (timeDiff >= TYPING_TIMER_LENGTH && typing) {
+           self.socket.emit('stoptyping');
+           typing = false;
+        }
+      }, TYPING_TIMER_LENGTH);
+    }
+  };
+
 
 
   // chatserver listeners
@@ -89,5 +122,19 @@ var ChatClient = function(options) {
 			console.log('chat: ', data);
 			self.vent.trigger("chatReceived", data);
 		});
+
+
+    socket.on('typee', function(data) {
+      self.addChatTyping(data);
+    });
+
+    socket.on('stoptyping', function(data) {
+      self.removeChatTyping(data);
+    });
+
+
+
+
+
 	};
 };

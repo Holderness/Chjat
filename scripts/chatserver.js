@@ -13,6 +13,7 @@ var Server = function(options) {
 	self.users = [];
 
 
+
   self.init = function() {
     // Fired upon a connection
     self.io.on('connection', function(socket){
@@ -91,6 +92,17 @@ var Server = function(options) {
         self.io.sockets.emit("chat", { sender: user.username, message: chat });
       }
     });
+
+    user.socket.on("typee", function() {
+      self.io.sockets.emit("typee", { username: user.username });
+    });
+
+    user.socket.on("stoptyping", function() {
+      self.io.sockets.emit("stoptyping", { username: user.username });
+    });
+
+
+
   };
 };
 
