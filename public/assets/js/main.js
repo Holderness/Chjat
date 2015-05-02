@@ -2,7 +2,9 @@
 $(document).ready(function() {
   var mainController = new MainController();
   mainController.init();
-  // $('textarea').aut
+  $('textarea.message-input').dialog({
+     minHeight: 'auto'
+  });
 });
 
 

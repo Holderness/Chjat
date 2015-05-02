@@ -9,6 +9,8 @@
 var ChatClient = function(options) {
 
 	var self = this;
+
+	// is-typing helper variables
 	var TYPING_TIMER_LENGTH = 400; // ms
   var typing = false;
   var lastTypingTime;
@@ -39,12 +41,14 @@ var ChatClient = function(options) {
 		self.socket.emit("chat", chat);
 	};
 
+
+  // Typing methods
 	self.addChatTyping = function(data) {
     var message = data.username + ' is typing';
     $('.typetypetype').text(message);
 	};
 
-	self.removeChatTyping = function(data) {
+	self.removeChatTyping = function() {
     $('.typetypetype').empty();
 	};
 
@@ -123,12 +127,13 @@ var ChatClient = function(options) {
 		});
 
 
+    // these guys listen to the server, 
+    // then call chatclient methods listed above
     socket.on('typing', function(data) {
       self.addChatTyping(data);
     });
-
-    socket.on('stop typing', function(data) {
-      self.removeChatTyping(data);
+    socket.on('stop typing', function() {
+      self.removeChatTyping();
     });
 
 

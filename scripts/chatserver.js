@@ -20,7 +20,7 @@ var Server = function(options) {
      console.log('a mothafucka is connected');
      // ManageConnection handles username validations.
      // If validations pass, sets response listeners that 
-     // listen to the socketclient.
+     // listen to the chatclient.
      self.manageConnection(socket);
    });
 };
@@ -54,7 +54,7 @@ var Server = function(options) {
         // calls method below
         self.setResponseListeners(newUser);
 
-        // emits 'welcome' and 'userJoined' to the socketclient
+        // emits 'welcome' and 'userJoined' to the chatclient
         socket.emit("welcome");
         self.io.sockets.emit("userJoined", newUser.username);
       }
@@ -93,12 +93,14 @@ var Server = function(options) {
       }
     });
 
+
+    // these are listening for their respective chatclient events,
+    // then the user socket broadcasts an event to all the other connected sockets.
     user.socket.on("typing", function() {
       user.socket.broadcast.emit("typing", { username: user.username });
     });
-
     user.socket.on("stop typing", function() {
-      user.socket.broadcast.emit("stop typing", { username: user.username });
+      user.socket.broadcast.emit("stop typing");
     });
 
 
