@@ -1,6 +1,10 @@
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400);
 
 
+html, body {
+  background: #E5EAEB;
+}
+
 
 /*nav*/
 
@@ -204,7 +208,7 @@ textarea.message-input {
 	margin-left: 0;
 	overflow-y: auto;
 	overflow-x: hidden;
-	height: 87vh;
+	height: 620px;
 	background: #fff;
 	border-right: 2px solid #ddd;
 	border-bottom: 2px solid #ddd;
@@ -274,7 +278,7 @@ label.badge.unread-messages {
 
 .user-directory {
   background: #fff;
-  height: 88vh;
+  height: 620px;
   overflow-y: auto;
   border-left: 2px solid #ddd;
   border-bottom: 2px solid #ddd;
