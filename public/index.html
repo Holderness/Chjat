@@ -131,7 +131,7 @@
     <div class="col-xs-12 col-sm-12 col-md-12 chatbox-message-container">
 
       <div class="col-xs-2 col-sm-2 col-md-2 chatbox-message-timestamp">
-        <p data-livestamp="">5452 segundos</p>
+        <p data-livestamp="<%= moment(timestamp).unix() %>"></p>
       </div>
 
       <div class="col-xs-10 col-sm-10 col-md-10 chatbox-message-content">
@@ -197,7 +197,6 @@
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
   <script src="/assets/js/lib/jquery.js"></script>
    <script src="/assets/js/lib/autosize.min.js"></script>
-
   <script src="/assets/js/lib/underscore.js"></script>
   <script src="/assets/js/lib/backbone.js"></script>
   <script src="/assets/js/lib/bootstrap.js"></script>

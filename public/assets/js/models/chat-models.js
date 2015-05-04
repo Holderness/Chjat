@@ -11,7 +11,7 @@ var ChatroomModel = Backbone.Model.extend({
     onlineUsers: new UserCollection(),
     userChats: new ChatCollection([
       // message and sender upon entering chatroom
-      new ChatModel({ sender: 'Butters', message: 'awwwwww hamburgers. ||):||' })
+      new ChatModel({ sender: 'Butters', message: 'awwwwww hamburgers. ||):||', timestamp: "" })
       ])
   },
   addUser: function(username) {
@@ -26,7 +26,8 @@ var ChatroomModel = Backbone.Model.extend({
     }
   },
   addChat: function(chat) {
-    this.get('userChats').add(new ChatModel({ sender: chat.sender, message: chat.message }));
+    var now = _.now();
+    this.get('userChats').add(new ChatModel({ sender: chat.sender, message: chat.message, timestamp: now}));
   },
 });
 
