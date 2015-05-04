@@ -11,7 +11,7 @@ var ChatroomModel = Backbone.Model.extend({
     onlineUsers: new UserCollection(),
     userChats: new ChatCollection([
       // message and sender upon entering chatroom
-      new ChatModel({ sender: 'Hamburgler', message: 'awwwwww hamburgers. ||):||' })
+      new ChatModel({ sender: 'Butters', message: 'awwwwww hamburgers. ||):||' })
       ])
   },
   addUser: function(username) {

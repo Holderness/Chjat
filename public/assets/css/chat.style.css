@@ -150,7 +150,9 @@ textarea.message-input {
 	padding: 7px 10px;
 	overflow-x: hidden;
   display: block;
-  resize: none;
+  resize: vertical;
+  min-height: 40px;
+  max-height: 150px;
 }
 
 .chatbox-input-container {

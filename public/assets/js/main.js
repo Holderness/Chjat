@@ -2,9 +2,6 @@
 $(document).ready(function() {
   var mainController = new MainController();
   mainController.init();
-  $('textarea.message-input').dialog({
-     minHeight: 'auto'
-  });
 });
 
 
@@ -70,6 +67,7 @@ var MainController = function() {
 
 		// viewstate is changed to chatroom after login.
 		self.containerModel.set("viewState", self.chatroomView);
+		autosize($('textarea.message-input'));
 	});
 
   // error listeners
