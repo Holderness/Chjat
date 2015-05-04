@@ -68,6 +68,7 @@ var MainController = function() {
 		// viewstate is changed to chatroom after login.
 		self.containerModel.set("viewState", self.chatroomView);
 		autosize($('textarea.message-input'));
+		$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
 	});
 
   // error listeners
@@ -112,6 +113,7 @@ var MainController = function() {
 	// chat passed from socketclient, adds a new chat message using chatroomModel method
 	self.appEventBus.on("chatReceived", function(chat) {
 		self.chatroomModel.addChat(chat);
+		$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
 	});
 };
 
