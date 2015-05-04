@@ -67,7 +67,7 @@ var MainController = function() {
 
 		// viewstate is changed to chatroom after login.
 		self.containerModel.set("viewState", self.chatroomView);
-		autosize($('textarea.message-input'));
+    autosize($('textarea.message-input'));
 		$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
 	});
 
