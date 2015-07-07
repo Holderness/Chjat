@@ -1,7 +1,8 @@
 var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     jshint = require('gulp-jshint'),
-    concat = require('gulp-concat');
+    concat = require('gulp-concat'),
+    minifyCSS = require('gulp-minify-css');
 
 gulp.task('default', function() {
   // place code for your default task here
@@ -15,6 +16,7 @@ gulp.task('minify', function () {
 
 gulp.task('js', function () {
    return gulp.src([
+      'https://cdn.socket.io/socket.io-1.2.0.js',
       'public/js/lib/jquery.js',
       'public/js/lib/autosize.min.js',
       'public/js/lib/underscore.js',
@@ -37,3 +39,16 @@ gulp.task('js', function () {
       .pipe(gulp.dest('public/build'));
 });
 
+gulp.task('css', function () {
+   return gulp.src([
+      'public/css/lib/bootstrap.css',
+      'public/css/lib/bootstrap-theme.css',
+      'public/css/lib/font-awesome.css',
+      'public/css/lib/animate.css',
+      'public/css/chat.style.css',
+      'http://fonts.googleapis.com/css?family=Source+Sans+Pro'
+    ])
+      .pipe(minifyCSS())
+      .pipe(concat('main.css'))
+      .pipe(gulp.dest('public/build'));
+});
