@@ -43,8 +43,8 @@ gulp.task('css', function () {
    return gulp.src([
       'public/css/lib/bootstrap.css',
       'public/css/lib/bootstrap-theme.css',
-      'public/css/lib/font-awesome.css',
       'public/css/lib/animate.css',
+      'public/css/lib/font-awesome.css',
       'public/css/chat.style.css',
       'http://fonts.googleapis.com/css?family=Source+Sans+Pro'
     ])
