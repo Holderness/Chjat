@@ -1,0 +1,13 @@
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 chatbox-message-container">
+
+      <div class="col-xs-2 col-sm-2 col-md-2 chatbox-message-timestamp">
+        <p><%= moment(timestamp).format('h:mm a') %></p>
+      </div>
+
+      <div class="col-xs-10 col-sm-10 col-md-10 chatbox-message-content">
+        <p class="chatbox-message"><%= sender %>:<span> <%= message %></span></p>
+      </div>
+
+    </div>        
+  </div>

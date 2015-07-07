@@ -10,7 +10,7 @@ var io = require('socket.io')(server);
 
 app.use(express.static(path.join(__dirname, '../public')));
 
-var index = require('../routes/index');
+var index = require('../app/routes/index');
 app.use('/', index);
 
 app.set('view engine', 'ejs');
