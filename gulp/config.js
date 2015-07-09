@@ -35,7 +35,9 @@ module.exports = {
     filename: "main.css"
   },
   scss: {
-
+    src: ['public/scss/**/*.scss'],
+    dest: dest,
+    filename: "sass.css"
   },
   browserSync: {
     server: {
