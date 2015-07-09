@@ -1,0 +1,16 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400);
+
+$pink: pink;
+$main-bkgd: #E5EAEB;
+$nav-bkgd: #329932;
+
+
+html, body {
+  background: $main-bkgd;
+}
+
+#page-content {
+  padding-top: 0px;
+  background: $main-bkgd;
+  min-width: 981px;
+}

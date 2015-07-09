@@ -1,0 +1,149 @@
+
+
+.chatbox {
+  background: #E5EAEB;
+  padding-top: 1%;
+  padding-bottom: 3.33333333%;
+  margin-bottom: 0px;
+  .chatbox-header {
+    background: #fff;
+    position: relative;
+    color: #a8a8a8;
+    padding-top: 10px;
+    border-bottom: none;
+  }
+  .chatbox-content {
+    background: #fff;
+    height: 370px;
+    bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-top: 2px solid #E5EAEB;
+  }
+  .typetypetype {
+    font: 10px;
+    font-style: italic;
+    color: #C4C4C4;
+    display: block;
+    height: 25px;
+    background: #fff;
+    padding-left: 65px;
+  }
+  .chatbox-input-container {
+    position: relative;
+    bottom: 0;
+    background: #fff;
+    padding: 0;
+    text-align: center;
+  }
+}
+
+.chatbox-header {
+  .chatbox-header-avatar {
+    float: left;
+    height: 50px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 50%;
+  }
+  .chatbox-header-username {
+    color: #a8a8a8;
+    font-family: 'Open-Sans', sans-serif;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+.chatbox-input-container {
+  a {
+    border-top: 2px solid #E5EAEB;
+    border-radius: 0;
+    margin: 0;
+    float: left;
+    width: 7%;
+    padding-top: 10px;
+  }
+  form {
+    float: right;
+    width: 93%;
+  }
+}
+
+
+
+.chatbox-content {
+  .chatbox-message-container {
+    float: left;
+  }
+  .chatbox-message-timestamp {
+    width: 12.666667%;
+    padding-right: 0;
+    p {
+      font-size: 10px;
+      color: #aaa;
+      margin-bottom: 0;
+      margin-top: 5px;
+    }
+  }
+  .chatbox-message-content {
+    width: 87.33333%;
+    padding-left: 0;
+    .chatbox-message {
+      float: left;
+      font-weight: 600;
+      margin-bottom: 0;
+      font-size: 15px;
+      color: #B976DA;
+      span {
+        font-family: 'Source Sans Pro', sans-serif;
+        margin-left: 10px;
+        color: #0c0c0c;
+        font-weight: lighter;
+      }
+    }
+  }
+}
+
+
+
+.chatbox-input-container {
+  position: relative;
+  bottom: 0;
+  background: #fff;
+  padding: 0;
+  text-align: center;
+  a {
+    border-top: 2px solid #E5EAEB;
+    border-radius: 0;
+    margin: 0;
+    float: left;
+    width: 7%;
+    padding-top: 10px;
+  }
+  form {
+    float: right;
+    width: 93%;
+  }
+  .message-input {
+    border: 2px solid #E5EAEB;
+    border-right-color: #fff;  
+    border-bottom: none;
+    background-image: none;
+    width: 100%;
+    outline: none;
+    padding: 7px 10px;
+    overflow-x: hidden;
+    display: block;
+    resize: vertical;
+    min-height: 40px;
+    max-height: 150px;
+  }
+}
+
+
+
+
+
+
+
+

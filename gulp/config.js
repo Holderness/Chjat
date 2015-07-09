@@ -35,7 +35,10 @@ module.exports = {
     filename: "main.css"
   },
   scss: {
-    src: ['public/scss/**/*.scss'],
+    src: [
+    'public/scss/style.scss',
+    'public/scss/**/*.scss'
+    ],
     dest: dest,
     filename: "sass.css"
   },
