@@ -1,5 +1,46 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400);
+
 $pink: pink;
+$main-bkgd: #E5EAEB;
+$nav-bkgd: #329932;
+
+
+// main
 
 html, body {
-  background: $pink;
+  background: $main-bkgd;
+}
+
+
+
+// nav
+
+.nav-header {
+  background: $nav-bkgd;
+  color: #fff;
+  padding-top: 0;
+}
+
+.navbar {
+  background: transparent;
+  margin:0;
+  border:none;
+  box-shadow:none;
+  padding: 10px 20px 40px 20px;
+  .navbar-brand {
+    background: transparent;
+  }
+  .nav-logo {
+    height: 60px;
+  }
+  .navbar-left > a {
+    font-family: 'Nunito', sans-serif;
+    color: #8B939A !important;
+  }
+  .navbar-right {
+    margin-top: 25px;
+  }
+
+
+
 }

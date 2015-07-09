@@ -1,55 +1,5 @@
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400);
 
 
-html, body {
-  background: #E5EAEB;
-}
-
-
-/*nav*/
-
-.navbar {
-  border-bottom: 2px solid #ddd;
-}
-
-.nav-header {
-	background: #329932;
-	color: #fff;
-	padding-top: 0;
-}
-
-.navbar-brand {
-	background: transparent;
-}
-
-.navbar-default {
-
-}
-
-.nav-logo {
-	height: 60px;
-}
-
-.navbar-left > a {
-  font-family: 'Nunito', sans-serif;
-  color: #8B939A !important;
-}
-
-.navbar-right {
-	margin-top: 25px;
-}
-
-.navbar-default {
-    box-shadow:none;
-    background:transparent;
-    padding: 10px 20px 40px 20px;
-}
-
-.navbar {
-    background: transparent;
-    margin:0;
-    border:none;
-}
 
 
 /* parent view */
