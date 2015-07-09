@@ -2,8 +2,7 @@ var dest = "./public/build";
 
 module.exports = {
   js: {
-    src: [
-      'https://cdn.socket.io/socket.io-1.2.0.js',
+    vendor: [
       'public/js/lib/jquery.js',
       'public/js/lib/autosize.min.js',
       'public/js/lib/underscore.js',
@@ -13,13 +12,17 @@ module.exports = {
       'public/js/lib/livestamp.js',
       'public/js/lib/wow.js',
       'public/js/lib/progressbar.js',
+    ],
+    src: [
+      'https://cdn.socket.io/socket.io-1.2.0.js',
       'public/js/models/chat-models.js',
       'public/js/views/main.js',
       'public/js/socketclient.js',
       'public/js/main.js',
-      'public/js/**/*.js',
+      'public/js/*.js',
     ],
     dest: dest,
+    vendorfile: "vendor.js",
     filename: "main.js"
   },
   css: {

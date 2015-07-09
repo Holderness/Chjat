@@ -1,6 +1,5 @@
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
-    sass = require('gulp-sass'),
     concat = require('gulp-concat'),
     sourcemaps = require('gulp-sourcemaps');
 

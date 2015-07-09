@@ -10,7 +10,16 @@ gulp.task('js', function () {
    return gulp.src(config.js.src)
       .pipe(sourcemaps.init())
         .pipe(concat(config.js.filename))
-        .pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
+        .pipe(uglify())
+      .pipe(sourcemaps.write())
+      .pipe(gulp.dest(config.js.dest));
+});
+
+gulp.task('js-vendor', function () {
+   return gulp.src(config.js.vendor)
+      .pipe(sourcemaps.init())
+        .pipe(concat(config.js.vendorfile))
+        .pipe(uglify())
       .pipe(sourcemaps.write())
       .pipe(gulp.dest(config.js.dest));
 });
