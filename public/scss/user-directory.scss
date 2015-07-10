@@ -1,0 +1,32 @@
+
+.user-directory {
+  background: #fff;
+  height: 620px;
+  overflow-y: auto;
+  border-left: 2px solid #ddd;
+  border-bottom: 2px solid #ddd;
+  .offline-users {}
+  .online-users {}
+  .idle-users {}
+  .user-directory-username {
+    float: left;
+  }
+}
+
+
+.online-users {
+  .user-online {
+    color: #329932;
+  }
+}
+
+
+
+
+@media (max-width: 1050px) {
+  .user-directory {
+    display: none;
+  }
+}
+
+
