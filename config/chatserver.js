@@ -10,7 +10,6 @@ var Server = function(options) {
   // io from server.js
   self.io = options.io;
 
-  console.log('chatserver: ', options.io);
   // server's online user list
   self.users = [];
 

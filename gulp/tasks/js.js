@@ -10,7 +10,7 @@ gulp.task('js', function () {
    return gulp.src(config.js.src)
       .pipe(sourcemaps.init())
         .pipe(concat(config.js.filename))
-        .pipe(uglify())
+
       .pipe(sourcemaps.write())
       .pipe(gulp.dest(config.js.dest));
 });
