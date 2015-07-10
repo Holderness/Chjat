@@ -18,7 +18,6 @@ if (app.settings.env === 'development') {
   app.use( errorHandler({ dumpExceptions: true, showStack: true }) );
 }
 
-
 server.listen( config.port, function() {
   console.log( 'Express server listening on port %d in %s mode',
     config.port, app.settings.env );
@@ -26,8 +25,6 @@ server.listen( config.port, function() {
 
 // passes the socketio enhanced server to chatserver.js
 // initializes the chatserver along with its listeners
-
-
   new ChatServer({ io: io }).init();
 
 
