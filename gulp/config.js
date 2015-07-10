@@ -19,6 +19,7 @@ module.exports = {
       'public/js/views/main.js',
       'public/js/socketclient.js',
       'public/js/main.js',
+            'public/js/routers/router.js',
       'public/js/*.js',
     ],
     dest: dest,

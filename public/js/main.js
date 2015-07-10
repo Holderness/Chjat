@@ -1,11 +1,10 @@
 
 $(document).ready(function() {
-  var mainController = new MainController();
-  mainController.init();
+
 });
 
 
-var MainController = function() {
+app.MainController = function() {
 
 	var self = this;
 
@@ -21,16 +20,16 @@ var MainController = function() {
 		self.chatClient.connect();
 
     // loginModel
-		self.loginModel = new LoginModel();
+		self.loginModel = new app.LoginModel();
 
     // The ContainerModel gets passed a viewState, LoginView, which
     // is the login page. That LoginView gets passed the viewEventBus
     // and the LoginModel.
-		self.containerModel = new ContainerModel({ viewState: new LoginView({vent: self.viewEventBus, model: self.loginModel})});
+		self.containerModel = new app.ContainerModel({ viewState: new app.LoginView({vent: self.viewEventBus, model: self.loginModel})});
 
 		// next, a new ContainerView is intialized with the newly created containerModel
 		// the login page is then rendered.
-		self.containerView = new ContainerView({ model: self.containerModel });
+		self.containerView = new app.ContainerView({ model: self.containerModel });
 		self.containerView.render();
 	};
 
@@ -62,8 +61,8 @@ var MainController = function() {
 	self.appEventBus.on("loginDone", function() {
 
 		// new model and view created for chatroom
-		self.chatroomModel = new ChatroomModel();
-		self.chatroomView  = new ChatroomView({vent: self.viewEventBus, model: self.chatroomModel });
+		self.chatroomModel = new app.ChatroomModel();
+		self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel });
 
 		// viewstate is changed to chatroom after login.
 		self.containerModel.set("viewState", self.chatroomView);
@@ -91,7 +90,7 @@ var MainController = function() {
 
    // users is array of the current user models
 		var users = _.map(data, function(item) {
-			return new UserModel({username: item});
+			return new app.UserModel({username: item});
 		});
 
     // this resets the collection with the updated array of users

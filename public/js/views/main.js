@@ -1,4 +1,8 @@
-var ContainerView = Backbone.View.extend({
+var app = app || {};
+
+(function ($) {
+
+app.ContainerView = Backbone.View.extend({
 	el: '#view-container',
 	initialize: function(options) {
 		this.model.on("change:viewState", this.render, this);
@@ -9,7 +13,7 @@ var ContainerView = Backbone.View.extend({
 	}
 });
 
-var LoginView = Backbone.View.extend({
+app.LoginView = Backbone.View.extend({
 	template: _.template($('#login-template').html()),
 	events: {
 		'click #nameBtn': 'onLogin',
@@ -42,7 +46,7 @@ var LoginView = Backbone.View.extend({
 });
 
 
-var ChatroomView = Backbone.View.extend({
+app.ChatroomView = Backbone.View.extend({
 	template: _.template($('#chatroom-template').html()),
 	events: {
 		'keypress .message-input': 'messageInputPressed'
@@ -112,6 +116,6 @@ var ChatroomView = Backbone.View.extend({
       console.log('wut');
 		}
 	}
-
-
 });
+
+})(jQuery);

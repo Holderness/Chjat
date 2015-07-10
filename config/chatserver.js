@@ -6,11 +6,13 @@ _ = require('underscore');
 var Server = function(options) {
 
   // Server
-	var self = this;
+  var self = this;
   // io from server.js
-	self.io = options.io;
+  self.io = options.io;
+
+  console.log('chatserver: ', options.io);
   // server's online user list
-	self.users = [];
+  self.users = [];
 
 
   self.init = function() {
@@ -117,6 +119,4 @@ var User = function(args) {
 
 // allows export to server.js
 module.exports = Server;
-
-
 
