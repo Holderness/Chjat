@@ -9,7 +9,7 @@ gulp.task('browsersync', function() {
       port: 3000,
       proxy: 'localhost:3000',
     });
-    gulp.watch("*.html").on("change", browserSync.reload);
+    gulp.watch("./public/*.html").on("change", browserSync.reload);
     gulp.watch(config.css.src, ['css-watch']);
     gulp.watch(config.js.src, ['js-watch']);
     gulp.watch(config.scss.src, ['sass-watch']);
