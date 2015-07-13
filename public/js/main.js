@@ -1,8 +1,4 @@
 
-$(document).ready(function() {
-
-});
-
 
 app.MainController = function() {
 

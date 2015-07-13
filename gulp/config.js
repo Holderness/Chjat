@@ -18,7 +18,7 @@ module.exports = {
       'public/js/models/chat-models/*.js',
       'public/js/collections/*.js',
       'public/js/models/*.js',
-      'public/js/views/main.js',
+      'public/js/views/*.js',
       'public/js/socketclient.js',
       'public/js/main.js',
       'public/js/routers/router.js',
