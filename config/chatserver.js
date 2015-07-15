@@ -13,11 +13,15 @@ var Server = function(options) {
   // server's online user list
   self.users = [];
 
+  // server's room list
+  self.rooms = ['default', 'waterbear', 'tummyrubs', 'tunnelsnek'];
+
 
   self.init = function() {
     // Fired upon a connection
     self.io.on('connection', function(socket){
      console.log('a mothafucka is connected');
+     socket.chat = {};
      // ManageConnection handles username validations.
      // If validations pass, sets response listeners that 
      // listen to the chatclient.
@@ -76,6 +80,7 @@ var Server = function(options) {
     // a change from the client.
     user.socket.on("onlineUsers", function() {
       // creates new array of online usernames
+console.log("chatserver - self.users: ", self.users);
       var users = _.map(self.users, function(user) {
         return user.username;
       });
@@ -103,8 +108,27 @@ var Server = function(options) {
       user.socket.broadcast.emit("stop typing");
     });
 
+    // joins user to a room
+    user.socket.on('joinRoom', function(roomName) {
+      user.socket.leave(user.socket.chat.room);
+      leaveRoom(user.socket);
+      addToRoom(user.socket, roomName);
+    });
+  };
 
+  self.leaveRoom = function(socket) {
+    var currentRoom = socket.chat.room;
+    var rooms = _.map(self.rooms, function(currentRoom) {
+      return currentRoom;
+    });
+      // emits updated online usernames array to chatclient
+      user.socket.emit("rooms", rooms);
+  };
 
+  self.addToRoom = function(socket, roomName) {
+    user.socket.join(roomName);
+    user.socket.chat.room = roomName;
+console.log("io.sockets.adapter.rooms:  ", io.sockets.adapter.rooms);
   };
 };
 
@@ -113,6 +137,7 @@ var Server = function(options) {
 var User = function(args) {
   var self = this;
   self.socket = args.socket;
+  self.socket.chat.room = 'default';
   self.username = args.username;
 };
 
