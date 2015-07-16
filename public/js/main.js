@@ -105,11 +105,9 @@ app.MainController = function() {
     // This method gets the online users collection from chatroomModel.
     // onlineUsers is the collection
     var rooms = self.chatroomModel.get("rooms");
-    debugger;
     console.log("rooms: ---", rooms);
    // users is array of the current user models
     var updatedRooms = _.map(data, function(name) {
-      debugger;
       return new app.ChatroomModel({name: name});
     });
     console.log("updatedrooms: ---", updatedRooms);

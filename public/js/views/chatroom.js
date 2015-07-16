@@ -26,12 +26,17 @@ app.ChatroomView = Backbone.View.extend({
     this.listenTo(userChats, "add", this.renderChat, this);
     this.listenTo(userChats, "remove", this.renderChats, this);
     this.listenTo(userChats, "reset", this.renderChats, this);
+
+    this.listenTo(chatrooms, "add", this.renderRoom, this);
+    this.listenTo(chatrooms, "remove", this.renderRooms, this);
+    this.listenTo(chatrooms, "reset", this.renderRooms, this);
   },
   render: function() {
     var onlineUsers = this.model.get("onlineUsers");
     this.$el.html(this.template());
     this.renderUsers();
     this.renderChats();
+    this.renderRooms();
     return this;
   },
   // renders on events, called just above
@@ -60,19 +65,23 @@ app.ChatroomView = Backbone.View.extend({
     // this.$('.nano').nanoScroller();
     // this.$('.nano').nanoScroller({ scroll: 'bottom' });
   },
+
+
   // renders on events, called just above
-  renderUsers: function() {
-    this.$('.online-users').empty();
-    this.model.get("onlineUsers").each(function (user) {
-      this.renderUser(user);
+  renderRooms: function() {
+    this.$('.public-rooms-container').empty();
+    this.model.get("rooms").each(function (room) {
+      this.renderRoom(room);
     }, this);
   },
-  renderUser: function(model) {
-    var template = _.template($("#online-users-list-template").html());
-    this.$('.online-users').append(template(model.toJSON()));
+  renderRoom: function(model) {
+    var template = _.template($("#room-list-template").html());
+    this.$('.public-rooms-container').append(template(model.toJSON()));
     // this.$('.user-count').html(this.model.get("onlineUsers").length);
     // this.$('.nano').nanoScroller();
   },
+
+
   //events
   messageInputPressed: function(e) {
     if (e.keyCode === 13 && $.trim($('.message-input').val()).length > 0) {
