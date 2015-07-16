@@ -84,25 +84,54 @@ app.MainController = function() {
 		// onlineUsers is the collection
 		var onlineUsers = self.chatroomModel.get("onlineUsers");
 
+        console.log("onlineUsers: ---", onlineUsers);
+
    // users is array of the current user models
 		var users = _.map(data, function(item) {
 			return new app.UserModel({username: item});
 		});
 
+        console.log("users: ---", users);
+
     // this resets the collection with the updated array of users
 		onlineUsers.reset(users);
 	});
 
+
+
+
+  self.appEventBus.on("roomInfo", function(data) {
+
+    // This method gets the online users collection from chatroomModel.
+    // onlineUsers is the collection
+    var rooms = self.chatroomModel.get("rooms");
+    debugger;
+    console.log("rooms: ---", rooms);
+   // users is array of the current user models
+    var updatedRooms = _.map(data, function(name) {
+      debugger;
+      return new app.ChatroomModel({name: name});
+    });
+    console.log("updatedrooms: ---", updatedRooms);
+
+    // this resets the collection with the updated array of users
+    rooms.reset(updatedRooms);
+  });
+
+
+
+
+
   // adds new user to users collection, sends default joining message
 	self.appEventBus.on("userJoined", function(username) {
 		self.chatroomModel.addUser(username);
-		self.chatroomModel.addChat({sender: "Mayor McCheese", message: username + " joined room." });
+		self.chatroomModel.addChat({sender: "Butters", message: username + " joined room." });
 	});
 
 	// removes user from users collection, sends default leaving message
 	self.appEventBus.on("userLeft", function(username) {
 		self.chatroomModel.removeUser(username);
-		self.chatroomModel.addChat({sender: "Grimace", message: username + " left room." });
+		self.chatroomModel.addChat({sender: "Butters", message: username + " left room." });
 	});
 
 	// chat passed from socketclient, adds a new chat message using chatroomModel method
@@ -112,108 +141,3 @@ app.MainController = function() {
 	});
 };
 
-
-
-
-
-
-// var thomJones =
-// 		{
-// 			name: 'Thom Jones',
-// 			avatar: 'assets/img/thom-jones.jpg',
-// 			id: 1
-// 		};
-// var tomJones = 
-// 		{
-// 			name: 'Tom Jones',
-// 			avatar: 'assets/img/tom-jones.jpg',
-// 			id: 2
-// 		};
-// var ev = 
-// 		{
-// 			name: 'Evan Turner',
-// 			avatar: 'http://evturn.com/assets/img/ev-winter-yellow.jpg',
-// 			id: 3
-// 		};
-
-// var convo1 = new Conversation({				
-// 					users: [tomJones, thomJones],
-// 					messages:	[
-// 							{
-// 								timestamp: new Date(),
-// 								content: 'Craig, it\'s important. I just spilled salsa all over my filas.',
-// 								sender: tomJones
-// 							},
-// 							{
-// 								timestamp: new Date(),
-// 								content: 'I\m not Craig!',
-// 								sender: thomJones
-// 							},
-// 							{
-// 								timestamp: new Date(),
-// 								content: 'Fuck the hell off!',
-// 								sender: thomJones
-// 							}
-// 						]
-// 					});
-// var convo2 = new Conversation({
-// 				users: [tomJones, thomJones],			
-// 				messages:	[
-// 						{
-// 							timestamp: new Date(),
-// 							content: 'Craig, it\'s important. I just spilled salsa all over my filas.',
-// 							sender: tomJones
-// 						},
-// 						{
-// 							timestamp: new Date(),
-// 							content: 'I\m not Craig!',
-// 							sender: thomJones
-// 						},
-// 						{
-// 							timestamp: new Date(),
-// 							content: 'Just ate a bisquit',
-// 							sender: tomJones
-// 						}
-// 					]
-// 				});
-// var convo3 = new Conversation({
-// 				users: [ev, thomJones],
-// 				messages:	[
-// 						{
-// 							timestamp: new Date(),
-// 							content: 'Craig, it\'s important. I just spilled salsa all over my filas.',
-// 							sender: tomJones
-// 						},
-// 						{
-// 							timestamp: new Date(),
-// 							content: 'I\m not Craig!',
-// 							sender: thomJones
-// 						},
-// 						{
-// 							timestamp: new Date(),
-// 							content: 'Please leave my wife in this',
-// 							sender: ev
-// 						}
-// 					]});
-
-// var u2 = new User(thomJones);
-
-// var u1 = new User({
-// 			name: 'Tom Jones',
-// 			avatar: 'http://a5.files.biography.com/image/upload/c_fill,cs_srgb,dpr_1.0,g_face,h_300,q_80,w_300/MTE1ODA0OTcyMDA1Njg4ODQ1.jpg',
-// 			inbox: 
-// 				[
-// 					convo1,
-// 					convo2,
-// 					convo3
-// 				],	
-// 			id: 1
-// 		});
-
-
-// new WOW(
-//     { offset: 120 }
-// ).init();
-
-
-// new Chatbox();

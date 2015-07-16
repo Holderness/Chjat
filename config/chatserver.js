@@ -14,7 +14,7 @@ var Server = function(options) {
   self.users = [];
 
   // server's room list
-  self.rooms = ['default', 'waterbear', 'tummyrubs', 'tunnelsnek'];
+  self.rooms = [{name: 'default'}, {name: 'waterber'}, {name: 'dtunnelsnek'}, {name: 'magikarp'},];
 
 
   self.init = function() {
@@ -71,6 +71,7 @@ var Server = function(options) {
     // listens for a user socket to disconnect, removes that user
     // from the online user array
     user.socket.on('disconnect', function() {
+console.log('USER: ', user);
       self.users.splice(self.users.indexOf(user), 1);
       self.io.sockets.emit("userLeft", user.username);
       console.log('he gone.');
@@ -87,6 +88,20 @@ console.log("chatserver - self.users: ", self.users);
       // emits updated online usernames array to chatclient
       user.socket.emit("onlineUsers", users);
     });
+
+
+
+
+    user.socket.on("rooms", function() {
+      var rooms = _.map(self.rooms, function(room) {
+        return room.name;
+      });
+      user.socket.emit("rooms", rooms);
+    });
+
+
+
+
 
     // listening for a 'chat' event from client, 
     // if there is a chat event, emit an object containing the username

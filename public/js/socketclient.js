@@ -84,6 +84,7 @@ var ChatClient = function(options) {
 		socket.on('welcome', function(data) {
       // emits event to recalibrate onlineUsers collection
       socket.emit("onlineUsers");
+      socket.emit("rooms");
 			console.log('onlineUsers1: ', data);
       // data is undefined at this point because it's the first to
       // fire off an event chain that will append the new user to 
@@ -110,6 +111,15 @@ var ChatClient = function(options) {
 			self.vent.trigger("usersInfo", data);
 		});
 
+
+
+    socket.on('rooms', function(data) {
+      // this data is an array with all the online user's usernames.
+      self.vent.trigger("roomInfo", data);
+    });
+
+
+
 		socket.on('userJoined', function(data) {
 			// data === username of user joined
 			console.log('userJoined: ', data);
@@ -135,8 +145,6 @@ var ChatClient = function(options) {
     socket.on('stop typing', function() {
       self.removeChatTyping();
     });
-
-
 
 
 

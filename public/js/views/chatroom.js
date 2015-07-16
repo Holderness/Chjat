@@ -16,6 +16,7 @@ app.ChatroomView = Backbone.View.extend({
     // these get the collection of onlineUsers and userChats from the chatroomModel
     var onlineUsers = this.model.get('onlineUsers');
     var userChats = this.model.get('userChats');
+    var chatrooms = this.model.get('rooms');
 
     //sets event listeners on the collections
     this.listenTo(onlineUsers, "add", this.renderUser, this);
@@ -58,6 +59,19 @@ app.ChatroomView = Backbone.View.extend({
     element.appendTo(this.$('.chatbox-content')).hide().fadeIn().slideDown();
     // this.$('.nano').nanoScroller();
     // this.$('.nano').nanoScroller({ scroll: 'bottom' });
+  },
+  // renders on events, called just above
+  renderUsers: function() {
+    this.$('.online-users').empty();
+    this.model.get("onlineUsers").each(function (user) {
+      this.renderUser(user);
+    }, this);
+  },
+  renderUser: function(model) {
+    var template = _.template($("#online-users-list-template").html());
+    this.$('.online-users').append(template(model.toJSON()));
+    // this.$('.user-count').html(this.model.get("onlineUsers").length);
+    // this.$('.nano').nanoScroller();
   },
   //events
   messageInputPressed: function(e) {

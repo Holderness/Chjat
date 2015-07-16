@@ -1,2 +1,8 @@
 
-app.ContainerModel = Backbone.Model.extend({});
+var app = app || {};
+
+(function () {
+
+  app.ContainerModel = Backbone.Model.extend({});
+
+})();

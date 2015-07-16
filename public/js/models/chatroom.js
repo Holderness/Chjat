@@ -4,7 +4,8 @@ app.ChatroomModel = Backbone.Model.extend({
     userChats: new app.ChatCollection([
       // message and sender upon entering chatroom
       new app.ChatModel({ sender: 'Butters', message: 'awwwwww hamburgers. ||):||', timestamp: _.now() })
-      ])
+      ]),
+    rooms: new app.RoomCollection(),
   },
   addUser: function(username) {
     this.get('onlineUsers').add(new app.UserModel({ username: username }));
