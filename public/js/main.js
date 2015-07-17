@@ -49,6 +49,12 @@ app.MainController = function() {
   self.viewEventBus.on("typing", function() {
     self.chatClient.updateTyping();
   });
+  self.viewEventBus.on("joinRoom", function(room) {
+    self.chatClient.joinRoom(room);
+  });
+  self.viewEventBus.on("setRoom", function(room) {
+    self.chatClient.setRoom(name);
+  });
 
 
   //// appEventBus Listeners ////

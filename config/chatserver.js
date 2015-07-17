@@ -125,25 +125,34 @@ console.log("chatserver - self.users: ", self.users);
 
     // joins user to a room
     user.socket.on('joinRoom', function(roomName) {
+console.log('joinRoom');
       user.socket.leave(user.socket.chat.room);
-      leaveRoom(user.socket);
-      addToRoom(user.socket, roomName);
+      self.leaveRoom(user.socket);
+      self.addToRoom(user.socket, roomName);
     });
+
+    // set room
+
   };
 
   self.leaveRoom = function(socket) {
     var currentRoom = socket.chat.room;
-    var rooms = _.map(self.rooms, function(currentRoom) {
-      return currentRoom;
+console.log("currentRoom: ", currentRoom);
+    var rooms = _.map(self.rooms, function(roo) {
+console.log("roo: ", roo);
+      return roo;
     });
+console.log("rooms: ", rooms);
       // emits updated online usernames array to chatclient
-      user.socket.emit("rooms", rooms);
+      socket.emit("rooms", rooms);
   };
 
   self.addToRoom = function(socket, roomName) {
-    user.socket.join(roomName);
-    user.socket.chat.room = roomName;
-console.log("io.sockets.adapter.rooms:  ", io.sockets.adapter.rooms);
+console.log("addToRoom: ", roomName);
+    socket.join(roomName);
+    socket.chat.room = roomName;
+    socket.emit('setRoom', roomName);
+console.log("io.sockets.adapter.rooms:  ", self.io.sockets.adapter.rooms);
   };
 };
 

@@ -71,6 +71,27 @@ var ChatClient = function(options) {
     }
   };
 
+  // join room
+  self.joinRoom = function(name) {
+    self.socket.emit('joinRoom', name);
+  };
+
+// set room
+  self.setRoom = function(name) {
+    if (name !== null) {
+      this.currentRoom = name;
+    }
+    var self = this;
+    this.$rooms.find('.room').each(function() {
+      var $room = $(this);
+      $room.removeClass('active');
+      if ($room.data('name') === self.currentRoom) {
+        $room.addClass('active');
+      }
+    });
+  };
+  
+
 
 
   // chatserver listeners
@@ -135,6 +156,10 @@ var ChatClient = function(options) {
 			console.log('chat: ', data);
 			self.vent.trigger("chatReceived", data);
 		});
+    socket.on('setRoom', function(name) {
+      debugger;
+      self.vent.trigger("setRoom", name);
+    });
 
 
     // these guys listen to the server, 

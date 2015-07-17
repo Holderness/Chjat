@@ -154,12 +154,12 @@
 
 
 <script type="text/template" id="room-list-template">
-  <div class="row room">
+  <div class="row room" data-room="<%= name %>">
     <div class="col-xs-3 col-sm-3 col-md-1 text-center">
       <span><i class="fa fa-circle"></i></span>
     </div>
     <div class="col-xs-8 col-sm-8 col-md-10">
-      <p><strong class="user-directory-username">@<%= name %></strong></p>
+      <p data-room="<%= name %>" >#<%= name %></p>
     </div>
   </div>
 </script>

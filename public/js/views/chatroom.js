@@ -5,7 +5,8 @@ var app = app || {};
 app.ChatroomView = Backbone.View.extend({
   template: _.template($('#chatroom-template').html()),
   events: {
-    'keypress .message-input': 'messageInputPressed'
+    'keypress .message-input': 'messageInputPressed',
+    'click .chat-directory .room': 'setRoom'
   },
   // initialized after the 'loginDone' event
   initialize: function(options) {
@@ -81,6 +82,10 @@ app.ChatroomView = Backbone.View.extend({
     // this.$('.nano').nanoScroller();
   },
 
+  joinRoom: function(name) {
+    this.vent.trigger('joinRoom', name);
+  },
+
 
   //events
   messageInputPressed: function(e) {
@@ -94,7 +99,16 @@ app.ChatroomView = Backbone.View.extend({
       this.vent.trigger("typing");
       console.log('wut');
     }
+  },
+  setRoom: function(e) {
+    var $tar = $(e.target);
+    if ($tar.is('p')) {
+      this.joinRoom($tar.data('room'));
+    }
   }
+
+
+
 });
 
 })(jQuery);
