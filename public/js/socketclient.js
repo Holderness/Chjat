@@ -78,11 +78,18 @@ var ChatClient = function(options) {
 
 // set room
   self.setRoom = function(name) {
+
     if (name !== null) {
       this.currentRoom = name;
     }
+
+///>>>>>>> changethisto .chat-title
+    var $chatTitle = $('.chatbox-header-username');
+    $chatTitle.text(name);
+
+
     var self = this;
-    this.$rooms.find('.room').each(function() {
+    $('.chat-directory').find('.room').each(function() {
       var $room = $(this);
       $room.removeClass('active');
       if ($room.data('name') === self.currentRoom) {

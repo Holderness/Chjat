@@ -50,11 +50,15 @@ app.MainController = function() {
     self.chatClient.updateTyping();
   });
   self.viewEventBus.on("joinRoom", function(room) {
+    debugger;
     self.chatClient.joinRoom(room);
   });
-  self.viewEventBus.on("setRoom", function(room) {
-    self.chatClient.setRoom(name);
-  });
+
+
+
+
+
+
 
 
   //// appEventBus Listeners ////
@@ -111,15 +115,20 @@ app.MainController = function() {
     // This method gets the online users collection from chatroomModel.
     // onlineUsers is the collection
     var rooms = self.chatroomModel.get("rooms");
-    console.log("rooms: ---", rooms);
    // users is array of the current user models
-    var updatedRooms = _.map(data, function(name) {
-      return new app.ChatroomModel({name: name});
+    var updatedRooms = _.map(data, function(room) {
+      return new app.ChatroomModel({name: room.name});
     });
     console.log("updatedrooms: ---", updatedRooms);
 
     // this resets the collection with the updated array of users
     rooms.reset(updatedRooms);
+  });
+
+
+  self.appEventBus.on("setRoom", function(room) {
+    debugger;
+    self.chatClient.setRoom(room);
   });
 
 

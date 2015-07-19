@@ -74,6 +74,7 @@ var Server = function(options) {
 console.log('USER: ', user);
       self.users.splice(self.users.indexOf(user), 1);
       self.io.sockets.emit("userLeft", user.username);
+      self.leaveRoom(user, user.socket);
       console.log('he gone.');
     });
 
@@ -94,7 +95,7 @@ console.log("chatserver - self.users: ", self.users);
 
     user.socket.on("rooms", function() {
       var rooms = _.map(self.rooms, function(room) {
-        return room.name;
+        return room;
       });
       user.socket.emit("rooms", rooms);
     });
@@ -108,8 +109,13 @@ console.log("chatserver - self.users: ", self.users);
     // and chat message to the collection of sockets connected to the server.
     // Basically, this does the job of 'broadcast'.
     user.socket.on("chat", function(chat) {
+      console.log('----------------------------------------');
+console.log("USER: ", user.username);
+console.log('CHAT: ', chat);
+console.log('USER.SOCKET.CHAT.ROOM ', user.socket.chat.room);
+console.log('self.io.sockets.adapter.rooms: ', self.io.sockets.adapter.rooms);
       if (chat) {
-        self.io.sockets.emit("chat", { sender: user.username, message: chat });
+        self.io.sockets.to(user.socket.chat.room).emit("chat", { sender: user.username, message: chat });
       }
     });
 
@@ -125,19 +131,20 @@ console.log("chatserver - self.users: ", self.users);
 
     // joins user to a room
     user.socket.on('joinRoom', function(roomName) {
-console.log('joinRoom');
+console.log('-------->-----------joinRoom-------------<---------');
       user.socket.leave(user.socket.chat.room);
-      self.leaveRoom(user.socket);
-      self.addToRoom(user.socket, roomName);
+      self.leaveRoom(user, user.socket);
+      self.addToRoom(user, user.socket, roomName);
     });
 
     // set room
 
   };
 
-  self.leaveRoom = function(socket) {
-    var currentRoom = socket.chat.room;
-console.log("currentRoom: ", currentRoom);
+  self.leaveRoom = function(user, socket) {
+    var currentRoom = user.socket.chat.room;
+console.log("CURRENTROOM: ", currentRoom);
+console.log("USER: ", user.username);
     var rooms = _.map(self.rooms, function(roo) {
 console.log("roo: ", roo);
       return roo;
@@ -145,14 +152,16 @@ console.log("roo: ", roo);
 console.log("rooms: ", rooms);
       // emits updated online usernames array to chatclient
       socket.emit("rooms", rooms);
+      // socket.broadcast.to(currentRoom).emit('userLeft', user.username);
   };
 
-  self.addToRoom = function(socket, roomName) {
+  self.addToRoom = function(user, socket, roomName) {
 console.log("addToRoom: ", roomName);
     socket.join(roomName);
     socket.chat.room = roomName;
     socket.emit('setRoom', roomName);
 console.log("io.sockets.adapter.rooms:  ", self.io.sockets.adapter.rooms);
+    // socket.broadcast.to(roomName).emit('userJoined', user.username);
   };
 };
 
@@ -161,7 +170,7 @@ console.log("io.sockets.adapter.rooms:  ", self.io.sockets.adapter.rooms);
 var User = function(args) {
   var self = this;
   self.socket = args.socket;
-  self.socket.chat.room = 'default';
+  // self.socket.chat.room = 'default';
   self.username = args.username;
 };
 
