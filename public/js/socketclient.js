@@ -160,11 +160,10 @@ var ChatClient = function(options) {
 		});
 		socket.on('chat', function(data) {
 			// data === chat message object
-			console.log('chat: ', data);
+			console.log('chatdata: ', data);
 			self.vent.trigger("chatReceived", data);
 		});
     socket.on('setRoom', function(name) {
-      debugger;
       self.vent.trigger("setRoom", name);
     });
 

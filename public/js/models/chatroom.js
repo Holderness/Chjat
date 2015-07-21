@@ -1,5 +1,6 @@
 app.ChatroomModel = Backbone.Model.extend({
   defaults: {
+    name: 'default',
     onlineUsers: new app.UserCollection(),
     userChats: new app.ChatCollection([
       // message and sender upon entering chatroom

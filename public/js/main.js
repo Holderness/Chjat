@@ -50,7 +50,6 @@ app.MainController = function() {
     self.chatClient.updateTyping();
   });
   self.viewEventBus.on("joinRoom", function(room) {
-    debugger;
     self.chatClient.joinRoom(room);
   });
 
@@ -87,22 +86,16 @@ app.MainController = function() {
 
   // after 'onlineUsers' event emits, the 'usersInfo' event triggers
 	self.appEventBus.on("usersInfo", function(data) {
-
     //data is an array of usernames, including the new user
-
 		// This method gets the online users collection from chatroomModel.
 		// onlineUsers is the collection
 		var onlineUsers = self.chatroomModel.get("onlineUsers");
-
-        console.log("onlineUsers: ---", onlineUsers);
-
+console.log("onlineUsers: ---", onlineUsers);
    // users is array of the current user models
 		var users = _.map(data, function(item) {
 			return new app.UserModel({username: item});
 		});
-
-        console.log("users: ---", users);
-
+console.log("users: ---", users);
     // this resets the collection with the updated array of users
 		onlineUsers.reset(users);
 	});
@@ -112,22 +105,24 @@ app.MainController = function() {
 
   self.appEventBus.on("roomInfo", function(data) {
 
+
     // This method gets the online users collection from chatroomModel.
     // onlineUsers is the collection
     var rooms = self.chatroomModel.get("rooms");
-   // users is array of the current user models
+     console.log("ROOMS: ", rooms);
+
+   // users is array of the current room models
     var updatedRooms = _.map(data, function(room) {
       return new app.ChatroomModel({name: room.name});
     });
-    console.log("updatedrooms: ---", updatedRooms);
-
-    // this resets the collection with the updated array of users
+console.log("UPDATED ROOMS: ", updatedRooms);
+         debugger;
+    // this resets the collection with the updated array of rooms
     rooms.reset(updatedRooms);
   });
 
 
   self.appEventBus.on("setRoom", function(room) {
-    debugger;
     self.chatClient.setRoom(room);
   });
 
@@ -149,7 +144,7 @@ app.MainController = function() {
 
 	// chat passed from socketclient, adds a new chat message using chatroomModel method
 	self.appEventBus.on("chatReceived", function(chat) {
-		self.chatroomModel.addChat(chat);
+    self.chatroomModel.addChat(chat);
 		$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
 	});
 };

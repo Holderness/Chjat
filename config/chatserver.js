@@ -14,7 +14,7 @@ var Server = function(options) {
   self.users = [];
 
   // server's room list
-  self.rooms = [{name: 'default'}, {name: 'waterber'}, {name: 'dtunnelsnek'}, {name: 'magikarp'},];
+  self.rooms = [{name: 'Gen Pop', chatlog: []}, {name: 'waterber', chatlog: []}, {name: 'dtunnelsnek', chatlog: []}, {name: 'magikarp', chatlog: []}];
 
 
   self.init = function() {
@@ -58,9 +58,12 @@ var Server = function(options) {
         // calls method below
         self.setResponseListeners(newUser);
 
+        // joins default room
+        self.addToRoom(newUser, socket, 'default');
+
         // emits 'welcome' and 'userJoined' to the chatclient
         socket.emit("welcome");
-        self.io.sockets.emit("userJoined", newUser.username);
+        // self.io.sockets.emit("userJoined", newUser.username);
       }
     });
   };
@@ -115,7 +118,7 @@ console.log('CHAT: ', chat);
 console.log('USER.SOCKET.CHAT.ROOM ', user.socket.chat.room);
 console.log('self.io.sockets.adapter.rooms: ', self.io.sockets.adapter.rooms);
       if (chat) {
-        self.io.sockets.to(user.socket.chat.room).emit("chat", { sender: user.username, message: chat });
+        self.io.sockets.to(user.socket.chat.room).emit("chat", { room: user.socket.chat.room, sender: user.username, message: chat });
       }
     });
 
@@ -152,7 +155,7 @@ console.log("roo: ", roo);
 console.log("rooms: ", rooms);
       // emits updated online usernames array to chatclient
       socket.emit("rooms", rooms);
-      // socket.broadcast.to(currentRoom).emit('userLeft', user.username);
+      socket.broadcast.to(currentRoom).emit('userLeft', user.username);
   };
 
   self.addToRoom = function(user, socket, roomName) {
@@ -161,7 +164,7 @@ console.log("addToRoom: ", roomName);
     socket.chat.room = roomName;
     socket.emit('setRoom', roomName);
 console.log("io.sockets.adapter.rooms:  ", self.io.sockets.adapter.rooms);
-    // socket.broadcast.to(roomName).emit('userJoined', user.username);
+     socket.broadcast.to(roomName).emit('userJoined', user.username);
   };
 };
 

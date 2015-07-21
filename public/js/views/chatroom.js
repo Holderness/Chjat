@@ -13,11 +13,25 @@ app.ChatroomView = Backbone.View.extend({
     console.log(options);
     // passed the viewEventBus
     this.vent = options.vent;
+    this.model.get('rooms').add(new app.ChatroomModel());
 
     // these get the collection of onlineUsers and userChats from the chatroomModel
+
+  },
+  render: function(options) {
+
+    this.stopListening(this.model);
+    var room;
+    
+    if (!options) { options = {};}
+    room = options.room || 'default';
+
+    debugger;
     var onlineUsers = this.model.get('onlineUsers');
-    var userChats = this.model.get('userChats');
+    var userChats = this.model.get('rooms').findWhere({name: room}).get('userChats');
     var chatrooms = this.model.get('rooms');
+
+    debugger;
 
     //sets event listeners on the collections
     this.listenTo(onlineUsers, "add", this.renderUser, this);
@@ -31,8 +45,8 @@ app.ChatroomView = Backbone.View.extend({
     this.listenTo(chatrooms, "add", this.renderRoom, this);
     this.listenTo(chatrooms, "remove", this.renderRooms, this);
     this.listenTo(chatrooms, "reset", this.renderRooms, this);
-  },
-  render: function() {
+
+
     var onlineUsers = this.model.get("onlineUsers");
     this.$el.html(this.template());
     this.renderUsers();
@@ -54,6 +68,7 @@ app.ChatroomView = Backbone.View.extend({
     // this.$('.nano').nanoScroller();
   },
   renderChats: function() {
+    debugger;
     this.$('.chatbox-content').empty();
     this.model.get('userChats').each(function(chat) {
       this.renderChat(chat);
@@ -84,6 +99,7 @@ app.ChatroomView = Backbone.View.extend({
 
   joinRoom: function(name) {
     this.vent.trigger('joinRoom', name);
+    this.render({room: name});
   },
 
 
@@ -99,6 +115,7 @@ app.ChatroomView = Backbone.View.extend({
       this.vent.trigger("typing");
       console.log('wut');
     }
+    return this;
   },
   setRoom: function(e) {
     var $tar = $(e.target);
