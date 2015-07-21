@@ -2,7 +2,7 @@ var app = app || {};
 
 (function ($) {
 
-  app.ChatroomListView = Backbone.View.extend({
+  app.ChatroomNav = Backbone.View.extend({
 
 
   });

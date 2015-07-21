@@ -67,7 +67,8 @@ app.MainController = function() {
 
 		// new model and view created for chatroom
 		self.chatroomModel = new app.ChatroomModel();
-		self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel });
+    self.chatroomList = new app.ChatroomList();
+		self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel, collection: self.chatroomList});
 
 		// viewstate is changed to chatroom after login.
 		self.containerModel.set("viewState", self.chatroomView);
@@ -108,7 +109,7 @@ console.log("users: ---", users);
 
     // This method gets the online users collection from chatroomModel.
     // onlineUsers is the collection
-    var rooms = self.chatroomModel.get("rooms");
+    var rooms = self.chatroomList;
      console.log("ROOMS: ", rooms);
 
    // users is array of the current room models

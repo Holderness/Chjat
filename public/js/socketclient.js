@@ -143,6 +143,7 @@ var ChatClient = function(options) {
 
     socket.on('rooms', function(data) {
       // this data is an array with all the online user's usernames.
+      debugger;
       self.vent.trigger("roomInfo", data);
     });
 

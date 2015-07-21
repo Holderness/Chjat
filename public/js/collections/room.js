@@ -3,6 +3,6 @@ var app = app || {};
 
 (function () {
 
-  app.RoomCollection = Backbone.Collection.extend({model: app.ChatroomModel});
+  app.ChatroomList = Backbone.Collection.extend({model: app.ChatroomModel});
 
 })();

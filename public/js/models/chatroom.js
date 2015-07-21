@@ -1,3 +1,8 @@
+
+var app = app || {};
+
+(function () {
+
 app.ChatroomModel = Backbone.Model.extend({
   defaults: {
     name: 'default',
@@ -5,8 +10,7 @@ app.ChatroomModel = Backbone.Model.extend({
     userChats: new app.ChatCollection([
       // message and sender upon entering chatroom
       new app.ChatModel({ sender: 'Butters', message: 'awwwwww hamburgers. ||):||', timestamp: _.now() })
-      ]),
-    rooms: new app.RoomCollection(),
+      ])
   },
   addUser: function(username) {
     this.get('onlineUsers').add(new app.UserModel({ username: username }));
@@ -24,3 +28,5 @@ app.ChatroomModel = Backbone.Model.extend({
     this.get('userChats').add(new app.ChatModel({ sender: chat.sender, message: chat.message, timestamp: now}));
   },
 });
+
+})();
