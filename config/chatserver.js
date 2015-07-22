@@ -59,7 +59,7 @@ var Server = function(options) {
         self.setResponseListeners(newUser);
 
         // joins default room
-        self.addToRoom(newUser, socket, 'default');
+        self.addToRoom(newUser, socket, 'Gen Pop');
 
         // emits 'welcome' and 'userJoined' to the chatclient
         socket.emit("welcome");
@@ -117,8 +117,10 @@ console.log("USER: ", user.username);
 console.log('CHAT: ', chat);
 console.log('USER.SOCKET.CHAT.ROOM ', user.socket.chat.room);
 console.log('self.io.sockets.adapter.rooms: ', self.io.sockets.adapter.rooms);
+      var timestamp = _.now();
+      _.findWhere(self.rooms, {name: user.socket.chat.room}).chatlog.push({ room: user.socket.chat.room, sender: user.username, message: chat, timestamp: timestamp });
       if (chat) {
-        self.io.sockets.to(user.socket.chat.room).emit("chat", { room: user.socket.chat.room, sender: user.username, message: chat });
+        self.io.sockets.to(user.socket.chat.room).emit("chat", { room: user.socket.chat.room, sender: user.username, message: chat, timestamp: timestamp});
       }
     });
 

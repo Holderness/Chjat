@@ -113,10 +113,14 @@ console.log("users: ---", users);
 
    // users is array of the current room models
     var updatedRooms = _.map(data, function(room) {
-      return new app.ChatroomModel({name: room.name});
+      var newChatroomModel = new app.ChatroomModel({name: room.name});
+      // _.map(room.chatlog, function(chat) {
+      //   debugger;
+      //   self.chatroomView.userChats.push(chat);
+      // });
+      return newChatroomModel;
     });
 console.log("UPDATED ROOMS: ", updatedRooms);
-         debugger;
     // this resets the collection with the updated array of rooms
     rooms.reset(updatedRooms);
   });
@@ -155,7 +159,7 @@ console.log("UPDATED ROOMS: ", updatedRooms);
 
 	// chat passed from socketclient, adds a new chat message using chatroomModel method
 	self.appEventBus.on("chatReceived", function(chat) {
-    self.chatroomModel.addChat(chat);
+    self.chatroomView.gorp(chat);
 		$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
 	});
 };

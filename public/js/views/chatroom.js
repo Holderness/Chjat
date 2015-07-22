@@ -14,37 +14,60 @@ app.ChatroomView = Backbone.View.extend({
     // passed the viewEventBus
     this.vent = options.vent;
 
-   debugger;
     // these get the collection of onlineUsers and userChats from the chatroomModel
-    var onlineUsers = this.model.get('onlineUsers');
-    var chatrooms = this.collection;
 
-    //sets event listeners on the collections
-    this.listenTo(onlineUsers, "add", this.renderUser, this);
-    this.listenTo(onlineUsers, "remove", this.renderUsers, this);
-    this.listenTo(onlineUsers, "reset", this.renderUsers, this);
 
-    this.listenTo(chatrooms, "add", this.renderRoom, this);
-    this.listenTo(chatrooms, "remove", this.renderRooms, this);
-    this.listenTo(chatrooms, "reset", this.renderRooms, this);
   },
   render: function(model) {
+    this.model = model || this.model;
     this.$el.html(this.template());
+    this.setChatCollection();
     this.renderUsers();
     this.setChatListeners(model);
     this.renderRooms();
     return this;
   },
+  setChatCollection: function() {
+      this.userChats = new app.ChatCollection([
+        // message and sender upon entering chatroom
+        new app.ChatModel({ sender: 'Butters', message: 'awwwwww hamburgers. ||):||', timestamp: _.now() })
+      ]);
+  },
   setChatListeners: function(model) {
-    model = model || this.model;
-    var userChats = model.get('userChats');
+    this.stopListening();
+
+    var onlineUsers = this.model.get('onlineUsers');
+   //sets event listeners on the collections
+    this.listenTo(onlineUsers, "add", this.renderUser, this);
+    this.listenTo(onlineUsers, "remove", this.renderUsers, this);
+    this.listenTo(onlineUsers, "reset", this.renderUsers, this);
+
+    var userChats = this.userChats;
     this.listenTo(userChats, "add", this.renderChat, this);
     this.listenTo(userChats, "remove", this.renderChats, this);
     this.listenTo(userChats, "reset", this.renderChats, this);
     this.renderChats();
+    var chatrooms = this.collection;
+
+    this.listenTo(chatrooms, "add", this.renderRoom, this);
+    this.listenTo(chatrooms, "remove", this.renderRooms, this);
+    this.listenTo(chatrooms, "reset", this.renderRooms, this);
+
+    this.listenTo(this.model, "gorp", this.gorp, this);
+    // this.model.on('gorp', function(chat) {
+    //   this.gorp(chat);
+    // });
+
+  },
+
+  gorp: function(chat) {
+    var now = _.now();
+
+    this.userChats.add(new app.ChatModel({ sender: chat.sender, message: chat.message, timestamp: now}));
   },
   // renders on events, called just above
   renderUsers: function() {
+
     this.$('.online-users').empty();
     this.model.get("onlineUsers").each(function (user) {
       this.renderUser(user);
@@ -53,12 +76,11 @@ app.ChatroomView = Backbone.View.extend({
   renderUser: function(model) {
     var template = _.template($("#online-users-list-template").html());
     this.$('.online-users').append(template(model.toJSON()));
-    // this.$('.user-count').html(this.model.get("onlineUsers").length);
-    // this.$('.nano').nanoScroller();
+
   },
   renderChats: function() {
     this.$('.chatbox-content').empty();
-    this.model.get('userChats').each(function(chat) {
+    this.userChats.each(function(chat) {
       this.renderChat(chat);
     }, this);
   },
@@ -74,9 +96,7 @@ app.ChatroomView = Backbone.View.extend({
   // renders on events, called just above
   renderRooms: function() {
     this.$('.public-rooms-container').empty();
-    debugger;
     this.collection.each(function (room) {
-    debugger;
       this.renderRoom(room);
     }, this);
   },
@@ -89,8 +109,7 @@ app.ChatroomView = Backbone.View.extend({
 
   joinRoom: function(name) {
     this.vent.trigger('joinRoom', name);
-    debugger;
-    var model = this.collection.findWhere({name: name}).get('userChats');
+    var model = this.collection.findWhere({name: name});
     this.render(model);
   },
 

@@ -4,14 +4,17 @@ var app = app || {};
 (function () {
 
 app.ChatroomModel = Backbone.Model.extend({
-  defaults: {
-    name: 'default',
+  defaults: function() {
+    return {
+    name: 'Gen Pop',
     onlineUsers: new app.UserCollection(),
-    userChats: new app.ChatCollection([
-      // message and sender upon entering chatroom
-      new app.ChatModel({ sender: 'Butters', message: 'awwwwww hamburgers. ||):||', timestamp: _.now() })
-      ])
+
+    };
   },
+  // userChats: new app.ChatCollection([
+  //     // message and sender upon entering chatroom
+  //     new app.ChatModel({ sender: 'Butters', message: 'awwwwww hamburgers. ||):||', timestamp: _.now() })
+  //     ]),
   addUser: function(username) {
     this.get('onlineUsers').add(new app.UserModel({ username: username }));
     console.log("--adding-user---");
@@ -24,8 +27,7 @@ app.ChatroomModel = Backbone.Model.extend({
     }
   },
   addChat: function(chat) {
-    var now = _.now();
-    this.get('userChats').add(new app.ChatModel({ sender: chat.sender, message: chat.message, timestamp: now}));
+    this.trigger('gorp', chat);
   },
 });
 
