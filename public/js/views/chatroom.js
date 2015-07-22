@@ -14,9 +14,9 @@ app.ChatroomView = Backbone.View.extend({
     // passed the viewEventBus
     this.vent = options.vent;
 
+   debugger;
     // these get the collection of onlineUsers and userChats from the chatroomModel
     var onlineUsers = this.model.get('onlineUsers');
-    var userChats = this.model.get('userChats');
     var chatrooms = this.collection;
 
     //sets event listeners on the collections
@@ -24,21 +24,24 @@ app.ChatroomView = Backbone.View.extend({
     this.listenTo(onlineUsers, "remove", this.renderUsers, this);
     this.listenTo(onlineUsers, "reset", this.renderUsers, this);
 
-    this.listenTo(userChats, "add", this.renderChat, this);
-    this.listenTo(userChats, "remove", this.renderChats, this);
-    this.listenTo(userChats, "reset", this.renderChats, this);
-
     this.listenTo(chatrooms, "add", this.renderRoom, this);
     this.listenTo(chatrooms, "remove", this.renderRooms, this);
     this.listenTo(chatrooms, "reset", this.renderRooms, this);
   },
-  render: function() {
-    var onlineUsers = this.model.get("onlineUsers");
+  render: function(model) {
     this.$el.html(this.template());
     this.renderUsers();
-    this.renderChats();
+    this.setChatListeners(model);
     this.renderRooms();
     return this;
+  },
+  setChatListeners: function(model) {
+    model = model || this.model;
+    var userChats = model.get('userChats');
+    this.listenTo(userChats, "add", this.renderChat, this);
+    this.listenTo(userChats, "remove", this.renderChats, this);
+    this.listenTo(userChats, "reset", this.renderChats, this);
+    this.renderChats();
   },
   // renders on events, called just above
   renderUsers: function() {
@@ -86,7 +89,9 @@ app.ChatroomView = Backbone.View.extend({
 
   joinRoom: function(name) {
     this.vent.trigger('joinRoom', name);
-    this.render();
+    debugger;
+    var model = this.collection.findWhere({name: name}).get('userChats');
+    this.render(model);
   },
 
 

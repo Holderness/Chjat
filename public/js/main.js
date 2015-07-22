@@ -106,7 +106,6 @@ console.log("users: ---", users);
 
   self.appEventBus.on("roomInfo", function(data) {
 
-
     // This method gets the online users collection from chatroomModel.
     // onlineUsers is the collection
     var rooms = self.chatroomList;
@@ -124,6 +123,17 @@ console.log("UPDATED ROOMS: ", updatedRooms);
 
 
   self.appEventBus.on("setRoom", function(room) {
+  //   if (self.chatroomView !== undefined) {
+  //   debugger;
+  //   self.chatroomView.stopListening();
+  //   self.chatroomModel = new app.ChatroomModel();
+  //   self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel, collection: self.chatroomList});
+
+  //   // viewstate is changed to chatroom after login.
+  //   self.containerModel.set("viewState", self.chatroomView);
+  //   autosize($('textarea.message-input'));
+  //   $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
+  // }
     self.chatClient.setRoom(room);
   });
 
