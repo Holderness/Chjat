@@ -14,17 +14,20 @@ module.exports = function() {
 
   var app = express();
 
+  ejs.delimiter = '$';
+
   // parses request body and populates request.body
+  app.use( bodyParser.urlencoded({ extended: true }) );
+  app.use( bodyParser.json() );
 
+  app.use(session({
+    saveUninitialized: true,
+    resave: true,
+    secret: process.env.SESSION_SECRET
+  }));
 
-  // app.use(session({
-  //   saveUninitialized: true,
-  //   resave: true,
-  //   secret: process.env.SESSION_SECRET
-  // }));
-
-  // app.set('views', './app/views');
-  // app.set('view engine', 'ejs');
+  app.set('views', './public');
+  app.set('view engine', 'ejs');
 
   // app.use(flash());
   // app.use(passport.initialize());
