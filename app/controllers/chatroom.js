@@ -7,16 +7,6 @@ var express = require('express'),
 
 var ChatroomModel = mongoose.model('Chatroom');
 
-exports.findAllChats = function(req, res, next) {
-  return ChatroomModel.find( { name: req.body.chatroom.name }, function( err, chatroom) {
-    if (!err) {
-      return res.send( chatroom.chatlog );
-    } else {
-      return console.log( err );
-    }
-  });
-};
-
 exports.findAllChatrooms = function(req, res, next) {
   return ChatroomModel.find().exec(function(err, chatrooms) {
     if (!err) {
@@ -26,7 +16,6 @@ exports.findAllChatrooms = function(req, res, next) {
     }
   });
 };
-
 
 exports.addChatroom = function(req, res, next) {
   var chatroom = new ChatroomModel({
@@ -42,6 +31,29 @@ exports.addChatroom = function(req, res, next) {
     }
   });
 };
+
+exports.findBy = function(req, res, next) {
+  return ChatroomModel.find({ name: req.room.name }, function( err, chatroom ) {
+    if (!err) {
+      console.log( chatroom );
+      return res.send( chatroom );
+    } else {
+      return console.log( err );
+    }
+  });
+};
+
+
+exports.findAllChatroomMessagess = function(req, res, next) {
+  return ChatroomModel.find( { name: req.body.chatroom.name }, function( err, chatroom) {
+    if (!err) {
+      return res.send( chatroom.chatlog );
+    } else {
+      return console.log( err );
+    }
+  });
+};
+
 
 exports.addMessage = function(req, res, next) {
   return ChatroomModel.find({ name: req.body.message.room }, function(err, chatroom) {

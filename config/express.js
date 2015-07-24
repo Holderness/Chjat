@@ -26,12 +26,12 @@ module.exports = function() {
     secret: process.env.SESSION_SECRET
   }));
 
-  app.set('views', './public');
-  app.set('view engine', 'ejs');
+  // app.set('views', './public');
+  // app.set('view engine', 'ejs');
 
   // app.use(flash());
-  // app.use(passport.initialize());
-  // app.use(passport.session());
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   app.use(express.static(path.join(__dirname, '../public')));
 
@@ -39,12 +39,12 @@ module.exports = function() {
 
 
 //routes
-  var index = require('../app/routes/index');
-  app.use('/', index);
+  // var index = require('../app/routes/index');
+  // app.use('/', index);
   // what the routes will look like...
-  // require('../app/routes/index.js')(app);
+  require('../app/routes/index.js')(app);
   // require('../app/routes/users.js')(app);
-  // require('../app/routes/book.js')(app);
+  require('../app/routes/chatroom.js')(app);
 
 
 
