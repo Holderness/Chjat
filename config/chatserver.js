@@ -140,17 +140,15 @@ console.log("chatserver - self.users: ", self.users);
 
 
     user.socket.on("rooms", function() {
+      console.log('rooms');
       ChatroomModel.find(function( err, chatrooms ) {
         if (!err) {
           user.socket.emit("rooms", chatrooms);
-      console.log('werearewe');
         } else {
           return console.log( "this is the error, idiot: ", err );
         }
       });
       console.log('---------------WEEEWOOOWEEEEWOOO-------------------------------------------------------------------');
-      // user.socket.emit("rooms", rooms);
-      console.log('werearewe');
     });
 
 
@@ -166,25 +164,26 @@ console.log('CHAT: ', chat);
 console.log('USER.SOCKET.CHAT.ROOM ', user.socket.chat.room);
 console.log('self.io.sockets.adapter.rooms: ', self.io.sockets.adapter.rooms);
       var timestamp = _.now();
-  if (chat) {
-    ChatroomModel.find({ name: user.socket.chat.room }, function(err, chatroom) {
-      if (!err) {
-        chatroom.chatlog.push( { room: user.socket.chat.room, sender: user.username, message: chat } );
-        chatroom.save(function(err) {
-          if (err) {
+      if (chat) {
+        ChatroomModel.findOne({ name: user.socket.chat.room }, function(err, chatroom) {
+          if (!err) {
+            console.log('CHATROOM: ', chatroom);
+            chatroom.chatlog.push( { room: user.socket.chat.name, sender: user.username, message: chat } );
+            chatroom.save(function(err) {
+              if (err) { return console.log( err );}
+            });
+          // return res.send( chatroom );
+            self.io.sockets.to(user.socket.chat.room).emit("chat", { room: user.socket.chat.room, sender: user.username, message: chat, timestamp: timestamp});
+          } else {
             return console.log( err );
           }
         });
-        return res.send( chatroom );
       } else {
         return console.log( err );
       }
     });
       // _.findWhere(self.rooms, {name: user.socket.chat.room}).chatlog.push({ room: user.socket.chat.room, sender: user.username, message: chat, timestamp: timestamp });
 
-        self.io.sockets.to(user.socket.chat.room).emit("chat", { room: user.socket.chat.room, sender: user.username, message: chat, timestamp: timestamp});
-      }
-    });
 
 
     // these are listening for their respective chatclient events,
@@ -203,8 +202,7 @@ console.log('-------->-----------joinRoom-------------<---------');
       self.leaveRoom(user, user.socket);
       self.addToRoom(user, user.socket, roomName);
     });
-
-
+    
   };
 
   self.leaveRoom = function(user, socket) {
