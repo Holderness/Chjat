@@ -6,7 +6,7 @@ var app = app || {};
 app.ChatroomModel = Backbone.Model.extend({
   defaults: function() {
     return {
-    name: 'Gen Pop',
+    name: 'DOO',
     onlineUsers: new app.UserCollection(),
 
     };

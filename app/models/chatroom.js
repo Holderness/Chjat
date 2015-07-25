@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+console.log('model');
 
 var Messages = new mongoose.Schema({
   room: String,
@@ -15,8 +16,10 @@ var Chatroom = new mongoose.Schema({
   name: String,
   // users: [],
   chatlog: [ Messages ],
-  created: Date,
+  created: {
+        type: Date,
+        default: Date.now
+    },
 });
 
 module.exports = mongoose.model( 'Chatroom', Chatroom );
-module.exports = mongoose.model( 'Messages', Messages );

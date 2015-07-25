@@ -4,7 +4,7 @@ var express = require('express'),
     bodyParser = require('body-parser');
 
 
-
+console.log('chatroom controller');
 var ChatroomModel = mongoose.model('Chatroom');
 
 exports.findAllChatrooms = function(req, res, next) {

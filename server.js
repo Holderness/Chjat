@@ -4,7 +4,6 @@ var config = require('./config/config'),
     mongoose = require('./config/mongoose'),
     express = require('./config/express'),
     passport = require('./config/passport'),
-    ChatServer = require('./config/chatserver'),
     errorHandler = require('errorhandler'),
     http = require('http');
 
@@ -22,6 +21,10 @@ server.listen( config.port, function() {
   console.log( 'Express server listening on port %d in %s mode',
     config.port, app.settings.env );
 });
+
+
+
+ChatServer = require('./config/chatserver'),
 
 // passes the socketio enhanced server to chatserver.js
 // initializes the chatserver along with its listeners
