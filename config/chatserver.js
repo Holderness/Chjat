@@ -7,7 +7,7 @@ var express = require('express'),
 
 console.log('chatserver');
 
-
+var UserModel = mongoose.model('User');
 var ChatroomModel = mongoose.model('Chatroom');
 
 
@@ -23,7 +23,7 @@ var Server = function(options) {
   self.users = [];
 
   // server's room list
-  self.rooms = [];
+  // self.rooms = [];
 
 
   self.init = function() {

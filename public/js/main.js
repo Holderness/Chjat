@@ -166,7 +166,6 @@ console.log("UPDATED ROOMS: ", updatedRooms);
   self.appEventBus.on("setChatlog", function(chatlog) {
     var newList = new app.ChatCollection(chatlog);
     self.chatroomView.renderChats(newList);
-    debugger;
     $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
   });
 };
