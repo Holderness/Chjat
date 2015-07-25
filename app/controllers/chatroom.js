@@ -10,6 +10,7 @@ var ChatroomModel = mongoose.model('Chatroom');
 exports.findAllChatrooms = function(req, res, next) {
   return ChatroomModel.find().exec(function(err, chatrooms) {
     if (!err) {
+            console.log('it"s a girl!');
       return res.send( chatrooms );
     } else {
       return console.log( err );
@@ -35,6 +36,7 @@ exports.addChatroom = function(req, res, next) {
 exports.findBy = function(req, res, next) {
   return ChatroomModel.find({ name: req.room.name }, function( err, chatroom ) {
     if (!err) {
+      console.log('it"s a boy!');
       console.log( chatroom );
       return res.send( chatroom );
     } else {

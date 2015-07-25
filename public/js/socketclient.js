@@ -166,6 +166,10 @@ var ChatClient = function(options) {
     socket.on('setRoom', function(name) {
       self.vent.trigger("setRoom", name);
     });
+    socket.on('chatlog', function(chatlog) {
+      console.log(' theis is dey chat lawg: ', chatlog);
+      self.vent.trigger("setChatlog", chatlog);
+    });
 
 
     // these guys listen to the server, 

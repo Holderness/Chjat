@@ -46,7 +46,7 @@ app.ChatroomView = Backbone.View.extend({
     this.listenTo(userChats, "add", this.renderChat, this);
     this.listenTo(userChats, "remove", this.renderChats, this);
     this.listenTo(userChats, "reset", this.renderChats, this);
-    this.renderChats();
+
     var chatrooms = this.collection;
 
     this.listenTo(chatrooms, "add", this.renderRoom, this);
@@ -78,9 +78,11 @@ app.ChatroomView = Backbone.View.extend({
     this.$('.online-users').append(template(model.toJSON()));
 
   },
-  renderChats: function() {
+  renderChats: function(chats) {
     this.$('.chatbox-content').empty();
-    this.userChats.each(function(chat) {
+    debugger;
+    chats = chats || this.userChats;
+    chats.each(function(chat) {
       this.renderChat(chat);
     }, this);
   },
@@ -110,6 +112,7 @@ app.ChatroomView = Backbone.View.extend({
   joinRoom: function(name) {
     this.vent.trigger('joinRoom', name);
     var model = this.collection.findWhere({name: name});
+    this.getChatCollection(name);
     this.render(model);
   },
 
@@ -133,6 +136,9 @@ app.ChatroomView = Backbone.View.extend({
     if ($tar.is('p')) {
       this.joinRoom($tar.data('room'));
     }
+  },
+  getChatCollection: function(chatroomName) {
+
   }
 
 

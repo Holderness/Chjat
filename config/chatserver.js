@@ -113,8 +113,6 @@ var Server = function(options) {
     // listens for a user socket to disconnect, removes that user
     // from the online user array
     user.socket.on('disconnect', function() {
-console.log('USER: ', user);
-console.log('we disconnected');
       self.users.splice(self.users.indexOf(user), 1);
       self.io.sockets.emit("userLeft", user.username);
       self.leaveRoom(user, user.socket);
@@ -129,15 +127,9 @@ console.log("chatserver - self.users: ", self.users);
       var users = _.map(self.users, function(user) {
         return user.username;
       });
-      // console.log('HOLDUP', users);
-      // console.log('HOLDUP', user);
-      // console.log('HOLDUP', user.socket);
       // emits updated online usernames array to chatclient
       user.socket.emit("onlineUsers", users);
     });
-
-
-
 
     user.socket.on("rooms", function() {
       console.log('rooms');
@@ -145,10 +137,9 @@ console.log("chatserver - self.users: ", self.users);
         if (!err) {
           user.socket.emit("rooms", chatrooms);
         } else {
-          return console.log( "this is the error, idiot: ", err );
+          return console.log( err );
         }
       });
-      console.log('---------------WEEEWOOOWEEEEWOOO-------------------------------------------------------------------');
     });
 
 
@@ -182,7 +173,6 @@ console.log('self.io.sockets.adapter.rooms: ', self.io.sockets.adapter.rooms);
         return console.log( err );
       }
     });
-      // _.findWhere(self.rooms, {name: user.socket.chat.room}).chatlog.push({ room: user.socket.chat.room, sender: user.username, message: chat, timestamp: timestamp });
 
 
 
@@ -197,39 +187,55 @@ console.log('self.io.sockets.adapter.rooms: ', self.io.sockets.adapter.rooms);
 
     // joins user to a room
     user.socket.on('joinRoom', function(roomName) {
-console.log('-------->-----------joinRoom-------------<---------');
+      console.log('joinRoom');
       user.socket.leave(user.socket.chat.room);
       self.leaveRoom(user, user.socket);
       self.addToRoom(user, user.socket, roomName);
     });
-    
+
   };
 
   self.leaveRoom = function(user, socket) {
     var currentRoom = user.socket.chat.room;
+console.log('leaveRoom');
 console.log("CURRENTROOM: ", currentRoom);
 console.log("USER: ", user.username);
-      var rooms = ChatroomModel.find({}, function( err, chatroom ) {
-        if (!err) {
-          console.log( "CHATROOOOOOOM", chatroom );
-        } else {
-          return console.log( err );
-        }
-      });
-console.log("rooms: ", rooms);
-      // emits updated online usernames array to chatclient
-      socket.emit("rooms", rooms);
-      socket.broadcast.to(currentRoom).emit('userLeft', user.username);
+    ChatroomModel.find({}, function( err, chatrooms ) {
+      if (!err) {
+        console.log( "CHATROOOOOOOMs", chatrooms );
+        // emits updated online usernames array to chatclient
+        socket.emit("rooms", chatrooms);
+         socket.broadcast.to(currentRoom).emit('userLeft', user.username);
+      } else {
+        return console.log( err );
+      }
+    });
   };
 
   self.addToRoom = function(user, socket, roomName) {
-console.log("addToRoom: ", roomName);
+console.log("ADDTOROOM!!!: ", roomName);
     socket.join(roomName);
     socket.chat.room = roomName;
     socket.emit('setRoom', roomName);
+    self.getChats(socket, roomName);
 console.log("io.sockets.adapter.rooms:  ", self.io.sockets.adapter.rooms);
-     socket.broadcast.to(roomName).emit('userJoined', user.username);
+    socket.broadcast.to(roomName).emit('userJoined', user.username);
   };
+
+
+  self.getChats = function(socket, roomName) {
+     console.log('---------------WEEEWOOOWEEEEWOOO-----------------------------------------------------------------');
+    ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
+      if (!err) {
+        console.log('chatroom.chatlog: ', chatroom.chatlog);
+        socket.emit('chatlog', chatroom.chatlog);
+      } else {
+        return console.log (err);
+      }
+    });
+  };
+
+
 };
 
 
@@ -237,7 +243,6 @@ console.log("io.sockets.adapter.rooms:  ", self.io.sockets.adapter.rooms);
 var User = function(args) {
   var self = this;
   self.socket = args.socket;
-  // self.socket.chat.room = 'default';
   self.username = args.username;
 };
 
