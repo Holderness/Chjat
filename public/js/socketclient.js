@@ -30,14 +30,15 @@ var ChatClient = function(options) {
 		self.setResponseListeners(self.socket);
 	};
 
-    ///// ViewEventBus methods ////
+
+///// ViewEventBus methods ////
     // methods that emit to the chatserver
-		// emits login event to chatserver
-	self.login = function(name) {
+  self.login = function(name) {
+    // emits login event to chatserver
 		self.socket.emit("login", name);
 	};
+  self.chat = function(chat) {
     // emits chat event to chatserver
-	self.chat = function(chat) {
 		self.socket.emit("chat", chat);
 	};
 
@@ -47,11 +48,9 @@ var ChatClient = function(options) {
     var message = data.username + ' is typing';
     $('.typetypetype').text(message);
 	};
-
 	self.removeChatTyping = function() {
     $('.typetypetype').empty();
 	};
-
   self.updateTyping = function() {
     if (self.socket) {
       if (!typing) {
@@ -59,7 +58,6 @@ var ChatClient = function(options) {
         self.socket.emit('typing');
       }
       lastTypingTime = (new Date()).getTime();
-
       setTimeout(function() {
         var typingTimer = (new Date()).getTime();
         var timeDiff = typingTimer - lastTypingTime;
@@ -71,28 +69,25 @@ var ChatClient = function(options) {
     }
   };
 
+
   // join room
   self.joinRoom = function(name) {
     self.socket.emit('joinRoom', name);
   };
 
-// set room
+  // set room
   self.setRoom = function(name) {
-
     if (name !== null) {
       this.currentRoom = name;
     }
-
-///>>>>>>> changethisto .chat-title
+    ///>>>>>>> changethisto .chat-title
     var $chatTitle = $('.chatbox-header-username');
     $chatTitle.text(name);
-
-
-    var self = this;
+    var this_ = this;
     $('.chat-directory').find('.room').each(function() {
       var $room = $(this);
       $room.removeClass('active');
-      if ($room.data('name') === self.currentRoom) {
+      if ($room.data('name') === this_.currentRoom) {
         $room.addClass('active');
       }
     });
@@ -101,7 +96,8 @@ var ChatClient = function(options) {
 
 
 
-  // chatserver listeners
+  ////////////// chatserver listeners/////////////
+
   // these guys listen to the chatserver/socket and emit data to main.js,
   // specifically to the appEventBus.
 	self.setResponseListeners = function(socket) {
@@ -111,7 +107,7 @@ var ChatClient = function(options) {
 
 		socket.on('welcome', function(data) {
       // emits event to recalibrate onlineUsers collection
-      socket.emit("onlineUsers");
+      socket.emit("getOnlineUsers");
       socket.emit("rooms");
 			console.log('onlineUsers1: ', data);
       // data is undefined at this point because it's the first to
@@ -134,28 +130,25 @@ var ChatClient = function(options) {
 		// this is the second listener to onlineUsers
 		// by the time this is called, the new user has been added to
 		// the user collection.
-		socket.on('onlineUsers', function(data) {
+		socket.on('usersInfo', function(data) {
 			// this data is an array with all the online user's usernames.
 			self.vent.trigger("usersInfo", data);
 		});
-
-
-
     socket.on('rooms', function(data) {
       // this data is an array with all the online user's usernames.
       self.vent.trigger("roomInfo", data);
     });
 
-
-
 		socket.on('userJoined', function(data) {
 			// data === username of user joined
 			console.log('userJoined: ', data);
+      socket.emit("getOnlineUsers");
 			self.vent.trigger("userJoined", data);
 		});
 		socket.on('userLeft', function(data) {
 			// data === username of user removed
 			console.log('userLeft: ', data);
+      socket.emit("getOnlineUsers");
 			self.vent.trigger("userLeft", data);
 		});
 		socket.on('chat', function(data) {

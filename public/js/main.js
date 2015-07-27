@@ -17,11 +17,13 @@ app.MainController = function() {
 
     // loginModel
 		self.loginModel = new app.LoginModel();
+    self.loginView = new app.LoginView({vent: self.viewEventBus, model: self.loginModel});
+    self.registerView = new app.RegisterView({vent: self.viewEventBus });
 
     // The ContainerModel gets passed a viewState, LoginView, which
     // is the login page. That LoginView gets passed the viewEventBus
     // and the LoginModel.
-		self.containerModel = new app.ContainerModel({ viewState: new app.LoginView({vent: self.viewEventBus, model: self.loginModel})});
+		self.containerModel = new app.ContainerModel({ viewState: self.loginView});
 
 		// next, a new ContainerView is intialized with the newly created containerModel
 		// the login page is then rendered.
@@ -85,6 +87,20 @@ app.MainController = function() {
 	});
 
 
+
+
+  self.appEventBus.on("gotoLogin", function() {
+    self.containerModel.set("viewState", self.loginView);
+  });
+
+  self.appEventBus.on("gotoRegister", function() {
+    self.containerModel.set("viewState", self.registerView);
+  });
+
+
+
+
+
   // after 'onlineUsers' event emits, the 'usersInfo' event triggers
 	self.appEventBus.on("usersInfo", function(data) {
     //data is an array of usernames, including the new user
@@ -105,7 +121,6 @@ console.log("users: ---", users);
 
 
   self.appEventBus.on("roomInfo", function(data) {
-
     // This method gets the online users collection from chatroomModel.
     // onlineUsers is the collection
     var rooms = self.chatroomList;

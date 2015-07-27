@@ -23,6 +23,7 @@ var app = app || {};
     },
     onLogin: function() {
       // triggers the login event and passing the username data to js/main.js
+      debugger;
       this.vent.trigger("login", this.$('#nameText').val());
     },
     onHitEnter: function(e) {

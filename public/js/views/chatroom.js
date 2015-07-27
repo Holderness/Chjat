@@ -67,7 +67,6 @@ app.ChatroomView = Backbone.View.extend({
   },
   // renders on events, called just above
   renderUsers: function() {
-
     this.$('.online-users').empty();
     this.model.get("onlineUsers").each(function (user) {
       this.renderUser(user);
@@ -76,11 +75,9 @@ app.ChatroomView = Backbone.View.extend({
   renderUser: function(model) {
     var template = _.template($("#online-users-list-template").html());
     this.$('.online-users').append(template(model.toJSON()));
-
   },
   renderChats: function(chats) {
     this.$('.chatbox-content').empty();
-    debugger;
     chats = chats || this.userChats;
     chats.each(function(chat) {
       this.renderChat(chat);
@@ -136,10 +133,8 @@ app.ChatroomView = Backbone.View.extend({
     if ($tar.is('p')) {
       this.joinRoom($tar.data('room'));
     }
-  },
-  getChatCollection: function(chatroomName) {
-
   }
+
 
 
 

@@ -18,3 +18,38 @@
   <script src="/js/views/main.js"></script>
   <script src="/js/socketclient.js"></script>
   <script src="/js/main.js"></script>
+
+
+
+
+// to create user chats
+
+  //    var chatroom =  new ChatroomModel({
+  //   name: "DOO",
+  //   chatlog: [{room: "DOO", sender: "harumphtr", message: "harootr"}],
+  // });
+  // chatroom.save( function( err ) {
+  //   if (!err) {
+  //     return console.log('chatroom created');
+  //   } else {
+  //     return console.log( err );
+  //   }
+  // });
+
+  // var varys = ChatroomModel.find({}, function( err, chatroom ) {
+  //   if (!err) {
+  //     console.log( chatroom );
+  //   } else {
+  //     return console.log( err );
+  //   }
+  // });
+
+  // ChatroomModel.find( {name: "ATAT"} , function( err, chatroom ) {
+  //   return chatroom.remove( function( err ) {
+  //     if (!err) {
+  //      console.log( 'Chatroom removed' );
+  //    } else {
+  //      console.log( err );
+  //    }
+  //  });
+  // });

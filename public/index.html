@@ -13,6 +13,30 @@
 <body>
 
 
+    <div class="nav-header menu-wrapper">
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="fa fa-bars"></span>
+            </button>
+            <a class="navbar-brand" href="#"><img class="img-responsive nav-logo" src="/img/fly-pig-serious-icon.png"></a>
+          </div>
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-left">
+            
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><i class="fa fa-power-off fa-2x"></i></li>
+              <li><a href="#log">login</a></li>              
+              <li><a href="#reg">register</a></li>              
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+    </div><!-- end menu-wrapper -->
+
   <div class="view-container" id="view-container"> </div>
 
   <script type='text/template' id="login-template">
@@ -35,34 +59,63 @@
         </div>
       </div>
     </div>
+  </script>
 
+  <script type="text/template" id="login">
+    <div class="container">
+    <form class="form-signin" action="/login" method="post">
+          <h2 class="form-signin-heading text-center">Open, says me</h2>
+        
+          <label for="username" class="sr-only">Username</label>
+          <input type="text" name="username" id="username" class="form-control" placeholder="Username" required autofocus>
+          
+          <label for="password" class="sr-only">Password</label>
+          <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+          
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        </form>
+
+        <div class="row">
+        <div class="center-block text-center">
+        <a href="/oauth/facebook">Login with Facebook</a> |
+        <a href="/oauth/twitter">Login with Twitter</a>
+      </div>
+    </div>
+    </div>
+  </script>
+
+  <script type="text/template" id="register">
+    <div class="container">
+    <form class="form-signin" action="/register" method="post">
+          <h2 class="form-signin-heading text-center">Register</h2>
+        
+          <label for="username" class="sr-only">Username</label>
+          <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+
+          <label for="name" class="sr-only">Name</label>
+          <input type="text" id="name" name="name" class="form-control" placeholder="Name" required autofocus>
+
+          <label for="email" class="sr-only">E-mail</label>
+          <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required>
+          
+          <label for="password" class="sr-only">Password</label>
+          <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+          
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+        </form>
+
+        <div class="row">
+        <div class="center-block text-center">
+        <a href="/oauth/facebook">Login with Facebook</a> |
+        <a href="/oauth/twitter">Login with Twitter</a>
+      </div>
+    </div>
+    </div>
   </script>
 	
 
 <script type="text/template" id="chatroom-template">  
   <div class="wrapper message-view">
-
-    <div class="nav-header menu-wrapper">
-      <nav class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="fa fa-bars"></span>
-            </button>
-            <a class="navbar-brand" href="#"><img class="img-responsive nav-logo" src="/img/fly-pig-serious-icon.png"></a>
-          </div>
-          <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-left">
-              <!-- <li><a href="#">Hamburger</a></li>     -->                 
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-              <li><i class="fa fa-power-off fa-2x"></i></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
-      </nav>
-    </div><!-- end menu-wrapper -->
 
 
     <section id="page-content" class="clearfix">
