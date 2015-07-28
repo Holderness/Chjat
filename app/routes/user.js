@@ -12,33 +12,33 @@ module.exports = function(app) {
     .get(users.renderRegister)
     .post(users.register);
 
-  app.route('/login')
-    .get(users.renderLogin)
-    .post(passport.authenticate('local', {
-      successRedirect: '/',
-      failureRedirect: '/#log',
-      failureFlash: true
-    }));
+  // app.route('/login')
+  //   .get(users.renderLogin)
+  //   .post(passport.authenticate('local', {
+  //     successRedirect: '/#authenticated',
+  //     failureRedirect: '/',
+  //     failureFlash: true
+  //   }));
 
   app.get('/logout', users.logout);
 
   app.get('/oauth/facebook', passport.authenticate('facebook', {
-    failureRedirect: '/#log',
+    failureRedirect: '/',
     scope:['email']
   }));
 
   app.get('/oauth/facebook/callback', passport.authenticate('facebook', {
-    failureRedirect: '/#log',
-    successRedirect: '/',
+    failureRedirect: '/',
+    successRedirect: '/#authenticated',
     scope:['email']
   }));
 
   app.get('/oauth/twitter', passport.authenticate('twitter', {
-    failureRedirect: '/#log'
+    failureRedirect: '/'
   }));
 
   app.get('/oauth/twitter/callback', passport.authenticate('twitter', {
-    failureRedirect: '/#log',
-    successRedirect: '/'
+    failureRedirect: '/',
+    successRedirect: '/#authenticated'
   }));
 };

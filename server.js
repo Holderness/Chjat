@@ -28,7 +28,7 @@ ChatServer = require('./config/chatserver'),
 
 // passes the socketio enhanced server to chatserver.js
 // initializes the chatserver along with its listeners
-  new ChatServer({ io: io }).init();
+  new ChatServer({ io: io, app: app }).init();
 
 
 module.exports = app;

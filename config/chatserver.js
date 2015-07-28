@@ -22,11 +22,29 @@ var Server = function(options) {
   // io from server.js
   self.io = options.io;
 
+  self.app = options.app;
+
   // server's online user list
   self.users = [];
 
-  // server's room list
-  // self.rooms = [];
+  self.app.post('/login',
+    passport.authenticate('local'),
+       function(req, res) {
+         console.log('by god its alive: ', req.user);
+         self.user = req.user;
+         res.redirect('/#authenticated');
+    });
+
+
+  // app.post('/login',
+  // passport.authenticate('local'),
+  // function(req, res) {
+  //   // If this function gets called, authentication was successful.
+  //   // `req.user` contains the authenticated user.
+  //   res.redirect('/users/' + req.user.username);
+  // });
+
+
 
 
   self.init = function() {
@@ -45,72 +63,79 @@ var Server = function(options) {
 
 
   self.manageConnection = function(socket) {
-    socket.on('login', function(username) {
+
+    // socket.on('login', function(user) {
       // username length validation
-      var nameBad = !username || username.length < 3 || username.length > 10;
-      if (nameBad) {
-        socket.emit('loginNameBad', username);
-        return;
-      }
-
-      // username exists validation
-      var nameExists = _.some(self.users, function(user) {
-        return user.username == username;
-      });
-      if (nameExists) {
-        socket.emit("loginNameExists", username);
-      } else {
-        // if username does not exist, create user, passes in user name and the socket
-        // keep in mind this model is not a backbone UserModel, it's a server User model
-        // defined at the bottom of this page
-        var newUser = new User({ username: username, socket: socket });
-
-        //pushes User model to online user array
-        self.users.push(newUser);
-
-        // calls method below
-        self.setResponseListeners(newUser);
-
-        // joins default room
-        self.addToRoom(newUser, socket, 'DOO');
-
-        // emits 'welcome' and 'userJoined' to the chatclient
+      user = self.user;
+      console.log('by god its manageConnection: ', user);
+      console.log('by god its userID: ', user._id);
+     
+      return UserModel.findById(user._id, function(err, user) {
+        if (err) { console.log(err); return; }
+        console.log("user found: ", user);
+        self.setResponseListeners(user, socket);
+        self.addToRoom(user, socket, 'DOO');
         socket.emit("welcome");
-        // self.io.sockets.emit("userJoined", newUser.username);
-      }
-    });
+            console.log('----------------------vug------------------------------');
+        return user;
+      });
+
+
+      // // var newUser = new User({ 
+      // //   username: user.username, 
+      // //   socket: socket,
+      // // });
+      //   //pushes User model to online user array
+      //   // self.users.push(newUser);
+
+      //   // calls method below
+      //   self.setResponseListeners(newUser);
+
+      //   // joins default room
+      //   self.addToRoom(newUser, socket, 'DOO');
+
+      //   // emits 'welcome' and 'userJoined' to the chatclient
+      //   socket.emit("welcome");
+      //   // self.io.sockets.emit("userJoined", newUser.username);
+    // });
   };
     
 
 
-  self.setResponseListeners = function(user) {
+  self.setResponseListeners = function(user, socket) {
 
     // listens for a user socket to disconnect, removes that user
     // from the online user array
-    user.socket.on('disconnect', function() {
-      self.users.splice(self.users.indexOf(user), 1);
+    socket.on('disconnect', function() {
+      console.log('->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+            $.ajax({
+        url: "/api/logout",
+      }).done(function() {
+        alert('wut');
+      });
+      // self.users.splice(self.users.indexOf(user), 1);
       self.io.sockets.emit("userLeft", user.username);
-      self.leaveRoom(user, user.socket);
+      self.leaveRoom(user, socket);
       console.log('he gone.');
     });
 
     // listens to the 'onlineUsers' event, updates the online users array on
     // a change from the client.
-    user.socket.on("getOnlineUsers", function() {
+    socket.on("getOnlineUsers", function() {
       // creates new array of online usernames
       console.log("SELF.USERS: ", self.users);
       var users = _.map(self.users, function(user) {
         return user.username;
       });
       // emits updated online usernames array to chatclient
-      user.socket.emit("usersInfo", users);
+      socket.emit("usersInfo", users);
     });
 
-    user.socket.on("rooms", function() {
+    socket.on("rooms", function() {
       console.log('rooms');
       ChatroomModel.find(function( err, chatrooms ) {
         if (!err) {
-          user.socket.emit("rooms", chatrooms);
+          socket.emit("rooms", chatrooms);
         } else {
           return console.log( err );
         }
@@ -121,22 +146,22 @@ var Server = function(options) {
     // if there is a chat event, emit an object containing the username
     // and chat message to the collection of sockets connected to the server.
     // Basically, this does the job of 'broadcast'.
-    user.socket.on("chat", function(chat) {
+    socket.on("chat", function(chat) {
       console.log('----------------------------------------');
       console.log("USER: ", user.username);
       console.log('CHAT: ', chat);
-      console.log('USER.SOCKET.CHAT.ROOM ', user.socket.chat.room);
+      console.log('socket.CHAT.ROOM ', socket.chat.room);
       console.log('self.io.sockets.adapter.rooms: ', self.io.sockets.adapter.rooms);
       var timestamp = _.now();
       if (chat) {
-        ChatroomModel.findOne({ name: user.socket.chat.room }, function(err, chatroom) {
+        ChatroomModel.findOne({ name: socket.chat.room }, function(err, chatroom) {
           if (!err) {
-            chatroom.chatlog.push( { room: user.socket.chat.name, sender: user.username, message: chat } );
+            chatroom.chatlog.push( { room: socket.chat.name, sender: user.username, message: chat } );
             chatroom.save(function(err) {
               if (err) { return console.log( err );}
             });
             // return res.send( chatroom );
-            self.io.sockets.to(user.socket.chat.room).emit("chat", { room: user.socket.chat.room, sender: user.username, message: chat, timestamp: timestamp});
+            self.io.sockets.to(socket.chat.room).emit("chat", { room: socket.chat.room, sender: user.username, message: chat, timestamp: timestamp});
           } else {
             return console.log( err );
           }
@@ -148,19 +173,19 @@ var Server = function(options) {
 
     // these are listening for their respective chatclient events,
     // then the user socket broadcasts an event to all the other connected sockets.
-    user.socket.on("typing", function() {
-      user.socket.broadcast.emit("typing", { username: user.username });
+    socket.on("typing", function() {
+      socket.broadcast.emit("typing", { username: user.username });
     });
-    user.socket.on("stop typing", function() {
-      user.socket.broadcast.emit("stop typing");
+    socket.on("stop typing", function() {
+      socket.broadcast.emit("stop typing");
     });
 
     // joins user to a room
-    user.socket.on('joinRoom', function(roomName) {
+    socket.on('joinRoom', function(roomName) {
       console.log('joinRoom');
-      user.socket.leave(user.socket.chat.room);
-      self.leaveRoom(user, user.socket);
-      self.addToRoom(user, user.socket, roomName);
+      socket.leave(socket.chat.room);
+      self.leaveRoom(user, socket);
+      self.addToRoom(user, socket, roomName);
     });
 
   };
@@ -169,7 +194,7 @@ var Server = function(options) {
 
 
   self.leaveRoom = function(user, socket) {
-    var currentRoom = user.socket.chat.room;
+    var currentRoom = socket.chat.room;
     console.log('leaveRoom');
     console.log("CURRENTROOM: ", currentRoom);
     console.log("USER: ", user.username);
@@ -224,8 +249,13 @@ var Server = function(options) {
 // User Model
 var User = function(args) {
   var self = this;
+  self._id = args._id;
+  self.provider = args.provider;
+  self.email = args.email;
   self.socket = args.socket;
   self.username = args.username;
+  self.name = args.name;
+  self.password = args.password;
 };
 
 // allows export to server.js

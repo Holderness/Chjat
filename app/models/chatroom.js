@@ -16,6 +16,7 @@ var Chatroom = new mongoose.Schema({
   name: String,
   // users: [],
   chatlog: [ Messages ],
+  onlineUsers: [],
   created: {
         type: Date,
         default: Date.now

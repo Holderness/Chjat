@@ -12,8 +12,9 @@ app.MainController = function() {
 	self.init = function() {
 		// creates ChatClient from socketclient.js, passes in 
 		// appEventBus as vent, connects
-		self.chatClient = new ChatClient({ vent: self.appEventBus });
-		self.chatClient.connect();
+
+		// self.chatClient = new ChatClient({ vent: self.appEventBus });
+		// self.chatClient.connect();
 
     // loginModel
 		self.loginModel = new app.LoginModel();
@@ -31,6 +32,30 @@ app.MainController = function() {
 		self.containerView.render();
 	};
 
+  self.authenticated = function() {
+
+    debugger;
+
+    self.chatClient = new ChatClient({ vent: self.appEventBus });
+    self.chatClient.connect();
+
+
+    // new model and view created for chatroom
+    self.chatroomModel = new app.ChatroomModel();
+    self.chatroomList = new app.ChatroomList();
+    self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel, collection: self.chatroomList});
+
+    self.containerModel = new app.ContainerModel({ viewState: self.chatroomView});
+    self.containerView = new app.ContainerView({ model: self.containerModel });
+    self.containerView.render();
+
+debugger;
+    // self.containerModel.set("viewState", self.chatroomView);
+
+    autosize($('textarea.message-input'));
+    $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
+  };
+
 
 
   ////////////  Busses ////////////
@@ -40,9 +65,9 @@ app.MainController = function() {
 
   //// viewEventBus Listeners /////
   
-	self.viewEventBus.on("login", function(username) {
+	self.viewEventBus.on("login", function(user) {
     // socketio login, sends name to socketclient, socketclient sends it to chatserver
-    self.chatClient.login(username);
+    self.chatClient.login(user);
   });
 	self.viewEventBus.on("chat", function(chat) {
     // socketio chat, sends chat to socketclient, socketclient to chatserver
@@ -87,15 +112,6 @@ app.MainController = function() {
 	});
 
 
-
-
-  self.appEventBus.on("gotoLogin", function() {
-    self.containerModel.set("viewState", self.loginView);
-  });
-
-  self.appEventBus.on("gotoRegister", function() {
-    self.containerModel.set("viewState", self.registerView);
-  });
 
 
 

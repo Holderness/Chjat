@@ -7,6 +7,7 @@ var config = require('./config'),
     bcrypt = require('bcrypt-nodejs'),
     passport = require('passport'),
     path = require('path'),
+    flash = require('connect-flash'),
     session = require('express-session');
 
 
@@ -29,7 +30,7 @@ module.exports = function() {
   // app.set('views', './public');
   // app.set('view engine', 'ejs');
 
-  // app.use(flash());
+  app.use(flash());
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -43,7 +44,7 @@ module.exports = function() {
   // app.use('/', index);
   // what the routes will look like...
   require('../app/routes/index.js')(app);
-  // require('../app/routes/users.js')(app);
+  require('../app/routes/user.js')(app);
   require('../app/routes/chatroom.js')(app);
 
 

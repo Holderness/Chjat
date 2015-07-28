@@ -26,6 +26,7 @@ var ChatClient = function(options) {
 		// it's coming from the static middleware on server.js bc everything
 		// in the /public folder has been attached to the server, and visa
 		// versa.
+    debugger;
 		self.socket = io.connect(self.hostname);
 		self.setResponseListeners(self.socket);
 	};
@@ -33,9 +34,9 @@ var ChatClient = function(options) {
 
 ///// ViewEventBus methods ////
     // methods that emit to the chatserver
-  self.login = function(name) {
+  self.login = function(user) {
     // emits login event to chatserver
-		self.socket.emit("login", name);
+		self.socket.emit("login", user);
 	};
   self.chat = function(chat) {
     // emits chat event to chatserver
@@ -104,7 +105,7 @@ var ChatClient = function(options) {
 		// client listeners that listen to the chatserver and itself.
 		// Each server event triggers an appEventBus event paired with 
 		// relevant data.
-
+    debugger;
 		socket.on('welcome', function(data) {
       // emits event to recalibrate onlineUsers collection
       socket.emit("getOnlineUsers");
@@ -116,16 +117,16 @@ var ChatClient = function(options) {
       self.vent.trigger("loginDone", data);
     });
 
-		socket.on('loginNameExists', function(data) {
-      // data === string of used username
-			console.log('loginNameExists: ', data);
-			self.vent.trigger("loginNameExists", data);
-		});
-		socket.on('loginNameBad', function(data) {
-			// data === string of bad username
-			console.log('loginNameBad: ', data);
-			self.vent.trigger("loginNameBad", data);
-		});
+		// socket.on('loginNameExists', function(data) {
+  //     // data === string of used username
+		// 	console.log('loginNameExists: ', data);
+		// 	self.vent.trigger("loginNameExists", data);
+		// });
+		// socket.on('loginNameBad', function(data) {
+		// 	// data === string of bad username
+		// 	console.log('loginNameBad: ', data);
+		// 	self.vent.trigger("loginNameBad", data);
+		// });
 
 		// this is the second listener to onlineUsers
 		// by the time this is called, the new user has been added to

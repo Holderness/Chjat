@@ -3,10 +3,10 @@ var app = app || {};
 (function ($) {
 
   app.LoginView = Backbone.View.extend({
-    template: _.template($('#login-template').html()),
+    template: _.template($('#login').html()),
     events: {
-      'click #nameBtn': 'onLogin',
-      'keypress #nameText': 'onHitEnter'
+      'submit': 'onLogin',
+      // 'keypress #nameText': 'onHitEnter'
     },
     initialize: function(options) {
     // LoginView gets passed the viewEventBus when the MainController is initialized
@@ -23,8 +23,7 @@ var app = app || {};
     },
     onLogin: function() {
       // triggers the login event and passing the username data to js/main.js
-      debugger;
-      this.vent.trigger("login", this.$('#nameText').val());
+      this.vent.trigger("login", {username: this.$('#username').val(), password: this.$('#password').val()});
     },
     onHitEnter: function(e) {
       if(e.keyCode == 13) {

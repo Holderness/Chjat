@@ -8,6 +8,7 @@ var app = app || {};
       '': 'start',
       'log': 'login',
       'reg': 'register',
+      'authenticated': 'authenticated'
     },
 
     start: function() {
@@ -22,8 +23,13 @@ var app = app || {};
     },
 
     register: function() {
-      var registerView = new app.RegisterView({vent: self.viewEventBus });
+      var registerView = new app.RegisterView({vent: app.mainController.viewEventBus });
       app.mainController.containerModel.set("viewState", registerView);
+    },
+
+    authenticated: function() {
+      app.mainController = new app.MainController();
+      app.mainController.authenticated();
     }
 
   });

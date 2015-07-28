@@ -37,7 +37,7 @@
       </nav>
     </div><!-- end menu-wrapper -->
 
-  <div class="view-container" id="view-container"> </div>
+  <div class="view-container" id="view-container"></div>
 
   <script type='text/template' id="login-template">
     <div class="row">
@@ -63,6 +63,11 @@
 
   <script type="text/template" id="login">
     <div class="container">
+    <div class="form-group
+            <% if (error)  {%>
+            has-error
+            <% } %>
+            ">
     <form class="form-signin" action="/login" method="post">
           <h2 class="form-signin-heading text-center">Open, says me</h2>
         
@@ -81,6 +86,7 @@
         <a href="/oauth/twitter">Login with Twitter</a>
       </div>
     </div>
+    </div> 
     </div>
   </script>
 
