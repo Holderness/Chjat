@@ -34,7 +34,6 @@ app.MainController = function() {
 
   self.authenticated = function() {
 
-    debugger;
 
     self.chatClient = new ChatClient({ vent: self.appEventBus });
     self.chatClient.connect();
@@ -49,7 +48,6 @@ app.MainController = function() {
     self.containerView = new app.ContainerView({ model: self.containerModel });
     self.containerView.render();
 
-debugger;
     // self.containerModel.set("viewState", self.chatroomView);
 
     autosize($('textarea.message-input'));

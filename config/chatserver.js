@@ -66,7 +66,9 @@ var Server = function(options) {
 
     // socket.on('login', function(user) {
       // username length validation
-      user = self.user;
+
+    user = self.user;
+    if (user) {
       console.log('by god its manageConnection: ', user);
       console.log('by god its userID: ', user._id);
      
@@ -79,7 +81,7 @@ var Server = function(options) {
             console.log('----------------------vug------------------------------');
         return user;
       });
-
+    }
 
       // // var newUser = new User({ 
       // //   username: user.username, 
@@ -108,11 +110,6 @@ var Server = function(options) {
     // from the online user array
     socket.on('disconnect', function() {
       console.log('->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-            $.ajax({
-        url: "/api/logout",
-      }).done(function() {
-        alert('wut');
-      });
       // self.users.splice(self.users.indexOf(user), 1);
       self.io.sockets.emit("userLeft", user.username);
       self.leaveRoom(user, socket);
@@ -124,11 +121,26 @@ var Server = function(options) {
     socket.on("getOnlineUsers", function() {
       // creates new array of online usernames
       console.log("SELF.USERS: ", self.users);
-      var users = _.map(self.users, function(user) {
-        return user.username;
-      });
-      // emits updated online usernames array to chatclient
-      socket.emit("usersInfo", users);
+
+
+        ChatroomModel.findOne({ name: socket.chat.room }, function(err, chatroom) {
+          if (!err) {
+            chatroom.onlineUsers.push( user );
+            chatroom.save(function(err) {
+              if (err) { return console.log( err );}
+            });
+            // return res.send( chatroom );
+            socket.emit(chatroom.name + "'s onlineUsers", chatroom.onlineUsers);
+          } else {
+            return console.log( err );
+          }
+        });
+
+      // var users = _.map(self.users, function(user) {
+      //   return user.username;
+      // });
+      // // emits updated online usernames array to chatclient
+      // socket.emit("usersInfo", users);
     });
 
     socket.on("rooms", function() {
@@ -182,7 +194,10 @@ var Server = function(options) {
 
     // joins user to a room
     socket.on('joinRoom', function(roomName) {
-      console.log('joinRoom');
+      console.log('**********************************************************************');
+      console.log('JOIN ROOM: ', roomName)
+      console.log('USER: ', user)
+    console.log('**********************************************************************');
       socket.leave(socket.chat.room);
       self.leaveRoom(user, socket);
       self.addToRoom(user, socket, roomName);
@@ -194,10 +209,39 @@ var Server = function(options) {
 
 
   self.leaveRoom = function(user, socket) {
+
+
+
+    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
     var currentRoom = socket.chat.room;
     console.log('leaveRoom');
     console.log("CURRENTROOM: ", currentRoom);
     console.log("USER: ", user.username);
+    ChatroomModel.update({ name: currentRoom }, {$pull: {'onlineUsers': {username: user.username}}}, function(err, model) {
+    if (err) {return console.log(err);} });
+
+
+    //    { $pull: { 'comments': {  _id: comment_id } } },function(err,model){
+    //   if(err){
+    //     console.log(err);
+    //     return res.send(err);
+    //     }
+    //     return res.json(model);
+    // });
+        //   ChatroomModel.findOne({ name: roomName }, function(err, chatroom) {
+        //   if (!err) {
+        //     _.find(chatroom.onlineUsers, function(item) { return item.username === user.username }
+        //     var index = _.indexOf(chatroom.onlineUsers, {"username": user.username});
+        //     chatroom.onlineUsers.splice(index, 1);
+        //     chatroom.save(function(err) {
+        //       if (err) { return console.log( err );}
+        //     });
+        //     // return res.send( chatroom );
+        //     // socket.emit(roomName + "'s onlineUsers", chatroom.onlineUsers);
+        //   } else {
+        //     return console.log( err );
+        //   }
+        // });
     ChatroomModel.find({}, function( err, chatrooms ) {
       if (!err) {
         console.log( "CHATROOOOOOOMs", chatrooms );
@@ -215,9 +259,24 @@ var Server = function(options) {
 
 
   self.addToRoom = function(user, socket, roomName) {
+    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
     console.log("ADDTOROOM!!!: ", roomName);
     socket.join(roomName);
     socket.chat.room = roomName;
+    ChatroomModel.update({ name: roomName}, {$push: {'onlineUsers': user }}, function(err, model) {
+    if (err) {return console.log(err);} });
+      // ChatroomModel.findOne({ name: roomName }, function(err, chatroom) {
+      //     if (!err) {
+      //       chatroom.onlineUsers.push( user );
+      //       chatroom.save(function(err) {
+      //         if (err) { return console.log( err );}
+      //       });
+      //       // return res.send( chatroom );
+      //       socket.emit(roomName + "'s onlineUsers", chatroom.onlineUsers);
+      //     } else {
+      //       return console.log( err );
+      //     }
+      //   });
     socket.emit('setRoom', roomName);
     self.getChats(socket, roomName);
     console.log("io.sockets.adapter.rooms:  ", self.io.sockets.adapter.rooms);

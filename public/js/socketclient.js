@@ -26,7 +26,6 @@ var ChatClient = function(options) {
 		// it's coming from the static middleware on server.js bc everything
 		// in the /public folder has been attached to the server, and visa
 		// versa.
-    debugger;
 		self.socket = io.connect(self.hostname);
 		self.setResponseListeners(self.socket);
 	};
@@ -73,6 +72,7 @@ var ChatClient = function(options) {
 
   // join room
   self.joinRoom = function(name) {
+    debugger;
     self.socket.emit('joinRoom', name);
   };
 
@@ -105,7 +105,6 @@ var ChatClient = function(options) {
 		// client listeners that listen to the chatserver and itself.
 		// Each server event triggers an appEventBus event paired with 
 		// relevant data.
-    debugger;
 		socket.on('welcome', function(data) {
       // emits event to recalibrate onlineUsers collection
       socket.emit("getOnlineUsers");
