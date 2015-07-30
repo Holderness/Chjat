@@ -30,6 +30,10 @@ var ChatClient = function(options) {
 		self.setResponseListeners(self.socket);
 	};
 
+  self.getChatroomModel = function(name) {
+    self.socket.emit("getChatroomModel", name);
+  };
+
 
 ///// ViewEventBus methods ////
     // methods that emit to the chatserver
@@ -72,7 +76,6 @@ var ChatClient = function(options) {
 
   // join room
   self.joinRoom = function(name) {
-    debugger;
     self.socket.emit('joinRoom', name);
   };
 
@@ -157,11 +160,15 @@ var ChatClient = function(options) {
 			self.vent.trigger("chatReceived", data);
 		});
     socket.on('setRoom', function(name) {
-      self.vent.trigger("setRoom", name);
+      // self.vent.trigger("setRoom", name);
     });
     socket.on('chatlog', function(chatlog) {
       console.log(' theis is dey chat lawg: ', chatlog);
       self.vent.trigger("setChatlog", chatlog);
+    });
+    socket.on('ChatroomModel', function(model) {
+      self.vent.trigger("ChatroomModel", model);
+      self.vent.trigger("setRoom", model);
     });
 
 

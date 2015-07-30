@@ -16,8 +16,10 @@ module.exports = {
     src: [
       'https://cdn.socket.io/socket.io-1.2.0.js',
       'public/js/models/chat-models/*.js',
-      'public/js/collections/*.js',
+      'public/js/collections/chat.js',
+      'public/js/collections/user.js',
       'public/js/models/*.js',
+      'public/js/collections/room.js',
       'public/js/views/*.js',
       'public/js/socketclient.js',
       'public/js/main.js',

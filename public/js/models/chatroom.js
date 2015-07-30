@@ -4,17 +4,21 @@ var app = app || {};
 (function () {
 
 app.ChatroomModel = Backbone.Model.extend({
-  defaults: function() {
-    return {
+  defaults: {
     name: 'DOO',
     onlineUsers: new app.UserCollection(),
-
-    };
+    chatlog: new app.ChatCollection([
+      // message and sender upon entering chatroom
+      new app.ChatModel({ sender: 'Butters', message: 'awwwwww hamburgers. ||):||', timestamp: _.now() })
+      ]),
+    chatrooms: null
   },
-  // userChats: new app.ChatCollection([
-  //     // message and sender upon entering chatroom
-  //     new app.ChatModel({ sender: 'Butters', message: 'awwwwww hamburgers. ||):||', timestamp: _.now() })
-  //     ]),
+  initialize: function() {
+    this.trigger('getChatroomModel', this.get('name'));
+  },
+  loadModel: function(model) {
+    debugger;
+  },
   addUser: function(username) {
     this.get('onlineUsers').add(new app.UserModel({ username: username }));
     console.log("--adding-user---");
@@ -29,6 +33,10 @@ app.ChatroomModel = Backbone.Model.extend({
   addChat: function(chat) {
     this.trigger('gorp', chat);
   },
+  parse: function( response ) {
+    response.id = response._id;
+    return response;
+  }
 });
 
 })();

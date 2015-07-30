@@ -77,6 +77,9 @@ app.MainController = function() {
   self.viewEventBus.on("joinRoom", function(room) {
     self.chatClient.joinRoom(room);
   });
+  self.viewEventBus.on("getChatroomModel", function(name) {
+    self.chatClient.getChatroomModel(name);
+  });
 
 
 
@@ -88,26 +91,26 @@ app.MainController = function() {
   //// appEventBus Listeners ////
 
   // after the 'welcome' event triggers on the sockeclient, the loginDone event triggers.
-	self.appEventBus.on("loginDone", function() {
+	// self.appEventBus.on("loginDone", function() {
 
-		// new model and view created for chatroom
-		self.chatroomModel = new app.ChatroomModel();
-    self.chatroomList = new app.ChatroomList();
-		self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel, collection: self.chatroomList});
+	// 	// new model and view created for chatroom
+	// 	self.chatroomModel = new app.ChatroomModel();
+ //    self.chatroomList = new app.ChatroomList();
+	// 	self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel, collection: self.chatroomList});
 
-		// viewstate is changed to chatroom after login.
-		self.containerModel.set("viewState", self.chatroomView);
-    autosize($('textarea.message-input'));
-		$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
-	});
+	// 	// viewstate is changed to chatroom after login.
+	// 	self.containerModel.set("viewState", self.chatroomView);
+ //    autosize($('textarea.message-input'));
+	// 	$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
+	// });
 
   // error listeners
-	self.appEventBus.on("loginNameBad", function(username) {
-		self.loginModel.set("error", "Invalid Name");
-	});
-	self.appEventBus.on("loginNameExists", function(username) {
-		self.loginModel.set("error", "Name already exists");
-	});
+	// self.appEventBus.on("loginNameBad", function(username) {
+	// 	self.loginModel.set("error", "Invalid Name");
+	// });
+	// self.appEventBus.on("loginNameExists", function(username) {
+	// 	self.loginModel.set("error", "Name already exists");
+	// });
 
 
 
@@ -143,6 +146,7 @@ console.log("users: ---", users);
    // users is array of the current room models
     var updatedRooms = _.map(data, function(room) {
       var newChatroomModel = new app.ChatroomModel({name: room.name});
+
       // _.map(room.chatlog, function(chat) {
       //   debugger;
       //   self.chatroomView.userChats.push(chat);
@@ -167,12 +171,21 @@ console.log("UPDATED ROOMS: ", updatedRooms);
   //   autosize($('textarea.message-input'));
   //   $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
   // }
-    self.chatClient.setRoom(room);
+
+    // self.chatClient.setRoom(room);
   });
 
 
-
-
+  self.appEventBus.on("ChatroomModel", function(model) {
+      debugger;
+    self.chatroomModel = new app.ChatroomModel();
+    self.chatroomList = new app.ChatroomList();
+    self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel, collection: self.chatroomList});
+    self.containerModel.set('viewState', self.chatroomView);
+    self.chatroomModel.loadModel(model);
+    debugger;
+    // self.chatroomModel.loadModel(model);
+  });
 
   // adds new user to users collection, sends default joining message
 	self.appEventBus.on("userJoined", function(username) {

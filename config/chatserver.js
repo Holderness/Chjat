@@ -30,7 +30,7 @@ var Server = function(options) {
   self.app.post('/login',
     passport.authenticate('local'),
        function(req, res) {
-         console.log('by god its alive: ', req.user);
+         // console.log('by god its alive: ', req.user);
          self.user = req.user;
          res.redirect('/#authenticated');
     });
@@ -69,12 +69,12 @@ var Server = function(options) {
 
     user = self.user;
     if (user) {
-      console.log('by god its manageConnection: ', user);
-      console.log('by god its userID: ', user._id);
+                                    // console.log('by god its manageConnection: ', user);
+                                    // console.log('by god its userID: ', user._id);
      
       return UserModel.findById(user._id, function(err, user) {
         if (err) { console.log(err); return; }
-        console.log("user found: ", user);
+        // console.log("user found: ", user);
         self.setResponseListeners(user, socket);
         self.addToRoom(user, socket, 'DOO');
         socket.emit("welcome");
@@ -120,7 +120,7 @@ var Server = function(options) {
     // a change from the client.
     socket.on("getOnlineUsers", function() {
       // creates new array of online usernames
-      console.log("SELF.USERS: ", self.users);
+      // console.log("SELF.USERS: ", self.users);
 
 
         ChatroomModel.findOne({ name: socket.chat.room }, function(err, chatroom) {
@@ -203,6 +203,17 @@ var Server = function(options) {
       self.addToRoom(user, socket, roomName);
     });
 
+    socket.on('getChatroomModel', function(name) {
+        ChatroomModel.findOne({ name: name }, function(err, chatroom) {
+          if (!err) {
+            // return res.send( chatroom );
+            socket.emit("ChatroomModel", chatroom);
+          } else {
+            return console.log( err );
+          }
+        });
+    });
+
   };
 
 
@@ -210,13 +221,10 @@ var Server = function(options) {
 
   self.leaveRoom = function(user, socket) {
 
-
-
     console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
     var currentRoom = socket.chat.room;
-    console.log('leaveRoom');
-    console.log("CURRENTROOM: ", currentRoom);
-    console.log("USER: ", user.username);
+    console.log('leaveRoom: ', currentRoom);
+    // console.log("USER: ", user.username);
     ChatroomModel.update({ name: currentRoom }, {$pull: {'onlineUsers': {username: user.username}}}, function(err, model) {
     if (err) {return console.log(err);} });
 
@@ -279,7 +287,7 @@ var Server = function(options) {
       //   });
     socket.emit('setRoom', roomName);
     self.getChats(socket, roomName);
-    console.log("io.sockets.adapter.rooms:  ", self.io.sockets.adapter.rooms);
+    // console.log("io.sockets.adapter.rooms:  ", self.io.sockets.adapter.rooms);
     socket.broadcast.to(roomName).emit('userJoined', user.username);
   };
 
@@ -290,7 +298,7 @@ var Server = function(options) {
      console.log('---------------WEEEWOOOWEEEEWOOO-----------------------------------------------------------------');
     ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
       if (!err) {
-        console.log('chatroom.chatlog: ', chatroom.chatlog);
+        // console.log('chatroom.chatlog: ', chatroom.chatlog);
         socket.emit('chatlog', chatroom.chatlog);
       } else {
         return console.log (err);
