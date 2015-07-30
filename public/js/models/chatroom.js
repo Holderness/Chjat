@@ -4,6 +4,7 @@ var app = app || {};
 (function () {
 
 app.ChatroomModel = Backbone.Model.extend({
+  urlRoot: '/api/chatrooms',
   defaults: {
     name: 'DOO',
     onlineUsers: new app.UserCollection(),
@@ -13,10 +14,14 @@ app.ChatroomModel = Backbone.Model.extend({
       ]),
     chatrooms: null
   },
+  events: {
+     "chatrooms:change": "loadModel"
+  },
   initialize: function() {
-    this.trigger('getChatroomModel', this.get('name'));
+    // this.trigger('getChatroomModel', this.get('name'));
   },
   loadModel: function(model) {
+    console.log('bone diddly');
     debugger;
   },
   addUser: function(username) {

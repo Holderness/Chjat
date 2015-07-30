@@ -5,7 +5,7 @@ var app = app || {};
 
   app.ChatroomList = Backbone.Collection.extend({
     model: app.ChatroomModel,
-    url: '/api/chatrooms'
+    url: '/api/chatrooms',
   });
 
 })();

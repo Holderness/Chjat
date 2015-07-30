@@ -34,24 +34,35 @@ app.MainController = function() {
 
   self.authenticated = function() {
 
-
     self.chatClient = new ChatClient({ vent: self.appEventBus });
     self.chatClient.connect();
 
 
     // new model and view created for chatroom
-    self.chatroomModel = new app.ChatroomModel();
+    self.chatroomModel = new app.ChatroomModel({ name: 'DOO' });
     self.chatroomList = new app.ChatroomList();
-    self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel, collection: self.chatroomList});
+    self.chatroomList.fetch().done(function() {
+      self.chatroomModel.set('chatrooms', self.chatroomList);
+      // self.chatroomModel.loadModel();
+      self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel });
+      debugger;
+      self.containerModel = new app.ContainerModel({ viewState: self.chatroomView});
+      self.containerView = new app.ContainerView({ model: self.containerModel });
+      debugger;
+      self.containerView.render();
 
-    self.containerModel = new app.ContainerModel({ viewState: self.chatroomView});
-    self.containerView = new app.ContainerView({ model: self.containerModel });
-    self.containerView.render();
+      self.chatClient.getChatroomModel("DOO");
 
-    // self.containerModel.set("viewState", self.chatroomView);
+      // self.containerModel.set("viewState", self.chatroomView);
 
-    autosize($('textarea.message-input'));
-    $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
+      autosize($('textarea.message-input'));
+      $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
+
+     
+
+
+    });
+
   };
 
 
@@ -140,7 +151,7 @@ console.log("users: ---", users);
   self.appEventBus.on("roomInfo", function(data) {
     // This method gets the online users collection from chatroomModel.
     // onlineUsers is the collection
-    var rooms = self.chatroomList;
+    var rooms = self.chatroomModel.get("chatrooms");
      console.log("ROOMS: ", rooms);
 
    // users is array of the current room models
@@ -159,7 +170,7 @@ console.log("UPDATED ROOMS: ", updatedRooms);
   });
 
 
-  self.appEventBus.on("setRoom", function(room) {
+  self.appEventBus.on("setRoom", function(model) {
   //   if (self.chatroomView !== undefined) {
   //   debugger;
   //   self.chatroomView.stopListening();
@@ -171,8 +182,18 @@ console.log("UPDATED ROOMS: ", updatedRooms);
   //   autosize($('textarea.message-input'));
   //   $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
   // }
-
     // self.chatClient.setRoom(room);
+    
+        var newList = new app.ChatCollection(model.chatlog);
+    self.chatroomModel.set('chatlog', newList);
+
+
+    var newList = new app.ChatroomList(model.chatrooms);
+    self.chatroomModel.set('chatrooms', newList);
+
+    var newList = new app.UserCollection(model.onlineUsers);
+    self.chatroomModel.set('onlineUsers', newList);
+
   });
 
 
@@ -205,10 +226,24 @@ console.log("UPDATED ROOMS: ", updatedRooms);
 		$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
 	});
 
+
+
   self.appEventBus.on("setChatlog", function(chatlog) {
     var newList = new app.ChatCollection(chatlog);
-    self.chatroomView.renderChats(newList);
-    $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
+    self.chatroomModel.set('chatlog', newList);
+    // $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
   });
+  
+  self.appEventBus.on("setChatrooms", function(chatrooms) {
+    var newList = new app.ChatroomList(chatrooms);
+    self.chatroomModel.set('chatrooms', newList);
+  });
+
+    self.appEventBus.on("setOnlineUsers", function(onlineUsers) {
+    var newList = new app.UserCollection(onlineUsers);
+    self.chatroomModel.set('onlineUsers', newList);
+  });
+
+
 };
 

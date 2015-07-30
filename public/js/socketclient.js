@@ -160,17 +160,24 @@ var ChatClient = function(options) {
 			self.vent.trigger("chatReceived", data);
 		});
     socket.on('setRoom', function(name) {
-      // self.vent.trigger("setRoom", name);
+      self.vent.trigger("setRoom", name); 
     });
     socket.on('chatlog', function(chatlog) {
       console.log(' theis is dey chat lawg: ', chatlog);
       self.vent.trigger("setChatlog", chatlog);
     });
     socket.on('ChatroomModel', function(model) {
-      self.vent.trigger("ChatroomModel", model);
+      // self.vent.trigger("ChatroomModel", model);
       self.vent.trigger("setRoom", model);
     });
-
+    socket.on('achatrooms', function(chatrooms) {
+      console.log('chatrooms:  ', chatrooms);
+      self.vent.trigger("setChatrooms", chatrooms);
+    });
+    socket.on('aonlineUsers', function(onlineUsers) {
+      console.log('online users: ', onlineUsers);
+      self.vent.trigger("setOnlineUsers", onlineUsers);
+    });
 
     // these guys listen to the server, 
     // then call chatclient methods listed above

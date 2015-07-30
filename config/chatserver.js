@@ -285,8 +285,11 @@ var Server = function(options) {
       //       return console.log( err );
       //     }
       //   });
+  
     socket.emit('setRoom', roomName);
     self.getChats(socket, roomName);
+    self.getOnlineUsers(socket, roomName);
+    self.getChatrooms(socket);
     // console.log("io.sockets.adapter.rooms:  ", self.io.sockets.adapter.rooms);
     socket.broadcast.to(roomName).emit('userJoined', user.username);
   };
@@ -300,6 +303,28 @@ var Server = function(options) {
       if (!err) {
         // console.log('chatroom.chatlog: ', chatroom.chatlog);
         socket.emit('chatlog', chatroom.chatlog);
+      } else {
+        return console.log (err);
+      }
+    });
+  };
+  self.getOnlineUsers = function(socket, roomName) {
+     console.log('---------------WEEEWOOOWEEEEWOOO-----------------------------------------------------------------');
+    ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
+      if (!err) {
+        // console.log('chatroom.chatlog: ', chatroom.chatlog);
+        socket.emit('aonlineUsers', chatroom.onlineUsers);
+      } else {
+        return console.log (err);
+      }
+    });
+  };
+  self.getChatrooms = function(socket) {
+     console.log('---------------WEEEWOOOWEEEEWOOO-----------------------------------------------------------------');
+    ChatroomModel.find({}, function( err, chatrooms ) {
+      if (!err) {
+        // console.log('chatroom.chatlog: ', chatroom.chatlog);
+        socket.emit('achatrooms', chatroom);
       } else {
         return console.log (err);
       }
