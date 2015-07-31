@@ -30,6 +30,10 @@ var ChatClient = function(options) {
 		self.setResponseListeners(self.socket);
 	};
 
+  self.connectToRoom = function(name) {
+    self.socket.emit("connectToRoom", name);
+  };
+
   self.getChatroomModel = function(name) {
     self.socket.emit("getChatroomModel", name);
   };

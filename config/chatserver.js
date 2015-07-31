@@ -76,12 +76,12 @@ var Server = function(options) {
         if (err) { console.log(err); return; }
         // console.log("user found: ", user);
         self.setResponseListeners(user, socket);
-        self.addToRoom(user, socket, 'DOO');
-        socket.emit("welcome");
             console.log('----------------------vug------------------------------');
         return user;
       });
     }
+
+
 
       // // var newUser = new User({ 
       // //   username: user.username, 
@@ -154,6 +154,11 @@ var Server = function(options) {
       });
     });
 
+    socket.on("connectToRoom", function(name) {
+      self.addToRoom(user, socket, name);
+      socket.emit("welcome");
+    });
+
     // listening for a 'chat' event from client, 
     // if there is a chat event, emit an object containing the username
     // and chat message to the collection of sockets connected to the server.
@@ -197,7 +202,7 @@ var Server = function(options) {
       console.log('**********************************************************************');
       console.log('JOIN ROOM: ', roomName)
       console.log('USER: ', user)
-    console.log('**********************************************************************');
+      console.log('**********************************************************************');
       socket.leave(socket.chat.room);
       self.leaveRoom(user, socket);
       self.addToRoom(user, socket, roomName);
@@ -324,7 +329,7 @@ var Server = function(options) {
     ChatroomModel.find({}, function( err, chatrooms ) {
       if (!err) {
         // console.log('chatroom.chatlog: ', chatroom.chatlog);
-        socket.emit('achatrooms', chatroom);
+        socket.emit('achatrooms', chatrooms);
       } else {
         return console.log (err);
       }

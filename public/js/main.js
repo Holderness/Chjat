@@ -51,12 +51,14 @@ app.MainController = function() {
       debugger;
       self.containerView.render();
 
-      self.chatClient.getChatroomModel("DOO");
+
 
       // self.containerModel.set("viewState", self.chatroomView);
 
       autosize($('textarea.message-input'));
       $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
+
+            self.chatClient.connectToRoom("DOO");
 
      
 
@@ -210,6 +212,7 @@ console.log("UPDATED ROOMS: ", updatedRooms);
 
   // adds new user to users collection, sends default joining message
 	self.appEventBus.on("userJoined", function(username) {
+    debugger;
 		self.chatroomModel.addUser(username);
 		self.chatroomModel.addChat({sender: "Butters", message: username + " joined room." });
 	});
@@ -231,17 +234,21 @@ console.log("UPDATED ROOMS: ", updatedRooms);
   self.appEventBus.on("setChatlog", function(chatlog) {
     var newList = new app.ChatCollection(chatlog);
     self.chatroomModel.set('chatlog', newList);
+    debugger;
     // $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
   });
   
   self.appEventBus.on("setChatrooms", function(chatrooms) {
     var newList = new app.ChatroomList(chatrooms);
     self.chatroomModel.set('chatrooms', newList);
+    debugger;
   });
 
     self.appEventBus.on("setOnlineUsers", function(onlineUsers) {
     var newList = new app.UserCollection(onlineUsers);
     self.chatroomModel.set('onlineUsers', newList);
+    debugger;
+
   });
 
 
