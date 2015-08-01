@@ -164,7 +164,7 @@ var ChatClient = function(options) {
 			self.vent.trigger("chatReceived", data);
 		});
     socket.on('setRoom', function(name) {
-      self.vent.trigger("setRoom", name); 
+      self.vent.trigger("setRoom", name);
     });
     socket.on('chatlog', function(chatlog) {
       console.log(' theis is dey chat lawg: ', chatlog);

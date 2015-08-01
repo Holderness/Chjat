@@ -14,13 +14,7 @@ app.ChatroomModel = Backbone.Model.extend({
       ]),
     chatrooms: null
   },
-  events: {
-     "chatrooms:change": "loadModel"
-  },
-  initialize: function() {
-    // this.trigger('getChatroomModel', this.get('name'));
-  },
-  loadModel: function(model) {
+  loadModel: function() {
     console.log('bone diddly');
     debugger;
   },

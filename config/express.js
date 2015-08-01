@@ -21,18 +21,14 @@ module.exports = function() {
   app.use( bodyParser.urlencoded({ extended: true }) );
   app.use( bodyParser.json() );
 
-  app.use(session({
-    saveUninitialized: true,
-    resave: true,
-    secret: process.env.SESSION_SECRET
-  }));
-
-  // app.set('views', './public');
-  // app.set('view engine', 'ejs');
 
   app.use(flash());
   app.use(passport.initialize());
   app.use(passport.session());
+
+
+
+
 
   app.use(express.static(path.join(__dirname, '../public')));
 

@@ -5,6 +5,9 @@ var config = require('./config/config'),
     express = require('./config/express'),
     passport = require('./config/passport'),
     errorHandler = require('errorhandler'),
+    session = require('express-session'),
+    sharedsession = require("express-socket.io-session"),
+    flash = require('connect-flash'),
     http = require('http');
 
 var db = mongoose(),
@@ -12,6 +15,19 @@ var db = mongoose(),
     passport = passport(),
     server = http.Server(app),
     io = require('socket.io')(server);
+
+  var session = session({
+    saveUninitialized: true,
+    resave: true,
+    secret: process.env.SESSION_SECRET
+  });
+
+
+
+  app.use(session);
+  io.use(sharedsession(session));
+
+
 
 if (app.settings.env === 'development') {
   app.use( errorHandler({ dumpExceptions: true, showStack: true }) );

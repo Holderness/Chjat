@@ -12,13 +12,13 @@ module.exports = function(app) {
     .get(users.renderRegister)
     .post(users.register);
 
-  // app.route('/login')
-  //   .get(users.renderLogin)
-  //   .post(passport.authenticate('local', {
-  //     successRedirect: '/#authenticated',
-  //     failureRedirect: '/',
-  //     failureFlash: true
-  //   }));
+  app.route('/login')
+    .get(users.renderLogin)
+    .post(passport.authenticate('local', {
+      successRedirect: '/#authenticated',
+      failureRedirect: '/',
+      failureFlash: true
+    }));
 
   app.get('/logout', users.logout);
 
@@ -42,3 +42,15 @@ module.exports = function(app) {
     successRedirect: '/#authenticated'
   }));
 };
+
+
+// app.get('/login', function(req, res, next) {
+//   passport.authenticate('local', function(err, user, info) {
+//     if (err) { return next(err); }
+//     if (!user) { return res.redirect('/login'); }
+//     req.logIn(user, function(err) {
+//       if (err) { return next(err); }
+//       return res.redirect('/users/' + user.username);
+//     });
+//   })(req, res, next);
+// });

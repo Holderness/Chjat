@@ -13,8 +13,8 @@ app.MainController = function() {
 		// creates ChatClient from socketclient.js, passes in 
 		// appEventBus as vent, connects
 
-		// self.chatClient = new ChatClient({ vent: self.appEventBus });
-		// self.chatClient.connect();
+		self.chatClient = new ChatClient({ vent: self.appEventBus });
+		self.chatClient.connect();
 
     // loginModel
 		self.loginModel = new app.LoginModel();
@@ -34,8 +34,8 @@ app.MainController = function() {
 
   self.authenticated = function() {
 
-    self.chatClient = new ChatClient({ vent: self.appEventBus });
-    self.chatClient.connect();
+    // self.chatClient = new ChatClient({ vent: self.appEventBus });
+    // self.chatClient.connect();
 
 
     // new model and view created for chatroom
@@ -45,10 +45,8 @@ app.MainController = function() {
       self.chatroomModel.set('chatrooms', self.chatroomList);
       // self.chatroomModel.loadModel();
       self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel });
-      debugger;
       self.containerModel = new app.ContainerModel({ viewState: self.chatroomView});
       self.containerView = new app.ContainerView({ model: self.containerModel });
-      debugger;
       self.containerView.render();
 
 
@@ -200,25 +198,23 @@ console.log("UPDATED ROOMS: ", updatedRooms);
 
 
   self.appEventBus.on("ChatroomModel", function(model) {
-      debugger;
     self.chatroomModel = new app.ChatroomModel();
     self.chatroomList = new app.ChatroomList();
     self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel, collection: self.chatroomList});
     self.containerModel.set('viewState', self.chatroomView);
     self.chatroomModel.loadModel(model);
-    debugger;
     // self.chatroomModel.loadModel(model);
   });
 
   // adds new user to users collection, sends default joining message
 	self.appEventBus.on("userJoined", function(username) {
-    debugger;
 		self.chatroomModel.addUser(username);
 		self.chatroomModel.addChat({sender: "Butters", message: username + " joined room." });
 	});
 
 	// removes user from users collection, sends default leaving message
 	self.appEventBus.on("userLeft", function(username) {
+    debugger;
 		self.chatroomModel.removeUser(username);
 		self.chatroomModel.addChat({sender: "Butters", message: username + " left room." });
 	});
@@ -234,21 +230,17 @@ console.log("UPDATED ROOMS: ", updatedRooms);
   self.appEventBus.on("setChatlog", function(chatlog) {
     var newList = new app.ChatCollection(chatlog);
     self.chatroomModel.set('chatlog', newList);
-    debugger;
     // $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
   });
   
   self.appEventBus.on("setChatrooms", function(chatrooms) {
     var newList = new app.ChatroomList(chatrooms);
     self.chatroomModel.set('chatrooms', newList);
-    debugger;
   });
 
     self.appEventBus.on("setOnlineUsers", function(onlineUsers) {
     var newList = new app.UserCollection(onlineUsers);
     self.chatroomModel.set('onlineUsers', newList);
-    debugger;
-
   });
 
 
