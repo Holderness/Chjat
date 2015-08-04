@@ -278,7 +278,7 @@ var Server = function(options) {
     console.log('usersocketid: ', user.socket.id);
     user.socket.join(roomName);
     user.socket.chat.room = roomName;
-    ChatroomModel.update({ name: roomName}, {$push: {'onlineUsers': user.username }}, function(err, model){
+    ChatroomModel.update({ name: roomName}, {$push: {'onlineUsers': { username: user.username }}}, function(err, model){
       if (err) { return console.log(err); }
     });
     user.socket.emit('setRoom', roomName);

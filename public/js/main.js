@@ -68,7 +68,7 @@ app.MainController = function() {
       console.log('authent');
       setTimeout(function(){
         self.chatClient.connectToRoom("DOO");
-      }, 7000);
+      }, 3000);
 
 
 
