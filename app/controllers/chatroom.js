@@ -9,21 +9,6 @@ var ChatroomModel = mongoose.model('Chatroom');
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 exports.findAllChatrooms = function(req, res, next) {
   return ChatroomModel.find().exec(function(err, chatrooms) {
     if (!err) {

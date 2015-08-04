@@ -12,31 +12,37 @@ app.MainController = function() {
 	self.init = function() {
 		// creates ChatClient from socketclient.js, passes in 
 		// appEventBus as vent, connects
+    
+  //   if (!self.chatClient) {
+  //     debugger;
+		// self.chatClient = new ChatClient({ vent: self.appEventBus });
+		// self.chatClient.connect();
 
-		self.chatClient = new ChatClient({ vent: self.appEventBus });
-		self.chatClient.connect();
+  //   }
 
     // loginModel
-		self.loginModel = new app.LoginModel();
+    self.loginModel = new app.LoginModel();
     self.loginView = new app.LoginView({vent: self.viewEventBus, model: self.loginModel});
     self.registerView = new app.RegisterView({vent: self.viewEventBus });
 
     // The ContainerModel gets passed a viewState, LoginView, which
     // is the login page. That LoginView gets passed the viewEventBus
     // and the LoginModel.
-		self.containerModel = new app.ContainerModel({ viewState: self.loginView});
+    self.containerModel = new app.ContainerModel({ viewState: self.loginView});
 
-		// next, a new ContainerView is intialized with the newly created containerModel
-		// the login page is then rendered.
-		self.containerView = new app.ContainerView({ model: self.containerModel });
-		self.containerView.render();
-	};
+    // next, a new ContainerView is intialized with the newly created containerModel
+    // the login page is then rendered.
+    self.containerView = new app.ContainerView({ model: self.containerModel });
+    self.containerView.render();
+
+
+  };
 
   self.authenticated = function() {
+       
 
-    // self.chatClient = new ChatClient({ vent: self.appEventBus });
-    // self.chatClient.connect();
-
+    self.chatClient = new ChatClient({ vent: self.appEventBus });
+    self.chatClient.connect();
 
     // new model and view created for chatroom
     self.chatroomModel = new app.ChatroomModel({ name: 'DOO' });
@@ -45,9 +51,10 @@ app.MainController = function() {
       self.chatroomModel.set('chatrooms', self.chatroomList);
       // self.chatroomModel.loadModel();
       self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel });
-      self.containerModel = new app.ContainerModel({ viewState: self.chatroomView});
-      self.containerView = new app.ContainerView({ model: self.containerModel });
-      self.containerView.render();
+      self.containerModel.set('viewState', self.chatroomView);
+      // = new app.ContainerModel({ viewState: self.chatroomView});
+      // self.containerView = new app.ContainerView({ model: self.containerModel });
+      // self.containerView.render();
 
 
 
@@ -55,15 +62,25 @@ app.MainController = function() {
 
       autosize($('textarea.message-input'));
       $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
+       
+       // self.chatClient = new ChatClient({ vent: self.appEventBus });
+       console.log('self.chatClient.socket', self.chatClient.socket);
+      console.log('authent');
+      setTimeout(function(){
+        self.chatClient.connectToRoom("DOO");
+      }, 7000);
 
-            self.chatClient.connectToRoom("DOO");
-
-     
 
 
     });
 
   };
+
+
+  // self.appEventBus.on("authenticated", function() {
+  //   debugger;
+  //   self.authenticated();
+  // });
 
 
 
@@ -76,6 +93,7 @@ app.MainController = function() {
   
 	self.viewEventBus.on("login", function(user) {
     // socketio login, sends name to socketclient, socketclient sends it to chatserver
+    debugger;
     self.chatClient.login(user);
   });
 	self.viewEventBus.on("chat", function(chat) {
@@ -89,6 +107,7 @@ app.MainController = function() {
     self.chatClient.joinRoom(room);
   });
   self.viewEventBus.on("getChatroomModel", function(name) {
+    debugger;
     self.chatClient.getChatroomModel(name);
   });
 
@@ -183,7 +202,7 @@ console.log("UPDATED ROOMS: ", updatedRooms);
   //   $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
   // }
     // self.chatClient.setRoom(room);
-    
+      debugger;
         var newList = new app.ChatCollection(model.chatlog);
     self.chatroomModel.set('chatlog', newList);
 

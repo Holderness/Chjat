@@ -6,7 +6,7 @@ var app = app || {};
     template: _.template($('#login').html()),
     events: {
       'submit': 'onLogin',
-      // 'keypress #nameText': 'onHitEnter'
+      'keypress': 'onHitEnter'
     },
     initialize: function(options) {
     // LoginView gets passed the viewEventBus when the MainController is initialized
@@ -21,16 +21,31 @@ var app = app || {};
       this.$el.html(this.template(this.model.toJSON()));
       return this;
     },
-    onLogin: function() {
+    onLogin: function(e) {
       // triggers the login event and passing the username data to js/main.js
-      this.vent.trigger("login", {username: this.$('#username').val(), password: this.$('#password').val()});
+      var this_ = this;
+    $.ajax({
+        url: "/login",
+        method: 'POST',
+        data: {username: this.$('#username').val(), password: this.$('#password').val()},
+        success: function(data) {
+           console.log('success data: ', data);
+           if (data === 200) {
+             // this_.vent.trigger('authenticated');
+            app.ChatroomRouter.navigate('authenticated', { trigger: true });
+        this_.vent.trigger("login", {username: this_.$('#username').val(), password: this_.$('#password').val()});
+           }
+        }
+      }).done(function() {
+        console.log('doneeeeeeee');
+      });
     },
-    onHitEnter: function(e) {
-      if(e.keyCode == 13) {
-        this.onLogin();
-        return false;
-      }
-    }
+    // onHitEnter: function(e) {
+    //   if(e.keyCode == 13) {
+    //     this.onLogin();
+    //     return false;
+    //   }
+    // }
   });
   
 })(jQuery);

@@ -22,16 +22,22 @@ var ChatClient = function(options) {
 
   // connects to socket, sets response listeners
 	self.connect = function() {
+    debugger;
 		// this io might be a little confusing... where is it coming from?
 		// it's coming from the static middleware on server.js bc everything
 		// in the /public folder has been attached to the server, and visa
 		// versa.
+    console.log(self.hostname);
 		self.socket = io.connect(self.hostname);
-		self.setResponseListeners(self.socket);
-	};
+    self.setResponseListeners(self.socket);
+  };
 
   self.connectToRoom = function(name) {
+    debugger;
+
+    console.log('self.socket: ', self.socket);
     self.socket.emit("connectToRoom", name);
+
   };
 
   self.getChatroomModel = function(name) {
@@ -43,6 +49,7 @@ var ChatClient = function(options) {
     // methods that emit to the chatserver
   self.login = function(user) {
     // emits login event to chatserver
+    debugger;
 		self.socket.emit("login", user);
 	};
   self.chat = function(chat) {
@@ -112,15 +119,26 @@ var ChatClient = function(options) {
 		// client listeners that listen to the chatserver and itself.
 		// Each server event triggers an appEventBus event paired with 
 		// relevant data.
+         debugger;
+
+
 		socket.on('welcome', function(data) {
       // emits event to recalibrate onlineUsers collection
-      socket.emit("getOnlineUsers");
-      socket.emit("rooms");
+      // socket.emit("getOnlineUsers");
+      // socket.emit("rooms");
+      debugger;
 			console.log('onlineUsers1: ', data);
       // data is undefined at this point because it's the first to
       // fire off an event chain that will append the new user to 
       // the onlineUser collection
+ 
       self.vent.trigger("loginDone", data);
+    });
+
+
+    socket.on('log', function() {
+      debugger;
+      self.vent.trigger('authenticated');
     });
 
 		// socket.on('loginNameExists', function(data) {
@@ -164,9 +182,11 @@ var ChatClient = function(options) {
 			self.vent.trigger("chatReceived", data);
 		});
     socket.on('setRoom', function(name) {
+      debugger;
       self.vent.trigger("setRoom", name);
     });
     socket.on('chatlog', function(chatlog) {
+      debugger;
       console.log(' theis is dey chat lawg: ', chatlog);
       self.vent.trigger("setChatlog", chatlog);
     });
@@ -179,6 +199,7 @@ var ChatClient = function(options) {
       self.vent.trigger("setChatrooms", chatrooms);
     });
     socket.on('aonlineUsers', function(onlineUsers) {
+      debugger;
       console.log('online users: ', onlineUsers);
       self.vent.trigger("setOnlineUsers", onlineUsers);
     });
@@ -192,7 +213,9 @@ var ChatClient = function(options) {
       self.removeChatTyping();
     });
 
-
+    // $(window).on('beforeunload', function(){
+    //   socket.close();
+    // });
 
 	};
 };

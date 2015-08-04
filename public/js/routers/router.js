@@ -28,7 +28,7 @@ var app = app || {};
     },
 
     authenticated: function() {
-      app.mainController = new app.MainController();
+      // app.mainController = new app.MainController();
       app.mainController.authenticated();
     }
 

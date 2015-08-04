@@ -13,12 +13,37 @@ module.exports = function(app) {
     .post(users.register);
 
   app.route('/login')
-    .get(users.renderLogin)
-    .post(passport.authenticate('local', {
-      successRedirect: '/#authenticated',
-      failureRedirect: '/',
-      failureFlash: true
-    }));
+    .get(users.renderLogin);
+
+  app.post('/login', function(req, res, next){
+    passport.authenticate('local', function(err, user) {
+      // console.log('req.socket--> ', req.socket);
+      return res.json(200);
+    })(req, res, next);
+  });
+
+    // .post(passport.authenticate('local', {
+    //    successRedirect: '/#authenticated',
+    //    failureRedirect: '/'
+    //  }));
+
+
+
+
+
+
+
+
+  //     function(err, user, info) {
+  //   if (err) { return next(err); }
+  //   if (!user) { return res.redirect('/'); }
+  //   console.log('user--> ', user);
+  //   return res.redirect('/#authenticated');
+  //   // req.logIn(user, function(err) {
+  //   //   if (err) { return next(err); }
+  //   //   return res.redirect('/users/' + user.username);
+  //   // });
+  // }));
 
   app.get('/logout', users.logout);
 

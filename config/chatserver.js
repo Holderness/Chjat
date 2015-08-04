@@ -44,21 +44,24 @@ var Server = function(options) {
     // Fired upon a connection
     self.io.on('connection', function(socket){
       console.log('a mothafucka is connected');
+      self.socket = socket;
       socket.chat = {};
-
-
+      socket.send('pong');
+      console.log('socketTTT', socket.id);
+      // socket.emit('welcome');
+      // socket.emit('log');
           // Accept a login event with user's data
     socket.on("login", function(userdata) {
       console.log('>>>>>userdata: ', userdata);
       socket.handshake.session.userdata = userdata;
-      self.manageConnection(socket);
+      self.manageConnection(socket, userdata);
+      
     });
     socket.on("logout", function(userdata) {
         if (socket.handshake.session.userdata) {
             delete socket.handshake.session.userdata;
         }
     });
-
 
 
       // ManageConnection handles username validations.
@@ -71,16 +74,18 @@ var Server = function(options) {
 
 
 
-  self.manageConnection = function(socket) {
+  self.manageConnection = function(socket, userdata) {
 
      var newUser = new User({
-        username: socket.handshake.session.userdata.username,
+        username: userdata.username,
         socket: socket
       });
 
+     console.log('new user socketid: --------------- ', socket.id);
+
       self.setResponseListeners(newUser);
 
-
+    console.log('socket.handshake.session:', socket.handshake.session);
     // // socket.on('login', function(user) {
     //   // username length validation
     // console.log('socket.handshake.session.userdata----', socket.handshake.session.userdata);
@@ -120,7 +125,7 @@ var Server = function(options) {
     // listens for a user socket to disconnect, removes that user
     // from the online user array
     user.socket.on('disconnect', function() {
-      console.log('->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      console.log('->>>>>>>>>>>>>>>>>>>>DISCONNECTING>>>>>>>>>>>>>>>>>>>>>>>>');
       // self.users.splice(self.users.indexOf(user), 1);
       self.io.sockets.emit("userLeft", user.username);
       self.leaveRoom(user);
@@ -130,44 +135,46 @@ var Server = function(options) {
 
     // listens to the 'onlineUsers' event, updates the online users array on
     // a change from the client.
-    user.socket.on("getOnlineUsers", function() {
-      // creates new array of online usernames
-      // console.log("SELF.USERS: ", self.users);
+    // user.socket.on("getOnlineUsers", function() {
+    //   // creates new array of online usernames
+    //   // console.log("SELF.USERS: ", self.users);
 
 
-        ChatroomModel.findOne({ name: user.socket.chat.room }, function(err, chatroom) {
-          if (!err) {
-            chatroom.onlineUsers.push( user );
-            chatroom.save(function(err) {
-              if (err) { return console.log( err );}
-            });
-            // return res.send( chatroom );
-            user.socket.emit(chatroom.name + "'s onlineUsers", chatroom.onlineUsers);
-          } else {
-            return console.log( err );
-          }
-        });
+    //     ChatroomModel.findOne({ name: user.socket.chat.room }, function(err, chatroom) {
+    //       if (!err) {
+    //         chatroom.onlineUsers.push( user );
+    //         chatroom.save(function(err) {
+    //           if (err) { return console.log( err );}
+    //         });
+    //         // return res.send( chatroom );
+    //         user.socket.emit(chatroom.name + "'s onlineUsers", chatroom.onlineUsers);
+    //       } else {
+    //         return console.log( err );
+    //       }
+    //     });
 
-      // var users = _.map(self.users, function(user) {
-      //   return user.username;
-      // });
-      // // emits updated online usernames array to chatclient
-      // socket.emit("usersInfo", users);
-    });
+    //   // var users = _.map(self.users, function(user) {
+    //   //   return user.username;
+    //   // });
+    //   // // emits updated online usernames array to chatclient
+    //   // socket.emit("usersInfo", users);
+    // });
 
-    user.socket.on("rooms", function() {
-      console.log('rooms');
-      ChatroomModel.find(function( err, chatrooms ) {
-        if (!err) {
-          user.socket.emit("rooms", chatrooms);
-        } else {
-          return console.log( err );
-        }
-      });
-    });
+    // user.socket.on("rooms", function() {
+    //   console.log('rooms');
+    //   ChatroomModel.find(function( err, chatrooms ) {
+    //     if (!err) {
+    //       user.socket.emit("rooms", chatrooms);
+    //     } else {
+    //       return console.log( err );
+    //     }
+    //   });
+    // });
 
     user.socket.on("connectToRoom", function(name) {
+      console.log('>>>>>>>>>>>>user sockeeeeeee: ', user.socket.id);
       self.addToRoom(user, name);
+      console.log('-------------------CONNECT TO ROOM -----------------------');
       user.socket.emit("welcome");
     });
 
@@ -212,8 +219,8 @@ var Server = function(options) {
     // joins user to a room
     user.socket.on('joinRoom', function(roomName) {
       console.log('**********************************************************************');
-      console.log('JOIN ROOM: ', roomName)
-      console.log('USER: ', user)
+      console.log('JOIN ROOM: ', roomName);
+      console.log('USER: ', user);
       console.log('**********************************************************************');
       user.socket.leave(user.socket.chat.room);
       self.leaveRoom(user);
@@ -259,29 +266,6 @@ var Server = function(options) {
         if (err) {return console.log(err);}
       });
 
-
-    //    { $pull: { 'comments': {  _id: comment_id } } },function(err,model){
-    //   if(err){
-    //     console.log(err);
-    //     return res.send(err);
-    //     }
-    //     return res.json(model);
-    // });
-        //   ChatroomModel.findOne({ name: roomName }, function(err, chatroom) {
-        //   if (!err) {
-        //     _.find(chatroom.onlineUsers, function(item) { return item.username === user.username }
-        //     var index = _.indexOf(chatroom.onlineUsers, {"username": user.username});
-        //     chatroom.onlineUsers.splice(index, 1);
-        //     chatroom.save(function(err) {
-        //       if (err) { return console.log( err );}
-        //     });
-        //     // return res.send( chatroom );
-        //     // socket.emit(roomName + "'s onlineUsers", chatroom.onlineUsers);
-        //   } else {
-        //     return console.log( err );
-        //   }
-        // });
-
   };
 
 
@@ -291,26 +275,14 @@ var Server = function(options) {
   self.addToRoom = function(user, roomName) {
     console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
     console.log("ADDTOROOM!!!: ", roomName);
+    console.log('usersocketid: ', user.socket.id);
     user.socket.join(roomName);
     user.socket.chat.room = roomName;
-    ChatroomModel.update({ name: roomName}, {$push: {'onlineUsers': user }}, function(err, model) {
-    if (err) {return console.log(err);} });
-      // ChatroomModel.findOne({ name: roomName }, function(err, chatroom) {
-      //     if (!err) {
-      //       chatroom.onlineUsers.push( user );
-      //       chatroom.save(function(err) {
-      //         if (err) { return console.log( err );}
-      //       });
-      //       // return res.send( chatroom );
-      //       socket.emit(roomName + "'s onlineUsers", chatroom.onlineUsers);
-      //     } else {
-      //       return console.log( err );
-      //     }
-      //   });
-  
+    ChatroomModel.update({ name: roomName}, {$push: {'onlineUsers': user.username }}, function(err, model){
+      if (err) { return console.log(err); }
+    });
     user.socket.emit('setRoom', roomName);
-    self.getChats(user.socket, roomName);
-    self.getOnlineUsers(user.socket, roomName);
+    self.getChatsAndUsers(user, roomName);
     self.getChatrooms(user.socket);
     // console.log("io.sockets.adapter.rooms:  ", self.io.sockets.adapter.rooms);
     user.socket.broadcast.to(roomName).emit('userJoined', user.username);
@@ -319,30 +291,23 @@ var Server = function(options) {
 
 
 
-  self.getChats = function(socket, roomName) {
-     console.log('---------------WEEEWOOOWEEEEWOOO-----------------------------------------------------------------');
+  self.getChatsAndUsers = function(user, roomName) {
+     console.log('--------------getChatsAndUsers-------------------------------------------------------------');
+
     ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
       if (!err) {
-        // console.log('chatroom.chatlog: ', chatroom.chatlog);
-        socket.emit('chatlog', chatroom.chatlog);
-      } else {
-        return console.log (err);
-      }
-    });
-  };
-  self.getOnlineUsers = function(socket, roomName) {
-     console.log('---------------WEEEWOOOWEEEEWOOO-----------------------------------------------------------------');
-    ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
-      if (!err) {
-        // console.log('chatroom.chatlog: ', chatroom.chatlog);
-        socket.emit('aonlineUsers', chatroom.onlineUsers);
+        console.log('socketid: ', user.socket.id);
+        console.log('chatroom: ', chatroom);
+        console.log('user: ', user.username);
+        user.socket.emit('chatlog', chatroom.chatlog);
+        user.socket.emit('aonlineUsers', chatroom.onlineUsers);
       } else {
         return console.log (err);
       }
     });
   };
   self.getChatrooms = function(socket) {
-     console.log('---------------WEEEWOOOWEEEEWOOO-----------------------------------------------------------------');
+     console.log('--------------getChatrooms------------------------------------------------------------');
     ChatroomModel.find({}, function( err, chatrooms ) {
       if (!err) {
         // console.log('chatroom.chatlog: ', chatroom.chatlog);

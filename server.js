@@ -25,10 +25,17 @@ var db = mongoose(),
 
 
   app.use(session);
-  io.use(sharedsession(session));
+  io.use(sharedsession(session, {
+    autoSave: true
+  }));
 
+ChatServer = require('./config/chatserver'),
 
+// passes the socketio enhanced server to chatserver.js
+// initializes the chatserver along with its listeners
+  new ChatServer({ io: io, app: app }).init();
 
+  
 if (app.settings.env === 'development') {
   app.use( errorHandler({ dumpExceptions: true, showStack: true }) );
 }
@@ -40,11 +47,6 @@ server.listen( config.port, function() {
 
 
 
-ChatServer = require('./config/chatserver'),
-
-// passes the socketio enhanced server to chatserver.js
-// initializes the chatserver along with its listeners
-  new ChatServer({ io: io, app: app }).init();
 
 
 module.exports = app;
