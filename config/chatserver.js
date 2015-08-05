@@ -136,8 +136,7 @@ var Server = function(options) {
         ChatroomModel.find({}, function( err, chatrooms ) {
           if (!err) {
             console.log( "CHATROOOOOOOMs", chatrooms );
-             // emits updated online usernames array to chatclient
-            user.socket.emit("rooms", chatrooms);
+            // user.socket.emit("rooms", chatrooms);
             user.socket.broadcast.to(currentRoom).emit('userLeft', user.username);
           } else {
             return console.log( err );
@@ -153,6 +152,7 @@ var Server = function(options) {
     console.log("f.addToRoom: ", roomName);
     user.socket.join(roomName);
     user.socket.chat.room = roomName;
+    console.log('user socket id: ', user.socket.id);
     ChatroomModel.update({ name: roomName},
       {$push: {'onlineUsers': { username: user.username }}},
       function(err, model){

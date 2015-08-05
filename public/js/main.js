@@ -170,7 +170,7 @@ app.MainController = function() {
 
 	// chat passed from socketclient, adds a new chat message using chatroomModel method
 	self.appEventBus.on("chatReceived", function(chat) {
-    self.chatroomView.gorp(chat);
+    self.chatroomModel.addChat(chat);
 		$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
 	});
 
