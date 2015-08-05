@@ -22,38 +22,35 @@ var ChatClient = function(options) {
 
   // connects to socket, sets response listeners
 	self.connect = function() {
-    debugger;
+    console.log('sc.f.connect');
 		// this io might be a little confusing... where is it coming from?
 		// it's coming from the static middleware on server.js bc everything
 		// in the /public folder has been attached to the server, and visa
 		// versa.
-    console.log(self.hostname);
 		self.socket = io.connect(self.hostname);
     self.setResponseListeners(self.socket);
   };
 
   self.connectToRoom = function(name) {
-    debugger;
-
-    console.log('self.socket: ', self.socket);
+    console.log('sc.f.connectToRoom: ', name);
     self.socket.emit("connectToRoom", name);
-
   };
 
   self.getChatroomModel = function(name) {
+    console.log('sc.f.getChatroomModel: ', name);
     self.socket.emit("getChatroomModel", name);
   };
+
 
 
 ///// ViewEventBus methods ////
     // methods that emit to the chatserver
   self.login = function(user) {
-    // emits login event to chatserver
-    debugger;
+    console.log('sc.f.login: ', user);
 		self.socket.emit("login", user);
 	};
   self.chat = function(chat) {
-    // emits chat event to chatserver
+    console.log('sc.f.chat: ', chat);
 		self.socket.emit("chat", chat);
 	};
 
@@ -116,96 +113,69 @@ var ChatClient = function(options) {
   // these guys listen to the chatserver/socket and emit data to main.js,
   // specifically to the appEventBus.
 	self.setResponseListeners = function(socket) {
-		// client listeners that listen to the chatserver and itself.
-		// Each server event triggers an appEventBus event paired with 
-		// relevant data.
-         debugger;
-
-
 		socket.on('welcome', function(data) {
       // emits event to recalibrate onlineUsers collection
       // socket.emit("getOnlineUsers");
       // socket.emit("rooms");
-      debugger;
-			console.log('onlineUsers1: ', data);
       // data is undefined at this point because it's the first to
       // fire off an event chain that will append the new user to 
       // the onlineUser collection
- 
       self.vent.trigger("loginDone", data);
     });
 
 
     socket.on('log', function() {
-      debugger;
+      console.log('sc.e.log');
       self.vent.trigger('authenticated');
     });
 
-		// socket.on('loginNameExists', function(data) {
-  //     // data === string of used username
-		// 	console.log('loginNameExists: ', data);
-		// 	self.vent.trigger("loginNameExists", data);
-		// });
-		// socket.on('loginNameBad', function(data) {
-		// 	// data === string of bad username
-		// 	console.log('loginNameBad: ', data);
-		// 	self.vent.trigger("loginNameBad", data);
-		// });
-
-		// this is the second listener to onlineUsers
-		// by the time this is called, the new user has been added to
-		// the user collection.
-		socket.on('usersInfo', function(data) {
-			// this data is an array with all the online user's usernames.
-			self.vent.trigger("usersInfo", data);
+		socket.on('usersInfo', function(users) {
+			console.log('sc.e.usersInfo: ', users);
+			self.vent.trigger("usersInfo", users);
 		});
-    socket.on('rooms', function(data) {
-      // this data is an array with all the online user's usernames.
-      self.vent.trigger("roomInfo", data);
+
+    socket.on('rooms', function(chatrooms) {
+      console.log('sc.e.rooms: ', chatrooms);
+      self.vent.trigger("roomInfo", chatrooms);
     });
 
-		socket.on('userJoined', function(data) {
-			// data === username of user joined
-			console.log('userJoined: ', data);
+		socket.on('userJoined', function(username) {
+			console.log('sc.e.userJoined: ', username);
       socket.emit("getOnlineUsers");
-			self.vent.trigger("userJoined", data);
+			self.vent.trigger("userJoined", username);
 		});
-		socket.on('userLeft', function(data) {
-			// data === username of user removed
-			console.log('userLeft: ', data);
+		socket.on('userLeft', function(username) {
+			console.log('sc.e.userLeft: ', username);
       socket.emit("getOnlineUsers");
-			self.vent.trigger("userLeft", data);
+			self.vent.trigger("userLeft", username);
 		});
-		socket.on('chat', function(data) {
-			// data === chat message object
-			console.log('chatdata: ', data);
-			self.vent.trigger("chatReceived", data);
+		socket.on('chat', function(chat) {
+			console.log('sc.e.chat: ', chat);
+			self.vent.trigger("chatReceived", chat);
 		});
     socket.on('setRoom', function(name) {
-      debugger;
+      console.log('sc.e.setRoom: ', name);
       self.vent.trigger("setRoom", name);
     });
     socket.on('chatlog', function(chatlog) {
-      debugger;
-      console.log(' theis is dey chat lawg: ', chatlog);
+      console.log('sc.e.chatlog: ', chatlog);
       self.vent.trigger("setChatlog", chatlog);
     });
-    socket.on('ChatroomModel', function(model) {
-      // self.vent.trigger("ChatroomModel", model);
-      self.vent.trigger("setRoom", model);
-    });
-    socket.on('achatrooms', function(chatrooms) {
-      console.log('chatrooms:  ', chatrooms);
+    // socket.on('ChatroomModel', function(model) {
+    //   // self.vent.trigger("ChatroomModel", model);
+    //   self.vent.trigger("setRoom", model);
+    // });
+    socket.on('chatrooms', function(chatrooms) {
+      console.log('sc.e.chatrooms:  ', chatrooms);
       self.vent.trigger("setChatrooms", chatrooms);
     });
-    socket.on('aonlineUsers', function(onlineUsers) {
-      debugger;
-      console.log('online users: ', onlineUsers);
+    socket.on('onlineUsers', function(onlineUsers) {
+      console.log('sc.e.onlineUsers: ', onlineUsers);
       self.vent.trigger("setOnlineUsers", onlineUsers);
     });
 
-    // these guys listen to the server, 
-    // then call chatclient methods listed above
+
+
     socket.on('typing', function(data) {
       self.addChatTyping(data);
     });
@@ -213,9 +183,6 @@ var ChatClient = function(options) {
       self.removeChatTyping();
     });
 
-    // $(window).on('beforeunload', function(){
-    //   socket.close();
-    // });
 
 	};
 };
