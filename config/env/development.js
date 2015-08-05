@@ -6,24 +6,24 @@ if (!process.env.PORT) {
 
 var port = process.env.PORT || 3000;
 var db = process.env.MONGOLAB_URI || 'mongodb://localhost/chat_database';
-// var fbCallback = port === 1313 ?
-//       'http://localhost:'+ port +'/oauth/facebook/callback' :
-//       'https://bklst.herokuapp.com/oauth/facebook/callback';
-// var twCallback = port === 1313 ?
-//       'http://localhost:1313/oauth/twitter/callback' :
-//       'https://bklst.herokuapp.com/oauth/twitter/callback';
+var fbCallback = port === 3000 ?
+      'http://localhost:'+ port +'/oauth/facebook/callback' :
+      'https://bklst.herokuapp.com/oauth/facebook/callback';
+var twCallback = port === 3000 ?
+      'http://localhost:'+ port + '/oauth/twitter/callback' :
+      'https://bklst.herokuapp.com/oauth/twitter/callback';
 
 module.exports = {
   port: port,
   db: db,
-  // facebook: {
-  //       clientID: process.env.fbClientID,
-  //       clientSecret: process.env.fbClientSecret,
-  //       callbackURL: fbCallback
-  // },
-  // twitter: {
-  //   clientID: process.env.twClientID,
-  //   clientSecret: process.env.twClientSecret,
-  //   callbackURL: twCallback
-  // }
+  facebook: {
+        clientID: process.env.fbClientID,
+        clientSecret: process.env.fbClientSecret,
+        callbackURL: fbCallback
+  },
+  twitter: {
+    clientID: process.env.twClientID,
+    clientSecret: process.env.twClientSecret,
+    callbackURL: twCallback
+  }
 };
