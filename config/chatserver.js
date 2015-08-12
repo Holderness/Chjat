@@ -22,7 +22,9 @@ var Server = function(options) {
 
   self.init = function() {
     self.io.on('connection', function(socket){
-      console.log('a mothafucka is connected');
+      console.log('a mothafucka is connected', socket.handshake);
+      console.log('>>>>socket', socket.handshake.sessionStore);
+
       self.socket = socket;
       socket.chat = {};
 
@@ -39,6 +41,13 @@ var Server = function(options) {
           delete socket.handshake.session.userdata;
         }
       });
+              
+      if (socket.handshake.session.passport) {
+        UserModel.findById(socket.handshake.session.passport.user, function(err, found) {
+          return self.manageConnection(socket, found);
+        });
+      }
+
     });
   };
 

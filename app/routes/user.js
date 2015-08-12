@@ -27,13 +27,6 @@ module.exports = function(app) {
     //    failureRedirect: '/'
     //  }));
 
-
-
-
-
-
-
-
   //     function(err, user, info) {
   //   if (err) { return next(err); }
   //   if (!user) { return res.redirect('/'); }
@@ -47,14 +40,21 @@ module.exports = function(app) {
 
   app.get('/logout', users.logout);
 
+  // app.get('/oauth/facebook', function(req, res, next) {
+  //   passport.authenticate('facebook')(req, res, next);
+  // });
+  
   app.get('/oauth/facebook', passport.authenticate('facebook', {
-    failureRedirect: '/',
-    scope:['email']
-  }));
+    failureRedirect: '/', scope:['email'] }),
+    function(req, res) {
+    console.log('req: ', req);
+    console.log('res: ', res);
+    });
+
 
   app.get('/oauth/facebook/callback', passport.authenticate('facebook', {
     failureRedirect: '/',
-    successRedirect: '/#authenticated',
+    successRedirect: '/#facebook',
     scope:['email']
   }));
 
@@ -64,7 +64,7 @@ module.exports = function(app) {
 
   app.get('/oauth/twitter/callback', passport.authenticate('twitter', {
     failureRedirect: '/',
-    successRedirect: '/#authenticated'
+    successRedirect: '/#twitter'
   }));
 };
 

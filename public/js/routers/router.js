@@ -8,12 +8,17 @@ var app = app || {};
       '': 'start',
       'log': 'login',
       'reg': 'register',
-      'authenticated': 'authenticated'
+      'authenticated': 'authenticated',
+      'facebook': 'facebook',
+      'twitter': 'twitter'
     },
 
-    start: function() {
+    start: function(callback) {
       app.mainController = new app.MainController();
       app.mainController.init();
+      if (callback) {
+        callback();
+      }
     },
 
     login: function() {
@@ -28,9 +33,14 @@ var app = app || {};
     },
 
     authenticated: function() {
-      // app.mainController = new app.MainController();
       app.mainController.authenticated();
-    }
+    },
+    facebook: function() {
+      this.start(this.authenticated);
+    },
+    twitter: function() {
+      this.start(this.authenticated);
+    },
 
   });
 

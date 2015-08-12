@@ -58,7 +58,7 @@ exports.register = function(req, res, next) {
       if (err) {
         var message = getErrorMessage(err);
         req.flash('error', message);
-        return res.redirect('/register');
+        return res.redirect('/#reg');
       } 
 
       req.login(user, function(err) {
@@ -90,6 +90,7 @@ exports.saveOAuthUserProfile = function(req, profile, done) {
       }
       else {
         if (!user) {
+          console.log('PROFILLLLE', profile);
           var possibleUsername = profile.username || ((profile.email) ? profile.email.split('@')[0] : '');
           User.findUniqueUsername(possibleUsername, null, function(availableUsername) {
             profile.username = availableUsername;
@@ -100,7 +101,7 @@ exports.saveOAuthUserProfile = function(req, profile, done) {
               if (err) {
                 var message = _this.getErrorMessage(err);
                 req.flash('error', message);
-                return res.redirect('/register');
+                return res.redirect('/#reg');
               }
 
               return done(err, user);
