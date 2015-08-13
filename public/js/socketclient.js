@@ -139,16 +139,21 @@ var ChatClient = function(options) {
       self.vent.trigger("roomInfo", chatrooms);
     });
 
+
+
 		socket.on('userJoined', function(username) {
 			console.log('sc.e.userJoined: ', username);
-      socket.emit("getOnlineUsers");
+      // socket.emit("onlineUsers");
 			self.vent.trigger("userJoined", username);
 		});
 		socket.on('userLeft', function(username) {
 			console.log('sc.e.userLeft: ', username);
-      socket.emit("getOnlineUsers");
+      // socket.emit("onlineUsers");
 			self.vent.trigger("userLeft", username);
 		});
+
+
+
 		socket.on('chat', function(chat) {
 			console.log('sc.e.chat: ', chat);
 			self.vent.trigger("chatReceived", chat);
@@ -170,6 +175,7 @@ var ChatClient = function(options) {
       self.vent.trigger("setChatrooms", chatrooms);
     });
     socket.on('onlineUsers', function(onlineUsers) {
+      debugger;
       console.log('sc.e.onlineUsers: ', onlineUsers);
       self.vent.trigger("setOnlineUsers", onlineUsers);
     });
