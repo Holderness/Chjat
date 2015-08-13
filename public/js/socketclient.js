@@ -173,6 +173,10 @@ var ChatClient = function(options) {
       console.log('sc.e.onlineUsers: ', onlineUsers);
       self.vent.trigger("setOnlineUsers", onlineUsers);
     });
+    socket.on('chatroomName', function(name) {
+      console.log('sc.e.chatroomName: ', name);
+      self.vent.trigger("setChatroomName", name);
+    });
 
 
 

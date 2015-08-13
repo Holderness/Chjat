@@ -38,9 +38,6 @@ app.use(session({
 
 
 
-
-
-
   app.use(express.static(path.join(__dirname, '../public')));
 
   app.set('view engine', 'ejs');
@@ -53,8 +50,6 @@ app.use(session({
   require('../app/routes/index.js')(app);
   require('../app/routes/user.js')(app);
   require('../app/routes/chatroom.js')(app);
-
-
 
 
 

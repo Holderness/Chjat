@@ -6,7 +6,7 @@ var app = app || {};
 app.ChatroomModel = Backbone.Model.extend({
   urlRoot: '/api/chatrooms',
   defaults: {
-    name: 'DOO',
+    chatroom: new app.ChatroomHeaderModel({ name: 'DOO'}),
     onlineUsers: new app.UserCollection(),
     chatlog: new app.ChatCollection([
       // message and sender upon entering chatroom

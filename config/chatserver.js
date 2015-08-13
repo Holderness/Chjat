@@ -182,6 +182,7 @@ var Server = function(options) {
         console.log('chatroom: ', chatroom);
         user.socket.emit('chatlog', chatroom.chatlog);
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
+        user.socket.emit('chatroomName', roomName);
       } else {
         return console.log (err);
       }

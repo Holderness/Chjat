@@ -127,19 +127,19 @@ app.MainController = function() {
 
 
 
-  self.appEventBus.on("setRoom", function(model) {
-    console.log('main.e.setRoom: ', model);
+  // self.appEventBus.on("setRoom", function(model) {
+  //   console.log('main.e.setRoom: ', model);
 
-    var chatlog = new app.ChatCollection(model.chatlog);
-    self.chatroomModel.set('chatlog', chatlog);
+  //   var chatlog = new app.ChatCollection(model.chatlog);
+  //   self.chatroomModel.set('chatlog', chatlog);
 
-    var rooms = new app.ChatroomList(model.chatrooms);
-    self.chatroomModel.set('chatrooms', rooms);
+  //   var rooms = new app.ChatroomList(model.chatrooms);
+  //   self.chatroomModel.set('chatrooms', rooms);
 
-    var users = new app.UserCollection(model.onlineUsers);
-    self.chatroomModel.set('onlineUsers', users);
+  //   var users = new app.UserCollection(model.onlineUsers);
+  //   self.chatroomModel.set('onlineUsers', users);
 
-  });
+  // });
 
 
 
@@ -175,6 +175,14 @@ app.MainController = function() {
 	});
 
 
+
+
+
+
+  self.appEventBus.on("setChatroomName", function(name) {
+    var newHeader = new app.ChatroomHeaderModel({ name: name });
+    self.chatroomModel.set('chatroom', newHeader);
+  });
 
   self.appEventBus.on("setChatlog", function(chatlog) {
     var oldChatlog = self.chatroomModel.get('chatlog');

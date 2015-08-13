@@ -4,6 +4,7 @@ var app = app || {};
 
 app.ChatroomView = Backbone.View.extend({
   template: _.template($('#chatroom-template').html()),
+  nameTemplate: _.template($('#chatroom-name-template').html()),
   events: {
     'keypress .message-input': 'messageInputPressed',
     'click .chat-directory .room': 'setRoom'
@@ -17,11 +18,12 @@ app.ChatroomView = Backbone.View.extend({
     this.renderUsers();
     this.renderChats();
     this.renderRooms();
+    this.renderName();
   },
   render: function(model) {
     console.log('crv.f.render');
     this.model = model || this.model;
-    this.$el.html(this.template());
+    this.$el.html(this.template(this.model.toJSON()));
     // this.setChatCollection();
     this.setChatListeners();
     return this;
@@ -52,6 +54,8 @@ app.ChatroomView = Backbone.View.extend({
     this.listenTo(chatrooms, "remove", this.renderRooms, this);
     this.listenTo(chatrooms, "reset", this.renderRooms, this);
 
+    // var chatroom = this.model.get('chatroom');
+    this.listenTo(this.model, "change:chatroom", this.renderName, this);
 
     // this.listenTo(this.model, "change:chatrooms", this.renderRooms, this);
 
@@ -75,17 +79,21 @@ app.ChatroomView = Backbone.View.extend({
   },
 
 
-  gorp: function(chat) {
-    console.log('crv.f.gorp');
-    var now = _.now();
+  // gorp: function(chat) {
+  //   console.log('crv.f.gorp');
+  //   var now = _.now();
 
-    this.userChats.add(new app.ChatModel({ sender: chat.sender, message: chat.message, timestamp: now}));
-  },
+  //   this.userChats.add(new app.ChatModel({ sender: chat.sender, message: chat.message, timestamp: now}));
+  // },
   getChatroomModel: function(name) {
     console.log('crv.f.getChatroomModel');
     this.vent.trigger('getChatroomModel', name);
+    debugger;
   },
   // renders on events, called just above
+  renderName: function() {
+    this.$('.chatbox-header').html(this.nameTemplate(this.model.get('chatroom').toJSON()));
+  },
   renderUsers: function() {
     console.log('crv.f.renderUsers');
     console.log('USERS: ', this.model.get("onlineUsers"));
