@@ -49,6 +49,12 @@ var ChatClient = function(options) {
     console.log('sc.f.login: ', user);
 		self.socket.emit("login", user);
 	};
+  self.logout = function() {
+    self.socket.emit("wut");
+  };
+
+
+
   self.chat = function(chat) {
     console.log('sc.f.chat: ', chat);
 		self.socket.emit("chat", chat);
@@ -175,7 +181,6 @@ var ChatClient = function(options) {
       self.vent.trigger("setChatrooms", chatrooms);
     });
     socket.on('onlineUsers', function(onlineUsers) {
-      debugger;
       console.log('sc.e.onlineUsers: ', onlineUsers);
       self.vent.trigger("setOnlineUsers", onlineUsers);
     });

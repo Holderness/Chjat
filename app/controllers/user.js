@@ -75,8 +75,10 @@ exports.register = function(req, res, next) {
 };
 
 exports.logout = function(req, res) {
-  req.logout();
-  res.redirect('/');
+  console.log('HELLO');
+  req.session.destroy(function (err) {
+    res.redirect('/'); //bulletproof!
+  });
 };
 
 exports.saveOAuthUserProfile = function(req, profile, done) {

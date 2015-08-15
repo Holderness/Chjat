@@ -26,6 +26,7 @@ var Server = function(options) {
       // console.log('>>>>socket', socket.handshake.sessionStore);
 
       self.socket = socket;
+      // console.log('SOCKET:            ', socket);
       socket.chat = { room: 'DOO' };
 
       socket.on("login", function(userdata) {
@@ -42,8 +43,10 @@ var Server = function(options) {
         }
       });
               
-      if (socket.handshake.session.passport) {
+      if (socket.handshake.session.passport.user) {
+        console.log(socket.handshake.session);
         UserModel.findById(socket.handshake.session.passport.user, function(err, found) {
+          socket.handshake.session.userdata = { username: found.username };
           return self.manageConnection(socket, found);
         });
       }
@@ -70,8 +73,14 @@ var Server = function(options) {
     user.socket.on('disconnect', function() {
       self.io.sockets.emit("userLeft", user.username);
       self.leaveRoom(user);
+      console.log('user.SOCKET-SRL:            ', user.socket);
       console.log("e.disconnect: ", user.username);
       console.log('he gone.');
+      user.socket.disconnect();
+    });
+
+    user.socket.on('wut', function() {
+      user.socket.disconnect();
     });
 
     user.socket.on("connectToRoom", function(name) {
@@ -83,7 +92,7 @@ var Server = function(options) {
 
     user.socket.on("chat", function(chat) {
       console.log('e.chat');
-      console.log("USER: ", user.username);
+      console.log("USER: ", user);
       console.log('CHAT: ', chat);
       // console.log('user.socket.CHAT.ROOM ', user.socket.chat.room);
       // console.log('self.io.sockets.adapter.rooms: ', self.io.sockets.adapter.rooms);
@@ -114,7 +123,9 @@ var Server = function(options) {
 
     user.socket.on('joinRoom', function(roomName) {
       console.log('e.joinRoom');
-      console.log('USER: ', user.username);
+      console.log('>>>>>>>>>>>>>>>>>>>user<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
+      console.log("USER: ", user.username);
+      console.log('>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<');
       console.log('JOIN ROOM: ', roomName);
       user.socket.leave(user.socket.chat.room);
       self.leaveRoom(user);
@@ -147,6 +158,7 @@ var Server = function(options) {
         user.socket.broadcast.to(currentRoom).emit('userLeft', user.username);
         ChatroomModel.findOne({ name: currentRoom }, function( err, chatroom ) {
           if (err) {return console.log(err);}
+          console.log('new chatroom: ', chatroom );
           user.socket.broadcast.to(currentRoom).emit('onlineUsers', chatroom.onlineUsers);
         });
       });

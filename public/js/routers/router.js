@@ -8,6 +8,7 @@ var app = app || {};
       '': 'start',
       'log': 'login',
       'reg': 'register',
+      'logout': 'logout',
       'authenticated': 'authenticated',
       'facebook': 'facebook',
       'twitter': 'twitter'
@@ -30,6 +31,21 @@ var app = app || {};
     register: function() {
       var registerView = new app.RegisterView({vent: app.mainController.viewEventBus });
       app.mainController.containerModel.set("viewState", registerView);
+    },
+
+    logout: function() {
+      // $('#logout').on('click', function() {
+                var this_ = this;
+        $.ajax({
+          url: "/logout",
+        }).done(function() {
+
+        });
+          debugger;
+          this_.login();
+          app.mainController.logout();
+
+      // });
     },
 
     authenticated: function() {

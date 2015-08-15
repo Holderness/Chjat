@@ -56,6 +56,11 @@ app.MainController = function() {
 
   };
 
+  self.logout = function() {
+    debugger;
+        self.chatClient.logout();
+  };
+
 
   // self.appEventBus.on("authenticated", function() {
   //   debugger;
