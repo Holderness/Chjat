@@ -12,8 +12,8 @@
 </head>
 <body>
 
-
-    <div class="nav-header menu-wrapper">
+  <div class="nav-container" id="nav-container">
+        <div class="nav-header menu-wrapper">
       <nav class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -23,22 +23,17 @@
             </button>
             <a class="navbar-brand" href="#"><img class="img-responsive nav-logo" src="/img/fly-pig-serious-icon.png"></a>
           </div>
-          <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-left">
-            
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-              <li><i class="fa fa-power-off fa-2x"></i></li>
-              <li><a href="#logout">logout</a></li>  
-              <li><a href="#log">login</a></li>              
-              <li><a href="#reg">register</a></li>              
-            </ul>
+          <div class="navbar-collapse collapse login-menu">
+            <ul class="nav navbar-nav navbar-left"></ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
       </nav>
     </div><!-- end menu-wrapper -->
+  </div>
+  
 
   <div class="view-container" id="view-container"></div>
+
 
   <script type='text/template' id="login-template">
     // <div class="row">
@@ -273,6 +268,9 @@
   <script src="./build/main.js"></script>
   
 
+  <script type'text/template' id="navbar-template">
+
+  </script>
 
 
 </body>

@@ -76,7 +76,12 @@ exports.register = function(req, res, next) {
 
 exports.logout = function(req, res) {
   console.log('HELLO');
-  req.session.destroy(function (err) {
+  req.session.passport = {};
+  req.session.userdata = {};
+  console.log('HELLOAGAIN', req.session);
+  req.session.save(function (err) {
+      console.log('HELLOAGAINATHIRDTIME', req.session);
+
     res.redirect('/'); //bulletproof!
   });
 };

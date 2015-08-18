@@ -129,6 +129,10 @@ var ChatClient = function(options) {
       self.vent.trigger("loginDone", data);
     });
 
+    socket.on('login', function(username) {
+      self.vent.trigger('loginUser', username);
+    });
+
 
     socket.on('log', function() {
       console.log('sc.e.log');

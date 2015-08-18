@@ -42,6 +42,9 @@ var Server = function(options) {
           delete socket.handshake.session.userdata;
         }
       });
+
+      console.log('LLLLLLLLLLLL > socket.handshake.session', socket.handshake.session);
+
               
       if (socket.handshake.session.passport.user) {
         console.log(socket.handshake.session);
@@ -63,6 +66,7 @@ var Server = function(options) {
       username: userdata.username,
       socket: socket
     });
+    socket.emit('login', newUser.username);
     self.setResponseListeners(newUser);
   };
     
@@ -73,10 +77,18 @@ var Server = function(options) {
     user.socket.on('disconnect', function() {
       self.io.sockets.emit("userLeft", user.username);
       self.leaveRoom(user);
-      console.log('user.SOCKET-SRL:            ', user.socket);
+
+      // if (user.socket.handshake.session) {
+      //     user.socket.handshake.session.passport = {};
+      //     user.socket.handshake.session.userdata = {};
+      //   }
+        // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', self.io.sockets);
+      // if (self.io.sockets.sockets[user.socket.id]) {
+      //    self.io.sockets.sockets[user.socket.id].disconnect();
+      // }
+      // console.log('user.SOCKET-SRL:            ', user.socket);
       console.log("e.disconnect: ", user.username);
       console.log('he gone.');
-      user.socket.disconnect();
     });
 
     user.socket.on('wut', function() {

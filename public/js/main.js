@@ -15,6 +15,7 @@ app.MainController = function() {
     self.loginModel = new app.LoginModel();
     self.loginView = new app.LoginView({vent: self.viewEventBus, model: self.loginModel});
     self.registerView = new app.RegisterView({vent: self.viewEventBus });
+    self.navbarView = new app.NavbarView();
 
     // The ContainerModel gets passed a viewState, LoginView, which
     // is the login page. That LoginView gets passed the viewEventBus
@@ -57,8 +58,8 @@ app.MainController = function() {
   };
 
   self.logout = function() {
-    debugger;
-        self.chatClient.logout();
+    self.chatClient.logout();
+    self.navbarView = new app.NavbarView();
   };
 
 
@@ -88,10 +89,6 @@ app.MainController = function() {
   self.viewEventBus.on("joinRoom", function(room) {
     self.chatClient.joinRoom(room);
   });
-  // self.viewEventBus.on("getChatroomModel", function(name) {
-  //   debugger;
-  //   self.chatClient.getChatroomModel(name);
-  // });
 
 
 
@@ -129,6 +126,12 @@ app.MainController = function() {
   });
 
 
+
+  self.appEventBus.on("loginUser", function(username) {
+    console.log('main.e.loginUser: ', username);
+    var user = new app.UserModel({username: username});
+    self.navbarView.model.set(user.toJSON());
+  });
 
 
 

@@ -15,10 +15,15 @@ var app = app || {};
     },
 
     start: function(callback) {
+
       app.mainController = new app.MainController();
       app.mainController.init();
       if (callback) {
         callback();
+      } else {
+        $.ajax({
+          url: "/logout",
+        });
       }
     },
 
