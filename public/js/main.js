@@ -26,7 +26,7 @@ app.MainController = function() {
     // the login page is then rendered.
     self.containerView = new app.ContainerView({ model: self.containerModel });
     self.containerView.render();
-
+    
   };
 
 

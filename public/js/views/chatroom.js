@@ -118,6 +118,7 @@ app.ChatroomView = Backbone.View.extend({
     var template = _.template($('#chatbox-message-template').html());
     var element = $(template(model.toJSON()));
     element.appendTo(this.$('.chatbox-content')).hide().fadeIn().slideDown();
+    $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
     // this.$('.nano').nanoScroller();
     // this.$('.nano').nanoScroller({ scroll: 'bottom' });
   },
