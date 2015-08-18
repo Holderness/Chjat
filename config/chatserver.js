@@ -91,9 +91,9 @@ var Server = function(options) {
       console.log('he gone.');
     });
 
-    user.socket.on('wut', function() {
-      user.socket.disconnect();
-    });
+    // user.socket.on('wut', function() {
+    //   user.socket.disconnect();
+    // });
 
     user.socket.on("connectToRoom", function(name) {
       console.log('e.connectToRoom');

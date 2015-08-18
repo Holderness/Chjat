@@ -4,7 +4,9 @@ var app = app || {};
 
 app.ChatroomView = Backbone.View.extend({
   template: _.template($('#chatroom-template').html()),
+  chatTemplate: _.template($('#chatbox-message-template').html()),
   nameTemplate: _.template($('#chatroom-name-template').html()),
+  dateTemplate: _.template('<div class="date-divider"><span>--------------------</span> <%= moment(timestamp).format("dddd, MMMM Do YYYY") %> <span>--------------------</span></div>'),
   events: {
     'keypress .message-input': 'messageInputPressed',
     'click .chat-directory .room': 'setRoom'
@@ -88,7 +90,6 @@ app.ChatroomView = Backbone.View.extend({
   getChatroomModel: function(name) {
     console.log('crv.f.getChatroomModel');
     this.vent.trigger('getChatroomModel', name);
-    debugger;
   },
   // renders on events, called just above
   renderName: function() {
@@ -115,12 +116,21 @@ app.ChatroomView = Backbone.View.extend({
     }, this);
   },
   renderChat: function(model) {
-    var template = _.template($('#chatbox-message-template').html());
-    var element = $(template(model.toJSON()));
-    element.appendTo(this.$('.chatbox-content')).hide().fadeIn().slideDown();
+    this.renderDateDividers(model);
+    var chatTemplate = $(this.chatTemplate(model.toJSON()));
+    chatTemplate.appendTo(this.$('.chatbox-content')).hide().fadeIn().slideDown();
+
     $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
     // this.$('.nano').nanoScroller();
     // this.$('.nano').nanoScroller({ scroll: 'bottom' });
+  },
+  renderDateDividers: function(model) {
+    this.currentDate = moment(model.attributes.timestamp).format('dddd, MMMM Do YYYY');
+    if ( this.currentDate !== this.previousDate ) {
+      var currentDate = $(this.dateTemplate(model.toJSON()));
+      currentDate.appendTo(this.$('.chatbox-content')).hide().fadeIn().slideDown();
+      this.previousDate = this.currentDate;
+    }
   },
 
 

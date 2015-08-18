@@ -57,10 +57,10 @@ app.MainController = function() {
 
   };
 
-  self.logout = function() {
-    self.chatClient.logout();
-    self.navbarView = new app.NavbarView();
-  };
+  // self.logout = function() {
+  //   self.chatClient.logout();
+  //   self.navbarView = new app.NavbarView();
+  // };
 
 
   // self.appEventBus.on("authenticated", function() {

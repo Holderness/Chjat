@@ -6,7 +6,7 @@ var app = app || {};
     $.ajax({
        url: "/logout",
     });
-  }); 
+  });
 
   var ChatroomRouter = Backbone.Router.extend({
     
@@ -44,20 +44,19 @@ var app = app || {};
       app.mainController.containerModel.set("viewState", registerView);
     },
 
-    logout: function() {
-      // $('#logout').on('click', function() {
-                var this_ = this;
-        $.ajax({
-          url: "/logout",
-        }).done(function() {
+    // logout: function() {
+    //   // $('#logout').on('click', function() {
+    //             var this_ = this;
+    //     $.ajax({
+    //       url: "/logout",
+    //     }).done(function() {
 
-        });
-          debugger;
-          this_.login();
-          app.mainController.logout();
+    //     });
+    //       this_.login();
+    //       app.mainController.logout();
 
-      // });
-    },
+    //   // });
+    // },
 
     authenticated: function() {
       app.mainController.authenticated();
