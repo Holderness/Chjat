@@ -26,7 +26,7 @@ app.MainController = function() {
     // the login page is then rendered.
     self.containerView = new app.ContainerView({ model: self.containerModel });
     self.containerView.render();
-    
+
   };
 
 
@@ -52,6 +52,14 @@ app.MainController = function() {
       }, 1500);
       setTimeout(function(){
         self.chatroomView.initRoom();
+        // var stickyTop = $('.date-divider').offset().top;
+        // $(window).on( 'scroll', function(){
+        //   if ($('.chatbox-content').scrollTop() >= stickyTop) {
+        //     $('.date-divider').css({position: "fixed", top: "200px"});
+        //   } else {
+        //     $('.date-divider').css({position: "relative", top: "0px"});
+        //   }
+        // });
       }, 2000);
     });
 

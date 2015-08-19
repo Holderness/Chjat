@@ -110,6 +110,10 @@
     span {
       color: $main-bkgd;
     }
+    .sticky {
+      position:fixed;
+      top:0;
+    }
   }
 }
 
