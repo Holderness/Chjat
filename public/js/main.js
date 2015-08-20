@@ -101,36 +101,79 @@ app.MainController = function() {
   _whenScrolling = function() {
 
     $stickies.each(function(i) {
-      console.log('yup');
 
       var $thisSticky = $(this),
           $stickyPosition = $thisSticky.offset().top;
-       console.log('stickyPos', $stickyPosition)
+        var $prevSticky = $stickies.eq(i - 1),
+            $prevStickyTop = $prevSticky.offset().top,
+            $prevStickyPosition = $prevSticky.data('originalPosition');
+       // console.log('stickyPos', $stickyPosition)
+       // console.log('scrotop', $('.chatbox-content').scrollTop());
+      // if ($stickyPosition === $('.chatbox-content').scrollTop() - $('.chatbox-content').height()) {
+      if ($stickyPosition >= 195 && $stickyPosition <= 215) {
 
-      if ($stickyPosition <= $('.chatbox-content').scrollTop()) {
-        // console.log('if pos', $stickyPosition);
-        var $nextSticky = $stickies.eq(i + 1),
-            $nextStickyPosition = $nextSticky.data('originalPosition');
+            var $nextSticky = $stickies.eq(i + 1),
+            $nextStickyPosition = $nextSticky.data('originalPosition'),
+            $nextStickyTop = $nextSticky.offset().top,
+            $thisAndPrevStickyDifference = Math.abs($prevSticky.data('originalPosition') - $thisSticky.data('originalPosition')),
+            $thisAndNextStickyDifference = Math.abs($nextSticky.data('originalPosition') - $thisSticky.data('originalPosition'));
+
         $thisSticky.addClass("fixed");
-         console.log('2ifnextpos', $nextSticky.offset().top);
-         console.log('2ifpos', $nextStickyPosition);
+
+
+        console.log('-------------');
+        console.log('prevstickyoriginposition', $prevStickyPosition);
+        console.log('prevstickytop', $prevStickyTop);
+        console.log('$thisAndPrevStickyDifference', $thisAndPrevStickyDifference);
+        console.log('thisStickyTop', $stickyPosition);
+        console.log('$thisAndNextStickyDifference', $thisAndNextStickyDifference);
+        console.log('nextStickyTop', $nextStickyTop);
+        console.log('nextstickyoriginposition', $nextStickyPosition);
+        console.log('nextstickytop', $nextStickyTop);
+        console.log('-------------');
+
+
+//scrolling up
+         if ($nextSticky.hasClass("fixed")) {
+           $nextSticky.removeClass("fixed");
+           // $thisSticky.removeClass("fixed");
+           // $prevSticky.addClass("fixed");
+    
+           console.log('prev', $prevSticky);
+           console.log('this', $thisSticky);
+           console.log('next', $nextSticky);
+         }
+
+// scrolling up and sticking to proper position
+         if ($prevStickyTop + $thisAndPrevStickyDifference > 205 && i !== 0) {
+            $nextSticky.removeClass("fixed");
+            $prevSticky.addClass("fixed");
+         }
+
+// scrolling down
+        if ($prevStickyTop >= 195 && $prevStickyTop <= 215 && $prevSticky.hasClass("fixed")) {
+           $prevSticky.removeClass("fixed");
+           console.log('prev', $prevSticky);
+           console.log('this', $thisSticky);
+           console.log('next', $nextSticky);
+         }
         
-        if ($nextSticky.length > 0 && $stickyPosition >= $nextStickyPosition) {
-          console.log('weeeee');
-          $thisSticky.addClass("absolute").css("top", $nextStickyPosition);
-        }
+        // if ($nextSticky.length > 0 && $stickyPosition >= $nextStickyPosition) {
+        //   console.log('weeeee');
+        //   $thisSticky.addClass("absolute").css("top", $nextStickyPosition);
+        // }
 
        } else {
-        
-        var $prevSticky = $stickies.eq(i - 1);
-        var $prevStickyTop = $prevSticky.offset().top;
+
+        // var $prevSticky = $stickies.eq(i - 1);
+        // var $prevStickyTop = $prevSticky.offset().top;
         // console.log($thisSticky);
         $thisSticky.removeClass("fixed");
 
-        if ($prevSticky.length > 0 && $('.chatbox-content').scrollTop() <= $thisSticky.data('originalPosition')) {
-          console.log('ELSE IFFFFFFFFF DHHHHH');
-          $prevSticky.removeClass("absolute").removeAttr("style");
-        }
+        // if ($prevSticky.length > 0 && $('.chatbox-content').scrollTop() <= $thisSticky.data('originalPosition') - $('.chatbox-content').height()) {
+        //   console.log('ELSE IFFFFFFFFF DHHHHH');
+        //   $prevSticky.removeClass("absolute").removeAttr("style");
+        // }
       }
     });
   };

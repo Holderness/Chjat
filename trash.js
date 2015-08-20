@@ -96,3 +96,127 @@
         // self.io.sockets.emit("userJoined", newUser.username);
       }
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ _whenScrolling = function() {
+
+    $stickies.each(function(i) {
+
+      var $thisSticky = $(this),
+          $stickyPosition = $thisSticky.offset().top;
+
+
+        var $prevSticky = $stickies.eq(i - 1),
+            $prevStickyTop = $prevSticky.offset().top,
+            $prevStickyPosition = $prevSticky.data('originalPosition');
+
+       // console.log('stickyPos', $stickyPosition)
+       // console.log('scrotop', $('.chatbox-content').scrollTop());
+      // if ($stickyPosition === $('.chatbox-content').scrollTop() - $('.chatbox-content').height()) {
+      if ($stickyPosition >= 195 && $stickyPosition <= 215) {
+          
+            var $nextSticky = $stickies.eq(i + 1),
+            $nextStickyPosition = $nextSticky.data('originalPosition'),
+            $nextStickyTop = $nextSticky.offset().top,
+            $thisAndPrevStickyDifference = Math.abs($prevSticky.data('originalPosition') - $thisSticky.data('originalPosition')),
+            $thisAndNextStickyDifference = Math.abs($nextSticky.data('originalPosition') - $thisSticky.data('originalPosition'));
+         if ($prevStickyTop + $thisAndPrevStickyDifference <= 205) {
+              $thisSticky.addClass("fixed");
+         }
+        // console.log('if pos', $stickyPosition);
+        console.log('-------------');
+        console.log('prevstickyoriginposition', $prevStickyPosition);
+        console.log('prevstickytop', $prevStickyTop);
+         console.log('$thisAndPrevStickyDifference', $thisAndPrevStickyDifference);
+        console.log('thisStickyTop', $stickyPosition);
+        console.log('$thisAndNextStickyDifference', $thisAndNextStickyDifference);
+        console.log('nextStickyTop', $nextStickyTop);
+        console.log('nextstickyoriginposition', $nextStickyPosition);
+                 console.log('-------------');
+
+         // console.log('2ifpos', $nextStickyPosition);
+         if ($nextSticky.length > 0 && $nextSticky.hasClass("fixed")) {
+           $nextSticky.removeClass("fixed");
+           // $nextSticky.removeClass("z");
+           //            $thisSticky.removeClass("fixed");
+           // $prevSticky.addClass("fixed");
+                       // debugger;
+
+    
+           console.log('prev', $prevSticky)
+           console.log('this', $thisSticky)
+           console.log('next', $nextSticky)
+         }
+
+         if ($prevStickyTop + $thisAndPrevStickyDifference > 205) {
+            $thisSticky.removeClass("fixed");
+            $prevSticky.addClass("fixed");
+            // $prevSticky.addClass("z");
+         }
+
+        if ($prevSticky.length > 0 && $prevSticky.hasClass("fixed")) {
+           $prevSticky.removeClass("fixed");
+           // $prevSticky.removeClass("z");
+           console.log('prev', $prevSticky)
+           console.log('this', $thisSticky)
+           console.log('next', $nextSticky)
+         }
+        
+        // if ($nextSticky.length > 0 && $stickyPosition >= $nextStickyPosition) {
+        //   console.log('weeeee');
+        //   $thisSticky.addClass("absolute").css("top", $nextStickyPosition);
+        // }
+
+       } else {
+
+        // var $prevSticky = $stickies.eq(i - 1);
+        // var $prevStickyTop = $prevSticky.offset().top;
+        // console.log($thisSticky);
+        $thisSticky.removeClass("fixed");
+
+        // if ($prevSticky.length > 0 && $('.chatbox-content').scrollTop() <= $thisSticky.data('originalPosition') - $('.chatbox-content').height()) {
+        //   console.log('ELSE IFFFFFFFFF DHHHHH');
+        //   $prevSticky.removeClass("absolute").removeAttr("style");
+        // }
+      }
+    });
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
