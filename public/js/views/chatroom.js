@@ -6,7 +6,7 @@ app.ChatroomView = Backbone.View.extend({
   template: _.template($('#chatroom-template').html()),
   chatTemplate: _.template($('#chatbox-message-template').html()),
   nameTemplate: _.template($('#chatroom-name-template').html()),
-  dateTemplate: _.template('<div class="date-divider"><span>--------------------</span> <%= moment(timestamp).format("dddd, MMMM Do YYYY") %> <span>--------------------</span></div>'),
+  dateTemplate: _.template('<div class="followMeBar"><span>-----------------</span> <%= moment(timestamp).format("dddd, MMMM Do YYYY") %> <span>-----------------</span></div>'),
   events: {
     'keypress .message-input': 'messageInputPressed',
     'click .chat-directory .room': 'setRoom'

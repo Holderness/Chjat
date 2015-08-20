@@ -32,6 +32,7 @@ app.MainController = function() {
 
   self.authenticated = function() {
        
+    $("body").css("overflow", "hidden");
     self.chatClient = new ChatClient({ vent: self.appEventBus });
     self.chatClient.connect();
 
@@ -52,15 +53,10 @@ app.MainController = function() {
       }, 1500);
       setTimeout(function(){
         self.chatroomView.initRoom();
-        // var stickyTop = $('.date-divider').offset().top;
-        // $(window).on( 'scroll', function(){
-        //   if ($('.chatbox-content').scrollTop() >= stickyTop) {
-        //     $('.date-divider').css({position: "fixed", top: "200px"});
-        //   } else {
-        //     $('.date-divider').css({position: "relative", top: "0px"});
-        //   }
-        // });
       }, 2000);
+      setTimeout(function(){
+        self.dateDivider.load($(".followMeBar"));
+      }, 2001);
     });
 
   };
@@ -70,7 +66,79 @@ app.MainController = function() {
   //   self.navbarView = new app.NavbarView();
   // };
 
+  self.dateDivider = (function() {
 
+  var $window = $(window),
+      $stickies,
+      huh = {};
+
+  load = function(stickies) {
+
+      
+    console.log('god damn it');
+      $stickies = stickies.each(function() {
+
+        var $thisSticky = $(this).wrap('<div class="followWrap" />');
+  
+        $thisSticky
+            .data('originalPosition', $thisSticky.offset().top)
+            .data('originalHeight', $thisSticky.outerHeight())
+              .parent()
+              .height($thisSticky.outerHeight());
+        console.log('thissticky.originalposition', $thisSticky.offset().top);
+      });
+      
+      $('.chatbox-content').scroll(function() {
+        // if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+          $(this).off("scroll.stickies");
+          $(this).on("scroll.stickies", function() {
+            _whenScrolling();
+          });
+        // }
+      });
+  };
+
+  _whenScrolling = function() {
+
+    $stickies.each(function(i) {
+      console.log('yup');
+
+      var $thisSticky = $(this),
+          $stickyPosition = $thisSticky.offset().top;
+       console.log('stickyPos', $stickyPosition)
+
+      if ($stickyPosition <= $('.chatbox-content').scrollTop()) {
+        // console.log('if pos', $stickyPosition);
+        var $nextSticky = $stickies.eq(i + 1),
+            $nextStickyPosition = $nextSticky.data('originalPosition');
+        $thisSticky.addClass("fixed");
+         console.log('2ifnextpos', $nextSticky.offset().top);
+         console.log('2ifpos', $nextStickyPosition);
+        
+        if ($nextSticky.length > 0 && $stickyPosition >= $nextStickyPosition) {
+          console.log('weeeee');
+          $thisSticky.addClass("absolute").css("top", $nextStickyPosition);
+        }
+
+       } else {
+        
+        var $prevSticky = $stickies.eq(i - 1);
+        var $prevStickyTop = $prevSticky.offset().top;
+        // console.log($thisSticky);
+        $thisSticky.removeClass("fixed");
+
+        if ($prevSticky.length > 0 && $('.chatbox-content').scrollTop() <= $thisSticky.data('originalPosition')) {
+          console.log('ELSE IFFFFFFFFF DHHHHH');
+          $prevSticky.removeClass("absolute").removeAttr("style");
+        }
+      }
+    });
+  };
+
+  return {
+    load: load
+  };
+})();
   // self.appEventBus.on("authenticated", function() {
   //   debugger;
   //   self.authenticated();

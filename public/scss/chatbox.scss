@@ -9,15 +9,18 @@
     position: relative;
     color: #a8a8a8;
     padding-top: 10px;
-    border-bottom: none;
+    border-bottom: 2px solid #E5EAEB;  
   }
+  // .date-divider-container {
+  //   height: 20px;
+  //   background-color: white;
+  // }
   .chatbox-content {
     background: #fff;
     height: 370px;
     bottom: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    border-top: 2px solid #E5EAEB;
+    overflow-y: scroll;
+    overflow-x: auto;
   }
   .typetypetype {
     font: 10px;
@@ -101,21 +104,29 @@
       }
     }
   }
-  .date-divider {
+}
+
+  .followMeBar {
     color: $dark-gray-text;
+    position: relative;
     padding: 10px 0;
     margin-left: auto;
     margin-right: auto;
     width: 400px;
+    z-index: 100;
     span {
       color: $main-bkgd;
     }
-    .sticky {
-      position:fixed;
-      top:0;
-    }
   }
-}
+    .fixed {
+      position: fixed;
+      top: 205px;
+      left: 295px;
+    }
+      .absolute {
+        position: absolute;
+      }
+
 
 
 
