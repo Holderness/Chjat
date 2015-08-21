@@ -69,8 +69,7 @@ app.MainController = function() {
   self.dateDivider = (function() {
 
   var $window = $(window),
-      $stickies,
-      huh = {};
+      $stickies;
 
   load = function(stickies) {
 
@@ -88,100 +87,90 @@ app.MainController = function() {
         console.log('thissticky.originalposition', $thisSticky.offset().top);
       });
       
-      $('.chatbox-content').scroll(function() {
-        // if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
-          $(this).off("scroll.stickies");
-          $(this).on("scroll.stickies", function() {
-            _whenScrolling();
-          });
-        // }
-      });
+      $('.chatbox-content').scroll(scrollStickiesInit);
+
   };
+
+
+  scrollStickiesInit = function() {
+    $(this).off("scroll.stickies");
+    $(this).on("scroll.stickies", _.debounce(_whenScrolling, 50));
+  };
+
 
   _whenScrolling = function() {
 
-    $stickies.each(function(i) {
+    $stickies.each(function(i, sticky) {
 
-      var $thisSticky = $(this),
-          $stickyPosition = $thisSticky.offset().top;
-        var $prevSticky = $stickies.eq(i - 1),
-            $prevStickyTop = $prevSticky.offset().top,
-            $prevStickyPosition = $prevSticky.data('originalPosition');
-       // console.log('stickyPos', $stickyPosition)
-       // console.log('scrotop', $('.chatbox-content').scrollTop());
-      // if ($stickyPosition === $('.chatbox-content').scrollTop() - $('.chatbox-content').height()) {
-      if ($stickyPosition >= 195 && $stickyPosition <= 215) {
+      var $thisSticky = $(sticky),
+          $thisStickyTop = $thisSticky.offset().top,
 
-            var $nextSticky = $stickies.eq(i + 1),
-            $nextStickyPosition = $nextSticky.data('originalPosition'),
-            $nextStickyTop = $nextSticky.offset().top,
-            $thisAndPrevStickyDifference = Math.abs($prevSticky.data('originalPosition') - $thisSticky.data('originalPosition')),
-            $thisAndNextStickyDifference = Math.abs($nextSticky.data('originalPosition') - $thisSticky.data('originalPosition'));
+          $prevSticky = $stickies.eq(i - 1),
+          $prevStickyTop = $prevSticky.offset().top,
+          $prevStickyPosition = $prevSticky.data('originalPosition');
+
+
+      if ($thisStickyTop >= 180 && $thisStickyTop <= 210) {
+
+        var $nextSticky = $stickies.eq(i + 1) || null,
+
+        $thisStickyPosition = $thisSticky.data('originalPosition'),
+        $thisAndPrevStickyDifference = Math.abs($prevStickyPosition - $thisStickyPosition);
 
         $thisSticky.addClass("fixed");
 
+        // var $nextStickyPosition = $nextSticky.data('originalPosition');
+        // var $thisAndNextStickyDifference = Math.abs($thisStickyPosition - $nextStickyPosition);
+        // var $nextStickyTop = $nextSticky.offset().top;
+        // console.log('-------------');
+        // console.log('prevstickyoriginposition', $prevStickyPosition);
+        // console.log('prevstickytop', $prevStickyTop);
+        // console.log('$thisAndPrevStickyDifference', $thisAndPrevStickyDifference);
+        // console.log('thisStickyTop', $thisStickyTop);
+        // console.log('$thisAndNextStickyDifference', $thisAndNextStickyDifference);
+        // console.log('nextStickyTop', $nextStickyTop);
+        // console.log('nextstickyoriginposition', $nextStickyPosition);
+        // console.log('prev', $prevSticky);
+        // console.log('this', $thisSticky);
+        // console.log('next', $nextSticky);
+        // console.log('nextstickytop', $nextStickyTop);
+        // console.log('-------------');
+        
 
-        console.log('-------------');
-        console.log('prevstickyoriginposition', $prevStickyPosition);
-        console.log('prevstickytop', $prevStickyTop);
-        console.log('$thisAndPrevStickyDifference', $thisAndPrevStickyDifference);
-        console.log('thisStickyTop', $stickyPosition);
-        console.log('$thisAndNextStickyDifference', $thisAndNextStickyDifference);
-        console.log('nextStickyTop', $nextStickyTop);
-        console.log('nextstickyoriginposition', $nextStickyPosition);
-        console.log('nextstickytop', $nextStickyTop);
-        console.log('-------------');
-
-
-//scrolling up
+      //scrolling up
          if ($nextSticky.hasClass("fixed")) {
            $nextSticky.removeClass("fixed");
-           // $thisSticky.removeClass("fixed");
-           // $prevSticky.addClass("fixed");
-    
-           console.log('prev', $prevSticky);
-           console.log('this', $thisSticky);
-           console.log('next', $nextSticky);
          }
 
-// scrolling up and sticking to proper position
+      // scrolling up and sticking to proper position
          if ($prevStickyTop + $thisAndPrevStickyDifference > 205 && i !== 0) {
+
             $nextSticky.removeClass("fixed");
             $prevSticky.addClass("fixed");
          }
 
-// scrolling down
-        if ($prevStickyTop >= 195 && $prevStickyTop <= 215 && $prevSticky.hasClass("fixed")) {
+      // scrolling down
+        if ($prevStickyTop >= 205 && $prevSticky.hasClass("fixed") && i !== 0) {
            $prevSticky.removeClass("fixed");
-           console.log('prev', $prevSticky);
-           console.log('this', $thisSticky);
-           console.log('next', $nextSticky);
          }
-        
-        // if ($nextSticky.length > 0 && $stickyPosition >= $nextStickyPosition) {
-        //   console.log('weeeee');
-        //   $thisSticky.addClass("absolute").css("top", $nextStickyPosition);
-        // }
 
-       } else {
-
-        // var $prevSticky = $stickies.eq(i - 1);
-        // var $prevStickyTop = $prevSticky.offset().top;
-        // console.log($thisSticky);
-        $thisSticky.removeClass("fixed");
-
-        // if ($prevSticky.length > 0 && $('.chatbox-content').scrollTop() <= $thisSticky.data('originalPosition') - $('.chatbox-content').height()) {
-        //   console.log('ELSE IFFFFFFFFF DHHHHH');
-        //   $prevSticky.removeClass("absolute").removeAttr("style");
-        // }
       }
+
+      if ($('.chatbox-content').scrollTop() === 0) {
+        $stickies.removeClass('fixed');
+      }
+
     });
+
   };
 
   return {
     load: load
   };
 })();
+
+
+
   // self.appEventBus.on("authenticated", function() {
   //   debugger;
   //   self.authenticated();
