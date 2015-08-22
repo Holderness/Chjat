@@ -1,7 +1,7 @@
 
 .nav-header {
   background: $nav-bkgd;
-  color: #fff;
+  color: $white;
   padding-top: 0;
 }
 
@@ -25,22 +25,25 @@
 .login-menu {
   .power-off-style {
     background-color: $nav-bkgd;
-  -o-transition:color 2.2s ease-out, background-color 1s ease-in;
-  -ms-transition:color 2.2s ease-out, background-color 1s ease-in;
-  -moz-transition:color 2.2s ease-out, background-color 1s ease-in;
-  -webkit-transition:color 2.2s ease-out, background-color 1s ease-in;
+    color: black;
+  // -o-transition:color 9s ease-out, color 2s ease-in;
+  // -ms-transition:color 9s ease-out, color 2s ease-in;
+  // -moz-transition:color 9s ease-out, color 2s ease-in;
+  // -webkit-transition:color 9s ease-out, color 2s ease-in;
+  // /* ...and now override with proper CSS property */
+  // transition:color 9s ease-out, color 2s ease-in;
+
+  -o-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+  -ms-transition: color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+  -moz-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+  -webkit-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
   /* ...and now override with proper CSS property */
-  transition:color 2.2s ease-out, background-color 1s ease-in;
+  transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
     &:hover {
-      color: #BCE7F5;
+      color: $power-button;
       background-color:$nav-bkgd;
-        -o-transition:transform 2.2s ease-out, transform 1s ease-in;
-  -ms-transition:transform 2.2s ease-out, transform 1s ease-in;
-  -moz-transition:transform 2.2s ease-out, transform 1s ease-in;
-  -webkit-transition:transform 2.2s ease-out, transform 1s ease-in;
-  /* ...and now override with proper CSS property */
-  transition:transform 2.2s ease-out, transform 1s ease-in;
-      transform: scale(2.1);
+      transform: scale(1.3);
+      text-shadow: 0px 0px 90px $power-button;
     }
   }
 }

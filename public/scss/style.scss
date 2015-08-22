@@ -9,11 +9,26 @@
 // fuckin colors
 $pink: pink;
 $main-bkgd: #E5EAEB;
-$nav-bkgd: #329932;
+$nav-bkgd: #749CA8;
 $dark-gray-text: #A8A8A8;
 $light-gray-text: #aaa;
+$white: #fff;
+$border: #ddd;
+$power-button: #DEB0B0;
 
+$chatbox-message-name: black;
+$online-user: #DEB0B0;
 
+// moonrise pallete
+ // $blue: #8CBEA3;
+ // $light-blue: #DDE8E0;
+ // $light-pink: #DEB0B0;
+ // $lightish-pink: #E69EA1;
+ // $another-pink: #E7A396;
+ // $red: #CB654F;
+ // $sand: #CB654F;
+ // $pink: #D3B1A7;
+ // $bag: #DFBA47;
 
  // media queries
 
@@ -34,8 +49,8 @@ html, body {
 
 .nav > li > a {
   background-color: transparent;
-      border: none;
-    padding: 0;
+  border: none;
+  padding: 0;
   &:hover {
     background-color: transparent;
   }

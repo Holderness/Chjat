@@ -6,12 +6,12 @@
   overflow-y: auto;
   overflow-x: hidden;
   height: 600px;
-  background: #fff;
-  border-right: 2px solid #ddd;
-  border-bottom: 2px solid #ddd;
+  background: $white;
+  border-right: 2px solid $border;
+  border-bottom: 2px solid $border;
   input.form-control.chat-search-input:focus {
-    border-color: #fff;
-    border: 1px solid #ccc;
+    border-color: $white;
+    border: 1px solid $border;
   }
   .public-rooms-container {}
   .private-rooms-container {}
@@ -21,25 +21,25 @@
 .chat-search-input {}
 
 
-label.badge.unread-messages {
-  margin-top: 5px;
-  background: #B976DA;
-}
+// label.badge.unread-messages {
+//   margin-top: 5px;
+//   background: #B976DA;
+// }
 
-.row.direct-message {
-  cursor: pointer;
-}
+// .row.direct-message {
+//   cursor: pointer;
+// }
 
-.row.direct-message:hover {
-  background: #ccc;
-}
+// .row.direct-message:hover {
+//   background: #ccc;
+// }
 
-.row.direct-message {
-  background: #fff;
-  border-bottom: 1px solid #e8e8e8;
-  border-right: 1px solid #e8e8e8;
-  line-height: 1.2em;
-}
+// .row.direct-message {
+//   background: $white;
+//   border-bottom: 1px solid #e8e8e8;
+//   border-right: 1px solid #e8e8e8;
+//   line-height: 1.2em;
+// }
 
 .direct-message-username {
   line-height: 2em;
