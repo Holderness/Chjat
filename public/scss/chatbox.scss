@@ -119,7 +119,7 @@
     text-align: center;
     z-index: 100;
     @media #{$breakpoint-chatbox} {
-      margin-top: 5px;
+      margin-top: 3px;
     }
     span {
       color: $main-bkgd;

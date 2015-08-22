@@ -4,7 +4,7 @@ var app = app || {};
 
   app.NavbarView = Backbone.View.extend({
     el: '.login-menu',
-    template: _.template("<ul class='nav navbar-nav navbar-right'><% if (username) { %><li><a href='/'><i class='fa fa-power-off fa-2x'></i></a></li><% } else { %><li><a href='#log'>login</a></li><li><a href='#reg'>register</a></li><% } %></ul>"),
+    template: _.template("<ul class='nav navbar-right'><% if (username) { %><li><a href='/'><i class='fa fa-power-off power-off-style fa-2x'></i></a></li><% } else { %><li><a href='#log'>login</a></li><li><a href='#reg'>register</a></li><% } %></ul>"),
     events: {
       
     },

@@ -2,6 +2,10 @@
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400);
 
 
+// navbar
+
+
+
 // fuckin colors
 $pink: pink;
 $main-bkgd: #E5EAEB;
@@ -26,4 +30,23 @@ html, body {
   padding-top: 0px;
   background: $main-bkgd;
   min-width: 981px;
+}
+
+.nav > li > a {
+  background-color: transparent;
+      border: none;
+    padding: 0;
+  &:hover {
+    background-color: transparent;
+  }
+  &:focus {
+    background-color: transparent;
+  }
+}
+
+li {
+  background-color: transparent;
+  &:hover {
+    background-color: transparent;
+  }
 }

@@ -21,3 +21,26 @@
     margin-top: 25px;
   }
 }
+
+.login-menu {
+  .power-off-style {
+    background-color: $nav-bkgd;
+  -o-transition:color 2.2s ease-out, background-color 1s ease-in;
+  -ms-transition:color 2.2s ease-out, background-color 1s ease-in;
+  -moz-transition:color 2.2s ease-out, background-color 1s ease-in;
+  -webkit-transition:color 2.2s ease-out, background-color 1s ease-in;
+  /* ...and now override with proper CSS property */
+  transition:color 2.2s ease-out, background-color 1s ease-in;
+    &:hover {
+      color: #BCE7F5;
+      background-color:$nav-bkgd;
+        -o-transition:transform 2.2s ease-out, transform 1s ease-in;
+  -ms-transition:transform 2.2s ease-out, transform 1s ease-in;
+  -moz-transition:transform 2.2s ease-out, transform 1s ease-in;
+  -webkit-transition:transform 2.2s ease-out, transform 1s ease-in;
+  /* ...and now override with proper CSS property */
+  transition:transform 2.2s ease-out, transform 1s ease-in;
+      transform: scale(2.1);
+    }
+  }
+}
