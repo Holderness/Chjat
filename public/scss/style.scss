@@ -59,9 +59,16 @@ html, body {
   }
 }
 
-li {
-  background-color: transparent;
-  &:hover {
-    background-color: transparent;
-  }
+
+// li {
+//   background-color: transparent;
+//   &:hover {
+//     background-color: transparent;
+//   }
+// }
+
+textarea:focus, input:focus, .btn:focus {   
+    border-color: #DEB0B0 !important;
+    box-shadow: 0 1px 1px #DEB0B0 inset, 0 0 8px #DEB0B0 !important;
+    outline: 0 none !important;
 }

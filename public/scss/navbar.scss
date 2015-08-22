@@ -13,9 +13,39 @@
   padding: 10px 20px 40px 20px;
   .navbar-brand {
     background: transparent;
-  }
-  .nav-logo {
+    span {
+        height: .5px;
+        width: .5px;
+        top: 40px;
+        left: 64px;
+        color: #DEB0B0;
+        position: absolute;
+        visibility: hidden;
+      -o-transition:box-shadow 1.26333s ease-out;
+      -ms-transition: box-shadow 1.26333s ease-out;
+      -moz-transition:box-shadow 1.26333s ease-out;
+      -webkit-transition:box-shadow 1.26333s ease-out;
+      transition:box-shadow 1.26333s ease-out;
+    }
+    &:hover {
+      span {
+        visibility: visible;
+        box-shadow: 0px 16px 40px 37px #DEB0B0;
+        border-radius: 20px;
+      }
+    }
+    .nav-logo {
     height: 60px;
+    -o-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+    -ms-transition: color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+    -moz-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+    -webkit-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+    transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+    &:hover {
+      color: $power-button;
+      transform: scale(1.3);
+    }
+  }
   }
   .navbar-right {
     margin-top: 25px;
@@ -26,19 +56,11 @@
   .power-off-style {
     background-color: $nav-bkgd;
     color: black;
-  // -o-transition:color 9s ease-out, color 2s ease-in;
-  // -ms-transition:color 9s ease-out, color 2s ease-in;
-  // -moz-transition:color 9s ease-out, color 2s ease-in;
-  // -webkit-transition:color 9s ease-out, color 2s ease-in;
-  // /* ...and now override with proper CSS property */
-  // transition:color 9s ease-out, color 2s ease-in;
-
-  -o-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
-  -ms-transition: color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
-  -moz-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
-  -webkit-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
-  /* ...and now override with proper CSS property */
-  transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+    -o-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+    -ms-transition: color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+    -moz-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+    -webkit-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+    transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
     &:hover {
       color: $power-button;
       background-color:$nav-bkgd;
