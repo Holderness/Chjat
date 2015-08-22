@@ -1,11 +1,21 @@
 
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400);
 
+
+// fuckin colors
 $pink: pink;
 $main-bkgd: #E5EAEB;
 $nav-bkgd: #329932;
 $dark-gray-text: #A8A8A8;
 $light-gray-text: #aaa;
+
+
+
+ // media queries
+
+$breakpoint-chatbox: "(min-width: 985px)";
+
+
 
 
 html, body {

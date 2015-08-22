@@ -92,11 +92,13 @@
     padding-left: 0;
     .chatbox-message {
       float: left;
+      width: 87.33333%;
       font-weight: 600;
       margin-bottom: 0;
       font-size: 15px;
       color: #B976DA;
       span {
+                word-wrap: break-word;
         font-family: 'Source Sans Pro', sans-serif;
         margin-left: 10px;
         color: #0c0c0c;
@@ -113,8 +115,12 @@
     padding: 10px 0;
     margin-left: auto;
     margin-right: auto;
-    width: 400px;
+    width: 100%;
+    text-align: center;
     z-index: 100;
+    @media #{$breakpoint-chatbox} {
+      margin-top: 5px;
+    }
     span {
       color: $main-bkgd;
     }
@@ -122,7 +128,13 @@
     .fixed {
       position: fixed;
       top: 205px;
-      left: 295px;
+      width: 543px;
+      left: 220px;
+      // border: 1px solid red;
+      @media #{$breakpoint-chatbox} {
+        width: 53.5%;
+        left: 23.33333%;
+      }
     }
       .z {
         z-index: 1;

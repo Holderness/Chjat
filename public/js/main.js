@@ -77,7 +77,7 @@ app.MainController = function() {
     console.log('god damn it');
       $stickies = stickies.each(function() {
 
-        var $thisSticky = $(this).wrap('<div class="followWrap" />');
+        var $thisSticky = $(this).wrap('<div class="followWrap row" />');
   
         $thisSticky
             .data('originalPosition', $thisSticky.offset().top)
@@ -307,6 +307,7 @@ app.MainController = function() {
       return newChatModel;
     });
     oldChatlog.reset(updatedChatlog);
+    self.dateDivider.load($(".followMeBar"));
   });
   
   self.appEventBus.on("setChatrooms", function(chatrooms) {
