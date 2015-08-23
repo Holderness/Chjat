@@ -110,7 +110,7 @@ app.MainController = function() {
           $prevStickyPosition = $prevSticky.data('originalPosition');
 
 
-      if ($thisStickyTop >= 180 && $thisStickyTop <= 210) {
+      if ($thisStickyTop >= 145 && $thisStickyTop <= 175) {
 
         var $nextSticky = $stickies.eq(i + 1) || null,
 
@@ -150,7 +150,7 @@ app.MainController = function() {
          }
 
       // scrolling down
-        if ($prevStickyTop >= 205 && $prevSticky.hasClass("fixed") && i !== 0) {
+        if ($prevStickyTop >= 162 && $prevSticky.hasClass("fixed") && i !== 0) {
            $prevSticky.removeClass("fixed");
          }
 

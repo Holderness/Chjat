@@ -118,27 +118,40 @@
     width: 100%;
     text-align: center;
     z-index: 100;
-    @media #{$breakpoint-chatbox} {
-      margin-top: 3px;
-    }
+    // @media #{$breakpoint-chatbox} {
+    //   margin-top: 3px;
+    // }
     span {
       color: $main-bkgd;
     }
   }
-    .fixed {
-      position: fixed;
-      top: 205px;
-      width: 543px;
-      left: 220px;
-      // border: 1px solid red;
-      @media #{$breakpoint-chatbox} {
-        width: 53.5%;
-        left: 23.33333%;
-      }
+  .fixed {
+    margin-left: 7px;
+    position: fixed;
+    top: 157px;
+    width: 508px;
+    left: 220px;
+    @media #{$breakpoint-chatbox} {
+      margin-left: -7px;
+      width: 53.5%;
+      left: 23.33333%;
     }
-      .z {
-        z-index: 1;
-      }
+    @media #{$breakpoint-chatbox2} {
+      top: 158px;
+    }
+    @media #{$breakpoint-chatbox3} {
+      top: 159px;
+    }
+    @media #{$breakpoint-chatbox4} {
+      top: 160px;
+    }
+    @media #{$breakpoint-chatbox5} {
+      top: 161px;
+    }
+    @media #{$breakpoint-chatbox5} {
+      top: 162px;
+    }
+  }
 
 
 

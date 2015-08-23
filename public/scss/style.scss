@@ -33,7 +33,11 @@ $online-user: #DEB0B0;
  // media queries
 
 $breakpoint-chatbox: "(min-width: 985px)";
-
+$breakpoint-chatbox2: "(min-width: 1023px)";
+$breakpoint-chatbox3: "(min-width: 1149px)";
+$breakpoint-chatbox4: "(min-width: 1250px)";
+$breakpoint-chatbox5: "(min-width: 1350px)";
+$breakpoint-chatbox6: "(min-width: 1450px)";
 
 
 
@@ -56,6 +60,20 @@ html, body {
   }
   &:focus {
     background-color: transparent;
+  }
+}
+
+a {
+  background-color: transparent;
+  &:hover {
+    color: $power-button;
+    text-shadow: .5px .5px 0px black;
+  }
+}
+
+.btn {
+  &:hover {
+    border-color: $power-button !important;
   }
 }
 
