@@ -170,7 +170,7 @@ var Server = function(options) {
         user.socket.broadcast.to(currentRoom).emit('userLeft', user.username);
         ChatroomModel.findOne({ name: currentRoom }, function( err, chatroom ) {
           if (err) {return console.log(err);}
-          console.log('new chatroom: ', chatroom );
+          console.log('new chatroom users: ', chatroom.onlineUsers );
           user.socket.broadcast.to(currentRoom).emit('onlineUsers', chatroom.onlineUsers);
         });
       });

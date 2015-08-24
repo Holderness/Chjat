@@ -29,11 +29,12 @@ var app = app || {};
         method: 'POST',
         data: {username: this.$('#username').val(), password: this.$('#password').val()},
         success: function(data) {
+          debugger;
            console.log('success data: ', data);
            if (data === 200) {
              // this_.vent.trigger('authenticated');
             app.ChatroomRouter.navigate('authenticated', { trigger: true });
-        this_.vent.trigger("login", {username: this_.$('#username').val(), password: this_.$('#password').val()});
+            this_.vent.trigger("login", {username: this_.$('#username').val(), password: this_.$('#password').val()});
            }
         }
       }).done(function() {

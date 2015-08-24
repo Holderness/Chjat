@@ -2,11 +2,11 @@ var app = app || {};
 
 (function () {
 
-  $(window).bind('beforeunload', function(eventObject) {
-    $.ajax({
-       url: "/logout",
-    });
-  });
+  // $(window).bind('beforeunload', function(eventObject) {
+  //   $.ajax({
+  //      url: "/logout",
+  //   });
+  // });
 
   var ChatroomRouter = Backbone.Router.extend({
     

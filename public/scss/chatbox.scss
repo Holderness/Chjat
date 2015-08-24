@@ -20,7 +20,7 @@
     height: 370px;
     bottom: 0;
     overflow-y: scroll;
-    overflow-x: auto;
+    overflow-x: hidden;
   }
   .typetypetype {
     font: 10px;
@@ -92,7 +92,7 @@
     padding-left: 0;
     .chatbox-message {
       float: left;
-      width: 87.33333%;
+      width: 91%;
       font-weight: 600;
       margin-bottom: 0;
       font-size: 15px;

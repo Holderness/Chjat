@@ -12,12 +12,13 @@ module.exports = function(app) {
     .get(users.renderRegister)
     .post(users.register);
 
-  app.route('/login')
-    .get(users.renderLogin);
+  // app.route('/login')
+  //   .get(users.renderLogin);
 
   app.post('/login', function(req, res, next){
     passport.authenticate('local', function(err, user) {
       // console.log('req.socket--> ', req.socket);
+      if (user === false) { return res.redirect('/'); }
       return res.json(200);
     })(req, res, next);
   });
@@ -63,6 +64,11 @@ module.exports = function(app) {
   }));
 
   app.get('/oauth/twitter/callback', passport.authenticate('twitter', {
+    failureRedirect: '/',
+    successRedirect: '/#twitter'
+  }));
+
+  app.get('/#authenticated', passport.authenticate('twitter', {
     failureRedirect: '/',
     successRedirect: '/#twitter'
   }));

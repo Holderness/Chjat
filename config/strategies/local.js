@@ -7,6 +7,8 @@ module.exports = function() {
     User.findOne(
       {username: username},
       function(err, user) {
+        console.log('strategies/user', user);
+        console.log('strategies/user, password', password);
         if (err) { return done(err); }
         if (!user) { return done(null, false, {message: 'Unknown User'}); }
         // if (!user.authenticate(password)) { return done(null, false, {message: 'Invalid Password'}); }
