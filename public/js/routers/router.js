@@ -3,6 +3,7 @@ var app = app || {};
 (function () {
 
   $(window).bind('beforeunload', function(eventObject) {
+    debugger;
     $.ajax({
        url: "/logout",
     });
@@ -21,7 +22,7 @@ var app = app || {};
     },
 
     start: function(callback) {
-
+      window.location.href = '/#';
       app.mainController = new app.MainController();
       app.mainController.init();
       if (callback) {
@@ -59,6 +60,7 @@ var app = app || {};
     // },
 
     authenticated: function() {
+      if (!app.mainController) { return this.start(); }
       app.mainController.authenticated();
     },
     facebook: function() {

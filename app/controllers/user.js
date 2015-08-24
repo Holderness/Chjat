@@ -81,8 +81,7 @@ exports.logout = function(req, res) {
   console.log('HELLOAGAIN', req.session);
   req.session.save(function (err) {
       console.log('HELLOAGAINATHIRDTIME', req.session);
-
-    res.redirect('/'); //bulletproof!
+    res.json(200);
   });
 };
 
