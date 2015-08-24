@@ -80,7 +80,7 @@ exports.logout = function(req, res) {
   req.session.userdata = {};
   console.log('HELLOAGAIN', req.session);
   req.session.save(function (err) {
-      console.log('HELLOAGAINATHIRDTIME', req.session);
+    console.log('HELLOAGAINATHIRDTIME', req.session);
     res.json(200);
   });
 };

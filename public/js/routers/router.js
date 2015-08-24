@@ -2,11 +2,11 @@ var app = app || {};
 
 (function () {
 
-  // $(window).bind('beforeunload', function(eventObject) {
-  //   $.ajax({
-  //      url: "/logout",
-  //   });
-  // });
+  $(window).bind('beforeunload', function(eventObject) {
+    $.ajax({
+       url: "/logout",
+    });
+  });
 
   var ChatroomRouter = Backbone.Router.extend({
     
@@ -14,7 +14,7 @@ var app = app || {};
       '': 'start',
       'log': 'login',
       'reg': 'register',
-      'logout': 'logout',
+      'out': 'out',
       'authenticated': 'authenticated',
       'facebook': 'facebook',
       'twitter': 'twitter'
@@ -33,6 +33,7 @@ var app = app || {};
       }
     },
 
+
     login: function() {
       var loginModel = new app.LoginModel();
       var loginView = new app.LoginView({vent: app.mainController.viewEventBus, model: loginModel});
@@ -44,19 +45,12 @@ var app = app || {};
       app.mainController.containerModel.set("viewState", registerView);
     },
 
-    // logout: function() {
-    //   // $('#logout').on('click', function() {
-    //             var this_ = this;
-    //     $.ajax({
-    //       url: "/logout",
-    //     }).done(function() {
-
-    //     });
-    //       this_.login();
-    //       app.mainController.logout();
-
-    //   // });
-    // },
+    out: function() {
+        var this_ = this;
+        $.ajax({
+          url: "/logout",
+        })
+    },
 
     authenticated: function() {
       if (!app.mainController) { return this.start(); }

@@ -45,18 +45,20 @@ app.MainController = function() {
       self.containerModel.set('viewState', self.chatroomView);
 
       autosize($('textarea.message-input'));
-      $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
+      $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
+
+      self.connectToRoom(self.initRoom);
        
-      console.log('authent');
-      setTimeout(function(){
-        self.chatClient.connectToRoom("DOO");
-      }, 1500);
-      setTimeout(function(){
-        self.chatroomView.initRoom();
-      }, 2000);
-      setTimeout(function(){
-        self.dateDivider.load($(".followMeBar"));
-      }, 2001);
+      // console.log('authent');
+      // setTimeout(function(){
+      //   self.chatClient.connectToRoom("DOO");
+      // }, 1500);
+      // setTimeout(function(){
+      //   self.chatroomView.initRoom();
+      // }, 2000);
+      // setTimeout(function(){
+      //   self.dateDivider.load($(".followMeBar"));
+      // }, 2001);
     });
 
   };
@@ -66,6 +68,20 @@ app.MainController = function() {
   //   self.navbarView = new app.NavbarView();
   // };
 
+  self.connectToRoom = function(callback) {
+    self.chatClient.connectToRoom("DOO");
+    callback();
+  };
+
+  self.initRoom = function(callback) {
+    self.chatroomView.initRoom();
+    callback(self.setDateDivider);
+  };
+
+  self.setDateDivider = function() {
+    self.dateDivider.load($(".followMeBar"));
+  };
+
   self.dateDivider = (function() {
 
   var $window = $(window),
@@ -73,8 +89,6 @@ app.MainController = function() {
 
   load = function(stickies) {
 
-      
-    console.log('god damn it');
       $stickies = stickies.each(function() {
 
         var $thisSticky = $(this).wrap('<div class="followWrap row" />');
@@ -87,14 +101,14 @@ app.MainController = function() {
         console.log('thissticky.originalposition', $thisSticky.offset().top);
       });
       
-      $('.chatbox-content').scroll(scrollStickiesInit);
+      $('#chatbox-content').scroll(scrollStickiesInit);
 
   };
 
 
   scrollStickiesInit = function() {
     $(this).off("scroll.stickies");
-    $(this).on("scroll.stickies", _.debounce(_whenScrolling, 50));
+    $(this).on("scroll.stickies", _.debounce(_whenScrolling, 150));
   };
 
 
@@ -110,7 +124,7 @@ app.MainController = function() {
           $prevStickyPosition = $prevSticky.data('originalPosition');
 
 
-      if ($thisStickyTop >= 140 && $thisStickyTop <= 190) {
+      if ($thisStickyTop >= 140 && $thisStickyTop <= 180) {
 
         var $nextSticky = $stickies.eq(i + 1) || null,
 
@@ -156,7 +170,7 @@ app.MainController = function() {
 
       }
 
-      if ($('.chatbox-content').scrollTop() === 0) {
+      if ($('#chatbox-content').scrollTop() === 0) {
         $stickies.removeClass('fixed');
       }
 
@@ -287,7 +301,7 @@ app.MainController = function() {
 	// chat passed from socketclient, adds a new chat message using chatroomModel method
 	self.appEventBus.on("chatReceived", function(chat) {
     self.chatroomModel.addChat(chat);
-		$('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
+		$('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
 	});
 
 
