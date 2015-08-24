@@ -17,9 +17,6 @@ app.ChatroomView = Backbone.View.extend({
     this.vent = options.vent;
   },
   initRoom: function() {
-    this.renderUsers();
-    this.renderChats();
-    this.renderRooms();
     this.renderName();
   },
   render: function(model) {

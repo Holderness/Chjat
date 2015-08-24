@@ -3,7 +3,6 @@ var app = app || {};
 (function () {
 
   $(window).bind('beforeunload', function(eventObject) {
-    debugger;
     $.ajax({
        url: "/logout",
     });

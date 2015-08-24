@@ -110,7 +110,7 @@ app.MainController = function() {
           $prevStickyPosition = $prevSticky.data('originalPosition');
 
 
-      if ($thisStickyTop >= 145 && $thisStickyTop <= 175) {
+      if ($thisStickyTop >= 140 && $thisStickyTop <= 190) {
 
         var $nextSticky = $stickies.eq(i + 1) || null,
 
@@ -143,14 +143,14 @@ app.MainController = function() {
          }
 
       // scrolling up and sticking to proper position
-         if ($prevStickyTop + $thisAndPrevStickyDifference > 205 && i !== 0) {
+         if ($prevStickyTop + $thisAndPrevStickyDifference > 157 && i !== 0) {
 
             $nextSticky.removeClass("fixed");
             $prevSticky.addClass("fixed");
          }
 
       // scrolling down
-        if ($prevStickyTop >= 162 && $prevSticky.hasClass("fixed") && i !== 0) {
+        if ($prevStickyTop >= 157 && $prevSticky.hasClass("fixed") && i !== 0) {
            $prevSticky.removeClass("fixed");
          }
 
