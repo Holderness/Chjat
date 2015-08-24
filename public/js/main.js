@@ -44,10 +44,8 @@ app.MainController = function() {
       self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel });
       self.containerModel.set('viewState', self.chatroomView);
 
-      autosize($('textarea.message-input'));
-      $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
-
-      self.connectToRoom(self.initRoom);
+      self.connectToRoom();
+      self.initRoom();
        
       // console.log('authent');
       // setTimeout(function(){
@@ -63,125 +61,19 @@ app.MainController = function() {
 
   };
 
-  // self.logout = function() {
-  //   self.chatClient.logout();
-  //   self.navbarView = new app.NavbarView();
-  // };
-
   self.connectToRoom = function(callback) {
     self.chatClient.connectToRoom("DOO");
-    callback();
   };
 
   self.initRoom = function(callback) {
     self.chatroomView.initRoom();
-    callback(self.setDateDivider);
   };
 
   self.setDateDivider = function() {
     self.dateDivider.load($(".followMeBar"));
   };
 
-  self.dateDivider = (function() {
-
-  var $window = $(window),
-      $stickies;
-
-  load = function(stickies) {
-
-      $stickies = stickies.each(function() {
-
-        var $thisSticky = $(this).wrap('<div class="followWrap row" />');
   
-        $thisSticky
-            .data('originalPosition', $thisSticky.offset().top)
-            .data('originalHeight', $thisSticky.outerHeight())
-              .parent()
-              .height($thisSticky.outerHeight());
-        console.log('thissticky.originalposition', $thisSticky.offset().top);
-      });
-      
-      $('#chatbox-content').scroll(scrollStickiesInit);
-
-  };
-
-
-  scrollStickiesInit = function() {
-    $(this).off("scroll.stickies");
-    $(this).on("scroll.stickies", _.debounce(_whenScrolling, 150));
-  };
-
-
-  _whenScrolling = function() {
-
-    $stickies.each(function(i, sticky) {
-
-      var $thisSticky = $(sticky),
-          $thisStickyTop = $thisSticky.offset().top,
-
-          $prevSticky = $stickies.eq(i - 1),
-          $prevStickyTop = $prevSticky.offset().top,
-          $prevStickyPosition = $prevSticky.data('originalPosition');
-
-
-      if ($thisStickyTop >= 140 && $thisStickyTop <= 180) {
-
-        var $nextSticky = $stickies.eq(i + 1) || null,
-
-        $thisStickyPosition = $thisSticky.data('originalPosition'),
-        $thisAndPrevStickyDifference = Math.abs($prevStickyPosition - $thisStickyPosition);
-
-        $thisSticky.addClass("fixed");
-
-        // var $nextStickyPosition = $nextSticky.data('originalPosition');
-        // var $thisAndNextStickyDifference = Math.abs($thisStickyPosition - $nextStickyPosition);
-        // var $nextStickyTop = $nextSticky.offset().top;
-        // console.log('-------------');
-        // console.log('prevstickyoriginposition', $prevStickyPosition);
-        // console.log('prevstickytop', $prevStickyTop);
-        // console.log('$thisAndPrevStickyDifference', $thisAndPrevStickyDifference);
-        // console.log('thisStickyTop', $thisStickyTop);
-        // console.log('$thisAndNextStickyDifference', $thisAndNextStickyDifference);
-        // console.log('nextStickyTop', $nextStickyTop);
-        // console.log('nextstickyoriginposition', $nextStickyPosition);
-        // console.log('prev', $prevSticky);
-        // console.log('this', $thisSticky);
-        // console.log('next', $nextSticky);
-        // console.log('nextstickytop', $nextStickyTop);
-        // console.log('-------------');
-        
-
-      //scrolling up
-         if ($nextSticky.hasClass("fixed")) {
-           $nextSticky.removeClass("fixed");
-         }
-
-      // scrolling up and sticking to proper position
-         if ($prevStickyTop + $thisAndPrevStickyDifference > 157 && i !== 0) {
-
-            $nextSticky.removeClass("fixed");
-            $prevSticky.addClass("fixed");
-         }
-
-      // scrolling down
-        if ($prevStickyTop >= 157 && $prevSticky.hasClass("fixed") && i !== 0) {
-           $prevSticky.removeClass("fixed");
-         }
-
-      }
-
-      if ($('#chatbox-content').scrollTop() === 0) {
-        $stickies.removeClass('fixed');
-      }
-
-    });
-
-  };
-
-  return {
-    load: load
-  };
-})();
 
 
 
@@ -321,7 +213,6 @@ app.MainController = function() {
       return newChatModel;
     });
     oldChatlog.reset(updatedChatlog);
-    self.dateDivider.load($(".followMeBar"));
   });
   
   self.appEventBus.on("setChatrooms", function(chatrooms) {
