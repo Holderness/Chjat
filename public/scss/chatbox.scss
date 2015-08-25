@@ -131,6 +131,10 @@
     top: 157px;
     width: 508px;
     left: 220px;
+    z-index: 1;
+    .absolute {
+      position: absolute;
+    }
     @media #{$breakpoint-chatbox} {
       margin-left: -7px;
       width: 53.5%;

@@ -71,7 +71,7 @@ app.ChatroomView = Backbone.View.extend({
   renderChats: function() {
     console.log('crv.f.renderChats');
     console.log('CHATLOG: ', this.model.get("chatlog"));
-    this.$('.chatbox-content').empty();
+    this.$('#chatbox-content').empty();
     this.model.get('chatlog').each(function(chat) {
       this.renderChat(chat);
     }, this);
@@ -81,14 +81,14 @@ app.ChatroomView = Backbone.View.extend({
   renderChat: function(model) {
     this.renderDateDividers(model);
     var chatTemplate = $(this.chatTemplate(model.toJSON()));
-    chatTemplate.appendTo(this.$('.chatbox-content')).hide().fadeIn().slideDown();
-    $('.chatbox-content')[0].scrollTop = $('.chatbox-content')[0].scrollHeight;
+    chatTemplate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
+    $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
   },
   renderDateDividers: function(model) {
     this.currentDate = moment(model.attributes.timestamp).format('dddd, MMMM Do YYYY');
     if ( this.currentDate !== this.previousDate ) {
       var currentDate = $(this.dateTemplate(model.toJSON()));
-      currentDate.appendTo(this.$('.chatbox-content')).hide().fadeIn().slideDown();
+      currentDate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
       this.previousDate = this.currentDate;
     }
   },
@@ -167,21 +167,22 @@ app.ChatroomView = Backbone.View.extend({
   };
 
 
-  _whenScrolling = function() {
+_whenScrolling = function() {
 
     $stickies.each(function(i, sticky) {
 
       var $thisSticky = $(sticky),
           $thisStickyTop = $thisSticky.offset().top,
+          $thisStickyPosition = $thisSticky.data('originalPosition'),
 
           $prevSticky = $stickies.eq(i - 1),
           $prevStickyTop = $prevSticky.offset().top,
           $prevStickyPosition = $prevSticky.data('originalPosition');
 
 
-      if ($thisStickyTop >= 140 && $thisStickyTop <= 180) {
+      if ($thisStickyTop <= 157) {
 
-        var $nextSticky = $stickies.eq(i + 1) || null,
+        var $nextSticky = $stickies.eq(i + 1),
 
         $thisStickyPosition = $thisSticky.data('originalPosition'),
         $thisAndPrevStickyDifference = Math.abs($prevStickyPosition - $thisStickyPosition);
@@ -192,38 +193,44 @@ app.ChatroomView = Backbone.View.extend({
         // var $thisAndNextStickyDifference = Math.abs($thisStickyPosition - $nextStickyPosition);
         // var $nextStickyTop = $nextSticky.offset().top;
         // console.log('-------------');
-        // console.log('prevstickyoriginposition', $prevStickyPosition);
-        // console.log('prevstickytop', $prevStickyTop);
-        // console.log('$thisAndPrevStickyDifference', $thisAndPrevStickyDifference);
-        // console.log('thisStickyTop', $thisStickyTop);
-        // console.log('$thisAndNextStickyDifference', $thisAndNextStickyDifference);
-        // console.log('nextStickyTop', $nextStickyTop);
-        // console.log('nextstickyoriginposition', $nextStickyPosition);
-        // console.log('prev', $prevSticky);
-        // console.log('this', $thisSticky);
-        // console.log('next', $nextSticky);
-        // console.log('nextstickytop', $nextStickyTop);
+        // console.log('prevstickyoriginposition', $stickies.eq(i - 1).data('originalPosition'));
+        // console.log('prevstickytop', $stickies.eq(i - 1).offset().top);
+        // console.log('$thisAndPrevStickyDifference', Math.abs($thisStickyPosition - $stickies.eq(i - 1).data('originalPosition')));
+        // console.log('thisStickyTop', $thisSticky.offset().top);
+        // console.log('$thisAndNextStickyDifference', Math.abs($thisStickyPosition - $nextStickyPosition));
+        // console.log('nextStickyTop', $nextSticky.offset().top);
+        // console.log('nextstickyoriginposition', $nextSticky.data('originalPosition'));
+        // // console.log('prev', $prevSticky);
+        // // console.log('this', $thisSticky);
+        // // console.log('next', $nextSticky);
         // console.log('-------------');
         
 
       //scrolling up
          if ($nextSticky.hasClass("fixed")) {
+         //   $prevSticky.addClass("fixed");
            $nextSticky.removeClass("fixed");
          }
 
       // scrolling up and sticking to proper position
          if ($prevStickyTop + $thisAndPrevStickyDifference > 157 && i !== 0) {
-
             $nextSticky.removeClass("fixed");
-            $prevSticky.addClass("fixed");
+            // $prevSticky.addClass("fixed");
          }
 
-      // scrolling down
         if ($prevStickyTop >= 157 && $prevSticky.hasClass("fixed") && i !== 0) {
            $prevSticky.removeClass("fixed");
          }
 
-      }
+
+      // scrolling down
+      } else {
+
+        if ($prevStickyTop >= 157 && $prevSticky.hasClass("fixed") && i !== 0) {
+           $thisSticky.removeClass("fixed");
+           // console.log('huh');
+         }
+       }
 
       if ($('#chatbox-content').scrollTop() === 0) {
         $stickies.removeClass('fixed');

@@ -215,6 +215,75 @@
 
 
 
+_whenScrolling = function() {
+
+    $stickies.each(function(i, sticky) {
+
+      var $thisSticky = $(sticky),
+          $thisStickyTop = $thisSticky.offset().top,
+          $thisStickyPosition = $thisSticky.data('originalPosition'),
+
+          $prevSticky = $stickies.eq(i - 1),
+          $prevStickyTop = $prevSticky.offset().top,
+          $prevStickyPosition = $prevSticky.data('originalPosition');
+
+
+      if ($thisStickyTop >= 130 && $thisStickyTop <= 180) {
+
+        var $nextSticky = $stickies.eq(i + 1),
+
+        $thisStickyPosition = $thisSticky.data('originalPosition'),
+        $thisAndPrevStickyDifference = Math.abs($prevStickyPosition - $thisStickyPosition);
+
+        $thisSticky.addClass("fixed");
+
+        var $nextStickyPosition = $nextSticky.data('originalPosition');
+        var $thisAndNextStickyDifference = Math.abs($thisStickyPosition - $nextStickyPosition);
+        var $nextStickyTop = $nextSticky.offset().top;
+        console.log('-------------');
+        console.log('prevstickyoriginposition', $stickies.eq(i - 1).data('originalPosition'));
+        console.log('prevstickytop', $stickies.eq(i - 1).offset().top);
+        console.log('$thisAndPrevStickyDifference', Math.abs($thisStickyPosition - $stickies.eq(i - 1).data('originalPosition')));
+        console.log('thisStickyTop', $thisSticky.offset().top);
+        console.log('$thisAndNextStickyDifference', Math.abs($thisStickyPosition - $nextStickyPosition));
+        console.log('nextStickyTop', $nextSticky.offset().top);
+        console.log('nextstickyoriginposition', $nextSticky.data('originalPosition'));
+        // console.log('prev', $prevSticky);
+        // console.log('this', $thisSticky);
+        // console.log('next', $nextSticky);
+        console.log('-------------');
+        
+
+      //scrolling up
+         if ($nextSticky.hasClass("fixed")) {
+           $nextSticky.removeClass("fixed");
+         }
+
+      // scrolling up and sticking to proper position
+         if ($prevStickyTop + $thisAndPrevStickyDifference > 157 && i !== 0) {
+            $nextSticky.removeClass("fixed");
+            $prevSticky.addClass("fixed");
+         }
+
+      // scrolling down
+        if ($prevStickyTop >= 157 && $prevSticky.hasClass("fixed") && i !== 0) {
+           $prevSticky.removeClass("fixed");
+         }
+
+      }
+
+      if ($('#chatbox-content').scrollTop() === 0) {
+        $stickies.removeClass('fixed');
+      }
+
+    });
+
+  };
+
+  return {
+    load: load
+  };
+})()
 
 
 
