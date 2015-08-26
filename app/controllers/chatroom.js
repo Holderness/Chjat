@@ -2,6 +2,7 @@ var express = require('express'),
     mongoose = require('mongoose'),
     passport = require('passport'),
     bodyParser = require('body-parser'),
+    multer = require('multer');
     fs = require('fs'),
     AWS = require('aws-sdk');
 
@@ -32,9 +33,11 @@ var uploadToS3 = function(file, destFileName, callback) {
     .send(callback);
 };
 
+exports.multerRestrictions = multer({limits: {fileSize:10*1024*1024}});
+
 exports.uploadChatImage = function (req, res, next) {
 
-  console.log('req.files: ', req.files);
+  console.log('req: ', req);
   console.log('----------------------------------------------------------------');
   console.log('req.files.chatImageUpload: ', req.files.chatImageUpload);
 

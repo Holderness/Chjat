@@ -14,6 +14,7 @@ app.ChatroomView = Backbone.View.extend({
   initialize: function(options) {
     console.log('chatroomView.f.initialize: ', options);
     // passed the viewEventBus
+
     this.vent = options.vent;
   },
   initRoom: function() {
@@ -24,6 +25,7 @@ app.ChatroomView = Backbone.View.extend({
     this.model = model || this.model;
     this.$el.html(this.template(this.model.toJSON()));
     // this.setChatCollection();
+    // this.chatImageViewView.setElement(this.$('#chatImageUploadContainer')).render();
     this.setChatListeners();
     return this;
   },
@@ -44,7 +46,16 @@ app.ChatroomView = Backbone.View.extend({
     this.listenTo(chatrooms, "remove", this.renderRooms, this);
     this.listenTo(chatrooms, "reset", this.renderRooms, this);
 
+
+    this.chatImageView = new app.ChatImageView();
+    this.listenTo(this.chatImageView, 'image-uploaded', this.updateInput);
     this.listenTo(this.model, "change:chatroom", this.renderName, this);
+
+    setTimeout(function() {
+        $("#chatImageUpload").change(function(){
+           console.log('burn daddy burn');
+         });
+    }, 2000);
 
   },
 
@@ -91,7 +102,28 @@ app.ChatroomView = Backbone.View.extend({
       currentDate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
       this.previousDate = this.currentDate;
     }
+    this.chatImageView.setElement($('#chatImageUploadContainer'));
   },
+
+
+
+
+
+
+
+  updateInput: function(url) {
+    debugger;
+    console.log('img url: ', url[0]);
+    $('#chatImageUpload').val(url[0]);
+    this.createData();
+  },
+
+
+
+
+
+
+
 
 
   // renders on events, called just above

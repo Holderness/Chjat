@@ -11,7 +11,7 @@
   <link rel="stylesheet" type='text/css' href="./build/sass.css">
 </head>
 <body>
-
+ 
   <div class="nav-container" id="nav-container">
     <div class="nav-header menu-wrapper">
       <nav class="navbar navbar-default" role="navigation">
@@ -166,13 +166,47 @@
               </div>
 
               <div class="row col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 chatbox-input-container">
-                    <a href="#"><i class="fa fa-image"></i></a >
+                    <a 
+                      href="#" 
+                      id="addChatImage"
+                      data-toggle="modal"
+                      data-target="#chatImageUploadModal">
+                      <i class="fa fa-image"></i>
+                    </a >
                   <form>
                     <textarea class="message-input" placeholder="" rows="1"></textarea>
                   </form>
               </div>
             </div>
           </div> <!-- chatbox -->
+
+
+<!-- chatImageUpload modal -->
+        <div class="modal fade" id="chatImageUploadModal" tabindex="-1" role="dialog" aria-labelledby="chatImageUploadModal" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="chatImageUploadModalLabel">Upload a File</h4>
+              </div>
+              <div class="modal-body">
+                <div id="books">
+                  <div id="chatImageUploadContainer">
+                    <img src="/img/tom-jones.jpg" alt="" id="uploadedChatImage">
+                    <form id="chatImageUploadForm" method="post" action="api/uploadChatImage" enctype="multipart/form-data">
+                      <input type="file" id="chatImageUpload" name="chatImageUpload">
+                     <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <input type="submit" id="addChatImageBtn" class="btn btn-primary" value="Save & Close"></input>
+                     </div>
+                    </form>
+                    <div id="status"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         </div> <!-- page row -->
       </div> <!-- container-fluid -->
@@ -264,7 +298,6 @@
   </script> 
 
 
-  
   <script src="/socket.io/socket.io.js"></script>
   <script src="./build/vendor.js"></script>
   <script src="./build/main.js"></script>

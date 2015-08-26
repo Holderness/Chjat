@@ -12,6 +12,8 @@ module.exports = function(app) {
 
   // app.route('/api/search/').get(chatroom.findBy);
 
+  app.route('/api/uploadChatImage').post(chatroom.multerRestrictions, chatroom.uploadChatImage);
+
   app.route('/api/chatrooms/:name').get(chatroom.findBy)
   // .put(chatroom.update).delete(book.remove)
   ;
