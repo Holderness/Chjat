@@ -47,16 +47,6 @@ app.MainController = function() {
       self.connectToRoom();
       self.initRoom();
        
-      // console.log('authent');
-      // setTimeout(function(){
-      //   self.chatClient.connectToRoom("DOO");
-      // }, 1500);
-      // setTimeout(function(){
-      //   self.chatroomView.initRoom();
-      // }, 2000);
-      // setTimeout(function(){
-      //   self.dateDivider.load($(".followMeBar"));
-      // }, 2001);
     });
 
   };
@@ -67,10 +57,6 @@ app.MainController = function() {
 
   self.initRoom = function(callback) {
     self.chatroomView.initRoom();
-  };
-
-  self.setDateDivider = function() {
-    self.dateDivider.load($(".followMeBar"));
   };
 
   

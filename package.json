@@ -19,6 +19,7 @@
   "homepage": "https://github.com/evturn/hamburger",
   "dependencies": {
     "autosize": "^3.0.3",
+    "aws-sdk": "^2.1.47",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.13.2",
     "browser-sync": "^2.7.13",
