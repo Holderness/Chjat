@@ -33,7 +33,7 @@ app.ChatroomModel = Backbone.Model.extend({
   addChat: function(chat) {
     console.log('crm.f.addChat');
     var now = _.now();
-    this.get('chatlog').add(new app.ChatModel({ sender: chat.sender, message: chat.message, timestamp: now}));
+    this.get('chatlog').add(new app.ChatModel({ sender: chat.sender, message: chat.message, timestamp: now, url: chat.url}));
     // this.trigger('gorp', chat);
   },
 });

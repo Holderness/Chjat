@@ -288,4 +288,31 @@ _whenScrolling = function() {
 
 
 
+
+    upload: function() {
+      var _this = this;
+        debugger;
+      if (this.$('#chatImageUpload')[0].files.length > 0) {
+        $.ajax({
+          method: 'POST',
+          url: '/api/uploadChatImage',
+          data: this.$form.serialize(),
+          error: function( xhr ) {
+            _this.renderStatus('Error: ' + xhr.status);
+            alert('Your image is either too large or it is not a .jpeg, .png, or .gif.');
+          },
+          success: function( response ) {
+            console.log('imgUpload response: ', response);
+            _this.trigger('image-uploaded', [response.url]);
+            console.log('imgUpload path ', response.path);
+
+            _this.clearField();
+          }
+        });
+      } else {
+       this.trigger('image-uploaded');
+      }
+      return false;
+    },
+
   

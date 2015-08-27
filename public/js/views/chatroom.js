@@ -90,6 +90,13 @@ app.ChatroomView = Backbone.View.extend({
     this.dateDivider.load($(".followMeBar"));
   },
   renderChat: function(model) {
+    if (model.attributes.url) {
+      debugger;
+    }
+    if (model.attributes.url === '' || model.attributes.url === null || model.attributes.url === undefined) {
+      model.attributes.url = '';
+    }
+
     this.renderDateDividers(model);
     var chatTemplate = $(this.chatTemplate(model.toJSON()));
     chatTemplate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
@@ -102,20 +109,21 @@ app.ChatroomView = Backbone.View.extend({
       currentDate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
       this.previousDate = this.currentDate;
     }
-    this.chatImageView.setElement($('#chatImageUploadContainer'));
+            this.chatImageView.setElement($('#chatImageUploadContainer'));
   },
 
 
 
 
 
-
-
-  updateInput: function(url) {
+  updateInput: function(response) {
     debugger;
-    console.log('img url: ', url[0]);
-    $('#chatImageUpload').val(url[0]);
-    this.createData();
+    var chatImage = new app.ChatModel(response);
+    console.log('img url: ', response);
+    this.vent.trigger("chat", response);
+    // this.renderChat(chatImage);
+    // $('#chatImageUpload').val(response.url);
+    // this.createData();
   },
 
 
@@ -151,7 +159,7 @@ app.ChatroomView = Backbone.View.extend({
     if (e.keyCode === 13 && $.trim($('.message-input').val()).length > 0) {
       // fun fact: separate events with a space in trigger's first arg and you
       // can trigger multiple events.
-      this.vent.trigger("chat", this.$('.message-input').val());
+      this.vent.trigger("chat", { message: this.$('.message-input').val()});
       this.$('.message-input').val('');
       return false;
     } else {

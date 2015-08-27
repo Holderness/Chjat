@@ -8,7 +8,8 @@ var Messages = new mongoose.Schema({
   timestamp: {
         type: Date,
         default: Date.now
-    }
+    },
+  url: String
 });
 
 var Chatroom = new mongoose.Schema({

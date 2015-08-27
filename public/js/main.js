@@ -195,7 +195,7 @@ app.MainController = function() {
   self.appEventBus.on("setChatlog", function(chatlog) {
     var oldChatlog = self.chatroomModel.get('chatlog');
     var updatedChatlog = _.map(chatlog, function(chat) {
-      var newChatModel = new app.ChatModel({ room: chat.room, message: chat.message, sender: chat.sender, timestamp: chat.timestamp });
+      var newChatModel = new app.ChatModel({ room: chat.room, message: chat.message, sender: chat.sender, timestamp: chat.timestamp, url: chat.url });
       return newChatModel;
     });
     oldChatlog.reset(updatedChatlog);

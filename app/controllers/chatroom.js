@@ -60,7 +60,7 @@ exports.uploadChatImage = function (req, res, next) {
     }
       // console.log('data: ', data);
     res.status(200)
-      .send({ url: data.Location, ETag: data.ETag })
+      .send({ url: data.Location, ETag: data.ETag, message: '', timestamp: _.now()})
       .end();
   });
 };

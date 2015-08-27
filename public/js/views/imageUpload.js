@@ -4,6 +4,8 @@ var app = app || {};
 (function($) {
 
   app.ChatImageView = Backbone.View.extend({
+
+    el: $('#chatImageUploadContainer'),
   
     events: {
       'change #chatImageUpload': 'renderThumb',
@@ -28,6 +30,7 @@ var app = app || {};
         })(img);
         reader.readAsDataURL( selected_file );
       }
+
     },
 
     console: function() {
@@ -54,18 +57,23 @@ var app = app || {};
     upload: function() {
       var _this = this;
         debugger;
+        var formData = new FormData(this.$form[0]);
       if (this.$('#chatImageUpload')[0].files.length > 0) {
         $.ajax({
-          method: 'POST',
+          type: 'POST',
           url: '/api/uploadChatImage',
-          files: _this.$('#chatImageUpload')[0].files,
+          data: formData,
+          cache: false,
+          dataType: 'json',
+          processData: false,
+          contentType: false,
           error: function( xhr ) {
             _this.renderStatus('Error: ' + xhr.status);
             alert('Your image is either too large or it is not a .jpeg, .png, or .gif.');
           },
           success: function( response ) {
             console.log('imgUpload response: ', response);
-            _this.trigger('image-uploaded', [response.url]);
+            _this.trigger('image-uploaded', response);
             console.log('imgUpload path ', response.path);
 
             _this.clearField();

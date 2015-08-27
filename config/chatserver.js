@@ -112,11 +112,21 @@ var Server = function(options) {
       if (chat) {
         ChatroomModel.findOne({ name: user.socket.chat.room }, function(err, chatroom) {
           if (!err) {
-            chatroom.chatlog.push( { room: user.socket.chat.name, sender: user.username, message: chat } );
-            chatroom.save(function(err) {
-              if (err) { return console.log( err );}
-            });
-            self.io.sockets.to(user.socket.chat.room).emit("chat", { room: user.socket.chat.room, sender: user.username, message: chat, timestamp: timestamp});
+            if (chat.url.length > 0) {
+              console.log('1chat.url', chat.url);
+              chatroom.chatlog.push( { room: user.socket.chat.name, sender: user.username, message: chat.message, url: chat.url } );
+              chatroom.save(function(err) {
+                if (err) { return console.log( err );}
+              });
+              self.io.sockets.to(user.socket.chat.room).emit("chat", { room: user.socket.chat.room, sender: user.username, message: chat.message, url: chat.url, timestamp: timestamp});
+            } else {
+              console.log('2chat.url', chat.url);
+              chatroom.chatlog.push( { room: user.socket.chat.name, sender: user.username, message: chat.message, url: null } );
+              chatroom.save(function(err) {
+                if (err) { return console.log( err );}
+              });
+              self.io.sockets.to(user.socket.chat.room).emit("chat", { room: user.socket.chat.room, sender: user.username, message: chat.message, timestamp: timestamp, url: null});
+            }
           } else {
             return console.log( err );
           }
