@@ -106,7 +106,7 @@
       }
     }
     .message-image img{
-      max-height: 400px;
+      max-height: 370px;
       max-width: 425px;
       @media #{$breakpoint-chatbox3} {
         max-width: 530px;
@@ -198,6 +198,21 @@
   }
 }
 
+
+
+//modal
+
+#chatImageUploadModal {
+  #chatImageUploadContainer {
+    text-align: center;
+    img {
+      margin: 30px;
+      box-shadow: 3px 3px 1em $marine, -3px -3px 1em $pink-oink;
+      max-width: 425px;
+      max-height: 500px
+    }
+  }
+}
 
 
 

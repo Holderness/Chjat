@@ -7,17 +7,21 @@
 
 
 // fuckin colors
-$pink: pink;
-$main-bkgd: #E5EAEB;
-$nav-bkgd: #749CA8;
+$pink-oink: #DEB0B0;
+$marine: #749CA8;
+$gray-gor: #E5EAEB;
+$white: white;
+
+
+$main-bkgd: $gray-gor;
+$nav-bkgd: $marine;
+$border: #ddd;
 $dark-gray-text: #A8A8A8;
 $light-gray-text: #aaa;
-$white: #fff;
-$border: #ddd;
-$power-button: #DEB0B0;
+$power-button: $pink-oink;
 
 $chatbox-message-name: black;
-$online-user: #DEB0B0;
+$online-user: $pink-oink;
 
 // moonrise pallete
  // $blue: #8CBEA3;
@@ -86,7 +90,7 @@ a {
 // }
 
 textarea:focus, input:focus, .btn:focus {   
-    border-color: #DEB0B0 !important;
-    box-shadow: 0 1px 1px #DEB0B0 inset, 0 0 8px #DEB0B0 !important;
+    border-color: $pink-oink !important;
+    box-shadow: 0 1px 1px $pink-oink inset, 0 0 8px $pink-oink !important;
     outline: 0 none !important;
 }

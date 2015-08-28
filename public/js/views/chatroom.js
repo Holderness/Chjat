@@ -128,7 +128,9 @@ app.ChatroomView = Backbone.View.extend({
     // this.renderChat(chatImage);
     // $('#chatImageUpload').val(response.url);
     // this.createData();
-    $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
+    setTimeout(function() {
+      $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
+    }, 1000);
   },
 
 

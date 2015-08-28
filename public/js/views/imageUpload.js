@@ -33,30 +33,14 @@ var app = app || {};
 
     },
 
-    console: function() {
-        console.log('this is the console.');
-        console.log('this is the console.');
-        console.log('this is the console.');
-        console.log('this is the console.');
-        console.log('this is the console.');
-        console.log('this is the console.');
-        console.log('this is the console.');
-        console.log('this is the console.');
-        console.log('this is the console.');
-        console.log('this is the console.');
-        console.log('this is the console.');
-    },
-
     submit: function(e) {
       e.preventDefault();
-      debugger;
       this.$form = this.$('#chatImageUploadForm');
       this.$form.trigger('attachImage');
     },
 
     upload: function() {
       var _this = this;
-        debugger;
         var formData = new FormData(this.$form[0]);
       if (this.$('#chatImageUpload')[0].files.length > 0) {
         $.ajax({
@@ -75,7 +59,7 @@ var app = app || {};
             console.log('imgUpload response: ', response);
             _this.trigger('image-uploaded', response);
             console.log('imgUpload path ', response.path);
-
+            $('#chatImageUploadModal').modal('hide');
             _this.clearField();
           }
         });
