@@ -55,7 +55,12 @@ app.ChatroomView = Backbone.View.extend({
         $("#chatImageUpload").change(function(){
            console.log('burn daddy burn');
          });
+        // $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
     }, 2000);
+
+    setTimeout(function() {
+        $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
+    }, 1000);
 
   },
 
@@ -90,9 +95,8 @@ app.ChatroomView = Backbone.View.extend({
     this.dateDivider.load($(".followMeBar"));
   },
   renderChat: function(model) {
-    if (model.attributes.url) {
-      debugger;
-    }
+
+    // delete in production
     if (model.attributes.url === '' || model.attributes.url === null || model.attributes.url === undefined) {
       model.attributes.url = '';
     }
@@ -124,6 +128,7 @@ app.ChatroomView = Backbone.View.extend({
     // this.renderChat(chatImage);
     // $('#chatImageUpload').val(response.url);
     // this.createData();
+    $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
   },
 
 
