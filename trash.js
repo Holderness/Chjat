@@ -286,7 +286,22 @@ _whenScrolling = function() {
 })()
 
 
+    upload: function() {
+      var _this = this;
+        debugger;
+      if (this.$('#chatImageUpload')[0].files.length > 0) {
+        $.post('/api/uploadChatImage', this.$form.serialize(), function(response) {
+             console.log('imgUpload response: ', response);
+            _this.trigger('image-uploaded', [response.url]);
+            console.log('imgUpload path ', response.path);
 
+            _this.clearField();
+        });
+      } else {
+       this.trigger('image-uploaded');
+      }
+      return false;
+    },
 
 
     upload: function() {

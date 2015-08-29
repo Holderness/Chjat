@@ -5,16 +5,42 @@
   padding-top: 0;
 }
 
+.navbar-header {
+  height: 75px;
+  padding: 10px;
+}
+
+.nav {
+  &.navbar-right {
+    padding: 25px;
+    li {
+      display: inline-block;
+      padding: 0 20px;
+    }
+  }
+}
+
 .navbar {
-  background: transparent;
+  background: $marine;
   margin:0;
   border:none;
   box-shadow:none;
   height: 85px;
-  padding: 10px 20px 10px 20px;
+  .container-fluid {
+    background-color: $nav-bkgd !important;
+    position: relative;
+    z-index: 1;
+    .navbar-collapse {
+      margin: 0 -35px;
+    }
+  }
   .navbar-brand {
-    background: transparent;
-    padding: 3px 0 0 15px;
+    // background: transparent;
+    padding: 3px 0 0 22px;
+  //   img {
+  //   position: relative;
+  //   z-index: 1;
+  // }
     span {
       height: .5px;
       width: .5px;
@@ -49,12 +75,13 @@
       }
     }
   }
-  .navbar-right {
-    margin: 20px 0;
-  }
 }
 
 .login-menu {
+  .nav.navbar-right {
+    background-color: $nav-bkgd;
+    // width: 100%;
+  }
   .power-off-style {
     background-color: $nav-bkgd;
     color: black;
