@@ -14,7 +14,7 @@ app.ChatroomView = Backbone.View.extend({
   initialize: function(options) {
     console.log('chatroomView.f.initialize: ', options);
     // passed the viewEventBus
-
+    
     this.vent = options.vent;
   },
   initRoom: function() {
@@ -51,14 +51,75 @@ app.ChatroomView = Backbone.View.extend({
     this.listenTo(this.chatImageView, 'image-uploaded', this.updateInput);
     this.listenTo(this.model, "change:chatroom", this.renderName, this);
 
-    setTimeout(function() {
-        $("#chatImageUpload").change(function(){
-           console.log('burn daddy burn');
-         });
-        // $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
-    }, 2000);
+
+    // $("#current-provider-name").typeahead({
+    //                 "source": function(query, process) {
+    //                     $.get("/api/get_providers", {"search": query, "client_id": ${request.client.id}})
+    //                     .done(function(data) {
+    //                         var providers = [];
+    //                         $.each(data, function(index, provider) {
+    //                             providers.push(provider.name);
+    //                         });
+    //                         process(providers);
+    //                     });
+    //                 },
+    //                 "sorter": function(items) {
+    //                     items.unshift(this.query);
+    //                     return items;
+    //                 }
+    //             });
+
+    // var ajaxquery = function(query, syncresults, process) {
+    //     return $.ajax({
+    //         url: 'http:/localhost:3001/api/chatrooms/:name',
+    //         type: 'get',
+    //         data: {name: query},
+    //         dataType: 'json',
+    //         success: function(json) {
+    //             console.log(json);
+    //         }
+    //     });
+    // };
+
+    // setTimeout(function() {
+    //     $("#chatImageUpload").change(function(){
+    //        console.log('burn daddy burn');
+    //      });
+    //     // $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
+    // }, 2000);
 
     setTimeout(function() {
+          $('#chat-search-input').typeahead({
+      onSelect: function(item) {
+        console.log(item);
+      },
+      ajax: {
+        url: '/api/searchChatrooms',
+        preDispatch: function (query) {
+            return {
+                name: query
+            }
+        },
+        preProcess: function (data) {
+          console.log(data);
+            if (data.success === false) {
+                // Hide the list, there was some error
+                return false;
+            }
+            // We good!
+            return data;
+        }
+      },
+       //       "source": function(query, process) {
+       //  alert('wtf');
+       //   $.getJSON("/api/chatrooms", {"search": query})
+       //   .done(function(data) {
+       //     alert('wtf');
+       //    console.log(data);
+       //  });
+       // },
+
+    });
         $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
     }, 1000);
 

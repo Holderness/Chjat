@@ -12,6 +12,7 @@ module.exports = {
       'public/js/lib/livestamp.js',
       'public/js/lib/wow.js',
       'public/js/lib/progressbar.js',
+      'public/js/lib/bootstrap-typeahead.js',
     ],
     src: [
       'https://cdn.socket.io/socket.io-1.2.0.js',

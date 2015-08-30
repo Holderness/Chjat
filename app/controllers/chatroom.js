@@ -97,11 +97,18 @@ exports.addChatroom = function(req, res, next) {
 };
 
 exports.findBy = function(req, res, next) {
-  return ChatroomModel.find({ name: req.room.name }, function( err, chatroom ) {
+  console.log( '-------------------------req: ', req);
+  return ChatroomModel.find({ name: new RegExp(req.query.name, "i") }, function( err, chatrooms ) {
     if (!err) {
       console.log('it"s a boy!');
-      console.log( chatroom );
-      return res.send( chatroom );
+      // console.log( chatrooms );
+    var chatroomNames = [];
+    for (i = 0; i < chatrooms.length; i++) {
+      // console.log(chatrooms[i]);
+        chatroomNames.push(chatrooms[i].name);
+    }
+    console.log(chatroomNames);
+      return res.send( chatroomNames );
     } else {
       return console.log( err );
     }

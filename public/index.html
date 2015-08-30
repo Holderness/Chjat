@@ -130,11 +130,14 @@
         <div class="row">
           <div class="col-md-2 col-sm-2 col-xs-2 pull-left chat-directory">
             <form>
-              <input type="text" placeholder="Search" class="form-control chat-search-input" autocomplete="off">
+              <input type="text" placeholder="Search" id="chat-search-input" class="form-control chat-search-input" autocomplete="off">
             </form>
             <div class="public-rooms-container"></div>
             <div class="direct-messages-container"><!-- direct messages --></div>
             <div class="private-rooms-container"></div>
+            <div class="add-remove-room-container">
+              <button class="btn btn-primary">FIND CHATROOM</button>
+            </div>
           </div> <!--chat-directory -->
 
           <div class="col-md-2 text-center pull-right user-directory">
@@ -207,6 +210,30 @@
         </div>
 
 
+    // <!-- findChatroom modal -->
+    //     <div class="modal fade" id="findChatroomModal" tabindex="-1" role="dialog" aria-labelledby="findChatroomModal" aria-hidden="true">
+    //       <div class="modal-dialog">
+    //         <div class="modal-content">
+    //           <div class="modal-header">
+    //             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    //             <h4 class="modal-title" id="findChatroomModalLabel">Upload a File</h4>
+    //           </div>
+    //           <div class="modal-body">
+    //             <div id="findChatroomContainer">
+    //               <form id="findChatroomForm">
+    //                 <div class="modal-footer">
+    //                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    //                   <input type="button" id="addChatImageBtn" class="btn btn-primary" value="Save & Close"></input>
+    //                 </div>
+    //               </form>
+    //               <div id="status"></div>
+    //             </div>
+    //           </div>
+    //         </div>
+    //       </div>
+    //     </div>
+
+
 
         </div> <!-- page row -->
       </div> <!-- container-fluid -->
@@ -257,7 +284,7 @@
       <span><i class="fa fa-circle"></i></span>
     </div>
     <div class="col-xs-8 col-sm-8 col-md-10">
-      <p data-room="<%= name %>" >#<%= name %></p>
+      <p data-room="<%= name %>" >#<%= name %><button class="btn btn-primary btn-xs">&times;</button></p>
     </div>
   </div>
 </script>
