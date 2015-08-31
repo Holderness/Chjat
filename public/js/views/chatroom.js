@@ -90,25 +90,33 @@ app.ChatroomView = Backbone.View.extend({
   },
 
   search: function(e) {
-    if (e.keyCode === 13 && $.trim($('.message-input').val()).length > 0) {
+    if (e.keyCode === 13 && $.trim($('#chat-search-input').val()).length > 0) {
       // fun fact: separate events with a space in trigger's first arg and you
       // can trigger multiple events.
       // this.vent.trigger("chat", { message: this.$('.message-input').val()});
       // this.$('.message-input').val('');
-      $.post( "/api/searchChatrooms", function( data ) {
-        $( ".result" ).html( data );
-      });
-      return false;
+      // $.post( "/api/searchChatrooms", function( data ) {
+      //   $( ".result" ).html( data );
+      // });
+      // return false;
+      e.preventDefault();
+      var name = $('#chat-search-input').val();
+      this.addChatroomModel(name);
     } else {
       console.log('yay');
     }
     return this;
   },
 
-  getChatroomModel: function(name) {
-    console.log('crv.f.getChatroomModel');
-    this.vent.trigger('getChatroomModel', name);
+  addChatroomModel: function(name) {
+    console.log('crv.f.addChatroomModel');
+    this.vent.trigger('addRoom', name);
   },
+
+  // getChatroomModel: function(name) {
+  //   console.log('crv.f.getChatroomModel');
+  //   this.vent.trigger('getChatroomModel', name);
+  // },
   // renders on events, called just above
   renderName: function() {
     this.$('.chatbox-header').html(this.nameTemplate(this.model.get('chatroom').toJSON()));
@@ -162,7 +170,7 @@ app.ChatroomView = Backbone.View.extend({
 
 
 
-
+// rename
   updateInput: function(response) {
     debugger;
     var chatImage = new app.ChatModel(response);

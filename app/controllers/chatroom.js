@@ -8,7 +8,8 @@ var express = require('express'),
 
 
 console.log('chatroom controller');
-var ChatroomModel = mongoose.model('Chatroom');
+var UserModel = require('mongoose').model('User'),
+    ChatroomModel = mongoose.model('Chatroom');
 
 
 //////////// AWS
@@ -67,9 +68,6 @@ exports.uploadChatImage = function (req, res, next) {
 
 
 
-
-
-
 exports.findAllChatrooms = function(req, res, next) {
   return ChatroomModel.find().exec(function(err, chatrooms) {
     if (!err) {
@@ -97,7 +95,7 @@ exports.addChatroom = function(req, res, next) {
 };
 
 exports.findBy = function(req, res, next) {
-  console.log( '-------------------------req: ', req);
+  // console.log( '-------------------------req: ', req);
   return ChatroomModel.find({ name: new RegExp(req.query.name, "i") }, function( err, chatrooms ) {
     if (!err) {
       console.log('it"s a boy!');

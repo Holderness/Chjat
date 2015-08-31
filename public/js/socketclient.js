@@ -36,9 +36,14 @@ var ChatClient = function(options) {
     self.socket.emit("connectToRoom", name);
   };
 
-  self.getChatroomModel = function(name) {
+  // self.getChatroomModel = function(name) {
+  //   console.log('sc.f.getChatroomModel: ', name);
+  //   self.socket.emit("getChatroomModel", name);
+  // };
+
+  self.addRoom = function(name) {
     console.log('sc.f.getChatroomModel: ', name);
-    self.socket.emit("getChatroomModel", name);
+    self.socket.emit("addRoom", name);
   };
 
 

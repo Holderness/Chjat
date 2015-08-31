@@ -154,14 +154,27 @@ var Server = function(options) {
       self.addToRoom(user, roomName);
     });
 
-    user.socket.on('getChatroomModel', function(name) {
-        ChatroomModel.findOne({ name: name }, function(err, chatroom) {
-          if (!err) {
-            user.socket.emit("ChatroomModel", chatroom);
-          } else {
-            return console.log( err );
-          }
-        });
+    user.socket.on('addRoom', function(name) {
+      console.log('addRoom name: ', name);
+      console.log('addRoom user: ', user.username);
+      ChatroomModel.findOne({name: name}, function(err, chatroom) {
+        if (!err  && chatroom !== null) {
+          console.log('add room chatroom', chatroom);
+          UserModel.update({ username: user.username }, {$push: {'chatrooms': name}}, function(err, raw) {
+            if (!err) {
+              console.log('userchatrooms', raw);
+              self.getChatrooms(user, user.socket);
+              // user.socket.emit("ChatroomModel", chatroom);
+            } else {
+              return console.log( err );
+            }
+          });
+        } else if (!err) {
+          return;
+        } else {
+          return console.log( err );
+        }
+      });
     });
 
   };
@@ -227,7 +240,7 @@ var Server = function(options) {
     console.log('f.getChatrooms');
     UserModel.findOne({ 'username': user.username}, function( err, user ) {
       if (!err) {
-        console.log('getchatrooms: ', user);
+        // console.log('getchatrooms: ', user);
 
         socket.emit('chatrooms', user.chatrooms);
       } else {
