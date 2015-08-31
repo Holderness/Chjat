@@ -11,9 +11,7 @@ module.exports = function(app) {
   app.route('/register')
     .get(users.renderRegister)
     .post(users.register);
-
-  // app.route('/login')
-  //   .get(users.renderLogin);
+    
 
   app.post('/login', function(req, res, next){
     passport.authenticate('local', function(err, user) {
@@ -23,27 +21,8 @@ module.exports = function(app) {
     })(req, res, next);
   });
 
-    // .post(passport.authenticate('local', {
-    //    successRedirect: '/#authenticated',
-    //    failureRedirect: '/'
-    //  }));
-
-  //     function(err, user, info) {
-  //   if (err) { return next(err); }
-  //   if (!user) { return res.redirect('/'); }
-  //   console.log('user--> ', user);
-  //   return res.redirect('/#authenticated');
-  //   // req.logIn(user, function(err) {
-  //   //   if (err) { return next(err); }
-  //   //   return res.redirect('/users/' + user.username);
-  //   // });
-  // }));
 
   app.get('/logout', users.logout);
-
-  // app.get('/oauth/facebook', function(req, res, next) {
-  //   passport.authenticate('facebook')(req, res, next);
-  // });
   
   app.get('/oauth/facebook', passport.authenticate('facebook', {
     failureRedirect: '/', scope:['email'] }),
@@ -74,14 +53,3 @@ module.exports = function(app) {
   }));
 };
 
-
-// app.get('/login', function(req, res, next) {
-//   passport.authenticate('local', function(err, user, info) {
-//     if (err) { return next(err); }
-//     if (!user) { return res.redirect('/login'); }
-//     req.logIn(user, function(err) {
-//       if (err) { return next(err); }
-//       return res.redirect('/users/' + user.username);
-//     });
-//   })(req, res, next);
-// });

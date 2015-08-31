@@ -157,46 +157,27 @@ var Server = function(options) {
     user.socket.on('addRoom', function(name) {
       console.log('addRoom name: ', name);
       console.log('addRoom user: ', user.username);
-      ChatroomModel.findOne({name: name}, function(err, chatroom) {
-        if (!err  && chatroom !== null) {
-          console.log('add room chatroom', chatroom);
-          UserModel.update({ username: user.username }, {$push: {'chatrooms': name}}, function(err, raw) {
+      ChatroomModel.update({name: name}, {$push: {'participants': user.username}}, function(err, raw) {
             if (!err) {
               console.log('userchatrooms', raw);
               self.getChatrooms(user, user.socket);
-              // user.socket.emit("ChatroomModel", chatroom);
             } else {
               return console.log( err );
             }
-          });
-        } else if (!err) {
-          return;
-        } else {
-          return console.log( err );
-        }
       });
     });
+
 
     user.socket.on('removeRoom', function(name) {
       console.log('removeRoom name: ', name);
       console.log('removeRoom user: ', user.username);
-      ChatroomModel.findOne({name: name}, function(err, chatroom) {
-        if (!err) {
-          console.log('remove room chatroom', chatroom);
-          UserModel.update({ username: user.username }, {$pull: {'chatrooms': name}}, function(err, raw) {
+      ChatroomModel.update({name: name}, {$pull: {'participants': user.username}}, function(err, raw) {
             if (!err) {
               console.log('userchatrooms', raw);
               self.getChatrooms(user, user.socket);
-              // user.socket.emit("ChatroomModel", chatroom);
             } else {
               return console.log( err );
             }
-          });
-        } else if (!err) {
-          return;
-        } else {
-          return console.log( err );
-        }
       });
     });
 
@@ -293,11 +274,10 @@ var Server = function(options) {
 
   self.getChatrooms = function(user, socket) {
     console.log('f.getChatrooms');
-    UserModel.findOne({ 'username': user.username}, function( err, user ) {
+    ChatroomModel.find({ 'participants': user.username}, 'name', function( err, chatrooms ) {
       if (!err) {
-        // console.log('getchatrooms: ', user);
-
-        socket.emit('chatrooms', user.chatrooms);
+        console.log('chatrooms', chatrooms);
+        socket.emit('chatrooms', chatrooms);
       } else {
         return console.log (err);
       }
