@@ -42,8 +42,13 @@ var ChatClient = function(options) {
   // };
 
   self.addRoom = function(name) {
-    console.log('sc.f.getChatroomModel: ', name);
+    console.log('sc.f.addRoom: ', name);
     self.socket.emit("addRoom", name);
+  };
+
+  self.removeRoom = function(name) {
+    console.log('sc.f.removeRoom: ', name);
+    self.socket.emit("removeRoom", name);
   };
 
 

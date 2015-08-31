@@ -177,6 +177,29 @@ var Server = function(options) {
       });
     });
 
+    user.socket.on('removeRoom', function(name) {
+      console.log('removeRoom name: ', name);
+      console.log('removeRoom user: ', user.username);
+      ChatroomModel.findOne({name: name}, function(err, chatroom) {
+        if (!err) {
+          console.log('remove room chatroom', chatroom);
+          UserModel.update({ username: user.username }, {$pull: {'chatrooms': name}}, function(err, raw) {
+            if (!err) {
+              console.log('userchatrooms', raw);
+              self.getChatrooms(user, user.socket);
+              // user.socket.emit("ChatroomModel", chatroom);
+            } else {
+              return console.log( err );
+            }
+          });
+        } else if (!err) {
+          return;
+        } else {
+          return console.log( err );
+        }
+      });
+    });
+
   };
 
 

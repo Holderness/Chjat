@@ -10,7 +10,8 @@ app.ChatroomView = Backbone.View.extend({
   events: {
     'keypress .message-input': 'messageInputPressed',
     'click .chat-directory .room': 'setRoom',
-    'keypress #chat-search-input': 'search'
+    'keypress #chat-search-input': 'search',
+    'click .remove-chatroom': 'removeRoom',
   },
   initialize: function(options) {
     console.log('chatroomView.f.initialize: ', options);
@@ -84,9 +85,16 @@ app.ChatroomView = Backbone.View.extend({
         }
       },
     });
+
         $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
     }, 1000);
 
+  },
+
+  removeRoom: function(e) {
+    confirm('Are you sure you want to remove this chatroom?');
+    var name = $(e.target).data("room-name");
+    this.vent.trigger('removeRoom', name);
   },
 
   search: function(e) {
@@ -101,15 +109,15 @@ app.ChatroomView = Backbone.View.extend({
       // return false;
       e.preventDefault();
       var name = $('#chat-search-input').val();
-      this.addChatroomModel(name);
+      this.addChatroom(name);
     } else {
       console.log('yay');
     }
     return this;
   },
 
-  addChatroomModel: function(name) {
-    console.log('crv.f.addChatroomModel');
+  addChatroom: function(name) {
+    console.log('crv.f.addChatroom');
     this.vent.trigger('addRoom', name);
   },
 

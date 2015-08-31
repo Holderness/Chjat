@@ -135,9 +135,6 @@
             <div class="public-rooms-container"></div>
             <div class="direct-messages-container"><!-- direct messages --></div>
             <div class="private-rooms-container"></div>
-            <div class="add-remove-room-container">
-              <button class="btn btn-primary">FIND CHATROOM</button>
-            </div>
           </div> <!--chat-directory -->
 
           <div class="col-md-2 text-center pull-right user-directory">
@@ -284,7 +281,8 @@
       <span><i class="fa fa-circle"></i></span>
     </div>
     <div class="col-xs-8 col-sm-8 col-md-10">
-      <p data-room="<%= name %>" >#<%= name %><button class="btn btn-primary btn-xs">&times;</button></p>
+      <p data-room="<%= name %>" >#<%= name %>
+      <button data-room-name="<%= name %>" class="btn btn-primary remove-chatroom btn-xs">&times;</button></p>
     </div>
   </div>
 </script>
