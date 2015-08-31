@@ -114,11 +114,12 @@ app.MainController = function() {
 	});
 
   self.appEventBus.on("roomInfo", function(data) {
+    debugger;
     console.log('main.e.roomInfo: ', data);
     var rooms = self.chatroomModel.get("chatrooms");
      console.log("...rooms: ", rooms);
     var updatedRooms = _.map(data, function(room) {
-      var newChatroomModel = new app.ChatroomModel({name: room.name});
+      var newChatroomModel = new app.ChatroomModel({name: room});
       return newChatroomModel;
     });
     console.log("...updatedrooms: ", updatedRooms);
@@ -204,7 +205,7 @@ app.MainController = function() {
   self.appEventBus.on("setChatrooms", function(chatrooms) {
     var oldChatrooms = self.chatroomModel.get('chatrooms');
     var updatedChatrooms = _.map(chatrooms, function(chatroom) {
-      var newChatroomModel = new app.ChatroomModel({ name: chatroom.name, onlineUsers: chatroom.onlineUsers });
+      var newChatroomModel = new app.ChatroomModel({ name: chatroom });
       return newChatroomModel;
     });
     oldChatrooms.reset(updatedChatrooms);

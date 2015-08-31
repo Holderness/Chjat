@@ -9,7 +9,8 @@ app.ChatroomView = Backbone.View.extend({
   dateTemplate: _.template('<div class="followMeBar col-xs-12 col-sm-12 col-md-12"><span>-----------------</span><span> <%= moment(timestamp).format("dddd, MMMM Do YYYY") %> </span><span>-----------------</span></div>'),
   events: {
     'keypress .message-input': 'messageInputPressed',
-    'click .chat-directory .room': 'setRoom'
+    'click .chat-directory .room': 'setRoom',
+    'keypress #chat-search-input': 'search'
   },
   initialize: function(options) {
     console.log('chatroomView.f.initialize: ', options);
@@ -51,36 +52,6 @@ app.ChatroomView = Backbone.View.extend({
     this.listenTo(this.chatImageView, 'image-uploaded', this.updateInput);
     this.listenTo(this.model, "change:chatroom", this.renderName, this);
 
-
-    // $("#current-provider-name").typeahead({
-    //                 "source": function(query, process) {
-    //                     $.get("/api/get_providers", {"search": query, "client_id": ${request.client.id}})
-    //                     .done(function(data) {
-    //                         var providers = [];
-    //                         $.each(data, function(index, provider) {
-    //                             providers.push(provider.name);
-    //                         });
-    //                         process(providers);
-    //                     });
-    //                 },
-    //                 "sorter": function(items) {
-    //                     items.unshift(this.query);
-    //                     return items;
-    //                 }
-    //             });
-
-    // var ajaxquery = function(query, syncresults, process) {
-    //     return $.ajax({
-    //         url: 'http:/localhost:3001/api/chatrooms/:name',
-    //         type: 'get',
-    //         data: {name: query},
-    //         dataType: 'json',
-    //         success: function(json) {
-    //             console.log(json);
-    //         }
-    //     });
-    // };
-
     // setTimeout(function() {
     //     $("#chatImageUpload").change(function(){
     //        console.log('burn daddy burn');
@@ -88,17 +59,19 @@ app.ChatroomView = Backbone.View.extend({
     //     // $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
     // }, 2000);
 
+// figure this out, put somewhere else. no setTimeout
     setTimeout(function() {
-          $('#chat-search-input').typeahead({
+      $('#chat-search-input').typeahead({
       onSelect: function(item) {
         console.log(item);
       },
       ajax: {
         url: '/api/searchChatrooms',
+        triggerLength: 1,
         preDispatch: function (query) {
             return {
                 name: query
-            }
+            };
         },
         preProcess: function (data) {
           console.log(data);
@@ -110,19 +83,26 @@ app.ChatroomView = Backbone.View.extend({
             return data;
         }
       },
-       //       "source": function(query, process) {
-       //  alert('wtf');
-       //   $.getJSON("/api/chatrooms", {"search": query})
-       //   .done(function(data) {
-       //     alert('wtf');
-       //    console.log(data);
-       //  });
-       // },
-
     });
         $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
     }, 1000);
 
+  },
+
+  search: function(e) {
+    if (e.keyCode === 13 && $.trim($('.message-input').val()).length > 0) {
+      // fun fact: separate events with a space in trigger's first arg and you
+      // can trigger multiple events.
+      // this.vent.trigger("chat", { message: this.$('.message-input').val()});
+      // this.$('.message-input').val('');
+      $.post( "/api/searchChatrooms", function( data ) {
+        $( ".result" ).html( data );
+      });
+      return false;
+    } else {
+      console.log('yay');
+    }
+    return this;
   },
 
   getChatroomModel: function(name) {
@@ -152,6 +132,8 @@ app.ChatroomView = Backbone.View.extend({
     this.model.get('chatlog').each(function(chat) {
       this.renderChat(chat);
     }, this);
+
+// these things should not be here
     autosize($('textarea.message-input'));
     this.dateDivider.load($(".followMeBar"));
   },

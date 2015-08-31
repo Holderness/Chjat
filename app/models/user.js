@@ -16,7 +16,8 @@ var UserSchema = new mongoose.Schema({
   },
   provider: String,
   providerId: String,
-  providerData: {}
+  providerData: {},
+  chatrooms: [],
 });
 
 

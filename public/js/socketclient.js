@@ -145,6 +145,7 @@ var ChatClient = function(options) {
 		});
 
     socket.on('rooms', function(chatrooms) {
+      debugger;
       console.log('sc.e.rooms: ', chatrooms);
       self.vent.trigger("roomInfo", chatrooms);
     });

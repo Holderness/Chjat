@@ -200,7 +200,7 @@ var Server = function(options) {
         ChatroomModel.findOne({ name: roomName }, function( err, chatroom ) {
           if (err) {return console.log(err);}
           self.getChatsAndUsers(user, roomName);
-          self.getChatrooms(user.socket);
+          self.getChatrooms(user, user.socket);
           user.socket.broadcast.to(roomName).emit('userJoined', user.username);
           user.socket.broadcast.to(roomName).emit('onlineUsers', chatroom.onlineUsers);
         });
@@ -223,11 +223,13 @@ var Server = function(options) {
   };
 
 
-  self.getChatrooms = function(socket) {
+  self.getChatrooms = function(user, socket) {
     console.log('f.getChatrooms');
-    ChatroomModel.find({}, function( err, chatrooms ) {
+    UserModel.findOne({ 'username': user.username}, function( err, user ) {
       if (!err) {
-        socket.emit('chatrooms', chatrooms);
+        console.log('getchatrooms: ', user);
+
+        socket.emit('chatrooms', user.chatrooms);
       } else {
         return console.log (err);
       }
