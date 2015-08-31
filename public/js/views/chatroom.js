@@ -12,6 +12,8 @@ app.ChatroomView = Backbone.View.extend({
     'click .chat-directory .room': 'setRoom',
     'keypress #chat-search-input': 'search',
     'click .remove-chatroom': 'removeRoom',
+    // 'click #create-chatroom': 'createRoom',
+    'click #createChatroomBtn': 'createRoom',
   },
   initialize: function(options) {
     console.log('chatroomView.f.initialize: ', options);
@@ -89,6 +91,16 @@ app.ChatroomView = Backbone.View.extend({
         $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
     }, 1000);
 
+  },
+
+  createRoom: function(e) {
+    var formData = {};
+    this.$('#createChatroomForm').children( 'input' ).each(function(i, el) {
+      if ($(el).val() !== '') {
+        formData[$(el).data('create')] = $(el).val();
+      }
+    });
+    this.vent.trigger('createRoom', formData);
   },
 
   removeRoom: function(e) {

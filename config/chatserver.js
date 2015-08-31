@@ -112,7 +112,7 @@ var Server = function(options) {
       if (chat) {
         ChatroomModel.findOne({ name: user.socket.chat.room }, function(err, chatroom) {
           if (!err) {
-            if (chat.url.length > 0) {
+            if (chat.url !== undefined && chat.url.length > 0) {
               console.log('1chat.url', chat.url);
               chatroom.chatlog.push( { room: user.socket.chat.name, sender: user.username, message: chat.message, url: chat.url } );
               chatroom.save(function(err) {
@@ -196,6 +196,38 @@ var Server = function(options) {
           return;
         } else {
           return console.log( err );
+        }
+      });
+    });
+
+
+
+    user.socket.on('createRoom', function(formData) {
+      console.log('createRoom formData: ', formData);
+      console.log('createRoom user: ', user.username);
+      var newChatroom = new ChatroomModel({name: formData.name, owner: user.username});
+      newChatroom.save(function(err) {
+        if (!err) {
+                ChatroomModel.findOne({name: formData.name}, function(err, chatroom) {
+        if (!err  && chatroom !== null) {
+          console.log('add room chatroom', chatroom);
+          UserModel.update({ username: user.username }, {$push: {'chatrooms': formData.name}}, function(err, raw) {
+            if (!err) {
+              console.log('userchatrooms', raw);
+              self.getChatrooms(user, user.socket);
+              // user.socket.emit("ChatroomModel", chatroom);
+            } else {
+              return console.log( err );
+            }
+          });
+        } else if (!err) {
+          return;
+        } else {
+          return console.log( err );
+        }
+      });
+        } else {
+          console.log(err);
         }
       });
     });

@@ -130,11 +130,19 @@
         <div class="row">
           <div class="col-md-2 col-sm-2 col-xs-2 pull-left chat-directory">
             <form>
-              <input type="text" placeholder="Search" id="chat-search-input" class="form-control chat-search-input" autocomplete="off">
+              <input type="text" placeholder="Search Chatrooms" id="chat-search-input" class="form-control chat-search-input" autocomplete="off">
             </form>
             <div class="public-rooms-container"></div>
             <div class="direct-messages-container"><!-- direct messages --></div>
             <div class="private-rooms-container"></div>
+            <div class="create-room-container">
+              <button 
+                      id="create-chatroom"
+                      data-toggle="modal"
+                      data-target="#createChatroomModal"
+                      class="btn btn-primary create-chatroom">CREATE CHATROOM
+              </button>
+            </div>
           </div> <!--chat-directory -->
 
           <div class="col-md-2 text-center pull-right user-directory">
@@ -187,7 +195,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="chatImageUploadModalLabel">Upload a File</h4>
+                <h4 class="modal-title" id="chatImageUploadModalLabel">Create a Chatroom</h4>
               </div>
               <div class="modal-body">
                 <div id="chatImageUploadContainer">
@@ -207,28 +215,30 @@
         </div>
 
 
-    // <!-- findChatroom modal -->
-    //     <div class="modal fade" id="findChatroomModal" tabindex="-1" role="dialog" aria-labelledby="findChatroomModal" aria-hidden="true">
-    //       <div class="modal-dialog">
-    //         <div class="modal-content">
-    //           <div class="modal-header">
-    //             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    //             <h4 class="modal-title" id="findChatroomModalLabel">Upload a File</h4>
-    //           </div>
-    //           <div class="modal-body">
-    //             <div id="findChatroomContainer">
-    //               <form id="findChatroomForm">
-    //                 <div class="modal-footer">
-    //                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    //                   <input type="button" id="addChatImageBtn" class="btn btn-primary" value="Save & Close"></input>
-    //                 </div>
-    //               </form>
-    //               <div id="status"></div>
-    //             </div>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
+    <!-- createChatroom modal -->
+        <div class="modal fade" id="createChatroomModal" tabindex="-1" role="dialog" aria-labelledby="createChatroomModal" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="createChatroomModalLabel">Upload a File</h4>
+              </div>
+              <div class="modal-body">
+                <div id="createChatroomContainer">
+                  <form id="createChatroomForm">
+                      <label for="chatroom-name-input">Chatroom Name: </label>
+                      <input type="text" data-create="name" id="chatroom-name-input"/>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <input type="button" id="createChatroomBtn" class="btn btn-primary" value="Save & Close"></input>
+                    </div>
+                  </form>
+                  <div id="status"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
 

@@ -95,6 +95,9 @@ app.MainController = function() {
   self.viewEventBus.on("removeRoom", function(room) {
     self.chatClient.removeRoom(room);
   });
+  self.viewEventBus.on("createRoom", function(formData) {
+    self.chatClient.createRoom(formData);
+  });
 
 
 
