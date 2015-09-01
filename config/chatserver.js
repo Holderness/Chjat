@@ -189,27 +189,29 @@ var Server = function(options) {
       var newChatroom = new ChatroomModel({name: formData.name, owner: user.username});
       newChatroom.save(function(err) {
         if (!err) {
-                ChatroomModel.findOne({name: formData.name}, function(err, chatroom) {
-        if (!err  && chatroom !== null) {
-          console.log('add room chatroom', chatroom);
-          UserModel.update({ username: user.username }, {$push: {'chatrooms': formData.name}}, function(err, raw) {
-            if (!err) {
-              console.log('userchatrooms', raw);
-              self.getChatrooms(user, user.socket);
-              // user.socket.emit("ChatroomModel", chatroom);
-            } else {
-              return console.log( err );
-            }
-          });
-        } else if (!err) {
-          return;
-        } else {
-          return console.log( err );
-        }
-      });
+            ChatroomModel.update({name: formData.name}, {$push: {'participants': user.username}}, function(err, raw) {
+              if (!err) {
+                console.log('userchatrooms', raw);
+                self.getChatrooms(user, user.socket);
+              } else {
+                return console.log( err );
+              }
+            });
         } else {
           console.log(err);
         }
+      });
+    });
+
+    user.socket.on('destroyRoom', function(name) {
+      console.log('destroyRoom name: ', name);
+      console.log('destroyRoom user: ', user.username);
+      ChatroomModel.remove({name: name}, function(err) {
+            if (!err) {
+              user.socket.emit('roomDestroyed', name);
+            } else {
+              return console.log( err );
+            }
       });
     });
 
@@ -264,7 +266,7 @@ var Server = function(options) {
         // console.log('chatroom: ', chatroom);
         user.socket.emit('chatlog', chatroom.chatlog);
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
-        user.socket.emit('chatroomName', roomName);
+        user.socket.emit('chatroomHeader', {name: roomName, owner: chatroom.owner, currentUser: user.username});
       } else {
         return console.log (err);
       }
@@ -274,7 +276,7 @@ var Server = function(options) {
 
   self.getChatrooms = function(user, socket) {
     console.log('f.getChatrooms');
-    ChatroomModel.find({ 'participants': user.username}, 'name', function( err, chatrooms ) {
+    ChatroomModel.find({ 'participants': user.username}, 'name owner', function( err, chatrooms ) {
       if (!err) {
         console.log('chatrooms', chatrooms);
         socket.emit('chatrooms', chatrooms);

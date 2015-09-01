@@ -56,6 +56,10 @@ var ChatClient = function(options) {
     self.socket.emit("createRoom", formData);
   };
 
+  self.destroyRoom = function(name) {
+    console.log('sc.f.destroyRoom: ', name);
+    self.socket.emit("destroyRoom", name);
+  };
 
 
 ///// ViewEventBus methods ////
@@ -204,9 +208,13 @@ var ChatClient = function(options) {
       console.log('sc.e.onlineUsers: ', onlineUsers);
       self.vent.trigger("setOnlineUsers", onlineUsers);
     });
-    socket.on('chatroomName', function(name) {
-      console.log('sc.e.chatroomName: ', name);
-      self.vent.trigger("setChatroomName", name);
+    socket.on('chatroomHeader', function(headerObj) {
+      console.log('sc.e.chatroomHeader: ', headerObj);
+      self.vent.trigger("setChatroomHeader", headerObj);
+    });
+    socket.on('roomDestroyed', function(name) {
+      console.log('sc.e.roomDestroyed: ', name);
+      self.vent.trigger("roomDestroyed", name);
     });
 
 

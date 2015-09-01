@@ -50,9 +50,16 @@
   }
   .chatbox-header-chatroom-name {
     color: $dark-gray-text;
+    display: inline-block;
     font-family: 'Open-Sans', sans-serif;
     margin-top: 10px;
     margin-bottom: 10px;
+  }
+  .chatbox-header-destroy {
+    float: right;
+    a {
+      color: $dark-gray-text;
+    }
   }
 }
 

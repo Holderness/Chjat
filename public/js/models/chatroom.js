@@ -12,7 +12,8 @@ app.ChatroomModel = Backbone.Model.extend({
       // message and sender upon entering chatroom
       new app.ChatModel({ sender: 'Butters', message: 'awwwwww hamburgers. ||):||', timestamp: _.now() })
       ]),
-    chatrooms: null
+    chatrooms: null,
+    owner: null
   },
   loadModel: function() {
     console.log('crm.f.loadModel');

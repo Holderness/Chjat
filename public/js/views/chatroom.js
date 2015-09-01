@@ -5,7 +5,7 @@ var app = app || {};
 app.ChatroomView = Backbone.View.extend({
   template: _.template($('#chatroom-template').html()),
   chatTemplate: _.template($('#chatbox-message-template').html()),
-  nameTemplate: _.template($('#chatroom-name-template').html()),
+  headerTemplate: _.template($('#chatroom-header-template').html()),
   dateTemplate: _.template('<div class="followMeBar col-xs-12 col-sm-12 col-md-12"><span>-----------------</span><span> <%= moment(timestamp).format("dddd, MMMM Do YYYY") %> </span><span>-----------------</span></div>'),
   events: {
     'keypress .message-input': 'messageInputPressed',
@@ -14,6 +14,7 @@ app.ChatroomView = Backbone.View.extend({
     'click .remove-chatroom': 'removeRoom',
     // 'click #create-chatroom': 'createRoom',
     'click #createChatroomBtn': 'createRoom',
+    'click #destroy-chatroom': 'destroyRoom',
   },
   initialize: function(options) {
     console.log('chatroomView.f.initialize: ', options);
@@ -93,6 +94,13 @@ app.ChatroomView = Backbone.View.extend({
 
   },
 
+  destroyRoom: function(e) {
+    debugger;
+    confirm("As the owner of this room, you may destroy the room. Do you wish to destroy the room?");
+    e.preventDefault();
+    this.vent.trigger('destroyRoom', this.model.get('chatroom').attributes.name);
+  },
+
   createRoom: function(e) {
     var formData = {};
     this.$('#createChatroomForm').children( 'input' ).each(function(i, el) {
@@ -139,7 +147,7 @@ app.ChatroomView = Backbone.View.extend({
   // },
   // renders on events, called just above
   renderName: function() {
-    this.$('.chatbox-header').html(this.nameTemplate(this.model.get('chatroom').toJSON()));
+    this.$('.chatbox-header').html(this.headerTemplate(this.model.get('chatroom').toJSON()));
   },
   renderUsers: function() {
     console.log('crv.f.renderUsers');
@@ -208,28 +216,29 @@ app.ChatroomView = Backbone.View.extend({
 
 
 
-
-
-
-
   // renders on events, called just above
   renderRooms: function() {
     console.log('crv.f.renderRooms');
     console.log('CHATROOMS: ', this.model.get("chatrooms"));
-    this.$('.public-rooms-container').empty();
+    this.$('.public-rooms').empty();
     this.model.get('chatrooms').each(function (room) {
       this.renderRoom(room);
     }, this);
   },
   renderRoom: function(model) {
     var template = _.template($("#room-list-template").html());
-    this.$('.public-rooms-container').append(template(model.toJSON()));
+    this.$('.public-rooms').append(template(model.toJSON()));
   },
 
   joinRoom: function(name) {
     console.log('crv.f.joinRoom');
     this.vent.trigger('joinRoom', name);
   },
+
+
+
+
+
 
 
   //events

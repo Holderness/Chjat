@@ -98,6 +98,9 @@ app.MainController = function() {
   self.viewEventBus.on("createRoom", function(formData) {
     self.chatClient.createRoom(formData);
   });
+    self.viewEventBus.on("destroyRoom", function(room) {
+    self.chatClient.destroyRoom(room);
+  });
 
 
 
@@ -195,10 +198,14 @@ app.MainController = function() {
 
 
 
+  self.appEventBus.on("roomDestroyed", function(name) {
+    self.connectToRoom();
+    self.initRoom();
+    alert('Chatroom ' + name + ' destroyed');
+  });
 
-
-  self.appEventBus.on("setChatroomName", function(name) {
-    var newHeader = new app.ChatroomHeaderModel({ name: name });
+  self.appEventBus.on("setChatroomHeader", function(headerObj) {
+    var newHeader = new app.ChatroomHeaderModel(headerObj);
     self.chatroomModel.set('chatroom', newHeader);
   });
 
@@ -214,7 +221,7 @@ app.MainController = function() {
   self.appEventBus.on("setChatrooms", function(chatrooms) {
     var oldChatrooms = self.chatroomModel.get('chatrooms');
     var updatedChatrooms = _.map(chatrooms, function(chatroom) {
-      var newChatroomModel = new app.ChatroomModel({ name: chatroom.name });
+      var newChatroomModel = new app.ChatroomModel({ name: chatroom.name, owner: chatroom.owner});
       return newChatroomModel;
     });
     oldChatrooms.reset(updatedChatrooms);

@@ -115,9 +115,12 @@
     </div>
   </script>
 
-  <script type="text/template" id="chatroom-name-template">  
+  <script type="text/template" id="chatroom-header-template">  
     <img class="img-responsive chatbox-header-avatar" src="/img/tom-jones.jpg">
 	  <h3 class="chatbox-header-chatroom-name"><%= name %></h3>
+    <% if (owner === currentUser) { %>
+      <h6 class="chatbox-header-destroy"><a id="destroy-chatroom" href="#">destroy</a></h6>
+    <% } %>
   </script>
 
 
@@ -132,7 +135,14 @@
             <form>
               <input type="text" placeholder="Search Chatrooms" id="chat-search-input" class="form-control chat-search-input" autocomplete="off">
             </form>
-            <div class="public-rooms-container"></div>
+            <div class="public-rooms-container">
+              Rooms
+              <div class="public-rooms"></div>
+            </div>
+            <div class="owned-rooms-container">
+              Owned Rooms
+              <div class="owned-rooms"></div>
+            </div>
             <div class="direct-messages-container"><!-- direct messages --></div>
             <div class="private-rooms-container"></div>
             <div class="create-room-container">
