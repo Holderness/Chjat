@@ -54,7 +54,7 @@ app.ChatroomView = Backbone.View.extend({
 
     this.chatImageView = new app.ChatImageView();
     this.listenTo(this.chatImageView, 'image-uploaded', this.updateInput);
-    this.listenTo(this.model, "change:chatroom", this.renderName, this);
+    this.listenTo(this.model, "change:chatroom", this.renderHeader, this);
 
 
 
@@ -92,13 +92,13 @@ app.ChatroomView = Backbone.View.extend({
       },
     });
 
-    setTimeout(function() {
-      $('#chatbox-content').scroll(function(){
-        if ($(this).scrollTop() === 0) {
-           this_.getMoreChats();
-        }
-      });
-    }, 1000);
+    // setTimeout(function() {
+    //   $('#chatbox-content').scroll(function(){
+    //     if ($(this).scrollTop() === 0) {
+    //        this_.getMoreChats();
+    //     }
+    //   });
+    // }, 1000);
 
         $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
     }, 1000);
@@ -107,11 +107,11 @@ app.ChatroomView = Backbone.View.extend({
 
   getMoreChats: function() {
     console.log('bbuts');
-    var chatroom = this.model.get('chatroom'),
+    var chatroom = this.model,
     name = chatroom.get('name'),
     numberLoaded = chatroom.get('numberLoaded');
 
-    debugger;
+    // debugger;
 
     chatroom.set('numberloaded', numberLoaded++);
 
@@ -169,8 +169,8 @@ app.ChatroomView = Backbone.View.extend({
   //   this.vent.trigger('getChatroomModel', name);
   // },
   // renders on events, called just above
-  renderName: function() {
-    this.$('.chatbox-header').html(this.headerTemplate(this.model.get('chatroomHeader').toJSON()));
+  renderHeader: function() {
+    this.$('.chatbox-header').html(this.headerTemplate(this.model.get('chatroom').toJSON()));
   },
   renderUsers: function() {
     console.log('crv.f.renderUsers');

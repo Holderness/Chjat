@@ -209,7 +209,7 @@ app.MainController = function() {
 
   self.appEventBus.on("setChatroomHeader", function(headerObj) {
     var newHeader = new app.ChatroomHeaderModel(headerObj);
-    self.chatroomModel.set('chatroomHeader', newHeader);
+    self.chatroomModel.set('chatroom', newHeader);
   });
 
   self.appEventBus.on("setChatlog", function(chatlog) {
