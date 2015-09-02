@@ -19,7 +19,7 @@ app.ChatroomView = Backbone.View.extend({
   initialize: function(options) {
     console.log('chatroomView.f.initialize: ', options);
     // passed the viewEventBus
-    
+    var self = this;
     this.vent = options.vent;
   },
   initRoom: function() {
@@ -56,6 +56,8 @@ app.ChatroomView = Backbone.View.extend({
     this.listenTo(this.chatImageView, 'image-uploaded', this.updateInput);
     this.listenTo(this.model, "change:chatroom", this.renderName, this);
 
+
+
     // setTimeout(function() {
     //     $("#chatImageUpload").change(function(){
     //        console.log('burn daddy burn');
@@ -63,6 +65,7 @@ app.ChatroomView = Backbone.View.extend({
     //     // $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
     // }, 2000);
 
+      var this_ = this;
 // figure this out, put somewhere else. no setTimeout
     setTimeout(function() {
       $('#chat-search-input').typeahead({
@@ -89,16 +92,36 @@ app.ChatroomView = Backbone.View.extend({
       },
     });
 
+    setTimeout(function() {
+      $('#chatbox-content').scroll(function(){
+        if ($(this).scrollTop() === 0) {
+           this_.getMoreChats();
+        }
+      });
+    }, 1000);
+
         $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
     }, 1000);
 
   },
 
-  destroyRoom: function(e) {
+  getMoreChats: function() {
+    console.log('bbuts');
+    var chatroom = this.model.get('chatroom'),
+    name = chatroom.get('name'),
+    numberLoaded = chatroom.get('numberLoaded');
+
     debugger;
+
+    chatroom.set('numberloaded', numberLoaded++);
+
+    this.vent.trigger('getMoreChats', { name: name, numberLoaded: numberLoaded });
+  },
+
+  destroyRoom: function(e) {
     confirm("As the owner of this room, you may destroy the room. Do you wish to destroy the room?");
     e.preventDefault();
-    this.vent.trigger('destroyRoom', this.model.get('chatroom').attributes.name);
+    this.vent.trigger('destroyRoom', this.model.get('chatroom').get('name'));
   },
 
   createRoom: function(e) {
@@ -147,7 +170,7 @@ app.ChatroomView = Backbone.View.extend({
   // },
   // renders on events, called just above
   renderName: function() {
-    this.$('.chatbox-header').html(this.headerTemplate(this.model.get('chatroom').toJSON()));
+    this.$('.chatbox-header').html(this.headerTemplate(this.model.get('chatroomHeader').toJSON()));
   },
   renderUsers: function() {
     console.log('crv.f.renderUsers');
@@ -171,7 +194,7 @@ app.ChatroomView = Backbone.View.extend({
 
 // these things should not be here
     autosize($('textarea.message-input'));
-    this.dateDivider.load($(".followMeBar"));
+    this.dateDivider.load(this, $(".followMeBar"));
   },
   renderChat: function(model) {
 
@@ -267,9 +290,12 @@ app.ChatroomView = Backbone.View.extend({
   dateDivider: (function() {
 
     var $window = $(window),
-    $stickies;
+    $stickies,
+    $view;
 
-    load = function(stickies) {
+    load = function(view, stickies) {
+
+      $view = view;
 
       $stickies = stickies.each(function() {
 
@@ -356,6 +382,7 @@ app.ChatroomView = Backbone.View.extend({
         }
 
         if ($('#chatbox-content').scrollTop() === 0) {
+          // $view.getMoreChats();
           $stickies.removeClass('fixed');
         }
 

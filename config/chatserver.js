@@ -215,6 +215,10 @@ var Server = function(options) {
       });
     });
 
+    user.socket.on('getMoreChats', function(chatReq) {
+      self.getMoreChats(user, chatReq.name, chatReq.numberLoaded);
+    });
+
   };
 
 
@@ -250,7 +254,7 @@ var Server = function(options) {
         if (err) { return console.log(err); }
         ChatroomModel.findOne({ name: roomName }, function( err, chatroom ) {
           if (err) {return console.log(err);}
-          self.getChatsAndUsers(user, roomName);
+          self.getUsersAndHeader(user, roomName);
           self.getChatrooms(user, user.socket);
           user.socket.broadcast.to(roomName).emit('userJoined', user.username);
           user.socket.broadcast.to(roomName).emit('onlineUsers', chatroom.onlineUsers);
@@ -259,17 +263,26 @@ var Server = function(options) {
   };
 
 
-  self.getChatsAndUsers = function(user, roomName) {
+  self.getUsersAndHeader = function(user, roomName) {
     console.log('f.getChatsAndUsers');
     ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
       if (!err) {
         // console.log('chatroom: ', chatroom);
-        user.socket.emit('chatlog', chatroom.chatlog);
+        user.socket.emit('chatlog', chatroom.chatlog.slice(-3));
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
         user.socket.emit('chatroomHeader', {name: roomName, owner: chatroom.owner, currentUser: user.username});
       } else {
         return console.log (err);
       }
+    });
+  };
+
+  self.getMoreChats = function(user, name, numberLoaded) {
+    var items_per_load = 3,
+    skip = items_per_load * (numberLoaded - 1);
+    ChatroomModel.findOne({ name: name }, {'chatlog': { $slice: [skip, items_per_load] }}, function( err, chatroom ) {
+      console.log('getMoreChats: ', chatroom.chatlog);
+      user.socket.emit('moreChats', chatroom.chatlog);
     });
   };
 
@@ -291,28 +304,8 @@ var Server = function(options) {
 };
 
 
-      // var newUser = new User({ 
-      //   _id: user._id,
-      //   username: user.username,
-      //   name: user.name,
-      //   password: user.password,
-      //   provider: user.provider,
-      //   email: user.email,
-      //   socket: socket,
-      // });
-      //   //pushes User model to online user array
-      //   // self.users.push(newUser);
 
-      //   // calls method below
-      //   self.setResponseListeners(newUser);
 
-      //   // joins default room
-      //   self.addToRoom(newUser, socket, 'DOO');
-
-      //   // emits 'welcome' and 'userJoined' to the chatclient
-      //   socket.emit("welcome");
-      //   // self.io.sockets.emit("userJoined", newUser.username);
-      //   // });
 
 // User Model
 var User = function(args) {

@@ -78,6 +78,9 @@ var ChatClient = function(options) {
     console.log('sc.f.chat: ', chat);
 		self.socket.emit("chat", chat);
 	};
+  self.getMoreChats = function(chatReq) {
+    self.socket.emit('getMoreChats', chatReq);
+  };
 
 
   // Typing methods
@@ -215,6 +218,9 @@ var ChatClient = function(options) {
     socket.on('roomDestroyed', function(name) {
       console.log('sc.e.roomDestroyed: ', name);
       self.vent.trigger("roomDestroyed", name);
+    });
+    socket.on('moreChats', function(chats) {
+      self.vent.trigger("moreChats", chats);
     });
 
 

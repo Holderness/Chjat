@@ -98,8 +98,11 @@ app.MainController = function() {
   self.viewEventBus.on("createRoom", function(formData) {
     self.chatClient.createRoom(formData);
   });
-    self.viewEventBus.on("destroyRoom", function(room) {
+  self.viewEventBus.on("destroyRoom", function(room) {
     self.chatClient.destroyRoom(room);
+  });
+  self.viewEventBus.on("getMoreChats", function(chatReq) {
+    self.chatClient.getMoreChats(chatReq);
   });
 
 
@@ -206,7 +209,7 @@ app.MainController = function() {
 
   self.appEventBus.on("setChatroomHeader", function(headerObj) {
     var newHeader = new app.ChatroomHeaderModel(headerObj);
-    self.chatroomModel.set('chatroom', newHeader);
+    self.chatroomModel.set('chatroomHeader', newHeader);
   });
 
   self.appEventBus.on("setChatlog", function(chatlog) {
@@ -216,6 +219,17 @@ app.MainController = function() {
       return newChatModel;
     });
     oldChatlog.reset(updatedChatlog);
+  });
+
+  self.appEventBus.on("moreChats", function(chatlog) {
+    var oldChatlog = self.chatroomModel.get('chatlog');
+    debugger;
+    var moreChatlog = _.map(chatlog, function(chat) {
+      var newChatModel = new app.ChatModel({ room: chat.room, message: chat.message, sender: chat.sender, timestamp: chat.timestamp, url: chat.url });
+      return newChatModel;
+    });
+    debugger;
+    oldChatlog.push(moreChatlog);
   });
   
   self.appEventBus.on("setChatrooms", function(chatrooms) {
