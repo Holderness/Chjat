@@ -167,7 +167,7 @@ var ChatClient = function(options) {
 		});
 
     socket.on('rooms', function(chatrooms) {
-      debugger;
+debugger;
       console.log('sc.e.rooms: ', chatrooms);
       self.vent.trigger("roomInfo", chatrooms);
     });
@@ -220,7 +220,12 @@ var ChatClient = function(options) {
       self.vent.trigger("roomDestroyed", name);
     });
     socket.on('moreChats', function(chats) {
+      debugger;
       self.vent.trigger("moreChats", chats);
+    });
+    socket.on('noMoreChats', function() {
+      debugger;
+      self.vent.trigger("noMoreChats");
     });
 
 

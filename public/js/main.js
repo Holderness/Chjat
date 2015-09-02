@@ -45,7 +45,7 @@ app.MainController = function() {
       self.containerModel.set('viewState', self.chatroomView);
 
       self.connectToRoom();
-      self.initRoom();
+      // self.initRoom();
        
     });
 
@@ -223,13 +223,21 @@ app.MainController = function() {
 
   self.appEventBus.on("moreChats", function(chatlog) {
     var oldChatlog = self.chatroomModel.get('chatlog');
-    debugger;
     var moreChatlog = _.map(chatlog, function(chat) {
       var newChatModel = new app.ChatModel({ room: chat.room, message: chat.message, sender: chat.sender, timestamp: chat.timestamp, url: chat.url });
       return newChatModel;
     });
-    debugger;
-    oldChatlog.push(moreChatlog);
+    //
+    //
+    //
+    //
+    //
+    self.chatroomModel.trigger('moreChats', moreChatlog.reverse());
+    // oldChatlog.push(moreChatlog);
+  });
+
+  self.appEventBus.on("noMoreChats", function(chatlog) {
+    self.chatroomModel.stopListening('moreChats');
   });
   
   self.appEventBus.on("setChatrooms", function(chatrooms) {

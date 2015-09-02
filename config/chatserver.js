@@ -216,7 +216,7 @@ var Server = function(options) {
     });
 
     user.socket.on('getMoreChats', function(chatReq) {
-      self.getMoreChats(user, chatReq.name, chatReq.numberLoaded);
+      self.getMoreChats(user, chatReq.name, chatReq.numberLoaded, chatReq.chatlogLength);
     });
 
   };
@@ -268,22 +268,41 @@ var Server = function(options) {
     ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
       if (!err) {
         // console.log('chatroom: ', chatroom);
-        user.socket.emit('chatlog', chatroom.chatlog.slice(-3));
+        user.socket.emit('chatlog', chatroom.chatlog.slice(-10));
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
-        user.socket.emit('chatroomHeader', {name: roomName, owner: chatroom.owner, currentUser: user.username});
+        user.socket.emit('chatroomHeader', {name: roomName, owner: chatroom.owner, currentUser: user.username, chatlogLength: chatroom.chatlog.length, numberLoaded: -1});
       } else {
         return console.log (err);
       }
     });
   };
 
-  self.getMoreChats = function(user, name, numberLoaded) {
-    var items_per_load = 3,
+  self.getMoreChats = function(user, name, numberLoaded, chatlogLength) {
+    var items_per_load = 10,
     skip = items_per_load * (numberLoaded - 1);
+    console.log('skip: ', skip);
+     console.log('numberloaded: ', numberLoaded);
+    // ChatroomModel.findOne({name: name}, 'chatlog', function(err, chatroom) {
+    //   chatroom.chatlog.length
+    // })
     ChatroomModel.findOne({ name: name }, {'chatlog': { $slice: [skip, items_per_load] }}, function( err, chatroom ) {
-      console.log('getMoreChats: ', chatroom.chatlog);
-      user.socket.emit('moreChats', chatroom.chatlog);
+      console.log('chatlogLength: ', chatlogLength);
+      console.log('skip math: ', (skip * -1));
+      if (chatlogLength >= (skip * (-1))) {
+        var moreChats = chatroom.chatlog;
+        console.log('getMoreChats: ', chatroom.chatlog);
+        user.socket.emit('moreChats', moreChats);
+      } else {
+        console.log('-------------------------------');
+        user.socket.emit('noMoreChats');
+      }
     });
+    // ChatroomModel.aggregate([
+    //   {$match: { name: name }},
+    //   {$sort: {'chatlog.timestamp':   1}}], function( err, chatroom ) {
+    //   console.log('getMoreChats: ', chatroom[0].chatlog);
+    //   // user.socket.emit('moreChats', chatroom);
+    // });
   };
 
 
