@@ -194,9 +194,10 @@ app.ChatroomView = Backbone.View.extend({
   renderMoreChats: function(chats) {
     console.log('crv.f.renderMoreChats');
     // this.$('#chatbox-content');
+    var this_ = this;
     var originalHeight = $('#chatbox-content')[0].scrollHeight;
     _.each(chats, function(model) {
-      // this.renderDateDividers(model);
+      this_.renderMoreDateDividers(model);
       var chatTemplate = $(this.chatTemplate(model.toJSON()));
       chatTemplate.prependTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
       $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight - originalHeight;
@@ -240,6 +241,19 @@ app.ChatroomView = Backbone.View.extend({
       currentDate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
       this.previousDate = this.currentDate;
     }
+
+    // no, only here for delay
+            this.chatImageView.setElement($('#chatImageUploadContainer'));
+  },
+ renderMoreDateDividers: function(model) {
+    this.currentDate = moment(model.attributes.timestamp).format('dddd, MMMM Do YYYY');
+    if ( this.currentDate !== this.previousDate ) {
+      var currentDate = $(this.dateTemplate(model.toJSON()));
+      currentDate.prependTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
+      this.previousDate = this.currentDate;
+    }
+
+    // no, only here for delay
             this.chatImageView.setElement($('#chatImageUploadContainer'));
   },
 
