@@ -140,7 +140,6 @@
               <div class="public-rooms"></div>
             </div>
             <div class="owned-rooms-container">
-              Owned Rooms
               <div class="owned-rooms"></div>
             </div>
             <div class="direct-messages-container"><!-- direct messages --></div>
@@ -159,14 +158,7 @@
             <p>Users</p>
             <div class="online-users"></div>
             <p>Offline</p>
-            <div class="row offline-users">
-              <div class="col-xs-3 col-sm-3 col-md-1 text-center">
-                <span><i class="fa fa-circle"></i></span>
-              </div>
-              <div class="col-xs-8 col-sm-8 col-md-10">
-                <p><strong class="user-directory-username">@TomSelleck</strong></p>
-              </div>
-            </div>
+            <div class="row offline-users"></div>
           </div> <!--user-directory -->
 
 
@@ -291,6 +283,18 @@
   </div>
 </script>
 
+
+
+<script type="text/template" id="offline-users-list-template">
+  <div class="row user-offline">
+    <div class="col-xs-3 col-sm-3 col-md-1 text-center">
+      <span><i class="fa fa-circle"></i></span>
+    </div>
+    <div class="col-xs-8 col-sm-8 col-md-10">
+      <p><strong class="user-directory-username">@<%= username %></strong></p>
+    </div>
+  </div>
+</script>
 
 
 

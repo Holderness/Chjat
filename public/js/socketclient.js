@@ -208,8 +208,14 @@ debugger;
       self.vent.trigger("setChatrooms", chatrooms);
     });
     socket.on('onlineUsers', function(onlineUsers) {
+      debugger;
       console.log('sc.e.onlineUsers: ', onlineUsers);
       self.vent.trigger("setOnlineUsers", onlineUsers);
+    });
+    socket.on('offlineUsers', function(offlineUsers) {
+      debugger;
+      console.log('sc.e.offlineUsers: ', offlineUsers);
+      self.vent.trigger("setOfflineUsers", offlineUsers);
     });
     socket.on('chatroomHeader', function(headerObj) {
       console.log('sc.e.chatroomHeader: ', headerObj);
@@ -220,11 +226,9 @@ debugger;
       self.vent.trigger("roomDestroyed", name);
     });
     socket.on('moreChats', function(chats) {
-      debugger;
       self.vent.trigger("moreChats", chats);
     });
     socket.on('noMoreChats', function() {
-      debugger;
       self.vent.trigger("noMoreChats");
     });
 

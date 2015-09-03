@@ -258,6 +258,16 @@ app.MainController = function() {
     oldOnlineUsers.reset(updatedOnlineUsers);
   });
 
+  self.appEventBus.on("setOfflineUsers", function(offlineUsers) {
+    debugger;
+    var oldOfflineUsers = self.chatroomModel.get('offlineUsers');
+    var updatedOfflineUsers = _.map(offlineUsers, function(user) {
+      var newUserModel = new app.UserModel({username: user.username});
+      return newUserModel;
+    });
+    oldOfflineUsers.reset(updatedOfflineUsers);
+  });
+
 
 };
 

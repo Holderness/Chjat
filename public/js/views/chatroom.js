@@ -6,6 +6,8 @@ app.ChatroomView = Backbone.View.extend({
   template: _.template($('#chatroom-template').html()),
   chatTemplate: _.template($('#chatbox-message-template').html()),
   headerTemplate: _.template($('#chatroom-header-template').html()),
+  onlineUserTemplate: _.template($('#online-users-list-template').html()),
+  offlineUserTemplate: _.template($('#offline-users-list-template').html()),
   dateTemplate: _.template('<div class="followMeBar col-xs-12 col-sm-12 col-md-12"><span>-----------------</span><span> <%= moment(timestamp).format("dddd, MMMM Do YYYY") %> </span><span>-----------------</span></div>'),
   events: {
     'keypress .message-input': 'messageInputPressed',
@@ -40,6 +42,11 @@ app.ChatroomView = Backbone.View.extend({
     this.listenTo(onlineUsers, "add", this.renderUser, this);
     this.listenTo(onlineUsers, "remove", this.renderUsers, this);
     this.listenTo(onlineUsers, "reset", this.renderUsers, this);
+
+    var offlineUsers = this.model.get('offlineUsers');
+    this.listenTo(offlineUsers, "add", this.renderOfflineUser, this);
+    this.listenTo(offlineUsers, "remove", this.renderOfflineUsers, this);
+    this.listenTo(offlineUsers, "reset", this.renderOfflineUsers, this);
 
     var chatlog = this.model.get('chatlog');
     this.listenTo(chatlog, "add", this.renderChat, this);
@@ -114,8 +121,6 @@ app.ChatroomView = Backbone.View.extend({
     numberLoaded = chatroom.get('numberLoaded'),
     chatlogLength = chatroom.get('chatlogLength');
 
-    debugger;
-
     chatroom.set('numberLoaded', (numberLoaded - 1));
 
     _.debounce(this.vent.trigger('getMoreChats', { name: name, numberLoaded: numberLoaded, chatlogLength: chatlogLength}), 200);
@@ -185,8 +190,19 @@ app.ChatroomView = Backbone.View.extend({
     }, this);
   },
   renderUser: function(model) {
-    var template = _.template($("#online-users-list-template").html());
-    this.$('.online-users').append(template(model.toJSON()));
+    this.$('.online-users').append(this.onlineUserTemplate(model.toJSON()));
+  },
+  renderOfflineUsers: function() {
+    console.log('crv.f.renderOfflineUsers');
+    console.log('Offline USERS: ', this.model.get("offlineUsers"));
+    this.$('.offline-users').empty();
+    debugger;
+    this.model.get("offlineUsers").each(function (user) {
+      this.renderOfflineUser(user);
+    }, this);
+  },
+  renderOfflineUser: function(model) {
+    this.$('.offline-users').append(this.offlineUserTemplate(model.toJSON()));
   },
 
 

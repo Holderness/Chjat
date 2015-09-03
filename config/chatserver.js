@@ -157,7 +157,7 @@ var Server = function(options) {
     user.socket.on('addRoom', function(name) {
       console.log('addRoom name: ', name);
       console.log('addRoom user: ', user.username);
-      ChatroomModel.update({name: name}, {$push: {'participants': user.username}}, function(err, raw) {
+      ChatroomModel.update({name: name}, { $push: {'participants.username': user.username }}, function(err, raw) {
             if (!err) {
               console.log('userchatrooms', raw);
               self.getChatrooms(user, user.socket);
@@ -171,7 +171,7 @@ var Server = function(options) {
     user.socket.on('removeRoom', function(name) {
       console.log('removeRoom name: ', name);
       console.log('removeRoom user: ', user.username);
-      ChatroomModel.update({name: name}, {$pull: {'participants': user.username}}, function(err, raw) {
+      ChatroomModel.update({name: name}, { $pull: { 'participants.username': user.username }}, function(err, raw) {
             if (!err) {
               console.log('userchatrooms', raw);
               self.getChatrooms(user, user.socket);
@@ -189,7 +189,7 @@ var Server = function(options) {
       var newChatroom = new ChatroomModel({name: formData.name, owner: user.username});
       newChatroom.save(function(err) {
         if (!err) {
-            ChatroomModel.update({name: formData.name}, {$push: {'participants': user.username}}, function(err, raw) {
+            ChatroomModel.update({name: formData.name}, {$push: {'participants.username': user.username }}, function(err, raw) {
               if (!err) {
                 console.log('userchatrooms', raw);
                 self.getChatrooms(user, user.socket);
@@ -236,7 +236,9 @@ var Server = function(options) {
         ChatroomModel.findOne({ name: currentRoom }, function( err, chatroom ) {
           if (err) {return console.log(err);}
           console.log('new chatroom users: ', chatroom.onlineUsers );
+          var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
           user.socket.broadcast.to(currentRoom).emit('onlineUsers', chatroom.onlineUsers);
+          user.socket.broadcast.to(currentRoom).emit('offlineUsers', offlineUsers);
         });
       });
 
@@ -256,8 +258,10 @@ var Server = function(options) {
           if (err) {return console.log(err);}
           self.getUsersAndHeader(user, roomName);
           self.getChatrooms(user, user.socket);
+          var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
           user.socket.broadcast.to(roomName).emit('userJoined', user.username);
           user.socket.broadcast.to(roomName).emit('onlineUsers', chatroom.onlineUsers);
+          user.socket.broadcast.to(roomName).emit('offlineUsers', offlineUsers);
         });
       });
   };
@@ -268,8 +272,13 @@ var Server = function(options) {
     ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
       if (!err) {
         // console.log('chatroom: ', chatroom);
+        var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
+        console.log('participants: ', chatroom.participants);
+        console.log('oonlneinusers: ', chatroom.onlineUsers);
+        console.log('offlineusers: ', offlineUsers);
         user.socket.emit('chatlog', chatroom.chatlog.slice(-10));
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
+        user.socket.emit('offlineUsers', offlineUsers);
         user.socket.emit('chatroomHeader', {name: roomName, owner: chatroom.owner, currentUser: user.username, chatlogLength: chatroom.chatlog.length, numberLoaded: -1});
       } else {
         return console.log (err);
@@ -308,7 +317,7 @@ var Server = function(options) {
 
   self.getChatrooms = function(user, socket) {
     console.log('f.getChatrooms');
-    ChatroomModel.find({ 'participants': user.username}, 'name owner', function( err, chatrooms ) {
+    ChatroomModel.find({ 'participants.username': user.username}, 'name owner', function( err, chatrooms ) {
       if (!err) {
         console.log('chatrooms', chatrooms);
         socket.emit('chatrooms', chatrooms);
