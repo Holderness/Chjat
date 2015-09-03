@@ -208,12 +208,10 @@ debugger;
       self.vent.trigger("setChatrooms", chatrooms);
     });
     socket.on('onlineUsers', function(onlineUsers) {
-      debugger;
       console.log('sc.e.onlineUsers: ', onlineUsers);
       self.vent.trigger("setOnlineUsers", onlineUsers);
     });
     socket.on('offlineUsers', function(offlineUsers) {
-      debugger;
       console.log('sc.e.offlineUsers: ', offlineUsers);
       self.vent.trigger("setOfflineUsers", offlineUsers);
     });

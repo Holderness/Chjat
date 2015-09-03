@@ -3,7 +3,7 @@ var app = app || {};
 
 (function($) {
 
-  app.ChatImageView = Backbone.View.extend({
+  app.ChatImageUploadView = Backbone.View.extend({
 
     el: $('#chatImageUploadContainer'),
   

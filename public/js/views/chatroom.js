@@ -31,10 +31,12 @@ app.ChatroomView = Backbone.View.extend({
     console.log('crv.f.render');
     this.model = model || this.model;
     this.$el.html(this.template(this.model.toJSON()));
-    // this.setChatCollection();
-    // this.chatImageViewView.setElement(this.$('#chatImageUploadContainer')).render();
+    this.setSubViews();
     this.setChatListeners();
     return this;
+  },
+  setSubViews: function() {
+    this.chatImageUploadView = new app.ChatImageUploadView();
   },
   setChatListeners: function() {
 
@@ -58,14 +60,11 @@ app.ChatroomView = Backbone.View.extend({
     this.listenTo(chatrooms, "remove", this.renderRooms, this);
     this.listenTo(chatrooms, "reset", this.renderRooms, this);
 
-
-    this.chatImageView = new app.ChatImageView();
-    this.listenTo(this.chatImageView, 'image-uploaded', this.updateInput);
     this.listenTo(this.model, "change:chatroom", this.renderHeader, this);
 
+    this.listenTo(this.chatImageUploadView, 'image-uploaded', this.uploadImage);
+
     this.listenTo(this.model, "moreChats", this.renderMoreChats, this);
-
-
 
     // setTimeout(function() {
     //     $("#chatImageUpload").change(function(){
@@ -196,7 +195,6 @@ app.ChatroomView = Backbone.View.extend({
     console.log('crv.f.renderOfflineUsers');
     console.log('Offline USERS: ', this.model.get("offlineUsers"));
     this.$('.offline-users').empty();
-    debugger;
     this.model.get("offlineUsers").each(function (user) {
       this.renderOfflineUser(user);
     }, this);
@@ -259,7 +257,7 @@ app.ChatroomView = Backbone.View.extend({
     }
 
     // no, only here for delay
-            this.chatImageView.setElement($('#chatImageUploadContainer'));
+            this.chatImageUploadView.setElement($('#chatImageUploadContainer'));
   },
  renderMoreDateDividers: function(model) {
     this.currentDate = moment(model.attributes.timestamp).format('dddd, MMMM Do YYYY');
@@ -270,16 +268,14 @@ app.ChatroomView = Backbone.View.extend({
     }
 
     // no, only here for delay
-            this.chatImageView.setElement($('#chatImageUploadContainer'));
+            this.chatImageUploadView.setElement($('#chatImageUploadContainer'));
   },
 
 
 
 
 // rename
-  updateInput: function(response) {
-    debugger;
-    var chatImage = new app.ChatModel(response);
+  uploadImage: function(response) {
     console.log('img url: ', response);
     this.vent.trigger("chat", response);
     // this.renderChat(chatImage);

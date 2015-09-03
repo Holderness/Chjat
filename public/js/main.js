@@ -63,12 +63,6 @@ app.MainController = function() {
 
 
 
-  // self.appEventBus.on("authenticated", function() {
-  //   debugger;
-  //   self.authenticated();
-  // });
-
-
 
   ////////////  Busses ////////////
     // These Busses listen to the socketclient
@@ -114,32 +108,32 @@ app.MainController = function() {
 
   //// appEventBus Listeners ////
 
-	self.appEventBus.on("usersInfo", function(data) {
-    console.log('main.e.usersInfo: ', data);
-    //data is an array of usernames, including the new user
-		// This method gets the online users collection from chatroomModel.
-		// onlineUsers is the collection
-		var onlineUsers = self.chatroomModel.get("onlineUsers");
-    console.log("...onlineUsers: ", onlineUsers);
-		var users = _.map(data, function(item) {
-			return new app.UserModel({username: item});
-		});
-    console.log("users: ", users);
-		onlineUsers.reset(users);
-	});
+	// self.appEventBus.on("usersInfo", function(data) {
+ //    console.log('main.e.usersInfo: ', data);
+ //    //data is an array of usernames, including the new user
+	// 	// This method gets the online users collection from chatroomModel.
+	// 	// onlineUsers is the collection
+	// 	var onlineUsers = self.chatroomModel.get("onlineUsers");
+ //    console.log("...onlineUsers: ", onlineUsers);
+	// 	var users = _.map(data, function(item) {
+	// 		return new app.UserModel({username: item});
+	// 	});
+ //    console.log("users: ", users);
+	// 	onlineUsers.reset(users);
+	// });
 
-  self.appEventBus.on("roomInfo", function(data) {
-    debugger;
-    console.log('main.e.roomInfo: ', data);
-    var rooms = self.chatroomModel.get("chatrooms");
-     console.log("...rooms: ", rooms);
-    var updatedRooms = _.map(data, function(room) {
-      var newChatroomModel = new app.ChatroomModel({name: room});
-      return newChatroomModel;
-    });
-    console.log("...updatedrooms: ", updatedRooms);
-    rooms.reset(updatedRooms);
-  });
+ //  self.appEventBus.on("roomInfo", function(data) {
+ //    debugger;
+ //    console.log('main.e.roomInfo: ', data);
+ //    var rooms = self.chatroomModel.get("chatrooms");
+ //     console.log("...rooms: ", rooms);
+ //    var updatedRooms = _.map(data, function(room) {
+ //      var newChatroomModel = new app.ChatroomModel({name: room});
+ //      return newChatroomModel;
+ //    });
+ //    console.log("...updatedrooms: ", updatedRooms);
+ //    rooms.reset(updatedRooms);
+ //  });
 
 
 
@@ -259,7 +253,6 @@ app.MainController = function() {
   });
 
   self.appEventBus.on("setOfflineUsers", function(offlineUsers) {
-    debugger;
     var oldOfflineUsers = self.chatroomModel.get('offlineUsers');
     var updatedOfflineUsers = _.map(offlineUsers, function(user) {
       var newUserModel = new app.UserModel({username: user.username});
