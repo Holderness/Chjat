@@ -157,7 +157,7 @@ var Server = function(options) {
     user.socket.on('addRoom', function(name) {
       console.log('addRoom name: ', name);
       console.log('addRoom user: ', user.username);
-      ChatroomModel.update({name: name}, { $push: {'participants.username': user.username }}, function(err, raw) {
+      ChatroomModel.update({name: name}, { $push: {'participants': {'username': user.username} }}, function(err, raw) {
             if (!err) {
               console.log('userchatrooms', raw);
               self.getChatrooms(user, user.socket);
@@ -171,7 +171,7 @@ var Server = function(options) {
     user.socket.on('removeRoom', function(name) {
       console.log('removeRoom name: ', name);
       console.log('removeRoom user: ', user.username);
-      ChatroomModel.update({name: name}, { $pull: { 'participants.username': user.username }}, function(err, raw) {
+      ChatroomModel.update({name: name}, { $pull: { 'participants': {'username': user.username }}}, function(err, raw) {
             if (!err) {
               console.log('userchatrooms', raw);
               self.getChatrooms(user, user.socket);

@@ -74,9 +74,11 @@ app.ChatroomView = Backbone.View.extend({
     // }, 2000);
 
       var this_ = this;
+
+
 // figure this out, put somewhere else. no setTimeout
     setTimeout(function() {
-      $('#chat-search-input').typeahead({
+ $('#chat-search-input').typeahead({
       onSelect: function(item) {
         console.log(item);
       },
@@ -161,6 +163,7 @@ app.ChatroomView = Backbone.View.extend({
       e.preventDefault();
       var name = $('#chat-search-input').val();
       this.addChatroom(name);
+      debugger;
     } else {
       console.log('yay');
     }

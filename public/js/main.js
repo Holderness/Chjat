@@ -55,9 +55,9 @@ app.MainController = function() {
     self.chatClient.connectToRoom("DOO");
   };
 
-  self.initRoom = function(callback) {
-    self.chatroomView.initRoom();
-  };
+  // self.initRoom = function(callback) {
+  //   self.chatroomView.initRoom();
+  // };
 
   
 
@@ -197,7 +197,7 @@ app.MainController = function() {
 
   self.appEventBus.on("roomDestroyed", function(name) {
     self.connectToRoom();
-    self.initRoom();
+    // self.initRoom();
     alert('Chatroom ' + name + ' destroyed');
   });
 
