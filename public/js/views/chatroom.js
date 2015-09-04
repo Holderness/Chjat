@@ -29,7 +29,7 @@ app.ChatroomView = Backbone.View.extend({
     this.$el.html(this.template(this.model.toJSON()));
     this.setSubViews();
     this.setChatListeners();
-    this.typeahead();
+    this.chatroomSearchTypeahead();
     return this;
   },
   setSubViews: function() {
@@ -67,7 +67,7 @@ app.ChatroomView = Backbone.View.extend({
 
   },
 
-  typeahead: function() {
+  chatroomSearchTypeahead: function() {
 
     // interesting - the 'this' makes a difference, can't find #chat-search-input otherwise
     this.$('#chat-search-input').typeahead({
@@ -210,7 +210,6 @@ app.ChatroomView = Backbone.View.extend({
     console.log('crv.f.renderChats');
     console.log('CHATLOG: ', this.model.get("chatlog"));
     this.$('#chatbox-content').empty();
-    debugger;
     this.model.get('chatlog').each(function(chat) {
       this.renderChat(chat);
     }, this);
@@ -229,18 +228,21 @@ app.ChatroomView = Backbone.View.extend({
   renderChat: function(model) {
 
     // delete in production
-    if (model.attributes.url === '' || model.attributes.url === null || model.attributes.url === undefined) {
-      model.attributes.url = '';
-    }
+    // if (model.attributes.url === '' || model.attributes.url === null || model.attributes.url === undefined) {
+    //   model.attributes.url = '';
+    // }
 
+debugger;
     this.renderDateDividers(model);
     var chatTemplate = $(this.chatTemplate(model.toJSON()));
     chatTemplate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
     $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
   },
   renderDateDividers: function(model) {
+    debugger;
     this.currentDate = moment(model.attributes.timestamp).format('dddd, MMMM Do YYYY');
     if ( this.currentDate !== this.previousDate ) {
+      debugger;
       var currentDate = $(this.dateTemplate(model.toJSON()));
       currentDate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
       this.previousDate = this.currentDate;
@@ -296,6 +298,8 @@ app.ChatroomView = Backbone.View.extend({
 
   joinRoom: function(name) {
     console.log('crv.f.joinRoom');
+    this.currentDate = '';
+    this.previousDate = '';
     this.vent.trigger('joinRoom', name);
   },
 

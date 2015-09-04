@@ -276,7 +276,7 @@ var Server = function(options) {
         console.log('participants: ', chatroom.participants);
         console.log('oonlneinusers: ', chatroom.onlineUsers);
         console.log('offlineusers: ', offlineUsers);
-        user.socket.emit('chatlog', chatroom.chatlog.slice(-10));
+        user.socket.emit('chatlog', chatroom.chatlog.slice(-25));
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
         user.socket.emit('offlineUsers', offlineUsers);
         user.socket.emit('chatroomHeader', {name: roomName, owner: chatroom.owner, currentUser: user.username, chatlogLength: chatroom.chatlog.length, numberLoaded: -1});
