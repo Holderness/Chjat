@@ -287,7 +287,7 @@ var Server = function(options) {
   };
 
   self.getMoreChats = function(user, name, numberLoaded, chatlogLength) {
-    var items_per_load = 10,
+    var items_per_load = 25,
     skip = 25 * (numberLoaded - 1);
     console.log('name: ', name);
     console.log('skip: ', skip);
@@ -298,10 +298,12 @@ var Server = function(options) {
     ChatroomModel.findOne({ name: name }, {'chatlog': { $slice: [skip, items_per_load] }}, function( err, chatroom ) {
       console.log('chatlogLength: ', chatlogLength);
       console.log('skip math: ', (skip * -1));
+              console.log('chatlog: ', chatroom.chatlog);
+        console.log('chatlogLength: ', chatroom.chatlog.length);
       if (chatlogLength >= (skip * (-1))) {
-        var moreChats = chatroom.chatlog;
-        console.log('getMoreChats: ', chatroom.chatlog);
-        user.socket.emit('moreChats', moreChats);
+        user.socket.emit('moreChats', chatroom.chatlog);
+      } else if ((skip * -1) - chatlogLength <= 25 && (skip * -1) - chatlogLength >= 1){
+        user.socket.emit('moreChats', chatroom.chatlog);
       } else {
         console.log('-------------------------------');
         user.socket.emit('noMoreChats');

@@ -171,9 +171,8 @@ app.ChatroomView = Backbone.View.extend({
     name = chatroom.get('name'),
     numberLoaded = chatroom.get('numberLoaded'),
     chatlogLength = chatroom.get('chatlogLength');
-    chatroom.set('numberLoaded', (numberLoaded - 1));
-
     _.debounce(this.vent.trigger('getMoreChats', { name: name, numberLoaded: numberLoaded, chatlogLength: chatlogLength}), 200);
+    chatroom.set('numberLoaded', (numberLoaded - 1));
   },
 
   renderMoreChats: function(chats) {
@@ -187,7 +186,8 @@ app.ChatroomView = Backbone.View.extend({
       chatTemplate.prependTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
     }, this);
 
-    this.afterChatsRender();
+    this.dateDivider.load($(".followMeBar"));
+    $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight - originalHeight;
   },
 
   afterChatsRender: function() {
