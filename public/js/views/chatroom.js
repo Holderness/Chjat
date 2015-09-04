@@ -5,6 +5,7 @@ var app = app || {};
 app.ChatroomView = Backbone.View.extend({
   template: _.template($('#chatroom-template').html()),
   chatTemplate: _.template($('#chatbox-message-template').html()),
+  roomTemplate: _.template($("#room-list-template").html()),
   headerTemplate: _.template($('#chatroom-header-template').html()),
   onlineUserTemplate: _.template($('#online-users-list-template').html()),
   offlineUserTemplate: _.template($('#offline-users-list-template').html()),
@@ -27,10 +28,13 @@ app.ChatroomView = Backbone.View.extend({
     console.log('crv.f.render');
     this.model = model || this.model;
     this.$el.html(this.template(this.model.toJSON()));
+    this.afterRender();
+    return this;
+  },
+  afterRender: function() {
     this.setSubViews();
     this.setChatListeners();
     this.chatroomSearchTypeahead();
-    return this;
   },
   setSubViews: function() {
     this.chatImageUploadView = new app.ChatImageUploadView();
@@ -63,7 +67,13 @@ app.ChatroomView = Backbone.View.extend({
 
     this.listenTo(this.model, "moreChats", this.renderMoreChats, this);
 
-      // this.$('#chatbox-content')[0].scrollTop = this.$('#chatbox-content')[0].scrollHeight;
+    var this_ = this;
+    this.$('#chatbox-content').scroll(function(){
+        // checks if there's enough chats to warrant a getMoreChats call
+      if ($('#chatbox-content').scrollTop() === 0 && this_.model.get('chatlog').length >= 25) {
+        this_.getMoreChats();
+      }
+    });
 
   },
 
@@ -95,73 +105,19 @@ app.ChatroomView = Backbone.View.extend({
 
   },
 
-  getMoreChats: function() {
-    console.log('crv.f.getMoreChats');
-    var chatroom = this.model.get('chatroom'),
-    name = chatroom.get('name'),
-    numberLoaded = chatroom.get('numberLoaded'),
-    chatlogLength = chatroom.get('chatlogLength');
 
-    chatroom.set('numberLoaded', (numberLoaded - 1));
 
-    _.debounce(this.vent.trigger('getMoreChats', { name: name, numberLoaded: numberLoaded, chatlogLength: chatlogLength}), 200);
+// header
 
-  },
-
-  destroyRoom: function(e) {
-    confirm("As the owner of this room, you may destroy the room. Do you wish to destroy the room?");
-    e.preventDefault();
-    this.vent.trigger('destroyRoom', this.model.get('chatroom').get('name'));
-  },
-
-  createRoom: function(e) {
-    var formData = {};
-    this.$('#createChatroomForm').children( 'input' ).each(function(i, el) {
-      if ($(el).val() !== '') {
-        formData[$(el).data('create')] = $(el).val();
-      }
-    });
-    this.vent.trigger('createRoom', formData);
-  },
-
-  removeRoom: function(e) {
-    confirm('Are you sure you want to remove this chatroom?');
-    var name = $(e.target).data("room-name");
-    this.vent.trigger('removeRoom', name);
-  },
-
-  search: function(e) {
-    if (e.keyCode === 13 && $.trim($('#chat-search-input').val()).length > 0) {
-      // fun fact: separate events with a space in trigger's first arg and you
-      // can trigger multiple events.
-      // this.vent.trigger("chat", { message: this.$('.message-input').val()});
-      // this.$('.message-input').val('');
-      // $.post( "/api/searchChatrooms", function( data ) {
-      //   $( ".result" ).html( data );
-      // });
-      // return false;
-      e.preventDefault();
-      var name = $('#chat-search-input').val();
-      this.addChatroom(name);
-    } else {
-      console.log('search typing');
-    }
-    return this;
-  },
-
-  addChatroom: function(name) {
-    console.log('crv.f.addChatroom');
-    this.vent.trigger('addRoom', name);
-  },
-
-  // getChatroomModel: function(name) {
-  //   console.log('crv.f.getChatroomModel');
-  //   this.vent.trigger('getChatroomModel', name);
-  // },
-  // renders on events, called just above
   renderHeader: function() {
-    this.$('.chatbox-header').html(this.headerTemplate(this.model.get('chatroom').toJSON()));
+    this.$('#chatbox-header').html(this.headerTemplate(this.model.get('chatroom').toJSON()));
   },
+
+
+
+
+// users
+
   renderUsers: function() {
     console.log('crv.f.renderUsers');
     console.log('USERS: ', this.model.get("onlineUsers"));
@@ -187,24 +143,9 @@ app.ChatroomView = Backbone.View.extend({
 
 
 
-  renderMoreChats: function(chats) {
-    console.log('crv.f.renderMoreChats');
-    // this.$('#chatbox-content');
-    var this_ = this;
-    var originalHeight = $('#chatbox-content')[0].scrollHeight;
-    _.each(chats, function(model) {
-      this_.renderMoreDateDividers(model);
-      var chatTemplate = $(this.chatTemplate(model.toJSON()));
-      chatTemplate.prependTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
-      this_.$('#chatbox-content')[0].scrollTop = this_.$('#chatbox-content')[0].scrollHeight - originalHeight;
-    }, this);
-
-// these things should not be here
-    // autosize($('textarea.message-input'));
-    this.dateDivider.load(this, $(".followMeBar"));
-  },
 
 
+// chatlog
 
   renderChats: function() {
     console.log('crv.f.renderChats');
@@ -214,43 +155,56 @@ app.ChatroomView = Backbone.View.extend({
       this.renderChat(chat);
     }, this);
 
-// these things should not be here
-    autosize($('textarea.message-input'));
-    var this_ = this;
-    this.dateDivider.load(this, $(".followMeBar"));
-           this.$('#chatbox-content').scroll(function(){
-        if ($(this).scrollTop() === 0) {
-           this_.getMoreChats();
-        }
-      });
-    $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
+    this.afterChatsRender();
   },
+
   renderChat: function(model) {
-
-    // delete in production
-    // if (model.attributes.url === '' || model.attributes.url === null || model.attributes.url === undefined) {
-    //   model.attributes.url = '';
-    // }
-
-debugger;
     this.renderDateDividers(model);
     var chatTemplate = $(this.chatTemplate(model.toJSON()));
     chatTemplate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
     $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
   },
+
+  getMoreChats: function() {
+    console.log('crv.f.getMoreChats');
+    var chatroom = this.model.get('chatroom'),
+    name = chatroom.get('name'),
+    numberLoaded = chatroom.get('numberLoaded'),
+    chatlogLength = chatroom.get('chatlogLength');
+    chatroom.set('numberLoaded', (numberLoaded - 1));
+
+    _.debounce(this.vent.trigger('getMoreChats', { name: name, numberLoaded: numberLoaded, chatlogLength: chatlogLength}), 200);
+  },
+
+  renderMoreChats: function(chats) {
+    console.log('crv.f.renderMoreChats');
+    // this.$('#chatbox-content');
+    var this_ = this;
+    var originalHeight = $('#chatbox-content')[0].scrollHeight;
+    _.each(chats, function(model) {
+      this_.renderMoreDateDividers(model);
+      var chatTemplate = $(this.chatTemplate(model.toJSON()));
+      chatTemplate.prependTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
+    }, this);
+
+    this.afterChatsRender();
+  },
+
+  afterChatsRender: function() {
+    this.autosizer();
+    this.dateDivider.load($(".followMeBar"));
+    this.scrollBottomInsurance();
+  },
+
   renderDateDividers: function(model) {
-    debugger;
     this.currentDate = moment(model.attributes.timestamp).format('dddd, MMMM Do YYYY');
     if ( this.currentDate !== this.previousDate ) {
-      debugger;
       var currentDate = $(this.dateTemplate(model.toJSON()));
       currentDate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
       this.previousDate = this.currentDate;
     }
-
-    // no, only here for delay
-            this.chatImageUploadView.setElement($('#chatImageUploadContainer'));
   },
+
  renderMoreDateDividers: function(model) {
     this.currentDate = moment(model.attributes.timestamp).format('dddd, MMMM Do YYYY');
     if ( this.currentDate !== this.previousDate ) {
@@ -258,31 +212,52 @@ debugger;
       currentDate.prependTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
       this.previousDate = this.currentDate;
     }
-
-    // no, only here for delay
-            this.chatImageUploadView.setElement($('#chatImageUploadContainer'));
   },
 
 
 
 
-// rename
-  uploadImage: function(response) {
-    console.log('img url: ', response);
-    this.vent.trigger("chat", response);
-    // this.renderChat(chatImage);
-    // $('#chatImageUpload').val(response.url);
-    // this.createData();
-    setTimeout(function() {
-      $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
-    }, 1000);
+// rooms
+
+
+  search: function(e) {
+    if (e.keyCode === 13 && $.trim($('#chat-search-input').val()).length > 0) {
+      e.preventDefault();
+      var name = $('#chat-search-input').val();
+      this.addChatroom(name);
+    } else {
+      console.log('search typing');
+    }
+    return this;
   },
 
+  createRoom: function(e) {
+    var formData = {};
+    this.$('#createChatroomForm').children( 'input' ).each(function(i, el) {
+      if ($(el).val() !== '') {
+        formData[$(el).data('create')] = $(el).val();
+      }
+    });
+    this.vent.trigger('createRoom', formData);
+  },
 
+  destroyRoom: function(e) {
+    confirm("As the owner of this room, you may destroy the room. Do you wish to destroy the room?");
+    e.preventDefault();
+    this.vent.trigger('destroyRoom', this.model.get('chatroom').get('name'));
+  },
 
+  addChatroom: function(name) {
+    console.log('crv.f.addChatroom');
+    this.vent.trigger('addRoom', name);
+  },
 
+  removeRoom: function(e) {
+    confirm('Are you sure you want to remove this chatroom?');
+    var name = $(e.target).data("room-name");
+    this.vent.trigger('removeRoom', name);
+  },
 
-  // renders on events, called just above
   renderRooms: function() {
     console.log('crv.f.renderRooms');
     console.log('CHATROOMS: ', this.model.get("chatrooms"));
@@ -291,9 +266,9 @@ debugger;
       this.renderRoom(room);
     }, this);
   },
+
   renderRoom: function(model) {
-    var template = _.template($("#room-list-template").html());
-    this.$('.public-rooms').append(template(model.toJSON()));
+    this.$('.public-rooms').append(this.roomTemplate(model.toJSON()));
   },
 
   joinRoom: function(name) {
@@ -306,10 +281,33 @@ debugger;
 
 
 
+// image upload
+
+ uploadImage: function(response) {
+    console.log('img url: ', response);
+    this.vent.trigger("chat", response);
+    this.scrollBottomInsurance();
+  },
+
+
 
 
 
   //events
+
+  autosizer: function() {
+    autosize($('#message-input'));
+  },
+
+  scrollBottomInsurance: function(){
+    var interval = setInterval(function(){
+      this.$('#chatbox-content')[0].scrollTop = this.$('#chatbox-content')[0].scrollHeight;
+    }, 50);
+    return setTimeout(function(){
+      clearInterval(interval);
+    }, 800);
+  },
+
   messageInputPressed: function(e) {
     if (e.keyCode === 13 && $.trim($('.message-input').val()).length > 0) {
       // fun fact: separate events with a space in trigger's first arg and you
@@ -335,12 +333,9 @@ debugger;
   dateDivider: (function() {
 
     var $window = $(window),
-    $stickies,
-    $view;
+    $stickies;
 
-    load = function(view, stickies) {
-
-      $view = view;
+    load = function(stickies) {
 
       $stickies = stickies.each(function() {
 
@@ -427,7 +422,6 @@ debugger;
         }
 
         if ($('#chatbox-content').scrollTop() === 0) {
-          // $view.getMoreChats();
           $stickies.removeClass('fixed');
         }
 

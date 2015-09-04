@@ -288,7 +288,8 @@ var Server = function(options) {
 
   self.getMoreChats = function(user, name, numberLoaded, chatlogLength) {
     var items_per_load = 10,
-    skip = items_per_load * (numberLoaded - 1);
+    skip = 25 * (numberLoaded - 1);
+    console.log('name: ', name);
     console.log('skip: ', skip);
      console.log('numberloaded: ', numberLoaded);
     // ChatroomModel.findOne({name: name}, 'chatlog', function(err, chatroom) {

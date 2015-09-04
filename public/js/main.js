@@ -213,6 +213,9 @@ app.MainController = function() {
       return newChatModel;
     });
     oldChatlog.reset(updatedChatlog);
+
+
+    $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
   });
 
   self.appEventBus.on("moreChats", function(chatlog) {
