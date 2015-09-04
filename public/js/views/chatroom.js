@@ -14,7 +14,6 @@ app.ChatroomView = Backbone.View.extend({
     'click .chat-directory .room': 'setRoom',
     'keypress #chat-search-input': 'search',
     'click .remove-chatroom': 'removeRoom',
-    // 'click #create-chatroom': 'createRoom',
     'click #createChatroomBtn': 'createRoom',
     'click #destroy-chatroom': 'destroyRoom',
   },
@@ -24,15 +23,13 @@ app.ChatroomView = Backbone.View.extend({
     var self = this;
     this.vent = options.vent;
   },
-  initRoom: function() {
-    this.renderHeader();
-  },
   render: function(model) {
     console.log('crv.f.render');
     this.model = model || this.model;
     this.$el.html(this.template(this.model.toJSON()));
     this.setSubViews();
     this.setChatListeners();
+    this.typeahead();
     return this;
   },
   setSubViews: function() {
@@ -66,19 +63,14 @@ app.ChatroomView = Backbone.View.extend({
 
     this.listenTo(this.model, "moreChats", this.renderMoreChats, this);
 
-    // setTimeout(function() {
-    //     $("#chatImageUpload").change(function(){
-    //        console.log('burn daddy burn');
-    //      });
-    //     // $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
-    // }, 2000);
+      // this.$('#chatbox-content')[0].scrollTop = this.$('#chatbox-content')[0].scrollHeight;
 
-      var this_ = this;
+  },
 
+  typeahead: function() {
 
-// figure this out, put somewhere else. no setTimeout
-    setTimeout(function() {
- $('#chat-search-input').typeahead({
+    // interesting - the 'this' makes a difference, can't find #chat-search-input otherwise
+    this.$('#chat-search-input').typeahead({
       onSelect: function(item) {
         console.log(item);
       },
@@ -86,37 +78,25 @@ app.ChatroomView = Backbone.View.extend({
         url: '/api/searchChatrooms',
         triggerLength: 1,
         preDispatch: function (query) {
-            return {
-                name: query
-            };
+          return {
+            name: query
+          };
         },
         preProcess: function (data) {
           console.log(data);
-            if (data.success === false) {
-                // Hide the list, there was some error
-                return false;
-            }
-            // We good!
-            return data;
+          if (data.success === false) {
+            // Hide the list, there was some error
+            return false;
+          }
+          return data;
         }
       },
     });
 
-    setTimeout(function() {
-      $('#chatbox-content').scroll(function(){
-        if ($(this).scrollTop() === 0) {
-           this_.getMoreChats();
-        }
-      });
-    }, 1000);
-
-        $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
-    }, 1000);
-
   },
 
   getMoreChats: function() {
-    console.log('bbuts');
+    console.log('crv.f.getMoreChats');
     var chatroom = this.model.get('chatroom'),
     name = chatroom.get('name'),
     numberLoaded = chatroom.get('numberLoaded'),
@@ -163,9 +143,8 @@ app.ChatroomView = Backbone.View.extend({
       e.preventDefault();
       var name = $('#chat-search-input').val();
       this.addChatroom(name);
-      debugger;
     } else {
-      console.log('yay');
+      console.log('search typing');
     }
     return this;
   },
@@ -217,7 +196,7 @@ app.ChatroomView = Backbone.View.extend({
       this_.renderMoreDateDividers(model);
       var chatTemplate = $(this.chatTemplate(model.toJSON()));
       chatTemplate.prependTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
-      $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight - originalHeight;
+      this_.$('#chatbox-content')[0].scrollTop = this_.$('#chatbox-content')[0].scrollHeight - originalHeight;
     }, this);
 
 // these things should not be here
@@ -231,13 +210,21 @@ app.ChatroomView = Backbone.View.extend({
     console.log('crv.f.renderChats');
     console.log('CHATLOG: ', this.model.get("chatlog"));
     this.$('#chatbox-content').empty();
+    debugger;
     this.model.get('chatlog').each(function(chat) {
       this.renderChat(chat);
     }, this);
 
 // these things should not be here
     autosize($('textarea.message-input'));
+    var this_ = this;
     this.dateDivider.load(this, $(".followMeBar"));
+           this.$('#chatbox-content').scroll(function(){
+        if ($(this).scrollTop() === 0) {
+           this_.getMoreChats();
+        }
+      });
+    $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
   },
   renderChat: function(model) {
 
