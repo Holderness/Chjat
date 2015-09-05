@@ -229,7 +229,7 @@ app.MainController = function() {
     //
     //
     //
-    self.chatroomModel.trigger('moreChats', moreChatlog.reverse());
+    self.chatroomModel.trigger('moreChats', moreChatlog);
     // oldChatlog.push(moreChatlog);
   });
 

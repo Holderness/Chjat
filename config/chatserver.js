@@ -288,33 +288,28 @@ var Server = function(options) {
 
   self.getMoreChats = function(user, name, numberLoaded, chatlogLength) {
     var items_per_load = 25,
-    skip = 25 * (numberLoaded - 1);
+    skip = items_per_load * (numberLoaded - 1);
+    skipPos = skip * -1;
     console.log('name: ', name);
     console.log('skip: ', skip);
-     console.log('numberloaded: ', numberLoaded);
-    // ChatroomModel.findOne({name: name}, 'chatlog', function(err, chatroom) {
-    //   chatroom.chatlog.length
-    // })
+    console.log('numberloaded: ', numberLoaded);
+     if ( skipPos - chatlogLength > 0 && skipPos - chatlogLength <= items_per_load) {
+        items_per_load = skipPos - chatlogLength;
+     }
     ChatroomModel.findOne({ name: name }, {'chatlog': { $slice: [skip, items_per_load] }}, function( err, chatroom ) {
       console.log('chatlogLength: ', chatlogLength);
-      console.log('skip math: ', (skip * -1));
+      console.log('skipPos: ', skipPos);
               console.log('chatlog: ', chatroom.chatlog);
-        console.log('chatlogLength: ', chatroom.chatlog.length);
-      if (chatlogLength >= (skip * (-1))) {
+        console.log('chatroom.chatlog.length: ', chatroom.chatlog.length);
+      if (chatlogLength >= skipPos) {
         user.socket.emit('moreChats', chatroom.chatlog);
-      } else if ((skip * -1) - chatlogLength <= 25 && (skip * -1) - chatlogLength >= 1){
+      } else if (skipPos - chatlogLength <= items_per_load && skipPos - chatlogLength >= 1){
         user.socket.emit('moreChats', chatroom.chatlog);
       } else {
         console.log('-------------------------------');
         user.socket.emit('noMoreChats');
       }
     });
-    // ChatroomModel.aggregate([
-    //   {$match: { name: name }},
-    //   {$sort: {'chatlog.timestamp':   1}}], function( err, chatroom ) {
-    //   console.log('getMoreChats: ', chatroom[0].chatlog);
-    //   // user.socket.emit('moreChats', chatroom);
-    // });
   };
 
 

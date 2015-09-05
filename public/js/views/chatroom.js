@@ -71,7 +71,7 @@ app.ChatroomView = Backbone.View.extend({
     this.$('#chatbox-content').scroll(function(){
         // checks if there's enough chats to warrant a getMoreChats call
       if ($('#chatbox-content').scrollTop() === 0 && this_.model.get('chatlog').length >= 25) {
-        this_.getMoreChats();
+        _.debounce(this_.getMoreChats(), 3000);
       }
     });
 
@@ -165,13 +165,22 @@ app.ChatroomView = Backbone.View.extend({
     $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
   },
 
+  renderDateDividers: function(model) {
+    this.currentDate = moment(model.get('timestamp')).format('dddd, MMMM Do YYYY');
+    if ( this.currentDate !== this.previousDate ) {
+      var currentDate = $(this.dateTemplate(model.toJSON()));
+      currentDate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
+      this.previousDate = this.currentDate;
+    }
+  },
+
   getMoreChats: function() {
     console.log('crv.f.getMoreChats');
     var chatroom = this.model.get('chatroom'),
     name = chatroom.get('name'),
     numberLoaded = chatroom.get('numberLoaded'),
     chatlogLength = chatroom.get('chatlogLength');
-    _.debounce(this.vent.trigger('getMoreChats', { name: name, numberLoaded: numberLoaded, chatlogLength: chatlogLength}), 200);
+    this.vent.trigger('getMoreChats', { name: name, numberLoaded: numberLoaded, chatlogLength: chatlogLength});
     chatroom.set('numberLoaded', (numberLoaded - 1));
   },
 
@@ -180,14 +189,43 @@ app.ChatroomView = Backbone.View.extend({
     // this.$('#chatbox-content');
     var this_ = this;
     var originalHeight = $('#chatbox-content')[0].scrollHeight;
+    this.moreChatCollection = [];
     _.each(chats, function(model) {
       this_.renderMoreDateDividers(model);
       var chatTemplate = $(this.chatTemplate(model.toJSON()));
-      chatTemplate.prependTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
+      this_.moreChatCollection.push(chatTemplate);
+      // chatTemplate.prependTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
     }, this);
+    _.each(this.moreChatCollection.reverse(), function(template) {
+      template.prependTo(this.$('#chatbox-content'));
+    });
 
-    this.dateDivider.load($(".followMeBar"));
-    $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight - originalHeight;
+     this.dateDivider.load($(".followMeBar"));
+     $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight - originalHeight;
+     
+  },
+
+   renderMoreDateDividers: function(model) {
+    this.currentDate = moment(model.attributes.timestamp).format('dddd, MMMM Do YYYY');
+    if ( this.currentDate !== this.previousDate ) {
+      var currentDate = $(this.dateTemplate(model.toJSON()));
+      // currentDate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
+      this.moreChatCollection.push(currentDate);
+      this.previousDate = this.currentDate;
+    }
+  },
+
+  autosizer: function() {
+    autosize($('#message-input'));
+  },
+  
+  scrollBottomInsurance: function(){
+    var interval = setInterval(function(){
+      this.$('#chatbox-content')[0].scrollTop = this.$('#chatbox-content')[0].scrollHeight;
+    }, 50);
+    return setTimeout(function(){
+      clearInterval(interval);
+    }, 800);
   },
 
   afterChatsRender: function() {
@@ -196,23 +234,9 @@ app.ChatroomView = Backbone.View.extend({
     this.scrollBottomInsurance();
   },
 
-  renderDateDividers: function(model) {
-    this.currentDate = moment(model.attributes.timestamp).format('dddd, MMMM Do YYYY');
-    if ( this.currentDate !== this.previousDate ) {
-      var currentDate = $(this.dateTemplate(model.toJSON()));
-      currentDate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
-      this.previousDate = this.currentDate;
-    }
-  },
 
- renderMoreDateDividers: function(model) {
-    this.currentDate = moment(model.attributes.timestamp).format('dddd, MMMM Do YYYY');
-    if ( this.currentDate !== this.previousDate ) {
-      var currentDate = $(this.dateTemplate(model.toJSON()));
-      currentDate.prependTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
-      this.previousDate = this.currentDate;
-    }
-  },
+
+
 
 
 
@@ -295,18 +319,6 @@ app.ChatroomView = Backbone.View.extend({
 
   //events
 
-  autosizer: function() {
-    autosize($('#message-input'));
-  },
-
-  scrollBottomInsurance: function(){
-    var interval = setInterval(function(){
-      this.$('#chatbox-content')[0].scrollTop = this.$('#chatbox-content')[0].scrollHeight;
-    }, 50);
-    return setTimeout(function(){
-      clearInterval(interval);
-    }, 800);
-  },
 
   messageInputPressed: function(e) {
     if (e.keyCode === 13 && $.trim($('.message-input').val()).length > 0) {
@@ -370,15 +382,14 @@ app.ChatroomView = Backbone.View.extend({
 
         $prevSticky = $stickies.eq(i - 1),
         $prevStickyTop = $prevSticky.offset().top,
-        $prevStickyPosition = $prevSticky.data('originalPosition');
+        $prevStickyPosition = $prevSticky.data('originalPosition'),
 
+        $thisAndPrevStickyDifference = Math.abs($prevStickyPosition - $thisStickyPosition);
 
         if ($thisStickyTop <= 157) {
 
-          var $nextSticky = $stickies.eq(i + 1),
-
-          $thisStickyPosition = $thisSticky.data('originalPosition'),
-          $thisAndPrevStickyDifference = Math.abs($prevStickyPosition - $thisStickyPosition);
+          var $nextSticky = $stickies.eq(i + 1);
+          // debugger;
 
           $thisSticky.addClass("fixed");
 
@@ -402,6 +413,10 @@ app.ChatroomView = Backbone.View.extend({
           if ($nextSticky.hasClass("fixed")) {
             $nextSticky.removeClass("fixed");
           }
+
+          //           if ($prevSticky.hasClass("fixed")) {
+          //   $prevSticky.removeClass("fixed");
+          // }
 
          // scrolling up and sticking to proper position
           if ($prevStickyTop + $thisAndPrevStickyDifference > 157 && i !== 0) {
