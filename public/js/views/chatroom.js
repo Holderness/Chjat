@@ -295,8 +295,6 @@ app.ChatroomView = Backbone.View.extend({
   renderRoom: function(model) {
     var name1 = model.get('name'),
     name2 = this.model.get('chatroom').get('name');
-
-    debugger;
     this.$('.public-rooms').append(this.roomTemplate(model.toJSON()));
     if (name1 === name2) {
       this.$('.room').last().find('.room-name').css('color', '#DEB0B0').fadeIn();
@@ -385,19 +383,22 @@ app.ChatroomView = Backbone.View.extend({
       $stickies.each(function(i, sticky) {
 
         var $thisSticky = $(sticky),
-        $thisStickyTop = $thisSticky.offset().top,
-        $thisStickyPosition = $thisSticky.data('originalPosition'),
+        $thisStickyTop = $thisSticky.offset().top;
+        // $thisStickyPosition = $thisSticky.data('originalPosition'),
 
-        $prevSticky = $stickies.eq(i - 1),
-        $prevStickyTop = $prevSticky.offset().top,
-        $prevStickyPosition = $prevSticky.data('originalPosition'),
+        // $prevSticky = $stickies.eq(i - 1),
+        // $prevStickyTop = $prevSticky.offset().top,
+        // $prevStickyPosition = $prevSticky.data('originalPosition');
 
-        $thisAndPrevStickyDifference = Math.abs($prevStickyPosition - $thisStickyPosition);
+        // $thisAndPrevStickyDifference = Math.abs($prevStickyPosition - $thisStickyPosition);
+        
+        // var $scrohei = $('#chatbox-content')[0].scrollHeight;
 
         if ($thisStickyTop <= 157) {
 
-          var $nextSticky = $stickies.eq(i + 1);
-          // debugger;
+          $stickies.removeClass('fixed');
+
+          // var $nextSticky = $stickies.eq(i + 1);
 
           $thisSticky.addClass("fixed");
 
@@ -408,6 +409,7 @@ app.ChatroomView = Backbone.View.extend({
           // console.log('prevstickyoriginposition', $stickies.eq(i - 1).data('originalPosition'));
           // console.log('prevstickytop', $stickies.eq(i - 1).offset().top);
           // console.log('$thisAndPrevStickyDifference', Math.abs($thisStickyPosition - $stickies.eq(i - 1).data('originalPosition')));
+          // console.log('thisstickyoriginposition', $thisSticky.data('originalPosition'));
           // console.log('thisStickyTop', $thisSticky.offset().top);
           // console.log('$thisAndNextStickyDifference', Math.abs($thisStickyPosition - $nextStickyPosition));
           // console.log('nextStickyTop', $nextSticky.offset().top);
@@ -416,37 +418,38 @@ app.ChatroomView = Backbone.View.extend({
           // // console.log('this', $thisSticky);
           // // console.log('next', $nextSticky);
           // console.log('-------------');
+
         
           //scrolling up
-          if ($nextSticky.hasClass("fixed")) {
-            $nextSticky.removeClass("fixed");
-          }
-
-          //           if ($prevSticky.hasClass("fixed")) {
-          //   $prevSticky.removeClass("fixed");
+          // if ($nextSticky.hasClass("fixed")) {
+          //   $nextSticky.removeClass("fixed");
           // }
 
          // scrolling up and sticking to proper position
-          if ($prevStickyTop + $thisAndPrevStickyDifference > 157 && i !== 0) {
-            $nextSticky.removeClass("fixed");
-          }
+          // if ($prevStickyTop + $thisAndPrevStickyDifference > 157 && i !== 0) {
+          //   $nextSticky.removeClass("fixed");
+          // }
 
-          if ($prevStickyTop >= 157 && $prevSticky.hasClass("fixed") && i !== 0) {
-            $prevSticky.removeClass("fixed");
-          }
+          // if ($prevStickyTop >= 157 && $prevSticky.hasClass("fixed") && i !== 0) {
+          //   $prevSticky.removeClass("fixed");
+          // }
 
           // scrolling down
         } else {
 
-          if ($prevStickyTop >= 157 && $prevSticky.hasClass("fixed") && i !== 0) {
-            $thisSticky.removeClass("fixed");
-          }
+          // if ($prevStickyTop >= 157 && $prevSticky.hasClass("fixed") && i !== 0) {
+          //   $thisSticky.removeClass("fixed");
+          // }
 
         }
 
-        if ($('#chatbox-content').scrollTop() === 0) {
-          $stickies.removeClass('fixed');
-        }
+        // if ($('#chatbox-content').scrollTop() === 0) {
+        //   $stickies.removeClass('fixed');
+        // }
+
+        // if ($nextSticky.offset().top < 157) {
+        //  $nextSticky.removeClass('fixed');
+        // }
 
       });
 
