@@ -18,6 +18,7 @@ app.ChatroomView = Backbone.View.extend({
     'click #createChatroomBtn': 'createRoom',
     'click #destroy-chatroom': 'destroyRoom',
   },
+
   initialize: function(options) {
     console.log('chatroomView.f.initialize: ', options);
     // passed the viewEventBus
@@ -292,7 +293,14 @@ app.ChatroomView = Backbone.View.extend({
   },
 
   renderRoom: function(model) {
+    var name1 = model.get('name'),
+    name2 = this.model.get('chatroom').get('name');
+
+    debugger;
     this.$('.public-rooms').append(this.roomTemplate(model.toJSON()));
+    if (name1 === name2) {
+      this.$('.room').last().find('.room-name').css('color', '#DEB0B0').fadeIn();
+    }
   },
 
   joinRoom: function(name) {
