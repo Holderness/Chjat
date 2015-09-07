@@ -116,7 +116,7 @@
   </script>
 
   <script type="text/template" id="chatroom-header-template">  
-    <img class="img-responsive chatbox-header-avatar" src="/img/tom-jones.jpg">
+    <img class="img-responsive chatbox-header-avatar" src="/img/fly-pig-serious-icon.png">
 	  <h3 class="chatbox-header-chatroom-name"><%= name %></h3>
     <% if (owner === currentUser) { %>
       <h6 class="chatbox-header-destroy"><a id="destroy-chatroom" href="#">destroy</a></h6>
@@ -158,7 +158,7 @@
             <p>Users</p>
             <div class="online-users"></div>
             <p>Offline</p>
-            <div class="row offline-users"></div>
+            <div class="offline-users"></div>
           </div> <!--user-directory -->
 
 
@@ -201,7 +201,7 @@
               </div>
               <div class="modal-body">
                 <div id="chatImageUploadContainer">
-                  <img src="/img/tom-jones.jpg" alt="" id="uploadedChatImage">
+                  <img src="/img/fly-pig-serious-icon.png" alt="" id="uploadedChatImage">
                   <form id="chatImageUploadForm">
                     <input type="file" id="chatImageUpload" name="chatImageUpload">
                     <div class="modal-footer">
@@ -277,8 +277,8 @@
     <div class="col-xs-3 col-sm-3 col-md-1 text-center">
       <span><i class="fa fa-circle"></i></span>
     </div>
-    <div class="col-xs-8 col-sm-8 col-md-10">
-      <p><strong class="user-directory-username">@<%= username %></strong></p>
+    <div class="col-xs-7 col-sm-7 col-md-9">
+      <p><strong class="user-directory-username"><%= username %></strong></p>
     </div>
   </div>
 </script>
@@ -288,10 +288,10 @@
 <script type="text/template" id="offline-users-list-template">
   <div class="row user-offline">
     <div class="col-xs-3 col-sm-3 col-md-1 text-center">
-      <span><i class="fa fa-circle"></i></span>
+      <span><i class="fa fa-circle-o"></i></span>
     </div>
-    <div class="col-xs-8 col-sm-8 col-md-10">
-      <p><strong class="user-directory-username">@<%= username %></strong></p>
+    <div class="col-xs-7 col-sm-7 col-md-9">
+      <p><strong class="user-directory-username"><%= username %></strong></p>
     </div>
   </div>
 </script>
@@ -300,13 +300,13 @@
 
 
 <script type="text/template" id="room-list-template">
-  <div class="row room" data-room="<%= name %>">
-    <div class="col-xs-3 col-sm-3 col-md-1 text-center">
-      <span><i class="fa fa-circle"></i></span>
-    </div>
-    <div class="col-xs-8 col-sm-8 col-md-10">
-      <p data-room="<%= name %>" >#<%= name %>
-      <button data-room-name="<%= name %>" class="btn btn-primary remove-chatroom btn-xs">&times;</button></p>
+  <div class="room" data-room="<%= name %>">
+    <!-- <div class="col-xs-3 col-sm-3 col-md-1 text-center">
+       <span><i class="fa fa-circle"></i></span>
+      </div> -->
+    <div class="col-xs-12 col-sm-12 col-md-12">
+      <p class="room-name" data-room="<%= name %>" ><%= name %>
+      <button data-room-name="<%= name %>" class="pull-right remove-chatroom fa fa-times"></button></p>
     </div>
   </div>
 </script>

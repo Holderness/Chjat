@@ -3,8 +3,8 @@
   padding-left: 0;
   padding-right: 0;
   margin-left: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow-y: scroll;
+  overflow-x: scroll;
   height: 600px;
   background: $white;
   border-right: 2px solid $border;
@@ -13,13 +13,33 @@
     border-color: $white;
     border: 1px solid $border;
   }
-  .public-rooms-container {}
+  .public-rooms-container {
+    text-align: center;
+  }
   .private-rooms-container {}
   .direct-messages-container {}
 }
 
 .chat-search-input {}
 
+
+.public-rooms-container {
+  .room {
+    text-align: left;
+    .room-name {
+      cursor: pointer;
+      font-weight: bold;
+      color: #ccc;
+
+    }
+    .remove-chatroom {
+      border: none;
+      background-color: transparent;
+      color: #ccc;
+      cursor: crosshair;
+    }
+  }
+}
 
 // label.badge.unread-messages {
 //   margin-top: 5px;
@@ -41,7 +61,7 @@
 //   line-height: 1.2em;
 // }
 
-.direct-message-username {
-  line-height: 2em;
-  float: right;
-}
+// .direct-message-username {
+//   line-height: 2em;
+//   float: right;
+// }

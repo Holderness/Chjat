@@ -2,7 +2,8 @@
 .user-directory {
   background: $white;
   height: 600px;
-  overflow-y: auto;
+  overflow-y: scroll;
+  overflow-x: scroll;
   border-left: 2px solid $border;
   border-bottom: 2px solid $border;
   .offline-users {}
@@ -17,6 +18,12 @@
 .online-users {
   .user-online {
     color: $online-user;
+  }
+}
+
+.offline-users {
+  .user-offline {
+    color: #ccc;
   }
 }
 
