@@ -9,13 +9,23 @@
   background: $white;
   border-right: 2px solid $border;
   border-bottom: 2px solid $border;
-  input.form-control.chat-search-input:focus {
-    border-color: $white;
-    border: 1px solid $border;
-  }
-  .public-rooms-container {
+
+  .chat-search-container {
+    margin-bottom: 10px;
     text-align: center;
+    input.form-control {
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+      text-align: center;
+    }
+    input.form-control.chat-search-input:focus {
+      border-color: $white;
+      border: 1px solid $border;
+    }
   }
+
+
+  .public-rooms-container {}
   .private-rooms-container {}
   .direct-messages-container {}
   .create-room-container {}
@@ -25,10 +35,18 @@
 
 
 .public-rooms-container {
+  .public-rooms-header {
+    text-align: center;
+    color: $marine;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
   .room {
     text-align: left;
     cursor: pointer;
     .room-name {
+      margin: 0 0 5px;
       font-weight: bold;
       color: #ccc;
 
@@ -46,7 +64,10 @@
     &.btn-primary {
     border-color: #749CA8;
     background-color: #749CA8;
-    background-image: linear-gradient(to bottom, white 0,#749CA8 100%);
+    background-image: none;
+    // background-image: linear-gradient(to bottom, white 0,#749CA8 100%);
+    border-radius: 0px;
+    border-top: none;
     &:hover, :active, :focus {
       background-image: linear-gradient(to bottom, white 0,#749CA8 100%);
       background-color: #749CA8;
