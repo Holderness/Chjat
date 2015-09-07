@@ -145,8 +145,8 @@
     margin-left: -7px;
     position: fixed;
     top: 157px;
-    width: 508px;
-    left: 220px;
+    width: 545px;
+    left: 225px;
     z-index: 1;
     background: -moz-linear-gradient(top, rgba(255,255,255,1) 65%, rgba(255,255,255,0.7) 100%);
     // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.7)), color-stop(100%,rgba(255,255,255,0)));
@@ -159,8 +159,8 @@
     }
     @media #{$breakpoint-chatbox} {
       // margin-left: -7px;
-      width: 53.5%;
-      left: 24%;
+      width: 52%;
+      left: 24.6%;
     }
     // @media #{$breakpoint-chatbox2} {
     //   top: 158px;
