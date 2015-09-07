@@ -250,6 +250,7 @@ app.ChatroomView = Backbone.View.extend({
       e.preventDefault();
       var name = $('#chat-search-input').val();
       this.addChatroom(name);
+      this.$('#chat-search-input').val('');
     } else {
       console.log('search typing');
     }
