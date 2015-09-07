@@ -27,8 +27,8 @@
 .public-rooms-container {
   .room {
     text-align: left;
+    cursor: pointer;
     .room-name {
-      cursor: pointer;
       font-weight: bold;
       color: #ccc;
 
@@ -37,7 +37,6 @@
       border: none;
       background-color: transparent;
       color: #eee;
-      cursor: crosshair;
     }
   }
 }
