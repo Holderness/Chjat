@@ -24,7 +24,7 @@ module.exports = function() {
   app.use( bodyParser.urlencoded({ extended: true }) );
   app.use( cookieParser( process.env.SESSION_SECRET ));
 
-app.use(session({
+  app.use(session({
     saveUninitialized: true,
     resave: false,
     secret: process.env.SESSION_SECRET,
@@ -47,7 +47,7 @@ app.use(session({
   // var index = require('../app/routes/index');
   // app.use('/', index);
   // what the routes will look like...
-  require('../app/routes/index.js')(app);
+  // require('../app/routes/index.js')(app);
   require('../app/routes/user.js')(app);
   require('../app/routes/chatroom.js')(app);
 

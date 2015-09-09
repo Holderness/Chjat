@@ -11,6 +11,9 @@ module.exports = function(app) {
   app.route('/register')
     .get(users.renderRegister)
     .post(users.register);
+
+  app.route('/registerValidation')
+    .post(users.validateUsername);
     
 
   app.post('/login', function(req, res, next){

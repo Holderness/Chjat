@@ -57,6 +57,10 @@
     // </div>
   </script>
 
+
+
+  <!-- login -->
+
   <script type="text/template" id="login">
     <div class="container">
     <div class="form-group
@@ -64,8 +68,8 @@
             has-error
             <% } %>
             ">
-    <form class="form-signin" >
-          <h2 class="form-signin-heading text-center">Open, says me</h2>
+    <form class="form-login" >
+          <h2 class="form-login-header text-center">Open, says me</h2>
         
           <label for="username" class="sr-only">Username</label>
           <input type="text" name="username" id="username" class="form-control" placeholder="Username" required autofocus>
@@ -86,13 +90,19 @@
     </div>
   </script>
 
+
+
+  <!-- register -->
+
   <script type="text/template" id="register">
-    <div class="container">
-    <form class="form-signin" action="/register" method="post">
-          <h2 class="form-signin-heading text-center">Register</h2>
+    <div class="register container">
+    <form class="form-register" action="/register" method="post">
+          <h2 class="form-register-header text-center">Create Account</h2>
+          <div class="register-error-container"></div>
+
         
           <label for="username" class="sr-only">Username</label>
-          <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+          <input type="text" id="username" name="username" class="form-control" placeholder="Username" autocomplete="off" required autofocus minlength="5">
 
           <label for="name" class="sr-only">Name</label>
           <input type="text" id="name" name="name" class="form-control" placeholder="Name" required autofocus>
@@ -101,7 +111,7 @@
           <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required>
           
           <label for="password" class="sr-only">Password</label>
-          <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+          <input type="password" name="password" id="password" class="form-control" placeholder="Password" autocomplete="off" required minlength="5">
           
           <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
         </form>
@@ -115,6 +125,10 @@
     </div>
   </script>
 
+
+
+<!-- chatbox-header -->
+
   <script type="text/template" id="chatroom-header-template">  
     <img class="img-responsive chatbox-header-avatar" src="/img/fly-pig-serious-icon.png">
 	  <h3 class="chatbox-header-chatroom-name"><%= name %></h3>
@@ -123,6 +137,9 @@
     <% } %>
   </script>
 
+
+
+<!-- chatroom -->
 
 <script type="text/template" id="chatroom-template">  
   <div class="wrapper message-view">
@@ -254,6 +271,8 @@
 
 
 
+<!-- chatbox message -->
+
   <script type="text/template" id="chatbox-message-template">
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 chatbox-message-container">
@@ -274,6 +293,9 @@
   </script>
 
 
+
+<!-- online users -->
+
 <script type="text/template" id="online-users-list-template">
   <div class="row user-online">
     <div class="col-xs-3 col-sm-3 col-md-1 text-center">
@@ -286,6 +308,8 @@
 </script>
 
 
+
+<!-- offline users -->
 
 <script type="text/template" id="offline-users-list-template">
   <div class="row user-offline">
@@ -300,6 +324,7 @@
 
 
 
+<!-- user rooms -->
 
 <script type="text/template" id="room-list-template">
   <div class="room" data-room="<%= name %>">
@@ -317,15 +342,15 @@
 
 
   <script type="text/template" id="direct-message-template">
-    <div class="row direct-message">
-      <div class="col-xs-8 col-sm-8 col-md-8">
-        <p><strong class="direct-message-username"><%= sender.name %></strong></p>
-      </div>
-      <div class="col-xs-3 col-sm-3 col-md-3 text-center">
-        <label class="badge unread-messages">3</label>
-      </div>
-        <!-- <p class="preview-message"><%= content %></p> -->
-    </div>
+    // <div class="row direct-message">
+    //   <div class="col-xs-8 col-sm-8 col-md-8">
+    //     <p><strong class="direct-message-username"><%= sender.name %></strong></p>
+    //   </div>
+    //   <div class="col-xs-3 col-sm-3 col-md-3 text-center">
+    //     <label class="badge unread-messages">3</label>
+    //   </div>
+    //     <!-- <p class="preview-message"><%= content %></p> -->
+    // </div>
   </script>
 
   <script type="text/template" id="chatbox-template">

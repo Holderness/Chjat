@@ -1,0 +1,44 @@
+
+
+.register {
+  margin-top: 75px;
+  width: 290px;
+  background-color: #ddd;
+  padding-bottom: 30px;
+  border: 1px solid $marine;
+  border-radius: 40px;
+  .btn-primary {
+    border-color: #749CA8;
+    background-color: #749CA8;
+    background-image: none;
+    // background-image: linear-gradient(to bottom, white 0,#749CA8 100%);
+    border-radius: 4px;
+    &:hover, :active, :focus {
+      background-image: linear-gradient(to bottom, white 0,#749CA8 100%);
+      background-color: #749CA8;
+    }
+  }
+  h2 {
+    margin-bottom: 5px;
+  }
+}
+
+.form-register input, .form-register button {
+  margin-bottom: 15px;
+}
+
+.register-error-container {
+  height: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+  .username-taken {
+    font-size: 12px;
+    position: relative;
+    color: red;
+  }
+  .username-available {
+    font-size: 12px;
+    position: relative;
+    color: green;
+  }
+}

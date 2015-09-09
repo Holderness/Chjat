@@ -50,28 +50,50 @@ exports.renderRegister = function(req, res, next) {
 };
 
 exports.register = function(req, res, next) {
-  if (!req.user) {
-    var user = new User(req.body);
-    var message = null;
-    user.provider = 'local';
-    user.save(function(err) {
-      if (err) {
-        var message = getErrorMessage(err);
+  User.findOne({username: req.body.username },
+    function(err, user) {
+      if (user) {
+        var message = "User already exists";
         req.flash('error', message);
-        return res.redirect('/#reg');
-      } 
-
-      req.login(user, function(err) {
-        if (err) 
-          return next(err);
-        
         return res.redirect('/');
-      });
-    });
-  }
-  else {
-    return res.redirect('/');
-  }
+      } else if (!user) {
+        var newUser = new User(req.body);
+        newUser.provider = 'local';
+        newUser.save(function(err) {
+          if (err) {
+            var message = "something gone wrong";
+            req.flash('error', message);
+            return res.redirect('/');
+          }
+          req.login(newUser, function(err) {
+            if (err) {
+             return next(err);
+            }
+            return res.redirect('/');
+          });
+        });
+      } else {
+        return res.redirect('/');
+      }
+    }
+  );
+};
+
+exports.validateUsername = function(req, res, next) {
+  console.log('req.body: ', req.body);
+  User.findOne({username: req.body.username },
+    function(err, user) {
+       console.log(user);
+       if (user) {
+         return res.send({usernameAvailable: false});
+       } else if (!user) {
+
+         return res.send({usernameAvailable: true});
+       } else {
+        console.log(err);
+      }
+    }
+  );
 };
 
 exports.logout = function(req, res) {
