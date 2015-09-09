@@ -179,8 +179,8 @@ app.ChatroomView = Backbone.View.extend({
     console.log('crv.f.getMoreChats');
     var chatroom = this.model.get('chatroom'),
     name = chatroom.get('name'),
-    numberLoaded = chatroom.get('numberLoaded'),
-    chatlogLength = chatroom.get('chatlogLength');
+    numberLoaded = chatroom.get('numberLoaded');
+    var chatlogLength = chatroom.get('chatlogLength');
     this.vent.trigger('getMoreChats', { name: name, numberLoaded: numberLoaded, chatlogLength: chatlogLength});
     chatroom.set('numberLoaded', (numberLoaded - 1));
   },

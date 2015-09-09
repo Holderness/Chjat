@@ -287,15 +287,23 @@ var Server = function(options) {
   };
 
   self.getMoreChats = function(user, name, numberLoaded, chatlogLength) {
-    var items_per_load = 25,
-    skip = items_per_load * (numberLoaded - 1);
+    var items_per_load_requested = 25,
+    skip = items_per_load_requested * (numberLoaded - 1);
     skipPos = skip * -1;
+
+    var firstCheck = skipPos - chatlogLength > 0,
+    secondCheck = skipPos - chatlogLength <= items_per_load_requested,
+    items_per_load = (firstCheck && secondCheck) ? (items_per_load_requested - (skipPos - chatlogLength)) : items_per_load_requested;
+    console.log('firstCheck: ', firstCheck);
+    console.log('secondCheck: ', secondCheck);
+    console.log('items_per_load: ', items_per_load);
+
     console.log('name: ', name);
     console.log('skip: ', skip);
     console.log('numberloaded: ', numberLoaded);
-     if ( skipPos - chatlogLength > 0 && skipPos - chatlogLength <= items_per_load) {
-        items_per_load = skipPos - chatlogLength;
-     }
+     // if ( skipPos - chatlogLength > 0 && skipPos - chatlogLength <= items_per_load) {
+     //    items_per_load = skipPos - chatlogLength;
+     // }
     ChatroomModel.findOne({ name: name }, {'chatlog': { $slice: [skip, items_per_load] }}, function( err, chatroom ) {
       console.log('chatlogLength: ', chatlogLength);
       console.log('skipPos: ', skipPos);
