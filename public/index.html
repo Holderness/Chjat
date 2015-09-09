@@ -62,7 +62,7 @@
   <!-- login -->
 
   <script type="text/template" id="login">
-    <div class="container">
+    <div class="login container">
     <div class="form-group
             <% if (error)  {%>
             has-error
@@ -70,6 +70,7 @@
             ">
     <form class="form-login" >
           <h2 class="form-login-header text-center">Open, says me</h2>
+          <div class="login-error-container"></div>
         
           <label for="username" class="sr-only">Username</label>
           <input type="text" name="username" id="username" class="form-control" placeholder="Username" required autofocus>
