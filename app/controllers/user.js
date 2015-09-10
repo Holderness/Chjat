@@ -28,7 +28,7 @@ exports.renderLogin = function(req, res, next) {
   if (!req.user) {
     res.render('login', {
       title: 'Log-in Form',
-      messages: req.flash('error') || req.flash('info')
+      messages: req.x('error') || req.flash('info')
     });
   }
   else {
@@ -53,8 +53,8 @@ exports.register = function(req, res, next) {
   User.findOne({username: req.body.username },
     function(err, user) {
       if (user) {
-        var message = "User already exists";
-        req.flash('error', message);
+        // var message = "User already exists";
+        // req.flash('error', message);
         return res.redirect('/');
       } else if (!user) {
         var newUser = new User(req.body);

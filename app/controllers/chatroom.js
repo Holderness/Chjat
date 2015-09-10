@@ -71,7 +71,7 @@ exports.uploadChatImage = function (req, res, next) {
 exports.findAllChatrooms = function(req, res, next) {
   return ChatroomModel.find().exec(function(err, chatrooms) {
     if (!err) {
-            console.log('it"s a girl!');
+            console.log('findAllChatrooms!');
       return res.send( chatrooms );
     } else {
       return console.log( err );
@@ -98,7 +98,7 @@ exports.findBy = function(req, res, next) {
   // console.log( '-------------------------req: ', req);
   return ChatroomModel.find({ name: new RegExp(req.query.name, "i") }, function( err, chatrooms ) {
     if (!err) {
-      console.log('it"s a boy!');
+      console.log('findBy!');
       // console.log( chatrooms );
     var chatroomNames = [];
     for (i = 0; i < chatrooms.length; i++) {

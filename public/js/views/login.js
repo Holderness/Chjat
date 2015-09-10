@@ -4,6 +4,7 @@ var app = app || {};
 
   app.LoginView = Backbone.View.extend({
     template: _.template($('#login').html()),
+    errorTemplate: _.template('<div class="login-error"><%= message %></div>'),
     events: {
       'submit': 'onLogin',
       'keypress': 'onHitEnter'
@@ -24,22 +25,36 @@ var app = app || {};
     onLogin: function(e) {
       // triggers the login event and passing the username data to js/main.js
       var this_ = this;
+      e.preventDefault();
     $.ajax({
         url: "/login",
         method: 'POST',
         data: {username: this.$('#username').val(), password: this.$('#password').val()},
         success: function(data) {
            console.log('success data: ', data);
-           if (data === 200) {
-             // this_.vent.trigger('authenticated');
+           if (data.message) {
+             this_.renderValidation(this_.errorTemplate(data));
+           }
+           else if (data === 200) {
             app.ChatroomRouter.navigate('authenticated', { trigger: true });
             this_.vent.trigger("login", {username: this_.$('#username').val(), password: this_.$('#password').val()});
            }
+           else {
+            console.log(data);
+          }
         }
       }).done(function() {
         console.log('doneeeeeeee');
       });
     },
+    renderValidation: function(what) {
+      $('.login-error-container').empty();
+      $(what).appendTo($('.login-error-container')).hide().fadeIn();
+      setTimeout(function() {
+        $('.login-error-container').children().first().fadeOut();
+      }, 2000);
+
+    }
     // onHitEnter: function(e) {
     //   if(e.keyCode == 13) {
     //     this.onLogin();

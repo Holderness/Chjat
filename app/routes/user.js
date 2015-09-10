@@ -17,9 +17,10 @@ module.exports = function(app) {
     
 
   app.post('/login', function(req, res, next){
-    passport.authenticate('local', function(err, user) {
-      // console.log('req.socket--> ', req.socket);
-      if (user === false) { return res.redirect('/'); }
+    passport.authenticate('local', function(err, user, fail) {
+      console.log('user--> ', user);
+      console.log('fail--> ', fail);
+      if (fail) { return res.send(fail); }
       return res.json(200);
     })(req, res, next);
   });
