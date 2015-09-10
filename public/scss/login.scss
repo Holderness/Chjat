@@ -9,6 +9,8 @@
   .form-login {
     .login-error-container {
       height: 20px;
+      color: $pink-oink;
+      text-shadow: .5px .5px 0px black;
       margin-bottom: 10px;
       text-align: center;
     }

@@ -34,11 +34,13 @@
   .username-taken {
     font-size: 12px;
     position: relative;
-    color: red;
+    color: $pink-oink;
+    text-shadow: .5px .5px 0px black;
   }
   .username-available {
     font-size: 12px;
     position: relative;
     color: green;
+    text-shadow: .5px .5px 0px black;
   }
 }
