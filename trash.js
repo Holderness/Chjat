@@ -330,4 +330,45 @@ _whenScrolling = function() {
       return false;
     },
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    user.socket.on('createRoom', function(formData) {
+      console.log('createRoom formData: ', formData);
+      console.log('createRoom user: ', user.username);
+      ChatroomModel.findOne({ name: formData.name }, function(err, chatroom) {
+        if (!chatroom) {
+          var newChatroom = new ChatroomModel({name: formData.name, owner: user.username});
+          newChatroom.save(function(err) {
+            if (!err) {
+              ChatroomModel.update({name: formData.name}, {$push: {'participants.username': user.username }}, function(err, raw) {
+                if (!err) {
+                  console.log('userchatrooms', raw);
+                  self.getChatrooms(user, user.socket);
+                } else {
+                  return console.log( err );
+                }
+              });
+            } else {
+              console.log(err);
+            }
+          });
+        } else {
+          user.socket.emit('chatroomAlreadyExists');
+        }
+      });
+
+
+    });
   

@@ -141,39 +141,51 @@ var ChatClient = function(options) {
   // these guys listen to the chatserver/socket and emit data to main.js,
   // specifically to the appEventBus.
 	self.setResponseListeners = function(socket) {
-		socket.on('welcome', function(data) {
-      // emits event to recalibrate onlineUsers collection
-      // socket.emit("getOnlineUsers");
-      // socket.emit("rooms");
-      // data is undefined at this point because it's the first to
-      // fire off an event chain that will append the new user to 
-      // the onlineUser collection
-      self.vent.trigger("loginDone", data);
-    });
+		// socket.on('welcome', function(data) {
+  //     // emits event to recalibrate onlineUsers collection
+  //     // socket.emit("getOnlineUsers");
+  //     // socket.emit("rooms");
+  //     // data is undefined at this point because it's the first to
+  //     // fire off an event chain that will append the new user to 
+  //     // the onlineUser collection
+  //     debugger;
+  //     self.vent.trigger("loginDone", data);
+  //   });
+
+
+// login
 
     socket.on('login', function(username) {
       self.vent.trigger('loginUser', username);
     });
 
 
-    socket.on('log', function() {
-      console.log('sc.e.log');
-      self.vent.trigger('authenticated');
-    });
+  //   socket.on('log', function() {
+  //     debugger;
+  //     console.log('sc.e.log');
+  //     self.vent.trigger('authenticated');
+  //   });
 
-		socket.on('usersInfo', function(users) {
-			console.log('sc.e.usersInfo: ', users);
-			self.vent.trigger("usersInfo", users);
-		});
+		// socket.on('usersInfo', function(users) {
+  //     debugger;
+		// 	console.log('sc.e.usersInfo: ', users);
+		// 	self.vent.trigger("usersInfo", users);
+		// });
 
-    socket.on('rooms', function(chatrooms) {
-debugger;
-      console.log('sc.e.rooms: ', chatrooms);
-      self.vent.trigger("roomInfo", chatrooms);
-    });
+//     socket.on('rooms', function(chatrooms) {
+// debugger;
+//       console.log('sc.e.rooms: ', chatrooms);
+//       self.vent.trigger("roomInfo", chatrooms);
+//     });
+
+    // socket.on('setRoom', function(name) {
+    //   debugger;
+    //   console.log('sc.e.setRoom: ', name);
+    //   self.vent.trigger("setRoom", name);
+    // });
 
 
-
+// chat
 		socket.on('userJoined', function(username) {
 			console.log('sc.e.userJoined: ', username);
       // socket.emit("onlineUsers");
@@ -184,25 +196,33 @@ debugger;
       // socket.emit("onlineUsers");
 			self.vent.trigger("userLeft", username);
 		});
-
-
-
 		socket.on('chat', function(chat) {
 			console.log('sc.e.chat: ', chat);
 			self.vent.trigger("chatReceived", chat);
 		});
-    socket.on('setRoom', function(name) {
-      console.log('sc.e.setRoom: ', name);
-      self.vent.trigger("setRoom", name);
+    socket.on('moreChats', function(chats) {
+      self.vent.trigger("moreChats", chats);
     });
+    socket.on('noMoreChats', function() {
+      self.vent.trigger("noMoreChats");
+    });
+
+
+// chatroom
+
+    socket.on('typing', function(data) {
+      self.addChatTyping(data);
+    });
+    socket.on('stop typing', function() {
+      self.removeChatTyping();
+    });
+
+
+// set chatroom
     socket.on('chatlog', function(chatlog) {
       console.log('sc.e.chatlog: ', chatlog);
       self.vent.trigger("setChatlog", chatlog);
     });
-    // socket.on('ChatroomModel', function(model) {
-    //   // self.vent.trigger("ChatroomModel", model);
-    //   self.vent.trigger("setRoom", model);
-    // });
     socket.on('chatrooms', function(chatrooms) {
       console.log('sc.e.chatrooms:  ', chatrooms);
       self.vent.trigger("setChatrooms", chatrooms);
@@ -219,24 +239,17 @@ debugger;
       console.log('sc.e.chatroomHeader: ', headerObj);
       self.vent.trigger("setChatroomHeader", headerObj);
     });
+
+
+// modify room
     socket.on('roomDestroyed', function(name) {
       console.log('sc.e.roomDestroyed: ', name);
       self.vent.trigger("roomDestroyed", name);
     });
-    socket.on('moreChats', function(chats) {
-      self.vent.trigger("moreChats", chats);
-    });
-    socket.on('noMoreChats', function() {
-      self.vent.trigger("noMoreChats");
-    });
 
-
-
-    socket.on('typing', function(data) {
-      self.addChatTyping(data);
-    });
-    socket.on('stop typing', function() {
-      self.removeChatTyping();
+// errors
+    socket.on('chatroomAlreadyExists', function() {
+      self.vent.trigger("chatroomAlreadyExists");
     });
 
 

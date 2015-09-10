@@ -27,11 +27,11 @@ var app = app || {};
       if (callback) {
         callback();
       } 
-      // else {
-      //   $.ajax({
-      //     url: "/logout",
-      //   });
-      // }
+      else {
+        $.ajax({
+          url: "/logout",
+        });
+      }
     },
 
 

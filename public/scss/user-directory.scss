@@ -2,8 +2,8 @@
 .user-directory {
   background: $white;
   height: 600px;
-  overflow-y: scroll;
-  overflow-x: scroll;
+  overflow-y: auto;
+  overflow-x: auto;
   border-left: 2px solid $border;
   border-bottom: 2px solid $border;
   .offline-users {}

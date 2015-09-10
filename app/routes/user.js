@@ -15,16 +15,8 @@ module.exports = function(app) {
   app.route('/registerValidation')
     .post(users.validateUsername);
     
-
-  app.post('/login', function(req, res, next){
-    passport.authenticate('local', function(err, user, fail) {
-      console.log('user--> ', user);
-      console.log('fail--> ', fail);
-      if (fail) { return res.send(fail); }
-      return res.json(200);
-    })(req, res, next);
-  });
-
+  app.route('/login')
+    .post(users.login);
 
   app.get('/logout', users.logout);
   

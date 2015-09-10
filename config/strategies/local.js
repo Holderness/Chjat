@@ -17,7 +17,7 @@ module.exports = function() {
           if (err) { return done(err); }
 
           // Password did not match
-          if (!isMatch) { return done(null, false, {message: 'Invalid Password'}); }
+          if (!isMatch) { return done(null, false, {message: 'Invalid Username or Password'}); }
 
           // Success
           return done(null, user);

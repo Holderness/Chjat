@@ -37,6 +37,15 @@ exports.renderLogin = function(req, res, next) {
   }
 };
 
+exports.login = function(req, res, next) {
+    passport.authenticate('local', function(err, user, fail) {
+      console.log('user--> ', user);
+      console.log('fail--> ', fail);
+      if (fail) { return res.send(fail); }
+      return res.json(200);
+    })(req, res, next);
+  };
+
 exports.renderRegister = function(req, res, next) {
   if (!req.user) {
     res.render('register', {

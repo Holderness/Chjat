@@ -265,5 +265,12 @@ app.MainController = function() {
   });
 
 
+// errors
+
+
+  self.appEventBus.on("chatroomAlreadyExists", function() {
+    
+  });
+
 };
 
