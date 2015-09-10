@@ -268,9 +268,11 @@ app.ChatroomView = Backbone.View.extend({
   },
 
   destroyRoom: function(e) {
-    confirm("As the owner of this room, you may destroy the room. Do you wish to destroy the room?");
+    var confirmation = confirm("As the owner of this room, you may destroy the room. Do you wish to destroy the room?");
     e.preventDefault();
-    this.vent.trigger('destroyRoom', this.model.get('chatroom').get('name'));
+    if (confirmation) {
+      this.vent.trigger('destroyRoom', this.model.get('chatroom').get('name'));
+    }
   },
 
   addChatroom: function(name) {
@@ -279,9 +281,11 @@ app.ChatroomView = Backbone.View.extend({
   },
 
   removeRoom: function(e) {
-    confirm('Are you sure you want to remove this chatroom?');
-    var name = $(e.target).data("room-name");
-    this.vent.trigger('removeRoom', name);
+    var confirmation = confirm('Are you sure you want to remove this chatroom?');
+    if (confirmation) {
+      var name = $(e.target).data("room-name");
+      this.vent.trigger('removeRoom', name);
+    }
   },
 
   renderRooms: function() {
