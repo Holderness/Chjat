@@ -148,21 +148,21 @@
 
           <div class="slideout">
           <div class="col-md-2 col-sm-2 col-xs-2 pull-left slideout-inner chat-directory">
-              <div class="create-room-container">
-                <button 
-                      id="create-chatroom"
-                      data-toggle="modal"
-                      data-target="#createChatroomModal"
-                      class="btn btn-primary create-chatroom col-md-12 col-sm-12 col-xs-12">Create Room
-               </button>
-              </div>
               <div class="chat-search-container">
                 <form>
-                  <input type="text" placeholder="Search" id="chat-search-input" class="form-control chat-search-input" autocomplete="off">
+                  <div class="fa fa-search chatroom-search"></div>
+                  <input type="text" id="chat-search-input" class="form-control chat-search-input" autocomplete="off">
                 </form>
               </div>
               <div class="public-rooms-container">
-                <div class="public-rooms-header">Rooms</div>
+                <div class="public-rooms-header">Rooms
+                  <div
+                      id="create-chatroom"
+                      data-toggle="modal"
+                      data-target="#createChatroomModal"
+                      class="fa fa-plus-square">
+                  </div>
+                </div>
                 <div class="public-rooms"></div>
               </div>
               <div class="owned-rooms-container">
