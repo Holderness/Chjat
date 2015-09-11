@@ -185,6 +185,8 @@ var Server = function(options) {
           newChatroom.save(function(err) {
             if (!err) {
               self.addUserToRoom(user, formData.name);
+              self.leaveRoom(user);
+              self.addToRoom(user, formData.name);
             } else {
               console.log(err);
             }
