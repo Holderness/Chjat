@@ -17,7 +17,37 @@ app.ChatroomView = Backbone.View.extend({
     'click .remove-chatroom': 'removeRoom',
     'click #createChatroomBtn': 'createRoom',
     'click #destroy-chatroom': 'destroyRoom',
+    'keyup #chatroom-name-input': 'doesChatroomExist',
   },
+
+  doesChatroomExist: function(e) {
+    e.preventDefault();
+    var this_ = this;
+    var check = function() {
+      if ($.trim($('#chatroom-name-input').val()).length > 0) {
+        var chatroomName = $('#chatroom-name-input').val();
+         this_.vent.trigger('doesChatroomExist', chatroomName);
+      } else {
+         this_.$('#chatroom-name-validation-container').children().remove();
+         this_.$('#chatroom-name-input').removeClass('input-valid input-invalid');
+      }
+    };
+    _.debounce(check(), 150);
+  },
+
+  renderChatroomAvailability: function(availability) {
+    this.$('#chatroom-name-input').removeClass('input-valid input-invalid');
+    $('#chatroom-name-validation-container').children().remove();
+    if (availability === true) {
+      this.$('#chatroom-name-input').addClass('input-valid');
+      this.$('#chatroom-name-validation-container').append('<div id="#chatroom-name-validation" class="fa fa-check">Name Available</div>');
+    } else {
+      this.$('#chatroom-name-input').addClass('input-invalid fa fa-times');
+      this.$('#chatroom-name-validation-container').append('<div id="#chatroom-name-validation" class="fa fa-times">Name Unavailable</div>');
+    }
+  },
+
+
 
   initialize: function(options) {
     console.log('chatroomView.f.initialize: ', options);
@@ -67,6 +97,8 @@ app.ChatroomView = Backbone.View.extend({
     this.listenTo(this.chatImageUploadView, 'image-uploaded', this.uploadImage);
 
     this.listenTo(this.model, "moreChats", this.renderMoreChats, this);
+
+    this.listenTo(this.model, "chatroomAvailability", this.renderChatroomAvailability, this);
 
     var this_ = this;
     this.$('#chatbox-content').scroll(function(){
@@ -262,6 +294,7 @@ app.ChatroomView = Backbone.View.extend({
     this.$('#createChatroomForm').children( 'input' ).each(function(i, el) {
       if ($(el).val() !== '') {
         formData[$(el).data('create')] = $(el).val();
+        $(el).val('');
       }
     });
     this.vent.trigger('createRoom', formData);

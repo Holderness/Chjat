@@ -132,6 +132,10 @@ var ChatClient = function(options) {
       }
     });
   };
+
+  self.doesChatroomExist = function(chatroomQuery) {
+    self.socket.emit('doesChatroomExist', chatroomQuery);
+  };
   
 
 
@@ -245,6 +249,11 @@ var ChatClient = function(options) {
     socket.on('roomDestroyed', function(name) {
       console.log('sc.e.roomDestroyed: ', name);
       self.vent.trigger("roomDestroyed", name);
+    });
+
+// create room
+    socket.on('chatroomAvailability', function(availabilty) {
+      self.vent.trigger('chatroomAvailability', availabilty);
     });
 
 // errors

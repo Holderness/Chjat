@@ -23,6 +23,9 @@ $power-button: $pink-oink;
 $chatbox-message-name: black;
 $online-user: $pink-oink;
 
+$validation-red: #F05432;
+$validation-green: #4EA34E;
+
 // moonrise pallete
  // $blue: #8CBEA3;
  // $light-blue: #DDE8E0;
@@ -90,8 +93,22 @@ a {
 //   }
 // }
 
+
+
 textarea:focus, input:focus, .btn:focus {   
     border-color: $pink-oink !important;
     box-shadow: 0 1px 1px $pink-oink inset, 0 0 8px $pink-oink !important;
+    outline: 0 none !important;
+}
+
+input.input-valid {
+    border-color: $validation-green !important;
+    box-shadow: 0 1px 1px $validation-green inset, 0 0 8px $validation-green !important;
+    outline: 0 none !important;
+}
+
+input.input-invalid {
+    border-color: $validation-red !important;
+    box-shadow: 0 1px 1px $validation-red inset, 0 0 8px $validation-red !important;
     outline: 0 none !important;
 }

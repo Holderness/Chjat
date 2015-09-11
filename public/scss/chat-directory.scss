@@ -76,6 +76,22 @@
   }
 }
 
+#createChatroomModal {
+  @extend input.input-invalid;
+  @extend input.input-valid;
+  #chatroom-name-validation-container {
+    display: inline-block;
+    padding-left: 20px;
+    font-size: 12px;
+    .fa-check {
+      color: $validation-green;
+    }
+    .fa-times {
+      color: $validation-red;
+    }
+  }
+}
+
 // label.badge.unread-messages {
 //   margin-top: 5px;
 //   background: #B976DA;

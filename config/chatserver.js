@@ -179,9 +179,23 @@ var Server = function(options) {
       self.getMoreChats(user, chatReq.name, chatReq.numberLoaded, chatReq.chatlogLength);
     });
 
+    user.socket.on('doesChatroomExist', function(chatroomQuery) {
+      self.doesChatroomExist(user, chatroomQuery);
+    });
+
+
   };  // end setChatListeners
 
-
+    self.doesChatroomExist = function(user, chatroomQuery) {
+      console.log('chatroomQuery: ', chatroomQuery);
+      ChatroomModel.findOne({ name: chatroomQuery }, function(err, chatroom) {
+        if (!chatroom) {
+          user.socket.emit('chatroomAvailability', true);
+        } else {
+          user.socket.emit('chatroomAvailability', false);
+        }
+      });
+    };
 
 // controller
 

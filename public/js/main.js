@@ -98,6 +98,9 @@ app.MainController = function() {
   self.viewEventBus.on("getMoreChats", function(chatReq) {
     self.chatClient.getMoreChats(chatReq);
   });
+  self.viewEventBus.on("doesChatroomExist", function(chatroomQuery) {
+    self.chatClient.doesChatroomExist(chatroomQuery);
+  });
 
 
 
@@ -265,11 +268,18 @@ app.MainController = function() {
   });
 
 
+// chatroom availability
+
+  self.appEventBus.on("chatroomAvailability", function(availability) {
+    self.chatroomModel.trigger('chatroomAvailability', availability);
+  });
+
+
 // errors
 
 
   self.appEventBus.on("chatroomAlreadyExists", function() {
-    
+    alert("Chatroom Already Exists!");
   });
 
 };
