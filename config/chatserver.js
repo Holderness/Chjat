@@ -27,7 +27,7 @@ var Server = function(options) {
 
       self.socket = socket;
       // console.log('SOCKET:            ', socket);
-      socket.chat = { room: 'DOO' };
+      socket.chat = { room: 'Parlor' };
 
       socket.on("login", function(userdata) {
         console.log('e.login');
@@ -74,6 +74,10 @@ var Server = function(options) {
 
   self.setResponseListeners = function(user) {
 
+        // user.socket.on('wut', function() {
+    //   user.socket.disconnect();
+    // });
+
     user.socket.on('disconnect', function() {
       self.io.sockets.emit("userLeft", user.username);
       self.leaveRoom(user);
@@ -91,23 +95,16 @@ var Server = function(options) {
       console.log('he gone.');
     });
 
-    // user.socket.on('wut', function() {
-    //   user.socket.disconnect();
-    // });
-
     user.socket.on("connectToRoom", function(name) {
       console.log('e.connectToRoom');
       console.log('user.socket.id: ', user.socket.id);
       self.addToRoom(user, name);
-      // user.socket.emit("welcome");
     });
 
     user.socket.on("chat", function(chat) {
       console.log('e.chat');
       console.log("USER: ", user);
       console.log('CHAT: ', chat);
-      // console.log('user.socket.CHAT.ROOM ', user.socket.chat.room);
-      // console.log('self.io.sockets.adapter.rooms: ', self.io.sockets.adapter.rooms);
       var timestamp = _.now();
       if (chat) {
         ChatroomModel.findOne({ name: user.socket.chat.room }, function(err, chatroom) {
@@ -145,10 +142,8 @@ var Server = function(options) {
 
     user.socket.on('joinRoom', function(roomName) {
       console.log('e.joinRoom');
-      console.log('>>>>>>>>>>>>>>>>>>>user<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
       console.log("USER: ", user.username);
-      console.log('>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<');
-      console.log('JOIN ROOM: ', roomName);
+      console.log('ROOMNAME: ', roomName);
       user.socket.leave(user.socket.chat.room);
       self.leaveRoom(user);
       self.addToRoom(user, roomName);
@@ -164,21 +159,33 @@ var Server = function(options) {
     user.socket.on('removeRoom', function(name) {
       console.log('removeRoom name: ', name);
       console.log('removeRoom user: ', user.username);
-      ChatroomModel.update({name: name}, { $pull: { 'participants': {'username': user.username }}}, function(err, raw) {
-            if (!err) {
-              console.log('userchatrooms', raw);
-              self.getChatrooms(user, user.socket);
-            } else {
-              return console.log( err );
-            }
-      });
+      self.removeUserFromRoom(user, name);
     });
-
 
 
     user.socket.on('createRoom', function(formData) {
       console.log('createRoom formData: ', formData);
       console.log('createRoom user: ', user.username);
+      self.createRoom(user, formData);
+    });
+
+    user.socket.on('destroyRoom', function(name) {
+      console.log('destroyRoom name: ', name);
+      console.log('destroyRoom user: ', user.username);
+      self.destroyRoom(user, name);
+    });
+
+    user.socket.on('getMoreChats', function(chatReq) {
+      self.getMoreChats(user, chatReq.name, chatReq.numberLoaded, chatReq.chatlogLength);
+    });
+
+  };  // end setChatListeners
+
+
+
+// controller
+
+   self.createRoom = function(user, formData) {
       ChatroomModel.findOne({ name: formData.name }, function(err, chatroom) {
         if (!chatroom) {
           var newChatroom = new ChatroomModel({name: formData.name, owner: user.username});
@@ -195,34 +202,32 @@ var Server = function(options) {
           user.socket.emit('chatroomAlreadyExists');
         }
       });
+   };
 
 
-    });
+    self.destroyRoom = function(user, chatroomName) {
+      ChatroomModel.remove({name: chatroomName}, function(err) {
+        if (!err) {
+          user.socket.emit('roomDestroyed', chatroomName);
+        } else {
+          return console.log( err );
+        }
+      });
+    };
 
-    user.socket.on('destroyRoom', function(name) {
-      console.log('destroyRoom name: ', name);
-      console.log('destroyRoom user: ', user.username);
-      ChatroomModel.remove({name: name}, function(err) {
+    self.addUserToRoom = function(user, chatroomName) {
+      ChatroomModel.update({name: chatroomName}, { $push: {'participants': {'username': user.username} }}, function(err, raw) {
             if (!err) {
-              user.socket.emit('roomDestroyed', name);
+              console.log('userchatrooms', raw);
+              self.getChatrooms(user, user.socket);
             } else {
               return console.log( err );
             }
       });
-    });
+    };
 
-    user.socket.on('getMoreChats', function(chatReq) {
-      self.getMoreChats(user, chatReq.name, chatReq.numberLoaded, chatReq.chatlogLength);
-    });
-
-  };  // end setChatListeners
-
-
-
-// controller
-
-    self.addUserToRoom = function(user, chatroomName) {
-      ChatroomModel.update({name: chatroomName}, { $push: {'participants': {'username': user.username} }}, function(err, raw) {
+    self.removeUserFromRoom = function(user, chatroomName) {
+      ChatroomModel.update({name: chatroomName}, { $pull: { 'participants': {'username': user.username }}}, function(err, raw) {
             if (!err) {
               console.log('userchatrooms', raw);
               self.getChatrooms(user, user.socket);
