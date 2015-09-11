@@ -4,6 +4,7 @@
   height: 600px;
   overflow-y: auto;
   overflow-x: auto;
+  min-width: 165px;
   border-left: 2px solid $border;
   border-bottom: 2px solid $border;
   .offline-users {}
@@ -34,13 +35,37 @@
   }
 }
 
-
-
-
-@media (max-width: 1050px) {
-  .user-directory {
-    display: none;
+@media (max-width: 900px) {
+  .slideout-right {
+    position: fixed;
+    right: 0px;
+    z-index: 101;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
   }
+  .slideout-right-inner {
+    position: fixed;
+    right: -200px;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+  }
+  .slideout-right:hover {
+    right: 0px;
+  }
+  .slideout-right:hover .slideout-right-inner {
+    right: 0px;
+  }     
 }
+
+
+// @media (max-width: 1050px) {
+//   .user-directory {
+//     display: none;
+//   }
+// }
 
 

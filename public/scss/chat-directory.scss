@@ -6,6 +6,7 @@
   overflow-y: auto;
   overflow-x: auto;
   height: 600px;
+  min-width: 165px;
   background: $white;
   border-right: 2px solid $border;
   border-bottom: 2px solid $border;
@@ -91,6 +92,50 @@
     }
   }
 }
+
+
+@media (max-width: 900px) {
+  .slideout {
+    position: fixed;
+    left: 0px;
+    z-index: 101;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+  }
+  .slideout-inner {
+    position: fixed;
+    left: -150px;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+  }
+  .slideout:hover {
+    left: 0px;
+  }
+  .slideout:hover .slideout-inner {
+    left: 0px;
+  }     
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // label.badge.unread-messages {
 //   margin-top: 5px;

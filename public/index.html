@@ -145,41 +145,44 @@
     <section id="page-content" class="clearfix">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-2 col-sm-2 col-xs-2 pull-left chat-directory">
-            <div class="create-room-container">
-              <button 
+            <div class="slideout">
+          <div class="col-md-2 col-sm-2 col-xs-2 pull-left slideout-inner chat-directory">
+              <div class="create-room-container">
+                <button 
                       id="create-chatroom"
                       data-toggle="modal"
                       data-target="#createChatroomModal"
                       class="btn btn-primary create-chatroom col-md-12 col-sm-12 col-xs-12">Create Room
-              </button>
-            </div>
-            <div class="chat-search-container">
-              <form>
-                <input type="text" placeholder="Search" id="chat-search-input" class="form-control chat-search-input" autocomplete="off">
-              </form>
-            </div>
-            <div class="public-rooms-container">
-              <div class="public-rooms-header">Rooms</div>
-              <div class="public-rooms"></div>
-            </div>
-            <div class="owned-rooms-container">
-              <div class="owned-rooms"></div>
-            </div>
-            <div class="direct-messages-container"><!-- direct messages --></div>
-            <div class="private-rooms-container"></div>
+               </button>
+              </div>
+              <div class="chat-search-container">
+                <form>
+                  <input type="text" placeholder="Search" id="chat-search-input" class="form-control chat-search-input" autocomplete="off">
+                </form>
+              </div>
+              <div class="public-rooms-container">
+                <div class="public-rooms-header">Rooms</div>
+                <div class="public-rooms"></div>
+              </div>
+              <div class="owned-rooms-container">
+                <div class="owned-rooms"></div>
+              </div>
+              <div class="direct-messages-container"><!-- direct messages --></div>
+              <div class="private-rooms-container"></div>
           </div> <!--chat-directory -->
+            </div> <!-- slideout -->
 
-          <div class="col-md-2 text-center pull-right user-directory">
+          <div class="slideout-right">
+          <div class="col-md-2 text-center pull-right slideout-right-inner user-directory">
             <div class="users-header">Users</div>
             <div class="online-users"></div>
             <div class="users-header">Offline</div>
             <div class="offline-users"></div>
           </div> <!--user-directory -->
+          </div>
 
 
           <div class="col-md-8 col-sm-8 col-xs-8 chatbox">
-            <div class="row">
               <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 chatbox-header" id='chatbox-header'>
               </div>
 <!--<div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 date-divider-container"></div> -->
@@ -203,7 +206,6 @@
                     <textarea id="message-input" class="message-input" placeholder="" rows="1"></textarea>
                   </form>
               </div>
-            </div>
           </div> <!-- chatbox -->
 
 
