@@ -23,6 +23,15 @@
     overflow-y: scroll;
     overflow-x: hidden;
   }
+  @media (max-width: 1000px) {
+    .col-sm-10 {
+      width: 100%;
+    }
+    .fixed {
+      left: 75px;
+      width: 608px;
+    }
+  }
   .typetypetype {
     font-size: 10px;
     font-style: italic;
@@ -159,8 +168,8 @@
     }
     @media #{$breakpoint-chatbox} {
       // margin-left: -7px;
-      width: 52%;
-      left: 24.6%;
+      width: 51.5%;
+      left: 24.111111%;
     }
     // @media #{$breakpoint-chatbox2} {
     //   top: 158px;
