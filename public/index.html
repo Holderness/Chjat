@@ -161,7 +161,11 @@
                       data-toggle="modal"
                       data-target="#createChatroomModal"
                       class="fa fa-plus-square">
+                                        <div class="create-chatroom-info-container">
+                    <div class="create-chatroom-info">Create<span></span></div>
                   </div>
+                  </div>
+
                 </div>
                 <div class="public-rooms"></div>
               </div>
@@ -331,7 +335,7 @@
     <!-- <div class="col-xs-3 col-sm-3 col-md-1 text-center">
        <span><i class="fa fa-circle"></i></span>
       </div> -->
-    <div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 room-name-container">
       <p class="room-name" data-room="<%= name %>" ><%= name %>
       <button data-room-name="<%= name %>" class="pull-right remove-chatroom fa fa-times"></button></p>
     </div>

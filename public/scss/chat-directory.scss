@@ -52,21 +52,66 @@
     #create-chatroom {
       margin-left: 7px;
       cursor: pointer;
+      .create-chatroom-info-container {
+        width: 0;
+        height: 0;
+        position: relative;
+        display: inline-block;
+        .create-chatroom-info {
+          display: none;
+        }
+      }
+      &:hover {
+        .create-chatroom-info-container {
+          .create-chatroom-info {
+            position: absolute;
+            display: block;
+            background-color: $marine;
+            color: white;
+            width: 60px;
+            height: 25px;
+            line-height: 23.5px;
+            font-size: 11px;
+            font-family: "Helvetica Neue", Helvetica, Arial, serif;
+            font-weight: bold;
+            border-radius: 100px;
+            margin: -46px 0px 0px -54px;
+            span {
+              border-top: 10px solid $marine;
+              border-left: 10px solid transparent;
+              border-right: 10px solid transparent;
+              position: absolute;
+              margin: 20px 0px 0px -10px;
+            }
+          }
+        }
+      }
     }
   }
   .room {
     text-align: left;
     cursor: pointer;
-    .room-name {
-      margin: 0 0 5px;
-      font-weight: bold;
-      color: #ccc;
-
-    }
-    .remove-chatroom {
-      border: none;
-      background-color: transparent;
-      color: #eee;
+    .room-name-container {
+        &:hover {
+          background-color: $marine;
+          .room-name {
+            color: $pink-oink;
+          }
+          .remove-chatroom {
+            color: $pink-oink;
+          }
+        }
+      .room-name {
+        margin: 0px;
+        font-weight: bold;
+        color: #ccc;
+        padding: 2px 0px;
+      }
+      .remove-chatroom {
+        border: none;
+        background-color: transparent;
+        color: #eee;
+      }
     }
   }
 }
