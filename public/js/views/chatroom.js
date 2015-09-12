@@ -301,11 +301,26 @@ app.ChatroomView = Backbone.View.extend({
   },
 
   destroyRoom: function(e) {
-    var confirmation = confirm("As the owner of this room, you may destroy the room. Do you wish to destroy the room?");
     e.preventDefault();
-    if (confirmation) {
-      this.vent.trigger('destroyRoom', this.model.get('chatroom').get('name'));
-    }
+    var this_ = this;
+    var confirmation = swal({
+      title: "Do you wish to destroy the room?",
+      text: "This kills the room.",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DEB0B0",
+      confirmButtonText: "Muahaha!",
+      closeOnConfirm: false,
+      html: false
+    }, function(){
+      swal({
+        title: "Eviscerated!",
+        text: "Your chatroom has been purged.",
+        type: "success",
+        confirmButtonColor: "#749CA8",
+      });
+      this_.vent.trigger('destroyRoom', this_.model.get('chatroom').get('name'));
+    });
   },
 
   addChatroom: function(name) {
@@ -314,11 +329,26 @@ app.ChatroomView = Backbone.View.extend({
   },
 
   removeRoom: function(e) {
-    var confirmation = confirm('Are you sure you want to remove this chatroom?');
-    if (confirmation) {
+    var this_ = this;
+    var confirmation = swal({
+      title: "Remove This Room?",
+      text: "Are you sure? Are you sure you're sure? How sure can you be?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DEB0B0",
+      confirmButtonText: "Muahaha!",
+      closeOnConfirm: false,
+      html: false
+    }, function(){
+      swal({
+        title: "Removed!",
+        text: "You are free of this chatroom. Go on, you're free now.",
+        type: "success",
+        confirmButtonColor: "#749CA8"
+      });
       var name = $(e.target).data("room-name");
-      this.vent.trigger('removeRoom', name);
-    }
+      this_.vent.trigger('removeRoom', name);
+    });
   },
 
   renderRooms: function() {

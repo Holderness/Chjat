@@ -13,6 +13,7 @@ module.exports = {
       'public/js/lib/wow.js',
       'public/js/lib/progressbar.js',
       'public/js/lib/bootstrap-typeahead.js',
+      'node_modules/sweetalert/dist/sweetalert.min.js',
     ],
     src: [
       'https://cdn.socket.io/socket.io-1.2.0.js',
@@ -38,6 +39,7 @@ module.exports = {
       'public/css/lib/animate.css',
       'public/css/lib/font-awesome.css',
       'public/css/chat.style.css',
+      'node_modules/sweetalert/dist/sweetalert.css',
       'http://fonts.googleapis.com/css?family=Source+Sans+Pro'
     ],
     dest: dest,

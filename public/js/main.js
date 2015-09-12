@@ -201,7 +201,7 @@ app.MainController = function() {
   self.appEventBus.on("roomDestroyed", function(name) {
     self.connectToRoom();
     // self.initRoom();
-    alert('Chatroom ' + name + ' destroyed');
+    // alert('Chatroom ' + name + ' destroyed');
   });
 
   self.appEventBus.on("setChatroomHeader", function(headerObj) {
@@ -279,7 +279,12 @@ app.MainController = function() {
 
 
   self.appEventBus.on("chatroomAlreadyExists", function() {
-    alert("Chatroom Already Exists!");
+    swal({
+      title: "OH NO OH NO OH NO",
+      text: "Chatroom Already, It Already Exists! And. Don't Go In There. Don't. You. You Should Have. I Threw Up On The Server. Those Poor . . . They Were Just! OH NO WHY. WHY OH NO. OH NO.",
+      type: "error",
+      confirmButtonColor: "#749CA8"
+    });
   });
 
 };
