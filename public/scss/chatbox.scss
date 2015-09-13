@@ -1,14 +1,15 @@
 
 .chatbox {
   background: $main-bkgd;
-  padding-top: 10px;
+  padding-top: 15px;
   padding-bottom: 3.33333333%;
-  margin-bottom: 0px;
+  margin: 0 215px 0 215px;
+  min-width: 185px;
   .chatbox-header {
     background: $white;
     position: relative;
     color: $dark-gray-text;
-    padding-top: 10px;
+    padding: 10px 15px 1px 15px;
     border-bottom: 2px solid $main-bkgd;
     // height: 62px;
   }
@@ -18,15 +19,13 @@
   // }
   .chatbox-content {
     background: $white;
-    height: 440px;
+    height: 450px;
     bottom: 0;
     overflow-y: scroll;
     overflow-x: hidden;
   }
   @media (max-width: 1000px) {
-    .col-sm-10 {
-      width: 100%;
-    }
+    margin: 0 40px 0 40px;
     .fixed {
       left: 75px;
       width: 608px;
@@ -41,11 +40,12 @@
     background: $white;
     padding-left: 65px;
   }
-  .chatbox-input-container {
+  .row.chatbox-input-container {
     position: relative;
     bottom: 0;
-    background: $white;
+    margin: 0;
     padding: 0;
+    background: $white;
     text-align: center;
   }
 }
@@ -57,6 +57,10 @@
     padding-left: 15px;
     padding-right: 15px;
     border-radius: 50%;
+  }
+  .astricks {
+    font-size: 40px;
+    display: inline-block;
   }
   .chatbox-header-chatroom-name {
     color: $dark-gray-text;
@@ -80,6 +84,8 @@
     margin: 0;
     float: left;
     width: 7%;
+    background-color: white;
+    padding-bottom: 8px;
     padding-top: 10px;
   }
   form {
@@ -221,7 +227,7 @@
     display: block;
     resize: vertical;
     min-height: 40px;
-    max-height: 150px;
+    max-height: 130px;
   }
 }
 
@@ -238,8 +244,12 @@
       max-width: 425px;
       max-height: 500px
     }
+    #addChatImageBtn {
+
+    }
   }
 }
+
 
 
 

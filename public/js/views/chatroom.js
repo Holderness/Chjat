@@ -9,7 +9,7 @@ app.ChatroomView = Backbone.View.extend({
   headerTemplate: _.template($('#chatroom-header-template').html()),
   onlineUserTemplate: _.template($('#online-users-list-template').html()),
   offlineUserTemplate: _.template($('#offline-users-list-template').html()),
-  dateTemplate: _.template('<div class="followWrap"><div class="followMeBar"><span>-----------------</span><span> <%= moment(timestamp).format("MMMM Do") %> </span><span>-----------------</span></div></div>'),
+  dateTemplate: _.template('<div class="followWrap"><div class="followMeBar"><span>-----</span><span> <%= moment(timestamp).format("MMMM Do") %> </span><span>-----</span></div></div>'),
   events: {
     'keypress .message-input': 'messageInputPressed',
     'click .chat-directory .room': 'setRoom',
@@ -108,6 +108,14 @@ app.ChatroomView = Backbone.View.extend({
       }
     });
 
+       $(window).resize(function() {
+        var windowHeight = $(window).height();
+        if (windowHeight > 500) {
+          var newHeight = windowHeight - 270;
+          $('#chatbox-content').height(newHeight);
+        }
+
+       });
   },
 
   chatroomSearchTypeahead: function() {

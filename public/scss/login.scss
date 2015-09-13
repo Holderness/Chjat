@@ -17,15 +17,6 @@
     input, button {
       margin-bottom: 15px;
     }
-    .btn-primary {
-      border-color: #749CA8;
-      background-color: #749CA8;
-      background-image: linear-gradient(to bottom, white 0,#749CA8 100%);
-      &:hover, :active, :focus {
-        background-image: linear-gradient(to bottom, white 0,#749CA8 100%);
-        background-color: #749CA8;
-      }
-    }
   }
   h2 {
     margin-bottom: 5px;

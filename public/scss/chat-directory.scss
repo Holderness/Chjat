@@ -1,3 +1,16 @@
+.slideout {
+    position: absolute;
+    z-index: 101;
+    height: 100%;
+    .slideout-inner {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      height: 100%;
+      padding-top: 85px;
+    }
+}
+
 
 .chat-directory {
   padding-left: 0;
@@ -5,7 +18,8 @@
   margin-left: 0;
   overflow-y: auto;
   overflow-x: auto;
-  height: 600px;
+  height: 100%;
+  width: 205px;
   min-width: 165px;
   background: $white;
   border-right: 2px solid $border;
@@ -62,6 +76,7 @@
         }
       }
       &:hover {
+        color: $pink-oink;
         .create-chatroom-info-container {
           .create-chatroom-info {
             position: absolute;
@@ -156,21 +171,22 @@
 @media (max-width: 1000px) {
   .slideout {
     position: fixed;
-    left: 0px;
+    left: 0;
     z-index: 101;
     -webkit-transition-duration: 0.3s;
     -moz-transition-duration: 0.3s;
     -o-transition-duration: 0.3s;
     transition-duration: 0.3s;
+    .slideout-inner {
+      position: fixed;
+      left: -183px;
+      -webkit-transition-duration: 0.3s;
+      -moz-transition-duration: 0.3s;
+      -o-transition-duration: 0.3s;
+      transition-duration: 0.3s;
+    }
   }
-  .slideout-inner {
-    position: fixed;
-    left: -150px;
-    -webkit-transition-duration: 0.3s;
-    -moz-transition-duration: 0.3s;
-    -o-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-  }
+
   .slideout:hover {
     left: 0px;
   }

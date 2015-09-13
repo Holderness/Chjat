@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type='text/css' href="./build/main.css">
   <link rel="stylesheet" type='text/css' href="/css/lib/font-awesome.css">
   <link rel="stylesheet" type='text/css' href="./build/sass.css">
+  <link href="http://fonts.googleapis.com/css?family=News+Cycle" rel="stylesheet" type="text/css">
 </head>
 <body>
  
@@ -21,7 +22,8 @@
               <span class="sr-only">Toggle navigation</span>
               <span class="fa fa-bars"></span>
             </button>
-            <a class="navbar-brand" href="#"><span>.</span><img class="img-responsive nav-logo" src="/img/fly-pig-serious-icon.png"></a>
+            <div class="chjat-title">chjat</div>
+           <!-- <a class="navbar-brand" href="#"><span>.</span><img class="img-responsive nav-logo" src="/img/fly-pig-serious-icon.png"></a> -->
           </div>
           <div class="navbar-collapse collapse login-menu">
    
@@ -74,7 +76,7 @@
           <label for="password" class="sr-only">Password</label>
           <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
           
-          <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+          <button class="btn btn-lg btn-primary-mod btn-block" type="submit">Login</button>
         </form>
 
         <div class="row">
@@ -127,8 +129,8 @@
 <!-- chatbox-header -->
 
   <script type="text/template" id="chatroom-header-template">  
-    <img class="img-responsive chatbox-header-avatar" src="/img/fly-pig-serious-icon.png">
-	  <h3 class="chatbox-header-chatroom-name"><%= name %></h3>
+    <div class="astricks fa">*</div>
+	  <h3 class="chatbox-header-chatroom-name"> <%= name %></h3>
     <% if (owner === currentUser) { %>
       <h6 class="chatbox-header-destroy"><a id="destroy-chatroom" href="#">destroy</a></h6>
     <% } %>
@@ -147,7 +149,7 @@
         <div class="row">
 
           <div class="slideout">
-          <div class="col-md-2 col-sm-2 col-xs-2 pull-left slideout-inner chat-directory">
+          <div class="slideout-inner chat-directory">
               <div class="chat-search-container">
                 <form>
                   <div class="fa fa-search chatroom-search"></div>
@@ -178,7 +180,7 @@
             </div> <!-- slideout -->
 
           <div class="slideout-right">
-          <div class="col-md-2 text-center pull-right slideout-right-inner user-directory">
+          <div class="text-center slideout-right-inner user-directory">
             <div class="users-header">Users</div>
             <div class="online-users"></div>
             <div class="users-header">Offline</div>
@@ -187,18 +189,18 @@
           </div>
 
 
-          <div class="col-md-8 col-sm-8 col-xs-8 chatbox">
-              <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 chatbox-header" id='chatbox-header'>
+          <div class="chatbox">
+              <div class="chatbox-header" id='chatbox-header'>
               </div>
-<!--<div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 date-divider-container"></div> -->
-              <div class="row col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 chatbox-content" id="chatbox-content">
+<!--<div class="date-divider-container"></div> -->
+              <div class="chatbox-content" id="chatbox-content">
               </div>
 
-              <div class="row col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 typetypetype"> 
+              <div class="typetypetype"> 
                 type type type 
               </div>
 
-              <div class="row col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 chatbox-input-container">
+              <div class="row chatbox-input-container">
                     <a 
                       href="#" 
                       id="addChatImage"
@@ -227,8 +229,8 @@
                   <form id="chatImageUploadForm">
                     <input type="file" id="chatImageUpload" name="chatImageUpload">
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                      <input type="button" id="addChatImageBtn" class="btn btn-primary" value="Save & Close"></input>
+                      <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
+                      <input type="button" id="addChatImageBtn" class="btn btn-primary-mod" value="Save & Close"></input>
                     </div>
                   </form>
                   <div id="status"></div>
@@ -254,8 +256,8 @@
                       <input type="text" data-create="name" id="chatroom-name-input"/>
                       <div id="chatroom-name-validation-container"></div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                      <input type="button" id="createChatroomBtn" data-dismiss="modal" class="btn btn-primary" value="Save & Close"></input>
+                      <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
+                      <input type="button" id="createChatroomBtn" data-dismiss="modal" class="btn btn-primary-mod" value="Save & Close"></input>
                     </div>
                   </form>
                   <div id="status"></div>

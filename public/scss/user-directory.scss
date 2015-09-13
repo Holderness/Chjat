@@ -1,10 +1,22 @@
+.slideout-right {
+    position: absolute;
+    z-index: 101;
+    height: 100%;
+    .slideout-right-inner {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+        height: 100%;
+      padding-top: 85px;
+    }
+}
 
 .user-directory {
   background: $white;
-  height: 600px;
   overflow-y: auto;
   overflow-x: auto;
-  min-width: 165px;
+
+  width: 205px;
   border-left: 2px solid $border;
   border-bottom: 2px solid $border;
   .offline-users {}
@@ -44,15 +56,16 @@
     -moz-transition-duration: 0.3s;
     -o-transition-duration: 0.3s;
     transition-duration: 0.3s;
+    .slideout-right-inner {
+      position: fixed;
+      right: -177px;
+      -webkit-transition-duration: 0.3s;
+      -moz-transition-duration: 0.3s;
+      -o-transition-duration: 0.3s;
+      transition-duration: 0.3s;
+    }
   }
-  .slideout-right-inner {
-    position: fixed;
-    right: -200px;
-    -webkit-transition-duration: 0.3s;
-    -moz-transition-duration: 0.3s;
-    -o-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-  }
+
   .slideout-right:hover {
     right: 0px;
   }
