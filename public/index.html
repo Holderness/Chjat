@@ -180,7 +180,7 @@
             </div> <!-- slideout -->
 
           <div class="slideout-right">
-          <div class="text-center slideout-right-inner user-directory">
+          <div class="slideout-right-inner user-directory">
             <div class="users-header">Users</div>
             <div class="online-users"></div>
             <div class="users-header">Offline</div>
@@ -303,13 +303,9 @@
 <!-- online users -->
 
 <script type="text/template" id="online-users-list-template">
-  <div class="row user-online">
-    <div class="col-xs-3 col-sm-3 col-md-1 text-center">
-      <span><i class="fa fa-circle"></i></span>
-    </div>
-    <div class="col-xs-7 col-sm-7 col-md-9">
-      <p><strong class="user-directory-username"><%= username %></strong></p>
-    </div>
+  <div class="user-online">
+      <span class="fa fa-circle user-image"></span>
+      <div class="user-username"><strong><%= username %></strong></div>
   </div>
 </script>
 
@@ -318,13 +314,9 @@
 <!-- offline users -->
 
 <script type="text/template" id="offline-users-list-template">
-  <div class="row user-offline">
-    <div class="col-xs-3 col-sm-3 col-md-1 text-center">
-      <span><i class="fa fa-circle-o"></i></span>
-    </div>
-    <div class="col-xs-7 col-sm-7 col-md-9">
-      <p><strong class="user-directory-username"><%= username %></strong></p>
-    </div>
+  <div class="user-offline">
+      <span><i class="fa fa-circle-o user-image"></i></span>
+      <div class="user-username"><strong><%= username %></strong></div>
   </div>
 </script>
 
