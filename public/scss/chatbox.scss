@@ -1,5 +1,6 @@
 
 .chatbox {
+  position: relative;
   background: $main-bkgd;
   padding-top: 15px;
   padding-bottom: 3.33333333%;
@@ -11,24 +12,33 @@
     color: $dark-gray-text;
     padding: 10px 15px 1px 15px;
     border-bottom: 2px solid $main-bkgd;
-    // height: 62px;
   }
-  // .date-divider-container {
-  //   height: 20px;
-  //   background-color: white;
-  // }
+  .date-divider-style-insurance {
+      height: 40px;
+      position: absolute;
+      width: 96%;
+      background-color: white;
+      z-index: 1;
+      background: -moz-linear-gradient(top, rgba(255,255,255,1) 65%, rgba(255,255,255,0.7) 100%);
+    // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.7)), color-stop(100%,rgba(255,255,255,0)));
+      background: -webkit-linear-gradient(top, rgba(255,255,255,1) 65%,rgba(255,255,255,0.7) 100%);
+      background: -o-linear-gradient(top, rgba(255,255,255,1) 65%,rgba(255,255,255,0.7) 100%);
+      background: -ms-linear-gradient(top, rgba(255,255,255,1) 65%,rgba(255,255,255,0.7) 100%);
+      background: linear-gradient(to bottom, white 65%, rgba(255, 255, 255, 0) 100%);
+  }
   .chatbox-content {
     background: $white;
     height: 450px;
     bottom: 0;
     overflow-y: scroll;
     overflow-x: hidden;
+
   }
   @media (max-width: 1000px) {
     margin: 0 40px 0 40px;
     .fixed {
-      left: 75px;
-      width: 608px;
+     width: 48.5%;
+     left: 25.5%;
     }
   }
   .typetypetype {
@@ -159,9 +169,9 @@
   .fixed {
     margin-left: -7px;
     position: fixed;
-    top: 157px;
-    width: 545px;
-    left: 225px;
+    top: 162px;
+    width: 17%;
+    left: 41.44444%;
     z-index: 1;
     background: -moz-linear-gradient(top, rgba(255,255,255,1) 65%, rgba(255,255,255,0.7) 100%);
     // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.7)), color-stop(100%,rgba(255,255,255,0)));
@@ -174,8 +184,7 @@
     }
     @media #{$breakpoint-chatbox} {
       // margin-left: -7px;
-      width: 51.5%;
-      left: 24.111111%;
+
     }
     // @media #{$breakpoint-chatbox2} {
     //   top: 158px;

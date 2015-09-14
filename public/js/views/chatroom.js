@@ -444,7 +444,7 @@ app.ChatroomView = Backbone.View.extend({
       $stickies.each(function(i, sticky) {
         var $thisSticky = $(sticky),
         $thisStickyTop = $thisSticky.offset().top;
-        if ($thisStickyTop <= 157) {
+        if ($thisStickyTop <= 162) {
           $thisSticky.addClass("fixed");
         }
       });
