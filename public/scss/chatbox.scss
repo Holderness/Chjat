@@ -14,7 +14,7 @@
     border-bottom: 2px solid $main-bkgd;
   }
   .date-divider-style-insurance {
-      height: 40px;
+      height: 52px;
       position: absolute;
       width: 96%;
       background-color: white;
@@ -156,7 +156,7 @@
     color: black;
     position: relative;
     background: $white;
-    padding: 10px 0;
+    padding-top: 8px;
     margin-left: auto;
     margin-right: auto;
     width: 100%;
@@ -173,12 +173,12 @@
     width: 17%;
     left: 41.44444%;
     z-index: 1;
-    background: -moz-linear-gradient(top, rgba(255,255,255,1) 65%, rgba(255,255,255,0.7) 100%);
-    // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.7)), color-stop(100%,rgba(255,255,255,0)));
-    background: -webkit-linear-gradient(top, rgba(255,255,255,1) 65%,rgba(255,255,255,0.7) 100%);
-    background: -o-linear-gradient(top, rgba(255,255,255,1) 65%,rgba(255,255,255,0.7) 100%);
-    background: -ms-linear-gradient(top, rgba(255,255,255,1) 65%,rgba(255,255,255,0.7) 100%);
-    background: linear-gradient(to bottom, white 65%, rgba(255, 255, 255, 0) 100%);
+    // background: -moz-linear-gradient(top, rgba(255,255,255,1) 65%, rgba(255,255,255,0.7) 100%);
+    // // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.7)), color-stop(100%,rgba(255,255,255,0)));
+    // background: -webkit-linear-gradient(top, rgba(255,255,255,1) 65%,rgba(255,255,255,0.7) 100%);
+    // background: -o-linear-gradient(top, rgba(255,255,255,1) 65%,rgba(255,255,255,0.7) 100%);
+    // background: -ms-linear-gradient(top, rgba(255,255,255,1) 65%,rgba(255,255,255,0.7) 100%);
+    // background: linear-gradient(to bottom, white 65%, rgba(255, 255, 255, 0) 100%);
     .absolute {
       position: absolute;
     }
