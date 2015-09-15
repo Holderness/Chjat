@@ -11,6 +11,7 @@ console.log('chatserver');
 
 var UserModel = mongoose.model('User');
 var ChatroomModel = mongoose.model('Chatroom');
+var DirectMessageModel = mongoose.model('DirectMessage');
 
 
 // the chatserver listens to the chatclient
@@ -183,8 +184,32 @@ var Server = function(options) {
       self.doesChatroomExist(user, chatroomQuery);
     });
 
+    user.socket.on('initDirectMessage', function(recipient) {
+      self.initDirectMessage(user, recipient);
+    });
 
   };  // end setChatListeners
+
+
+   
+  self.initDirectMessage = function(user, recipient) {
+    DirectMessageModel.findOne({'participants': {'$in': [{"username": user.username}, {"username": recipient}]}}, function(err, DM) {
+      if (DM) {
+        console.log('this is the DM', DM);
+      } else {
+        var newDirectMessage = new DirectMessageModel({'participants': [{'username': user.username}, {'username': recipient}]});
+        newDirectMessage.save(function(err) {
+           if (!err) {
+             console.log('DM created');
+           } else {
+             console.log('DM not created', err);
+           }
+        });
+      }
+    });
+  };
+
+
 
     self.doesChatroomExist = function(user, chatroomQuery) {
       console.log('chatroomQuery: ', chatroomQuery);

@@ -6,6 +6,7 @@ module.exports = function() {
 
   require('../app/models/user');
   require('../app/models/chatroom');
+  require('../app/models/direct-message');
 
   return db;
 };

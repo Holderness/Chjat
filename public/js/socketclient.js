@@ -136,6 +136,17 @@ var ChatClient = function(options) {
   self.doesChatroomExist = function(chatroomQuery) {
     self.socket.emit('doesChatroomExist', chatroomQuery);
   };
+
+
+
+
+
+
+
+
+  self.initDirectMessage = function(recipient) {
+    self.socket.emit('initDirectMessage', recipient);
+  };
   
 
 

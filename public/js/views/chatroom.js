@@ -18,6 +18,12 @@ app.ChatroomView = Backbone.View.extend({
     'click #createChatroomBtn': 'createRoom',
     'click #destroy-chatroom': 'destroyRoom',
     'keyup #chatroom-name-input': 'doesChatroomExist',
+    'click .user-username': 'initDirectMessage',
+  },
+
+  initDirectMessage: function(e) {
+    var recipient = $(e.target).html();
+    this.vent.trigger('initDirectMessage', recipient);
   },
 
   doesChatroomExist: function(e) {
