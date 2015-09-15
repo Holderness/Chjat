@@ -134,6 +134,38 @@ var Server = function(options) {
       }
     });
 
+    user.socket.on("directMessage", function(message) {
+      console.log('e.directMessage');
+      console.log("USER: ", user);
+      console.log('MESSAGE: ', message);
+      var timestamp = _.now();
+      if (message) {
+        DirectMessageModel.findOne({ _id: user.socket.chat.directMessage }, function(err, DM) {
+          if (!err) {
+            if (message.url !== undefined && message.url.length > 0) {
+              console.log('1message.url', message.url);
+              DM.chatlog.push( { sender: user.username, message: message.message, url: message.url } );
+              DM.save(function(err) {
+                if (err) { return console.log( err );}
+              });
+              self.io.sockets.to(user.socket.chat.directMessage).emit("directMessage", { sender: user.username, message: message.message, url: message.url, timestamp: timestamp});
+            } else {
+              console.log('2message.url', message.url);
+              DM.chatlog.push( { sender: user.username, message: message.message, url: null } );
+              DM.save(function(err) {
+                if (err) { return console.log( err );}
+              });
+              self.io.sockets.to(user.socket.chat.directMessage).emit("directMessage", { sender: user.username, message: message.message, timestamp: timestamp, url: null});
+            }
+          } else {
+            return console.log( err );
+          }
+        });
+      } else {
+        return console.log( err );
+      }
+    });
+
     user.socket.on("typing", function() {
       user.socket.broadcast.emit("typing", { username: user.username });
     });
@@ -193,9 +225,13 @@ var Server = function(options) {
 
    
   self.initDirectMessage = function(user, recipient) {
-    DirectMessageModel.findOne({'participants': {'$in': [{"username": user.username}, {"username": recipient}]}}, function(err, DM) {
+    console.log('initDirectMessage');
+    console.log('recipient: ', recipient);
+    DirectMessageModel.findOne({'participants': {'$all': [{"username": user.username}, {"username": recipient}]}}, function(err, DM) {
       if (DM) {
         console.log('this is the DM', DM);
+        self.connectToDirectMessage(user, DM._id);
+        user.socket.emit('renderDirectMessage', DM);
       } else {
         var newDirectMessage = new DirectMessageModel({'participants': [{'username': user.username}, {'username': recipient}]});
         newDirectMessage.save(function(err) {
@@ -208,6 +244,47 @@ var Server = function(options) {
       }
     });
   };
+
+  self.connectToDirectMessage = function(user, DMid) {
+    user.socket.leave(user.socket.chat.room);
+    console.log('f.connectToDirectMessage');
+    console.log('DMid: ', DMid);
+    self.leaveRoom(user);
+    user.socket.join(DMid);
+    user.socket.chat.directMessage = DMid;
+    // user.socket.chat.room = null;
+    // DirectMessageModel.findOne({'_id': DMid}, function(err, DM) {
+    //   if (!err) {
+
+    //   } else {
+    //     console.log(err);
+    //   }
+    // });
+  };
+
+
+  // self.addToRoom = function(user, roomName) {
+  //   console.log("f.addToRoom: ", roomName);
+  //   user.socket.join(roomName);
+  //   user.socket.chat.room = roomName;
+  //   console.log('user socket id: ', user.socket.id);
+  //   ChatroomModel.update({ name: roomName},
+  //     {$push: {'onlineUsers': { username: user.username }}},
+  //     function(err, raw){
+  //       if (err) { return console.log(err); }
+  //       ChatroomModel.findOne({ name: roomName }, function( err, chatroom ) {
+  //         if (err) {return console.log(err);}
+  //         self.getUsersAndHeader(user, roomName);
+  //         self.getChatrooms(user, user.socket);
+  //         var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
+  //         user.socket.broadcast.to(roomName).emit('userJoined', user.username);
+  //         user.socket.broadcast.to(roomName).emit('onlineUsers', chatroom.onlineUsers);
+  //         user.socket.broadcast.to(roomName).emit('offlineUsers', offlineUsers);
+  //       });
+  //     });
+  // };
+
+
 
 
 
@@ -283,6 +360,7 @@ var Server = function(options) {
     console.log("f.leaveRoom: ", currentRoom);
     // console.log('--------------leavroom socket-------------', user.socket);
     console.log('user leaving: ', user.username);
+    if (user.socket.chat.room) {
     ChatroomModel.update({ name: currentRoom },
       {$pull: {'onlineUsers': {username: user.username}}},
       function(err, raw) {
@@ -296,7 +374,7 @@ var Server = function(options) {
           user.socket.broadcast.to(currentRoom).emit('offlineUsers', offlineUsers);
         });
       });
-
+    }
   };
 
 

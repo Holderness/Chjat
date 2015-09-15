@@ -12,17 +12,20 @@ app.ChatroomView = Backbone.View.extend({
   dateTemplate: _.template('<div class="followWrap"><div class="followMeBar"><span>-----</span><span> <%= moment(timestamp).format("MMMM Do") %> </span><span>-----</span></div></div>'),
   events: {
     'keypress .message-input': 'messageInputPressed',
+    'keypress .direct-message-input': 'directMessageInputPressed',
     'click .chat-directory .room': 'setRoom',
     'keypress #chat-search-input': 'search',
     'click .remove-chatroom': 'removeRoom',
     'click #createChatroomBtn': 'createRoom',
     'click #destroy-chatroom': 'destroyRoom',
     'keyup #chatroom-name-input': 'doesChatroomExist',
-    'click .user-username': 'initDirectMessage',
+    'click .user-online': 'initDirectMessage',
+    'click .user-offline': 'initDirectMessage',
   },
 
+
   initDirectMessage: function(e) {
-    var recipient = $(e.target).html();
+    var recipient = $(e.target).text().trim();
     this.vent.trigger('initDirectMessage', recipient);
   },
 
@@ -418,6 +421,19 @@ app.ChatroomView = Backbone.View.extend({
     } else {
       this.vent.trigger("typing");
       console.log('wut');
+    }
+    return this;
+  },
+  directMessageInputPressed: function(e) {
+    if (e.keyCode === 13 && $.trim($('.direct-message-input').val()).length > 0) {
+      // fun fact: separate events with a space in trigger's first arg and you
+      // can trigger multiple events.
+      this.vent.trigger("directMessage", { message: this.$('.direct-message-input').val()});
+      this.$('.direct-message-input').val('');
+      return false;
+    } else {
+      this.vent.trigger("typing");
+      console.log('huh');
     }
     return this;
   },

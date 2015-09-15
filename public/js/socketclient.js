@@ -81,6 +81,10 @@ var ChatClient = function(options) {
   self.getMoreChats = function(chatReq) {
     self.socket.emit('getMoreChats', chatReq);
   };
+  self.directMessage = function(message) {
+    self.socket.emit('directMessage', message);
+  };
+
 
 
   // Typing methods
@@ -116,22 +120,22 @@ var ChatClient = function(options) {
   };
 
   // set room
-  self.setRoom = function(name) {
-    if (name !== null) {
-      this.currentRoom = name;
-    }
-    ///>>>>>>> changethisto .chat-title
-    var $chatTitle = $('.chatbox-header-username');
-    $chatTitle.text(name);
-    var this_ = this;
-    $('.chat-directory').find('.room').each(function() {
-      var $room = $(this);
-      $room.removeClass('active');
-      if ($room.data('name') === this_.currentRoom) {
-        $room.addClass('active');
-      }
-    });
-  };
+  // self.setRoom = function(name) {
+  //   if (name !== null) {
+  //     this.currentRoom = name;
+  //   }
+  //   ///>>>>>>> changethisto .chat-title
+  //   var $chatTitle = $('.chatbox-header-username');
+  //   $chatTitle.text(name);
+  //   var this_ = this;
+  //   $('.chat-directory').find('.room').each(function() {
+  //     var $room = $(this);
+  //     $room.removeClass('active');
+  //     if ($room.data('name') === this_.currentRoom) {
+  //       $room.addClass('active');
+  //     }
+  //   });
+  // };
 
   self.doesChatroomExist = function(chatroomQuery) {
     self.socket.emit('doesChatroomExist', chatroomQuery);
@@ -148,6 +152,11 @@ var ChatClient = function(options) {
     self.socket.emit('initDirectMessage', recipient);
   };
   
+
+
+
+
+
 
 
 
@@ -270,6 +279,18 @@ var ChatClient = function(options) {
 // errors
     socket.on('chatroomAlreadyExists', function() {
       self.vent.trigger("chatroomAlreadyExists");
+    });
+
+
+// DirectMessage
+    socket.on('renderDirectMessage', function(DM) {
+      // self.vent.trigger("renderDirectMessage", DM);
+      self.vent.trigger("setDMchatlog", DM.chatlog);
+    });
+
+    socket.on('directMessage', function(message) {
+      // self.vent.trigger("renderDirectMessage", DM);
+      self.vent.trigger("directMessageReceived", message);
     });
 
 

@@ -75,6 +75,7 @@ app.MainController = function() {
     self.chatClient.login(user);
   });
 	self.viewEventBus.on("chat", function(chat) {
+    debugger;
     self.chatClient.chat(chat);
   });
   self.viewEventBus.on("typing", function() {
@@ -104,7 +105,9 @@ app.MainController = function() {
   self.viewEventBus.on("initDirectMessage", function(recipient) {
     self.chatClient.initDirectMessage(recipient);
   });
-
+  self.viewEventBus.on("directMessage", function(message) {
+    self.chatClient.directMessage(message);
+  });
 
 
 
@@ -220,7 +223,7 @@ app.MainController = function() {
     });
     oldChatlog.reset(updatedChatlog);
 
-
+   $('#message-input').removeClass('direct-message-input').addClass('message-input');
     $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
   });
 
@@ -230,13 +233,7 @@ app.MainController = function() {
       var newChatModel = new app.ChatModel({ room: chat.room, message: chat.message, sender: chat.sender, timestamp: chat.timestamp, url: chat.url });
       return newChatModel;
     });
-    //
-    //
-    //
-    //
-    //
     self.chatroomModel.trigger('moreChats', moreChatlog);
-    // oldChatlog.push(moreChatlog);
   });
 
   self.appEventBus.on("noMoreChats", function(chatlog) {
@@ -290,5 +287,27 @@ app.MainController = function() {
     });
   });
 
+
+
+  // DirectMessage
+
+  self.appEventBus.on("setDMchatlog", function(chatlog) {
+    debugger;
+    var oldChatlog = self.chatroomModel.get('chatlog');
+    var updatedChatlog = _.map(chatlog, function(chat) {
+      var newChatModel = new app.ChatModel({ room: chat.room, message: chat.message, sender: chat.sender, timestamp: chat.timestamp, url: chat.url });
+      return newChatModel;
+    });
+    oldChatlog.reset(updatedChatlog);-
+
+    $('#message-input').removeClass('message-input').addClass('direct-message-input');
+    $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
+  });
+
+
+  self.appEventBus.on("directMessageReceived", function(message) {
+    self.chatroomModel.addChat(message);
+    $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
+  });
 };
 
