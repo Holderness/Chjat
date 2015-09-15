@@ -20,16 +20,10 @@ app.ChatroomView = Backbone.View.extend({
     'click #createChatroomBtn': 'createRoom',
     'click #destroy-chatroom': 'destroyRoom',
     'keyup #chatroom-name-input': 'doesChatroomExist',
-    'click .user-online': 'initDirectMessage',
-    'click .user-offline': 'initDirectMessage',
+    'click .user-username': 'initDirectMessage',
   },
 
 
-  initDirectMessage: function(e) {
-    debugger;
-    var recipient = $(e.target).text().trim();
-    this.vent.trigger('initDirectMessage', recipient);
-  },
 
   doesChatroomExist: function(e) {
     e.preventDefault();
@@ -261,7 +255,7 @@ app.ChatroomView = Backbone.View.extend({
      
   },
 
-   renderMoreDateDividers: function(model) {
+  renderMoreDateDividers: function(model) {
     this.currentDate = moment(model.attributes.timestamp).format('dddd, MMMM Do YYYY');
     if ( this.currentDate !== this.previousDate ) {
       var currentDate = $(this.dateTemplate(model.toJSON()));
@@ -276,6 +270,7 @@ app.ChatroomView = Backbone.View.extend({
   },
   
   scrollBottomInsurance: function(){
+    var this_ = this;
     var interval = setInterval(function(){
       this.$('#chatbox-content')[0].scrollTop = this.$('#chatbox-content')[0].scrollHeight;
     }, 50);
@@ -398,6 +393,15 @@ app.ChatroomView = Backbone.View.extend({
     this.previousDate = '';
     this.vent.trigger('joinRoom', name);
   },
+
+// change to 'joinDirectMessage'
+  initDirectMessage: function(e) {
+    var recipient = $(e.target).text().trim();
+    this.currentDate = '';
+    this.previousDate = '';
+    this.vent.trigger('initDirectMessage', recipient);
+  },
+
 
 
 
