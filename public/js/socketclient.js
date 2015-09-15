@@ -283,9 +283,12 @@ var ChatClient = function(options) {
 
 
 // DirectMessage
-    socket.on('renderDirectMessage', function(DM) {
-      // self.vent.trigger("renderDirectMessage", DM);
-      self.vent.trigger("setDMchatlog", DM.chatlog);
+    socket.on('setDirectMessageChatlog', function(chatlog) {
+      self.vent.trigger("setDMchatlog", chatlog);
+    });
+
+    socket.on('setDirectMessageHeader', function(header) {
+      self.vent.trigger("setDMheader", header);
     });
 
     socket.on('directMessage', function(message) {

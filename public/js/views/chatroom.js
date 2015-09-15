@@ -7,6 +7,7 @@ app.ChatroomView = Backbone.View.extend({
   chatTemplate: _.template($('#chatbox-message-template').html()),
   roomTemplate: _.template($("#room-list-template").html()),
   headerTemplate: _.template($('#chatroom-header-template').html()),
+  directMessageHeaderTemplate: _.template($('#direct-message-header-template').html()),
   onlineUserTemplate: _.template($('#online-users-list-template').html()),
   offlineUserTemplate: _.template($('#offline-users-list-template').html()),
   dateTemplate: _.template('<div class="followWrap"><div class="followMeBar"><span>-----</span><span> <%= moment(timestamp).format("MMMM Do") %> </span><span>-----</span></div></div>'),
@@ -25,6 +26,7 @@ app.ChatroomView = Backbone.View.extend({
 
 
   initDirectMessage: function(e) {
+    debugger;
     var recipient = $(e.target).text().trim();
     this.vent.trigger('initDirectMessage', recipient);
   },
@@ -120,7 +122,7 @@ app.ChatroomView = Backbone.View.extend({
        $(window).resize(function() {
         var windowHeight = $(window).height();
         if (windowHeight > 500) {
-          var newHeight = windowHeight - 270;
+          var newHeight = windowHeight - 285;
           $('#chatbox-content').height(newHeight);
         }
 
@@ -157,10 +159,14 @@ app.ChatroomView = Backbone.View.extend({
 
 
 
-// header
+// headers
 
   renderHeader: function() {
     this.$('#chatbox-header').html(this.headerTemplate(this.model.get('chatroom').toJSON()));
+  },
+
+  renderDirectMessageHeader: function() {
+    this.$('#chatbox-header').html(this.directMessageHeaderTemplate(this.model.get('chatroom').toJSON()));
   },
 
 

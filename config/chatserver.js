@@ -231,12 +231,16 @@ var Server = function(options) {
       if (DM) {
         console.log('this is the DM', DM);
         self.connectToDirectMessage(user, DM._id);
-        user.socket.emit('renderDirectMessage', DM);
+        user.socket.emit('setDirectMessageChatlog', DM.chatlog);
+        user.socket.emit('setDirectMessageHeader', {'name': recipient, 'owner': null, 'currentUser': user.username});
       } else {
         var newDirectMessage = new DirectMessageModel({'participants': [{'username': user.username}, {'username': recipient}]});
-        newDirectMessage.save(function(err) {
+        newDirectMessage.save(function(err, DM) {
            if (!err) {
              console.log('DM created');
+             self.connectToDirectMessage(user, DM._id);
+             user.socket.emit('setDirectMessageChatlog', DM.chatlog);
+             user.socket.emit('setDirectMessageHeader', {'name': recipient, 'owner': null, 'currentUser': user.username});
            } else {
              console.log('DM not created', err);
            }

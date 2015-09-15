@@ -75,7 +75,6 @@ app.MainController = function() {
     self.chatClient.login(user);
   });
 	self.viewEventBus.on("chat", function(chat) {
-    debugger;
     self.chatClient.chat(chat);
   });
   self.viewEventBus.on("typing", function() {
@@ -292,16 +291,20 @@ app.MainController = function() {
   // DirectMessage
 
   self.appEventBus.on("setDMchatlog", function(chatlog) {
-    debugger;
     var oldChatlog = self.chatroomModel.get('chatlog');
     var updatedChatlog = _.map(chatlog, function(chat) {
       var newChatModel = new app.ChatModel({ room: chat.room, message: chat.message, sender: chat.sender, timestamp: chat.timestamp, url: chat.url });
       return newChatModel;
     });
-    oldChatlog.reset(updatedChatlog);-
+    oldChatlog.reset(updatedChatlog);
 
     $('#message-input').removeClass('message-input').addClass('direct-message-input');
     $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
+  });
+
+  self.appEventBus.on("setDMheader", function(header) {
+    var newHeader = new app.ChatroomHeaderModel(header);
+    self.chatroomModel.set('chatroom', newHeader);
   });
 
 
