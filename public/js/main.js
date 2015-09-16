@@ -104,10 +104,12 @@ app.MainController = function() {
   self.viewEventBus.on("initDirectMessage", function(recipient) {
     self.chatClient.initDirectMessage(recipient);
   });
-  self.viewEventBus.on("directMessage", function(message) {
-    self.chatClient.directMessage(message);
+  self.viewEventBus.on("directMessage", function(directMessage) {
+    self.chatClient.directMessage(directMessage);
   });
-
+  self.viewEventBus.on("getMoreDirectMessages", function(directMessageReq) {
+    self.chatClient.getMoreDirectMessages(directMessageReq);
+  });
 
 
 

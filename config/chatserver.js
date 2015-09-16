@@ -191,7 +191,11 @@ var Server = function(options) {
     });
 
     user.socket.on('getMoreChats', function(chatReq) {
-      self.getMoreChats(user, chatReq.name, chatReq.numberLoaded, chatReq.chatlogLength);
+      self.getMoreChats(user, chatReq.name, chatReq.modelsLoadedSum, chatReq.chatlogLength);
+    });
+
+    user.socket.on('getMoreDirectMessages', function(directMessageReq) {
+      self.getMoreDirectMessages(user, directMessageReq.id, directMessageReq.modelsLoadedSum, directMessageReq.chatlogLength);
     });
 
     user.socket.on('doesChatroomExist', function(chatroomQuery) {
@@ -213,16 +217,16 @@ var Server = function(options) {
       if (DM) {
         console.log('this is the DM', DM);
         self.connectToDirectMessage(user, DM._id);
-        user.socket.emit('setDirectMessageChatlog', DM.chatlog);
-        user.socket.emit('setDirectMessageHeader', {'name': recipient, 'owner': null, 'currentUser': user.username});
+        user.socket.emit('setDirectMessageChatlog', DM.chatlog.slice(-25));
+        user.socket.emit('setDirectMessageHeader', {id: DM._id, 'name': recipient, 'owner': null, 'currentUser': user.username, chatlogLength: DM.chatlog.length, modelsLoadedSum: -1, chatType: 'message'});
       } else {
         var newDirectMessage = new DirectMessageModel({'participants': [{'username': user.username}, {'username': recipient}]});
         newDirectMessage.save(function(err, DM) {
            if (!err) {
              console.log('DM created');
              self.connectToDirectMessage(user, DM._id);
-             user.socket.emit('setDirectMessageChatlog', DM.chatlog);
-             user.socket.emit('setDirectMessageHeader', {'name': recipient, 'owner': null, 'currentUser': user.username});
+             user.socket.emit('setDirectMessageChatlog', DM.chatlog.slice(-25));
+             user.socket.emit('setDirectMessageHeader', {id: DM._id, 'name': recipient, 'owner': null, 'currentUser': user.username, chatlogLength: DM.chatlog.length, modelsLoadedSum: -1, chatType: 'message'});
            } else {
              console.log('DM not created', err);
            }
@@ -238,37 +242,7 @@ var Server = function(options) {
     self.leaveRoom(user);
     user.socket.join(DMid);
     user.socket.chat.directMessage = DMid;
-    // user.socket.chat.room = null;
-    // DirectMessageModel.findOne({'_id': DMid}, function(err, DM) {
-    //   if (!err) {
-
-    //   } else {
-    //     console.log(err);
-    //   }
-    // });
   };
-
-
-  // self.addToRoom = function(user, roomName) {
-  //   console.log("f.addToRoom: ", roomName);
-  //   user.socket.join(roomName);
-  //   user.socket.chat.room = roomName;
-  //   console.log('user socket id: ', user.socket.id);
-  //   ChatroomModel.update({ name: roomName},
-  //     {$push: {'onlineUsers': { username: user.username }}},
-  //     function(err, raw){
-  //       if (err) { return console.log(err); }
-  //       ChatroomModel.findOne({ name: roomName }, function( err, chatroom ) {
-  //         if (err) {return console.log(err);}
-  //         self.getUsersAndHeader(user, roomName);
-  //         self.getChatrooms(user, user.socket);
-  //         var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
-  //         user.socket.broadcast.to(roomName).emit('userJoined', user.username);
-  //         user.socket.broadcast.to(roomName).emit('onlineUsers', chatroom.onlineUsers);
-  //         user.socket.broadcast.to(roomName).emit('offlineUsers', offlineUsers);
-  //       });
-  //     });
-  // };
 
 
 
@@ -398,39 +372,23 @@ var Server = function(options) {
         user.socket.emit('chatlog', chatroom.chatlog.slice(-25));
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
         user.socket.emit('offlineUsers', offlineUsers);
-        user.socket.emit('chatroomHeader', {name: roomName, owner: chatroom.owner, currentUser: user.username, chatlogLength: chatroom.chatlog.length, numberLoaded: -1});
+        user.socket.emit('chatroomHeader', {name: roomName, owner: chatroom.owner, currentUser: user.username, chatlogLength: chatroom.chatlog.length, modelsLoadedSum: -1});
       } else {
         return console.log (err);
       }
     });
   };
 
-  self.getMoreChats = function(user, name, numberLoaded, chatlogLength) {
-    var items_per_load_requested = 25,
-    skip = items_per_load_requested * (numberLoaded - 1);
-    skipPos = skip * -1;
-
-    var firstCheck = skipPos - chatlogLength > 0,
-    secondCheck = skipPos - chatlogLength <= items_per_load_requested,
-    items_per_load = (firstCheck && secondCheck) ? (items_per_load_requested - (skipPos - chatlogLength)) : items_per_load_requested;
-    console.log('firstCheck: ', firstCheck);
-    console.log('secondCheck: ', secondCheck);
-    console.log('items_per_load: ', items_per_load);
-
-    console.log('name: ', name);
-    console.log('skip: ', skip);
-    console.log('numberloaded: ', numberLoaded);
-     // if ( skipPos - chatlogLength > 0 && skipPos - chatlogLength <= items_per_load) {
-     //    items_per_load = skipPos - chatlogLength;
-     // }
-    ChatroomModel.findOne({ name: name }, {'chatlog': { $slice: [skip, items_per_load] }}, function( err, chatroom ) {
-      console.log('chatlogLength: ', chatlogLength);
-      console.log('skipPos: ', skipPos);
-              console.log('chatlog: ', chatroom.chatlog);
-        console.log('chatroom.chatlog.length: ', chatroom.chatlog.length);
-      if (chatlogLength >= skipPos) {
-        user.socket.emit('moreChats', chatroom.chatlog);
-      } else if (skipPos - chatlogLength <= items_per_load && skipPos - chatlogLength >= 1){
+  self.getMoreChats = function(user, name, modelsLoadedSum, chatlogLength) {
+    var MODELS_PER_LOAD = 25,
+    MODELS_SKIPPED = MODELS_PER_LOAD * (modelsLoadedSum - 1),
+    MODELS_REMAINDER = MODELS_PER_LOAD + (MODELS_SKIPPED + chatlogLength),
+    remainderCheck = MODELS_REMAINDER >= 1 && MODELS_REMAINDER < 25,
+    items_per_load = (remainderCheck) ? MODELS_REMAINDER : MODELS_PER_LOAD;
+    
+    ChatroomModel.findOne({ name: name }, {'chatlog': { $slice: [MODELS_SKIPPED, items_per_load] }}, function( err, chatroom ) {
+      console.log('chatroomLength: ', chatlogLength);
+      if (chatlogLength >= (MODELS_SKIPPED * -1) || remainderCheck) {
         user.socket.emit('moreChats', chatroom.chatlog);
       } else {
         console.log('-------------------------------');
@@ -438,6 +396,24 @@ var Server = function(options) {
       }
     });
   };
+
+  self.getMoreDirectMessages = function(user, id, modelsLoadedSum, chatlogLength) {
+    var MODELS_PER_LOAD = 25,
+    MODELS_SKIPPED = MODELS_PER_LOAD * (modelsLoadedSum - 1),
+    MODELS_REMAINDER = MODELS_PER_LOAD + (MODELS_SKIPPED + chatlogLength),
+    remainderCheck = MODELS_REMAINDER >= 1,
+    items_per_load = (remainderCheck) ? MODELS_REMAINDER : MODELS_PER_LOAD;
+
+    DirectMessageModel.findOne({ _id: id }, {'chatlog': { $slice: [MODELS_SKIPPED, items_per_load] }}, function( err, chatroom ) {
+      if (chatlogLength >= (MODELS_SKIPPED * -1) || remainderCheck) {
+        user.socket.emit('moreChats', chatroom.chatlog);
+      } else {
+        console.log('-------------------------------');
+        user.socket.emit('noMoreChats');
+      }
+    });
+  };
+
 
 
   self.getChatrooms = function(user, socket) {

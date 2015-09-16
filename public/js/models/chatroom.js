@@ -15,7 +15,7 @@ app.ChatroomModel = Backbone.Model.extend({
       ]),
     chatrooms: null,
     owner: null,
-    numberLoaded: 0,
+    modelsLoadedSum: 0,
   },
   loadModel: function() {
     console.log('crm.f.loadModel');

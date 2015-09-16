@@ -109,7 +109,12 @@ app.ChatroomView = Backbone.View.extend({
     this.$('#chatbox-content').scroll(function(){
         // checks if there's enough chats to warrant a getMoreChats call
       if ($('#chatbox-content').scrollTop() === 0 && this_.model.get('chatlog').length >= 25) {
-        _.debounce(this_.getMoreChats(), 3000);
+        debugger;
+        if (this_.model.get('chatroom').get('chatType') === 'message') {
+          _.debounce(this_.getMoreDirectMessages(), 3000);
+        } else {
+          _.debounce(this_.getMoreChats(), 3000);
+        }
       }
     });
 
@@ -228,10 +233,20 @@ app.ChatroomView = Backbone.View.extend({
     console.log('crv.f.getMoreChats');
     var chatroom = this.model.get('chatroom'),
     name = chatroom.get('name'),
-    numberLoaded = chatroom.get('numberLoaded');
+    modelsLoadedSum = chatroom.get('modelsLoadedSum');
     var chatlogLength = chatroom.get('chatlogLength');
-    this.vent.trigger('getMoreChats', { name: name, numberLoaded: numberLoaded, chatlogLength: chatlogLength});
-    chatroom.set('numberLoaded', (numberLoaded - 1));
+    this.vent.trigger('getMoreChats', { name: name, modelsLoadedSum: modelsLoadedSum, chatlogLength: chatlogLength});
+    chatroom.set('modelsLoadedSum', (modelsLoadedSum - 1));
+  },
+
+  getMoreDirectMessages: function() {
+    console.log('crv.f.getMoreDriectMessages');
+    var chatroom = this.model.get('chatroom'),
+    id = chatroom.get('id'),
+    modelsLoadedSum = chatroom.get('modelsLoadedSum');
+    var chatlogLength = chatroom.get('chatlogLength');
+    this.vent.trigger('getMoreDirectMessages', { id: id, modelsLoadedSum: modelsLoadedSum, chatlogLength: chatlogLength});
+    chatroom.set('modelsLoadedSum', (modelsLoadedSum - 1));
   },
 
   renderMoreChats: function(chats) {

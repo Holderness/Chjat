@@ -81,11 +81,13 @@ var ChatClient = function(options) {
   self.getMoreChats = function(chatReq) {
     self.socket.emit('getMoreChats', chatReq);
   };
-  self.directMessage = function(message) {
-    self.socket.emit('directMessage', message);
+  self.directMessage = function(directMessage) {
+    self.socket.emit('directMessage', directMessage);
   };
-
-
+  self.getMoreDirectMessages = function(directMessageReq) {
+    self.socket.emit('getMoreDirectMessages', directMessageReq);
+  };
+  
 
   // Typing methods
 	self.addChatTyping = function(data) {
