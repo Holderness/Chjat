@@ -252,8 +252,9 @@ app.MainController = function() {
 
   self.appEventBus.on("setOnlineUsers", function(onlineUsers) {
     var oldOnlineUsers = self.chatroomModel.get('onlineUsers');
+    debugger;
     var updatedOnlineUsers = _.map(onlineUsers, function(user) {
-      var newUserModel = new app.UserModel({username: user.username});
+      var newUserModel = new app.UserModel({username: user.username, userImage: user.userImage});
       return newUserModel;
     });
     oldOnlineUsers.reset(updatedOnlineUsers);
@@ -262,7 +263,7 @@ app.MainController = function() {
   self.appEventBus.on("setOfflineUsers", function(offlineUsers) {
     var oldOfflineUsers = self.chatroomModel.get('offlineUsers');
     var updatedOfflineUsers = _.map(offlineUsers, function(user) {
-      var newUserModel = new app.UserModel({username: user.username});
+      var newUserModel = new app.UserModel({username: user.username, userImage: user.userImage});
       return newUserModel;
     });
     oldOfflineUsers.reset(updatedOfflineUsers);

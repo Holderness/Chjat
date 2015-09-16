@@ -24,6 +24,7 @@ module.exports = function() {
       email: profile.emails[0].value,
       username: profile.username,
       provider: 'facebook',
+      userImage: "http://graph.facebook.com/" + profile.id + "/picture?type=square",
       providerId: profile.id,
       providerData: providerData
     };

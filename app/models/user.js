@@ -17,6 +17,7 @@ var UserSchema = new mongoose.Schema({
   provider: String,
   providerId: String,
   providerData: {},
+  userImage: String,
 });
 
 

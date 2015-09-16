@@ -20,7 +20,8 @@ module.exports = function() {
         username: profile.username,
         provider: 'twitter',
         providerId: profile.id,
-        providerData: providerData
+        providerData: providerData,
+        userImage: providerData.profile_image_url_https,
       };
       
       users.saveOAuthUserProfile(req, providerUserProfile, done);
