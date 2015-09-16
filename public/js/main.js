@@ -299,6 +299,7 @@ app.MainController = function() {
     oldChatlog.reset(updatedChatlog);
 
     $('#message-input').removeClass('message-input').addClass('direct-message-input');
+    $('#chatImageUploadContainer').data('chat-type', 'message');
     $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
   });
 

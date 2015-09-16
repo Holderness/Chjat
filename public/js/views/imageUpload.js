@@ -13,6 +13,11 @@ var app = app || {};
       'click #addChatImageBtn': 'submit',
     },
 
+    initialize: function() {
+      this.listenTo(this, "file-chosen", this.renderThumb, this);
+      this.listenTo(this, "file-chosen", this.renderThumb, this);
+    },
+
     render: function() {
       this.renderThumb();
     },
@@ -57,7 +62,9 @@ var app = app || {};
           },
           success: function( response ) {
             console.log('imgUpload response: ', response);
-            _this.trigger('image-uploaded', response);
+            _this.$el.data('chat-type') === 'chat' ?
+              _this.trigger('chat-image-uploaded', response) :
+              _this.trigger('message-image-uploaded', response);
             console.log('imgUpload path ', response.path);
             $('#chatImageUploadModal').modal('hide');
             _this.clearField();

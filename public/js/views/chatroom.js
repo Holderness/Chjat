@@ -23,8 +23,6 @@ app.ChatroomView = Backbone.View.extend({
     'click .user-username': 'initDirectMessage',
   },
 
-
-
   doesChatroomExist: function(e) {
     e.preventDefault();
     var this_ = this;
@@ -74,6 +72,7 @@ app.ChatroomView = Backbone.View.extend({
   },
   setSubViews: function() {
     this.chatImageUploadView = new app.ChatImageUploadView();
+    this.chatImageUploadView.setElement(this.$('#chatImageUploadContainer'));
   },
   setChatListeners: function() {
 
@@ -99,7 +98,8 @@ app.ChatroomView = Backbone.View.extend({
 
     this.listenTo(this.model, "change:chatroom", this.renderHeader, this);
 
-    this.listenTo(this.chatImageUploadView, 'image-uploaded', this.uploadImage);
+    this.listenTo(this.chatImageUploadView, 'chat-image-uploaded', this.chatUploadImage);
+    this.listenTo(this.chatImageUploadView, 'message-image-uploaded', this.messageUploadImage);
 
     this.listenTo(this.model, "moreChats", this.renderMoreChats, this);
 
@@ -389,6 +389,7 @@ app.ChatroomView = Backbone.View.extend({
 
   joinRoom: function(name) {
     console.log('crv.f.joinRoom');
+     $('#chatImageUploadContainer').data('chat-type', 'chat');
     this.currentDate = '';
     this.previousDate = '';
     this.vent.trigger('joinRoom', name);
@@ -408,11 +409,17 @@ app.ChatroomView = Backbone.View.extend({
 
 // image upload
 
- uploadImage: function(response) {
+ chatUploadImage: function(response) {
     console.log('img url: ', response);
     this.vent.trigger("chat", response);
     this.scrollBottomInsurance();
   },
+
+  messageUploadImage: function(response) {
+   console.log('img url: ', response);
+   this.vent.trigger("directMessage", response);
+   this.scrollBottomInsurance();
+ },
 
 
 

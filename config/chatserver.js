@@ -110,21 +110,12 @@ var Server = function(options) {
       if (chat) {
         ChatroomModel.findOne({ name: user.socket.chat.room }, function(err, chatroom) {
           if (!err) {
-            if (chat.url !== undefined && chat.url.length > 0) {
               console.log('1chat.url', chat.url);
               chatroom.chatlog.push( { room: user.socket.chat.name, sender: user.username, message: chat.message, url: chat.url } );
               chatroom.save(function(err) {
                 if (err) { return console.log( err );}
               });
               self.io.sockets.to(user.socket.chat.room).emit("chat", { room: user.socket.chat.room, sender: user.username, message: chat.message, url: chat.url, timestamp: timestamp});
-            } else {
-              console.log('2chat.url', chat.url);
-              chatroom.chatlog.push( { room: user.socket.chat.name, sender: user.username, message: chat.message, url: null } );
-              chatroom.save(function(err) {
-                if (err) { return console.log( err );}
-              });
-              self.io.sockets.to(user.socket.chat.room).emit("chat", { room: user.socket.chat.room, sender: user.username, message: chat.message, timestamp: timestamp, url: null});
-            }
           } else {
             return console.log( err );
           }
@@ -142,21 +133,12 @@ var Server = function(options) {
       if (message) {
         DirectMessageModel.findOne({ _id: user.socket.chat.directMessage }, function(err, DM) {
           if (!err) {
-            if (message.url !== undefined && message.url.length > 0) {
-              console.log('1message.url', message.url);
+              console.log('message.url', message.url);
               DM.chatlog.push( { sender: user.username, message: message.message, url: message.url } );
               DM.save(function(err) {
                 if (err) { return console.log( err );}
               });
-              self.io.sockets.to(user.socket.chat.directMessage).emit("directMessage", { sender: user.username, message: message.message, url: message.url, timestamp: timestamp});
-            } else {
-              console.log('2message.url', message.url);
-              DM.chatlog.push( { sender: user.username, message: message.message, url: null } );
-              DM.save(function(err) {
-                if (err) { return console.log( err );}
-              });
-              self.io.sockets.to(user.socket.chat.directMessage).emit("directMessage", { sender: user.username, message: message.message, timestamp: timestamp, url: null});
-            }
+              self.io.sockets.to(user.socket.chat.directMessage).emit("directMessage", { sender: user.username, message: message.message, timestamp: timestamp, url: message.url});
           } else {
             return console.log( err );
           }
