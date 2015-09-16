@@ -20,7 +20,7 @@ app.ChatroomView = Backbone.View.extend({
     'click #createChatroomBtn': 'createRoom',
     'click #destroy-chatroom': 'destroyRoom',
     'keyup #chatroom-name-input': 'doesChatroomExist',
-    'click .user-username': 'initDirectMessage',
+    'click .user': 'initDirectMessage',
   },
 
   doesChatroomExist: function(e) {
@@ -412,10 +412,12 @@ app.ChatroomView = Backbone.View.extend({
 
 // change to 'joinDirectMessage'
   initDirectMessage: function(e) {
-    var recipient = $(e.target).text().trim();
+    var recipient = $(e.currentTarget).text().trim();
     this.currentDate = '';
     this.previousDate = '';
-    this.vent.trigger('initDirectMessage', recipient);
+    if (this.model.get('chatroom').get('currentUser') !== recipient) {
+      this.vent.trigger('initDirectMessage', recipient);
+    }
   },
 
 
