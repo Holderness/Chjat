@@ -109,7 +109,6 @@ app.ChatroomView = Backbone.View.extend({
     this.$('#chatbox-content').scroll(function(){
         // checks if there's enough chats to warrant a getMoreChats call
       if ($('#chatbox-content').scrollTop() === 0 && this_.model.get('chatlog').length >= 25) {
-        debugger;
         if (this_.model.get('chatroom').get('chatType') === 'message') {
           _.debounce(this_.getMoreDirectMessages(), 3000);
         } else {
