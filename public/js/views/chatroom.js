@@ -174,7 +174,9 @@ app.ChatroomView = Backbone.View.extend({
 
   renderUsers: function() {
     console.log('crv.f.renderUsers');
-    console.log('USERS: ', this.model.get("onlineUsers"));
+    onlineUsers = this.model.get("onlineUsers");
+    debugger;
+    console.log('USERS: ', onlineUsers);
     this.$('.online-users').empty();
     this.model.get("onlineUsers").each(function (user) {
       this.renderUser(user);

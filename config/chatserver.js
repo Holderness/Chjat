@@ -91,7 +91,7 @@ var Server = function(options) {
     // });
 
     user.socket.on('disconnect', function() {
-      self.io.sockets.emit("userLeft", user.username);
+      self.io.sockets.emit("userLeft", { username: user.username, userImage: user.userImage });
       self.leaveRoom(user);
 
       // if (user.socket.handshake.session) {
@@ -170,7 +170,7 @@ var Server = function(options) {
       console.log('e.joinRoom');
       console.log("USER: ", user.username);
       console.log('ROOMNAME: ', roomName);
-      user.socket.leave(user.socket.chat.room);
+       user.socket.leave(user.socket.chat.room);
       self.leaveRoom(user);
       self.addToRoom(user, roomName);
     });
@@ -183,6 +183,7 @@ var Server = function(options) {
 
 
     user.socket.on('removeRoom', function(name) {
+      console.log('e.removeRoom');
       console.log('removeRoom name: ', name);
       console.log('removeRoom user: ', user.username);
       self.removeUserFromRoom(user, name);
@@ -190,30 +191,36 @@ var Server = function(options) {
 
 
     user.socket.on('createRoom', function(formData) {
+      console.log('e.createRoom');
       console.log('createRoom formData: ', formData);
       console.log('createRoom user: ', user.username);
       self.createRoom(user, formData);
     });
 
     user.socket.on('destroyRoom', function(name) {
+      console.log('e.destroyRoom');
       console.log('destroyRoom name: ', name);
       console.log('destroyRoom user: ', user.username);
       self.destroyRoom(user, name);
     });
 
     user.socket.on('getMoreChats', function(chatReq) {
+      console.log('e.getMoreChats');
       self.getMoreChats(user, chatReq.name, chatReq.modelsLoadedSum, chatReq.chatlogLength);
     });
 
     user.socket.on('getMoreDirectMessages', function(directMessageReq) {
+      console.log('e.getMoreDirectMessages');
       self.getMoreDirectMessages(user, directMessageReq.id, directMessageReq.modelsLoadedSum, directMessageReq.chatlogLength);
     });
 
     user.socket.on('doesChatroomExist', function(chatroomQuery) {
+      console.log('e.doesChatroomExist');
       self.doesChatroomExist(user, chatroomQuery);
     });
 
     user.socket.on('initDirectMessage', function(recipient) {
+      console.log('e.initDirectMessage');
       self.initDirectMessage(user, recipient);
     });
 
@@ -247,9 +254,10 @@ var Server = function(options) {
   };
 
   self.connectToDirectMessage = function(user, DMid) {
-    user.socket.leave(user.socket.chat.room);
     console.log('f.connectToDirectMessage');
     console.log('DMid: ', DMid);
+    user.socket.leave(user.socket.chat.room);
+
     self.leaveRoom(user);
     user.socket.join(DMid);
     user.socket.chat.directMessage = DMid;
@@ -336,11 +344,13 @@ var Server = function(options) {
       {$pull: {'onlineUsers': {username: user.username, userImage: user.userImage}}},
       function(err, raw) {
         if (err) {return console.log(err);}
-        user.socket.broadcast.to(currentRoom).emit('userLeft', user.username);
+        user.socket.broadcast.to(currentRoom).emit('userLeft', { username: user.username, userImage: user.userImage });
         ChatroomModel.findOne({ name: currentRoom }, function( err, chatroom ) {
           if (err) {return console.log(err);}
           console.log('new chatroom users: ', chatroom.onlineUsers );
           var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
+
+
           user.socket.broadcast.to(currentRoom).emit('onlineUsers', chatroom.onlineUsers);
           user.socket.broadcast.to(currentRoom).emit('offlineUsers', offlineUsers);
         });
@@ -363,7 +373,12 @@ var Server = function(options) {
           self.getUsersAndHeader(user, roomName);
           self.getChatrooms(user, user.socket);
           var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
-          user.socket.broadcast.to(roomName).emit('userJoined', user.username);
+          // console.log('###################');
+          //           console.log('offlineusers: ', offlineUsers);
+          // console.log('onlineUsers: ', chatroom.onlineUsers);
+          //           console.log('###################');
+
+          user.socket.broadcast.to(roomName).emit('userJoined', { username: user.username, userImage: user.userImage });
           user.socket.broadcast.to(roomName).emit('onlineUsers', chatroom.onlineUsers);
           user.socket.broadcast.to(roomName).emit('offlineUsers', offlineUsers);
         });
@@ -377,9 +392,9 @@ var Server = function(options) {
       if (!err) {
         // console.log('chatroom: ', chatroom);
         var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
-        console.log('participants: ', chatroom.participants);
-        console.log('oonlneinusers: ', chatroom.onlineUsers);
-        console.log('offlineusers: ', offlineUsers);
+        // console.log('participants: ', chatroom.participants);
+        // console.log('oonlneinusers: ', chatroom.onlineUsers);
+        // console.log('offlineusers: ', offlineUsers);
         user.socket.emit('chatlog', chatroom.chatlog.slice(-25));
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
         user.socket.emit('offlineUsers', offlineUsers);
@@ -402,7 +417,7 @@ var Server = function(options) {
       if (chatlogLength >= (MODELS_SKIPPED * -1) || remainderCheck) {
         user.socket.emit('moreChats', chatroom.chatlog);
       } else {
-        console.log('-------------------------------');
+        // console.log('-------------------------------');
         user.socket.emit('noMoreChats');
       }
     });
@@ -419,7 +434,7 @@ var Server = function(options) {
       if (chatlogLength >= (MODELS_SKIPPED * -1) || remainderCheck) {
         user.socket.emit('moreChats', chatroom.chatlog);
       } else {
-        console.log('-------------------------------');
+        // console.log('-------------------------------');
         user.socket.emit('noMoreChats');
       }
     });

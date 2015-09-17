@@ -183,17 +183,17 @@ app.MainController = function() {
 
 
   // adds new user to users collection, sends default joining message
-	self.appEventBus.on("userJoined", function(username) {
-        console.log('main.e.userJoined: ', username);
-		self.chatroomModel.addUser(username);
-		self.chatroomModel.addChat({sender: "Butters", message: username + " joined room." });
+	self.appEventBus.on("userJoined", function(user) {
+        console.log('main.e.userJoined: ', user);
+		self.chatroomModel.addUser(user);
+		self.chatroomModel.addChat({sender: "Butters", message: user.username + " joined room." });
 	});
 
 	// removes user from users collection, sends default leaving message
-	self.appEventBus.on("userLeft", function(username) {
-        console.log('main.e.userLeft: ', username);
-		self.chatroomModel.removeUser(username);
-		self.chatroomModel.addChat({sender: "Butters", message: username + " left room." });
+	self.appEventBus.on("userLeft", function(user) {
+        console.log('main.e.userLeft: ', user);
+		self.chatroomModel.removeUser(user);
+		self.chatroomModel.addChat({sender: "Butters", message: user.username + " left room." });
 	});
 
 	// chat passed from socketclient, adds a new chat message using chatroomModel method
@@ -252,7 +252,6 @@ app.MainController = function() {
 
   self.appEventBus.on("setOnlineUsers", function(onlineUsers) {
     var oldOnlineUsers = self.chatroomModel.get('onlineUsers');
-    debugger;
     var updatedOnlineUsers = _.map(onlineUsers, function(user) {
       var newUserModel = new app.UserModel({username: user.username, userImage: user.userImage});
       return newUserModel;

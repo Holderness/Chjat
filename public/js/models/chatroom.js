@@ -20,17 +20,18 @@ app.ChatroomModel = Backbone.Model.extend({
   loadModel: function() {
     console.log('crm.f.loadModel');
   },
-  addUser: function(username) {
+  addUser: function(user) {
     console.log('crm.f.addUser');
-    this.get('onlineUsers').add(new app.UserModel({ username: username }));
+    this.get('onlineUsers').add(new app.UserModel({ username: user.username, userImage: user.userImage }));
     console.log("--adding-user---");
   },
-  removeUser: function(username) {
+  removeUser: function(user) {
     console.log('crm.f.removeUser');
     var onlineUsers = this.get('onlineUsers');
-    var user = onlineUsers.find(function(userModel) { return userModel.get('username') == username; });
-    if (user) {
-      onlineUsers.remove(user);
+    var foundUser = onlineUsers.find(function(userModel) { return userModel.get('username') == user.username; });
+    debugger;
+    if (foundUser) {
+      onlineUsers.remove(foundUser);
     }
   },
   addChat: function(chat) {

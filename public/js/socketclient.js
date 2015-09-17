@@ -212,15 +212,15 @@ var ChatClient = function(options) {
 
 
 // chat
-		socket.on('userJoined', function(username) {
-			console.log('sc.e.userJoined: ', username);
+		socket.on('userJoined', function(user) {
+			console.log('sc.e.userJoined: ', user);
       // socket.emit("onlineUsers");
-			self.vent.trigger("userJoined", username);
+			self.vent.trigger("userJoined", user);
 		});
-		socket.on('userLeft', function(username) {
-			console.log('sc.e.userLeft: ', username);
+		socket.on('userLeft', function(user) {
+			console.log('sc.e.userLeft: ', user);
       // socket.emit("onlineUsers");
-			self.vent.trigger("userLeft", username);
+			self.vent.trigger("userLeft", user);
 		});
 		socket.on('chat', function(chat) {
 			console.log('sc.e.chat: ', chat);
@@ -254,6 +254,7 @@ var ChatClient = function(options) {
       self.vent.trigger("setChatrooms", chatrooms);
     });
     socket.on('onlineUsers', function(onlineUsers) {
+      debugger;
       console.log('sc.e.onlineUsers: ', onlineUsers);
       self.vent.trigger("setOnlineUsers", onlineUsers);
     });
