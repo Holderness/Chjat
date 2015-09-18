@@ -244,7 +244,7 @@ app.MainController = function() {
   self.appEventBus.on("setChatrooms", function(chatrooms) {
     var oldChatrooms = self.chatroomModel.get('chatrooms');
     var updatedChatrooms = _.map(chatrooms, function(chatroom) {
-      var newChatroomModel = new app.ChatroomModel({ name: chatroom.name, owner: chatroom.owner});
+      var newChatroomModel = new app.ChatroomModel({ name: chatroom.name, owner: chatroom.owner, roomImage: chatroom.roomImage});
       return newChatroomModel;
     });
     oldChatrooms.reset(updatedChatrooms);

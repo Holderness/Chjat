@@ -107,12 +107,14 @@
     text-align: left;
     cursor: pointer;
     .room-name-container {
+      margin: 0 5px;
         &:hover {
           background-color: $marine;
           .room-name {
             color: $pink-oink;
           }
           .remove-chatroom {
+            display: inline-block;
             color: $pink-oink;
           }
         }
@@ -120,12 +122,21 @@
         margin: 0px;
         font-weight: bold;
         color: #ccc;
-        padding: 2px 0px;
+        padding: 2px 0 0 5px;
       }
       .remove-chatroom {
         border: none;
         background-color: transparent;
         color: #eee;
+        display: none;
+      }
+      .room-image {
+        display: inline-block;
+        max-width: 20px;
+        max-height: 20px;
+        border-radius: 80px;
+        border: none;
+        background-color: transparent;
       }
     }
   }
@@ -179,7 +190,7 @@
     transition-duration: 0.3s;
     .slideout-inner {
       position: fixed;
-      left: -183px;
+      left: -174px;
       -webkit-transition-duration: 0.3s;
       -moz-transition-duration: 0.3s;
       -o-transition-duration: 0.3s;

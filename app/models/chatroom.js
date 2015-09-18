@@ -24,6 +24,7 @@ var Chatroom = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+  roomImage: String,
 });
 
 module.exports = mongoose.model( 'Chatroom', Chatroom );

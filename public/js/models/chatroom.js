@@ -29,7 +29,6 @@ app.ChatroomModel = Backbone.Model.extend({
     console.log('crm.f.removeUser');
     var onlineUsers = this.get('onlineUsers');
     var foundUser = onlineUsers.find(function(userModel) { return userModel.get('username') == user.username; });
-    debugger;
     if (foundUser) {
       onlineUsers.remove(foundUser);
     }

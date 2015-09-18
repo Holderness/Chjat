@@ -66,6 +66,37 @@ exports.uploadChatImage = function (req, res, next) {
   });
 };
 
+exports.uploadChatroomImage = function (req, res, next) {
+
+  console.log('req: ', req);
+  console.log('----------------------------------------------------------------');
+  console.log('req.files.chatroomImageUpload: ', req.files.chatroomImageUpload);
+
+  if (!req.files || !req.files.chatroomImageUpload) {
+    return res.status(403).send('expect 1 file upload named chatImageUpload').end();
+  }
+  var chatroomImageUpload = req.files.chatroomImageUpload;
+
+  // this is mainly for user friendliness. this field can be tampered by attacker.
+  if (!/^image\/(jpe?g|png|gif)$/i.test(chatroomImageUpload.mimetype)) {
+    return res.status(403).send('expect image file').end();
+  }
+
+  uploadToS3(chatroomImageUpload, chatroomImageUpload.name, function (err, data) {
+    console.log('data-----------------:', data);
+    if (err) {
+      console.error(err);
+      return res.status(500)
+        .send('failed to upload to s3')
+        .end();
+    }
+      // console.log('data: ', data);
+    res.status(200)
+      .send({ roomImage: data.Location, ETag: data.ETag, name: '', timestamp: _.now()})
+      .end();
+  });
+};
+
 
 
 exports.findAllChatrooms = function(req, res, next) {

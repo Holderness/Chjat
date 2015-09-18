@@ -283,7 +283,7 @@ var Server = function(options) {
    self.createRoom = function(user, formData) {
       ChatroomModel.findOne({ name: formData.name }, function(err, chatroom) {
         if (!chatroom) {
-          var newChatroom = new ChatroomModel({name: formData.name, owner: user.username});
+          var newChatroom = new ChatroomModel({name: formData.name, owner: user.username, roomImage: formData.roomImage});
           newChatroom.save(function(err) {
             if (!err) {
               self.addUserToRoom(user, formData.name);
@@ -444,7 +444,7 @@ var Server = function(options) {
 
   self.getChatrooms = function(user, socket) {
     console.log('f.getChatrooms');
-    ChatroomModel.find({ 'participants.username': user.username}, 'name owner', function( err, chatrooms ) {
+    ChatroomModel.find({ 'participants.username': user.username}, 'name owner roomImage', function( err, chatrooms ) {
       if (!err) {
         console.log('chatrooms', chatrooms);
         socket.emit('chatrooms', chatrooms);

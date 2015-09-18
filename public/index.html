@@ -255,7 +255,9 @@
               </div>
               <div class="modal-body">
                 <div id="createChatroomContainer">
+                  <img src="/img/fly-pig-serious-icon.png" alt="" id="uploadedChatroomImage">
                   <form id="createChatroomForm">
+                      <input type="file" id="chatroomImageUpload" name="chatroomImageUpload">
                       <label for="chatroom-name-input">Chatroom Name: </label>
                       <input type="text" data-create="name" id="chatroom-name-input"/>
                       <div id="chatroom-name-validation-container"></div>
@@ -308,7 +310,7 @@
 
 <script type="text/template" id="online-users-list-template">
   <div class="user user-online">
-      <img class="user-image" src="<%= userImage %>">
+      <img class="user-image on" src="<%= userImage %>">
       <div class="user-username"><%= username %></div>
   </div>
 </script>
@@ -319,7 +321,7 @@
 
 <script type="text/template" id="offline-users-list-template">
   <div class="user user-offline">
-      <img class="user-image" src="<%= userImage %>">
+      <img class="user-image off" src="<%= userImage %>">
       <div class="user-username"><%= username %></div>
   </div>
 </script>
@@ -330,12 +332,11 @@
 
 <script type="text/template" id="room-list-template">
   <div class="room" data-room="<%= name %>">
-    <!-- <div class="col-xs-3 col-sm-3 col-md-1 text-center">
-       <span><i class="fa fa-circle"></i></span>
-      </div> -->
-    <div class="col-xs-12 col-sm-12 col-md-12 room-name-container">
+    <div class="room-name-container">
       <p class="room-name" data-room="<%= name %>" ><%= name %>
-      <button data-room-name="<%= name %>" class="pull-right remove-chatroom fa fa-times"></button></p>
+        <img class="pull-right room-image" src="<%= roomImage %>" alt="chatroom image">
+        <button data-room-name="<%= name %>" class="pull-right remove-chatroom fa fa-times"></button>
+      </p>
     </div>
   </div>
 </script>

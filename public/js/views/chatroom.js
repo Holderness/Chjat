@@ -73,6 +73,8 @@ app.ChatroomView = Backbone.View.extend({
   setSubViews: function() {
     this.chatImageUploadView = new app.ChatImageUploadView();
     this.chatImageUploadView.setElement(this.$('#chatImageUploadContainer'));
+    this.chatroomImageUploadView = new app.ChatroomImageUploadView();
+    this.chatroomImageUploadView.setElement(this.$('#createChatroomContainer'));
   },
   setChatListeners: function() {
 
@@ -175,7 +177,6 @@ app.ChatroomView = Backbone.View.extend({
   renderUsers: function() {
     console.log('crv.f.renderUsers');
     onlineUsers = this.model.get("onlineUsers");
-    debugger;
     console.log('USERS: ', onlineUsers);
     this.$('.online-users').empty();
     this.model.get("onlineUsers").each(function (user) {
@@ -323,16 +324,17 @@ app.ChatroomView = Backbone.View.extend({
     return this;
   },
 
-  createRoom: function(e) {
-    var formData = {};
-    this.$('#createChatroomForm').children( 'input' ).each(function(i, el) {
-      if ($(el).val() !== '') {
-        formData[$(el).data('create')] = $(el).val();
-        $(el).val('');
-      }
-    });
-    this.vent.trigger('createRoom', formData);
-  },
+  // createRoom: function(e) {
+  //   var formData = {};
+  //   this.$('#createChatroomForm').children( 'input' ).each(function(i, el) {
+  //     if ($(el).val() !== '') {
+  //       formData[$(el).data('create')] = $(el).val();
+  //       $(el).val('');
+  //     }
+  //   });
+  //   debugger;
+  //   this.vent.trigger('createRoom', formData);
+  // },
 
   destroyRoom: function(e) {
     e.preventDefault();

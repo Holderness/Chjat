@@ -250,11 +250,11 @@ var ChatClient = function(options) {
       self.vent.trigger("setChatlog", chatlog);
     });
     socket.on('chatrooms', function(chatrooms) {
+      debugger;
       console.log('sc.e.chatrooms:  ', chatrooms);
       self.vent.trigger("setChatrooms", chatrooms);
     });
     socket.on('onlineUsers', function(onlineUsers) {
-      debugger;
       console.log('sc.e.onlineUsers: ', onlineUsers);
       self.vent.trigger("setOnlineUsers", onlineUsers);
     });
