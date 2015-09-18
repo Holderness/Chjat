@@ -12,17 +12,11 @@ var app = app || {};
       'click #createChatroomBtn': 'submit',
     },
 
-    initialize: function() {
-      // this.listenTo(this, "file-chosen", this.renderThumb, this);
-      // this.listenTo(this, "file-chosen", this.renderThumb, this);
-    },
-
     render: function() {
       this.renderThumb();
     },
 
     renderThumb: function() {
-      debugger;
       var input = this.$('#chatroomImageUpload');
       var img = this.$('#uploadedChatroomImage')[0];
       if(input.val() !== '') {
@@ -41,7 +35,6 @@ var app = app || {};
     submit: function(e) {
       e.preventDefault();
       this.$form = this.$('#createChatroomForm');
-      debugger;
       this.$form.trigger('attachImage');
     },
 
@@ -64,7 +57,6 @@ var app = app || {};
           success: function( response ) {
             console.log('imgUpload response: ', response);
             var form = _this.createRoomFormData();
-            debugger;
             response.name = form.name;
               _this.trigger('createRoom', response);
             $('#createChatroomModal').modal('hide');
@@ -87,7 +79,6 @@ var app = app || {};
         }
       });
       return formData;
-      // this.vent.trigger('createRoom', formData);
     },
 
     renderStatus: function( status ) {

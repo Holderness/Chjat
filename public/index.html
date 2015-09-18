@@ -129,8 +129,13 @@
 <!-- chatbox-header -->
 
   <script type="text/template" id="chatroom-header-template">  
-    <div class="astricks fa">*</div>
-	  <h3 class="chatbox-header-chatroom-name"> <%= name %></h3>
+    <!-- <div class="astricks fa">*</div> -->
+    <div class="room-header-image-container">
+      <img class="room-header-image" src="<%= roomImage %>" alt="room header image" />
+    </div>
+    <div class="chatbox-header-chatroom-name-container">
+	    <h3 class="chatbox-header-chatroom-name"> <%= name %></h3>
+    </div>
     <% if (owner === currentUser) { %>
       <h6 class="chatbox-header-destroy"><a id="destroy-chatroom" href="#">destroy</a></h6>
     <% } %>
@@ -333,10 +338,12 @@
 <script type="text/template" id="room-list-template">
   <div class="room" data-room="<%= name %>">
     <div class="room-name-container">
-      <p class="room-name" data-room="<%= name %>" ><%= name %>
-        <img class="pull-right room-image" src="<%= roomImage %>" alt="chatroom image">
+      <div class="room-name" data-room="<%= name %>" ><%= name %>
+        <div class="room-image-container pull-right">
+          <img class="room-image" src="<%= roomImage %>" alt="chatroom image">
+        </div>
         <button data-room-name="<%= name %>" class="pull-right remove-chatroom fa fa-times"></button>
-      </p>
+      </div>
     </div>
   </div>
 </script>

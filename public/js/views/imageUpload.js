@@ -13,10 +13,10 @@ var app = app || {};
       'click #addChatImageBtn': 'submit',
     },
 
-    initialize: function() {
-      this.listenTo(this, "file-chosen", this.renderThumb, this);
-      this.listenTo(this, "file-chosen", this.renderThumb, this);
-    },
+    // initialize: function() {
+    //   this.listenTo(this, "file-chosen", this.renderThumb, this);
+    //   this.listenTo(this, "file-chosen", this.renderThumb, this);
+    // },
 
     render: function() {
       this.renderThumb();

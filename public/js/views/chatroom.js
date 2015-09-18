@@ -471,7 +471,7 @@ app.ChatroomView = Backbone.View.extend({
   setRoom: function(e) {
     console.log('crv.f.setRoom');
     var $tar = $(e.target);
-    if ($tar.is('p')) {
+    if ($tar.is('.room-name')) {
       this.joinRoom($tar.data('room'));
     }
   },

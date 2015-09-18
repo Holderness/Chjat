@@ -107,7 +107,6 @@
     text-align: left;
     cursor: pointer;
     .room-name-container {
-      margin: 0 5px;
         &:hover {
           background-color: $marine;
           .room-name {
@@ -117,12 +116,15 @@
             display: inline-block;
             color: $pink-oink;
           }
+          .room-image-container {
+            display: none;
+          }
         }
       .room-name {
         margin: 0px;
         font-weight: bold;
         color: #ccc;
-        padding: 2px 0 0 5px;
+        padding: 3px 5px 3px 10px;
       }
       .remove-chatroom {
         border: none;
@@ -130,13 +132,19 @@
         color: #eee;
         display: none;
       }
-      .room-image {
+      .room-image-container {
         display: inline-block;
-        max-width: 20px;
-        max-height: 20px;
-        border-radius: 80px;
-        border: none;
-        background-color: transparent;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        .room-image {
+          margin-top: -3px;
+          max-width: 20px;
+          max-height: 20px;
+          border-radius: 80px;
+          border: none;
+          background-color: transparent;
+        }
       }
     }
   }

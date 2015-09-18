@@ -398,7 +398,7 @@ var Server = function(options) {
         user.socket.emit('chatlog', chatroom.chatlog.slice(-25));
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
         user.socket.emit('offlineUsers', offlineUsers);
-        user.socket.emit('chatroomHeader', {name: roomName, owner: chatroom.owner, currentUser: user.username, chatlogLength: chatroom.chatlog.length, modelsLoadedSum: -1});
+        user.socket.emit('chatroomHeader', {name: roomName, roomImage: chatroom.roomImage, owner: chatroom.owner, currentUser: user.username, chatlogLength: chatroom.chatlog.length, modelsLoadedSum: -1});
       } else {
         return console.log (err);
       }
