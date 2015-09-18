@@ -102,6 +102,7 @@ app.ChatroomView = Backbone.View.extend({
 
     this.listenTo(this.chatImageUploadView, 'chat-image-uploaded', this.chatUploadImage);
     this.listenTo(this.chatImageUploadView, 'message-image-uploaded', this.messageUploadImage);
+    this.listenTo(this.chatroomImageUploadView, 'createRoom', this.createChatroom);
 
     this.listenTo(this.model, "moreChats", this.renderMoreChats, this);
 
@@ -324,17 +325,10 @@ app.ChatroomView = Backbone.View.extend({
     return this;
   },
 
-  // createRoom: function(e) {
-  //   var formData = {};
-  //   this.$('#createChatroomForm').children( 'input' ).each(function(i, el) {
-  //     if ($(el).val() !== '') {
-  //       formData[$(el).data('create')] = $(el).val();
-  //       $(el).val('');
-  //     }
-  //   });
-  //   debugger;
-  //   this.vent.trigger('createRoom', formData);
-  // },
+  createChatroom: function(response) {
+    this.vent.trigger('createRoom', response);
+  },
+
 
   destroyRoom: function(e) {
     e.preventDefault();
