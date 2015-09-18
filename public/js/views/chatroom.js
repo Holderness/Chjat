@@ -409,10 +409,13 @@ app.ChatroomView = Backbone.View.extend({
 
 // change to 'joinDirectMessage'
   initDirectMessage: function(e) {
-    var recipient = $(e.currentTarget).text().trim();
+    var recipient = {},
+        $tar = $(e.currentTarget);
+    recipient.username = $tar.text().trim();
+    recipient.userImage = $tar.find('img').attr('src');
     this.currentDate = '';
     this.previousDate = '';
-    if (this.model.get('chatroom').get('currentUser') !== recipient) {
+    if (this.model.get('chatroom').get('currentUser') !== recipient.username) {
       this.vent.trigger('initDirectMessage', recipient);
     }
   },

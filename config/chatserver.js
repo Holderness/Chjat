@@ -231,20 +231,20 @@ var Server = function(options) {
   self.initDirectMessage = function(user, recipient) {
     console.log('initDirectMessage');
     console.log('recipient: ', recipient);
-    DirectMessageModel.findOne({'participants': {'$all': [{"username": user.username}, {"username": recipient}]}}, function(err, DM) {
+    DirectMessageModel.findOne({'participants': {'$all': [{"username": user.username}, {"username": recipient.username}]}}, function(err, DM) {
       if (DM) {
         console.log('this is the DM', DM);
         self.connectToDirectMessage(user, DM._id);
         user.socket.emit('setDirectMessageChatlog', DM.chatlog.slice(-25));
-        user.socket.emit('setDirectMessageHeader', {id: DM._id, 'name': recipient, 'owner': null, 'currentUser': user.username, chatlogLength: DM.chatlog.length, modelsLoadedSum: -1, chatType: 'message'});
+        user.socket.emit('setDirectMessageHeader', {id: DM._id, 'name': recipient.username, 'owner': null, 'currentUser': user.username, chatlogLength: DM.chatlog.length, modelsLoadedSum: -1, chatType: 'message', roomImage: recipient.userImage});
       } else {
-        var newDirectMessage = new DirectMessageModel({'participants': [{'username': user.username}, {'username': recipient}]});
+        var newDirectMessage = new DirectMessageModel({'participants': [{'username': user.username, 'userImage': user.userImage}, {'username': recipient.username}]});
         newDirectMessage.save(function(err, DM) {
            if (!err) {
              console.log('DM created');
              self.connectToDirectMessage(user, DM._id);
              user.socket.emit('setDirectMessageChatlog', DM.chatlog.slice(-25));
-             user.socket.emit('setDirectMessageHeader', {id: DM._id, 'name': recipient, 'owner': null, 'currentUser': user.username, chatlogLength: DM.chatlog.length, modelsLoadedSum: -1, chatType: 'message'});
+             user.socket.emit('setDirectMessageHeader', {id: DM._id, 'name': recipient.username, 'owner': null, 'currentUser': user.username, chatlogLength: DM.chatlog.length, modelsLoadedSum: -1, chatType: 'message', roomImage: recipient.userImage});
            } else {
              console.log('DM not created', err);
            }

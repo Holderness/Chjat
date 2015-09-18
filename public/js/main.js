@@ -307,6 +307,7 @@ app.MainController = function() {
 
   self.appEventBus.on("setDMheader", function(header) {
     var newHeader = new app.ChatroomHeaderModel(header);
+    debugger;
     self.chatroomModel.set('chatroom', newHeader);
   });
 
