@@ -94,11 +94,38 @@
       padding: 17px 0;
     }
   }
-  .chatbox-header-destroy {
+  .chatroom-changeables {
+    margin: 4px 5px 0 0;
     float: right;
-    margin: 15px;
-    a {
-      color: $dark-gray-text;
+    color: $dark-gray-text;
+    cursor: pointer;
+    &:hover, &:focus, &:active {
+      .fa-cog {
+        color: $pink-oink;
+      }
+    }
+    .fa-cog {
+      font-size: 18px;
+    }
+    .dropdown-toggle {
+      box-shadow: none;
+      -webkit-box-shadow: none;
+    }
+    li {
+      padding: 0 10px;
+      &:hover {
+        background-color: $marine;
+        color: $pink-oink;
+      }
+    }
+    .dropdown-menu {
+      left: auto;
+      right: 0;
+      min-width: 100%;
+      #chatroom-settings {
+      }
+      #chatroom-destroy {
+      }
     }
   }
 }
