@@ -335,7 +335,6 @@ app.ChatroomView = Backbone.View.extend({
   updateRoom: function(form) {
     var id = this.model.get('chatroom').get('id');
     form.id = id;
-    debugger;
     this.vent.trigger('updateRoom', form);
   },
 

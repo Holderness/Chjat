@@ -54,8 +54,10 @@ var app = app || {};
     // },
 
     authenticated: function() {
-      if (!app.mainController) { return this.start(); }
-      app.mainController.authenticated();
+      if (!app.mainController) {
+        this.start();
+      }
+        app.mainController.authenticated();
     },
     facebook: function() {
       this.start(this.authenticated);

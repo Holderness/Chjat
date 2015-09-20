@@ -36,7 +36,6 @@ var app = app || {};
       e.preventDefault();
 
       this.$form = this.$('#chatroomSettingsForm');
-            debugger;
       this.$form.trigger('attachImage');
     },
 

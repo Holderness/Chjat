@@ -31,60 +31,63 @@ var ChatClient = function(options) {
     self.setResponseListeners(self.socket);
   };
 
+
+
+
+///// ViewEventBus methods ////
+    // methods that emit to the chatserver
+
+// LOGIN
+  self.login = function(user) {
+    console.log('sc.f.login: ', user);
+    self.socket.emit("login", user);
+  };
+
+
+// ROOM
   self.connectToRoom = function(name) {
     console.log('sc.f.connectToRoom: ', name);
     self.socket.emit("connectToRoom", name);
   };
-
-  // self.getChatroomModel = function(name) {
-  //   console.log('sc.f.getChatroomModel: ', name);
-  //   self.socket.emit("getChatroomModel", name);
-  // };
-
+  self.joinRoom = function(name) {
+    self.socket.emit('joinRoom', name);
+  };
   self.addRoom = function(name) {
     console.log('sc.f.addRoom: ', name);
     self.socket.emit("addRoom", name);
   };
-
   self.removeRoom = function(name) {
     console.log('sc.f.removeRoom: ', name);
     self.socket.emit("removeRoom", name);
   };
-
   self.createRoom = function(formData) {
     console.log('sc.f.createRoom: ', formData);
     self.socket.emit("createRoom", formData);
   };
-
   self.updateRoom = function(formData) {
     console.log('sc.f.updateRoom: ', formData);
     self.socket.emit("updateRoom", formData);
   };
-
   self.destroyRoom = function(name) {
     console.log('sc.f.destroyRoom: ', name);
     self.socket.emit("destroyRoom", name);
   };
 
 
-///// ViewEventBus methods ////
-    // methods that emit to the chatserver
-  self.login = function(user) {
-    console.log('sc.f.login: ', user);
-		self.socket.emit("login", user);
-	};
-  // self.logout = function() {
-  //   self.socket.emit("wut");
-  // };
 
-
-
+// CHAT
   self.chat = function(chat) {
     console.log('sc.f.chat: ', chat);
 		self.socket.emit("chat", chat);
 	};
   self.getMoreChats = function(chatReq) {
     self.socket.emit('getMoreChats', chatReq);
+  };
+
+
+// DIRECT MESSAGE
+  self.initDirectMessage = function(recipient) {
+    self.socket.emit('initDirectMessage', recipient);
   };
   self.directMessage = function(directMessage) {
     self.socket.emit('directMessage', directMessage);
@@ -94,7 +97,7 @@ var ChatClient = function(options) {
   };
   
 
-  // Typing methods
+// TYPING
 	self.addChatTyping = function(data) {
     var message = data.username + ' is typing';
     $('.typetypetype').text(message);
@@ -121,48 +124,13 @@ var ChatClient = function(options) {
   };
 
 
-  // join room
-  self.joinRoom = function(name) {
-    self.socket.emit('joinRoom', name);
-  };
-
-  // set room
-  // self.setRoom = function(name) {
-  //   if (name !== null) {
-  //     this.currentRoom = name;
-  //   }
-  //   ///>>>>>>> changethisto .chat-title
-  //   var $chatTitle = $('.chatbox-header-username');
-  //   $chatTitle.text(name);
-  //   var this_ = this;
-  //   $('.chat-directory').find('.room').each(function() {
-  //     var $room = $(this);
-  //     $room.removeClass('active');
-  //     if ($room.data('name') === this_.currentRoom) {
-  //       $room.addClass('active');
-  //     }
-  //   });
-  // };
-
+// ERROR HANDLING
   self.doesChatroomExist = function(chatroomQuery) {
     self.socket.emit('doesChatroomExist', chatroomQuery);
   };
 
 
-
-
-
-
-
-
-  self.initDirectMessage = function(recipient) {
-    self.socket.emit('initDirectMessage', recipient);
-  };
   
-
-
-
-
 
 
 
@@ -172,51 +140,17 @@ var ChatClient = function(options) {
   // these guys listen to the chatserver/socket and emit data to main.js,
   // specifically to the appEventBus.
 	self.setResponseListeners = function(socket) {
-		// socket.on('welcome', function(data) {
-  //     // emits event to recalibrate onlineUsers collection
-  //     // socket.emit("getOnlineUsers");
-  //     // socket.emit("rooms");
-  //     // data is undefined at this point because it's the first to
-  //     // fire off an event chain that will append the new user to 
-  //     // the onlineUser collection
-  //     debugger;
-  //     self.vent.trigger("loginDone", data);
-  //   });
 
 
-// login
-
+// LOGIN
     socket.on('login', function(username) {
+      console.log('sc.e.login');
       self.vent.trigger('loginUser', username);
+      self.connectToRoom("Parlor");
     });
 
 
-  //   socket.on('log', function() {
-  //     debugger;
-  //     console.log('sc.e.log');
-  //     self.vent.trigger('authenticated');
-  //   });
-
-		// socket.on('usersInfo', function(users) {
-  //     debugger;
-		// 	console.log('sc.e.usersInfo: ', users);
-		// 	self.vent.trigger("usersInfo", users);
-		// });
-
-//     socket.on('rooms', function(chatrooms) {
-// debugger;
-//       console.log('sc.e.rooms: ', chatrooms);
-//       self.vent.trigger("roomInfo", chatrooms);
-//     });
-
-    // socket.on('setRoom', function(name) {
-    //   debugger;
-    //   console.log('sc.e.setRoom: ', name);
-    //   self.vent.trigger("setRoom", name);
-    // });
-
-
-// chat
+// CHAT
 		socket.on('userJoined', function(user) {
 			console.log('sc.e.userJoined: ', user);
       // socket.emit("onlineUsers");
@@ -239,8 +173,21 @@ var ChatClient = function(options) {
     });
 
 
-// chatroom
+// DIRECT MESSAGE
+    socket.on('setDirectMessageChatlog', function(chatlog) {
+      self.vent.trigger("setDMchatlog", chatlog);
+    });
+    socket.on('setDirectMessageHeader', function(header) {
+      self.vent.trigger("setDMheader", header);
+    });
+    socket.on('directMessage', function(message) {
+      // self.vent.trigger("renderDirectMessage", DM);
+      self.vent.trigger("directMessageReceived", message);
+    });
 
+
+
+// TYPING
     socket.on('typing', function(data) {
       self.addChatTyping(data);
     });
@@ -249,7 +196,7 @@ var ChatClient = function(options) {
     });
 
 
-// set chatroom
+// SET ROOM
     socket.on('chatlog', function(chatlog) {
       console.log('sc.e.chatlog: ', chatlog);
       self.vent.trigger("setChatlog", chatlog);
@@ -272,36 +219,24 @@ var ChatClient = function(options) {
     });
 
 
-// modify room
+// MODIFY ROOM
     socket.on('roomDestroyed', function(name) {
       console.log('sc.e.roomDestroyed: ', name);
       self.vent.trigger("roomDestroyed", name);
     });
 
-// create room
+// CREATE ROOM
     socket.on('chatroomAvailability', function(availabilty) {
       self.vent.trigger('chatroomAvailability', availabilty);
     });
 
-// errors
+// ERROR HANDLING
     socket.on('chatroomAlreadyExists', function() {
       self.vent.trigger("chatroomAlreadyExists");
     });
 
 
-// DirectMessage
-    socket.on('setDirectMessageChatlog', function(chatlog) {
-      self.vent.trigger("setDMchatlog", chatlog);
-    });
 
-    socket.on('setDirectMessageHeader', function(header) {
-      self.vent.trigger("setDMheader", header);
-    });
-
-    socket.on('directMessage', function(message) {
-      // self.vent.trigger("renderDirectMessage", DM);
-      self.vent.trigger("directMessageReceived", message);
-    });
 
 
 	};

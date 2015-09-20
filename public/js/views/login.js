@@ -26,10 +26,11 @@ var app = app || {};
       // triggers the login event and passing the username data to js/main.js
       var this_ = this;
       e.preventDefault();
+      var sendData = {username: this.$('#username').val(), password: this.$('#password').val()};
     $.ajax({
         url: "/login",
         method: 'POST',
-        data: {username: this.$('#username').val(), password: this.$('#password').val()},
+        data: sendData,
         success: function(data) {
            console.log('success data: ', data);
            if (data.message) {
@@ -37,14 +38,15 @@ var app = app || {};
            }
            else if (data === 200) {
             app.ChatroomRouter.navigate('authenticated', { trigger: true });
-            this_.vent.trigger("login", {username: this_.$('#username').val(), password: this_.$('#password').val()});
+
            }
            else {
-            console.log(data);
+            console.log('oops, the else: ', data);
           }
         }
       }).done(function() {
         console.log('doneeeeeeee');
+                    this_.vent.trigger("login", sendData);
       });
     },
     renderValidation: function(what) {

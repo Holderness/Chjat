@@ -73,36 +73,25 @@ var Server = function(options) {
         id: userModel._id,
       });
       console.log('----0000---: ', newUser);
-      socket.emit('login', newUser.username);
-      self.setResponseListeners(newUser);
+
+      var callback = function() {
+        socket.emit('login', newUser.username);
+      };
+      // socket.emit('login', newUser.username);
+      self.setResponseListeners(newUser, callback);
     });
-
-
 
 
   };
     
 
 
-  self.setResponseListeners = function(user) {
-
-        // user.socket.on('wut', function() {
-    //   user.socket.disconnect();
-    // });
+  self.setResponseListeners = function(user, callback) {
+    console.log('f.setResponseListeners: ');
 
     user.socket.on('disconnect', function() {
       self.io.sockets.emit("userLeft", { username: user.username, userImage: user.userImage });
       self.leaveRoom(user);
-
-      // if (user.socket.handshake.session) {
-      //     user.socket.handshake.session.passport = {};
-      //     user.socket.handshake.session.userdata = {};
-      //   }
-        // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', self.io.sockets);
-      // if (self.io.sockets.sockets[user.socket.id]) {
-      //    self.io.sockets.sockets[user.socket.id].disconnect();
-      // }
-      // console.log('user.SOCKET-SRL:            ', user.socket);
       console.log("e.disconnect: ", user.username);
       console.log('he gone.');
     });
@@ -126,7 +115,7 @@ var Server = function(options) {
               chatroom.save(function(err) {
                 if (err) { return console.log( err );}
               });
-              self.io.sockets.to(user.socket.chat.room).emit("chat", { room: user.socket.chat.room, sender: user.username, message: chat.message, url: chat.url, timestamp: timestamp});
+              self.io.sockets.in(user.socket.chat.room).emit("chat", { room: user.socket.chat.room, sender: user.username, message: chat.message, url: chat.url, timestamp: timestamp});
           } else {
             return console.log( err );
           }
@@ -160,10 +149,10 @@ var Server = function(options) {
     });
 
     user.socket.on("typing", function() {
-      user.socket.broadcast.emit("typing", { username: user.username });
+      user.socket.broadcast.to(user.socket.chat.room).emit("typing", { username: user.username });
     });
     user.socket.on("stop typing", function() {
-      user.socket.broadcast.emit("stop typing");
+      user.socket.broadcast.to(user.socket.chat.room).emit("stop typing");
     });
 
     user.socket.on('joinRoom', function(roomName) {
@@ -230,6 +219,10 @@ var Server = function(options) {
       console.log('e.initDirectMessage');
       self.initDirectMessage(user, recipient);
     });
+
+    if (callback) {
+      callback();
+    }
 
   };  // end setChatListeners
 
@@ -309,22 +302,19 @@ var Server = function(options) {
     self.updateRoom = function(user, formData) {
       var id = formData.id;
       delete formData.id;
-      ChatroomModel.findOneAndUpdate({ _id: id }, { '$set': formData }, function(err, chatroom) {
+      ChatroomModel.findOneAndUpdate({ _id: id }, { '$set': formData }, function(err, oldRoom) {
         ChatroomModel.findOne({ _id: id }, function(err, chatroom) {
-          console.log('-----da real mvp: ', chatroom.name);
-
-
-
-            // hmm, 
-
-
-
-          // self.leaveRoom(user);
-          // self.addToRoom(user, chatroom.name);
+          self.leaveRoom(user);
+          self.addToRoom(user, chatroom.name);
         });
       });
 
    };
+
+//   self.refresh = function(user, oldRoom, newRoom) {
+
+// user.socket.broadcast.to(oldRoom.name).emit('chatroomHeader', {id: newRoom._id, name: newRoom.name, roomImage: newRoom.roomImage, owner: newRoom.owner, currentUser: user.username, chatlogLength: chatroom.chatlog.length, modelsLoadedSum: -1});
+//   };
 
 
     self.destroyRoom = function(user, chatroomName) {

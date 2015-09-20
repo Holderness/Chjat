@@ -31,9 +31,12 @@ app.MainController = function() {
 
 
   self.authenticated = function() {
+
+    console.log('f.main.authenticated');
        
     $("body").css("overflow", "hidden");
     self.chatClient = new ChatClient({ vent: self.appEventBus });
+          console.log('huh');
     self.chatClient.connect();
 
     // new model and view created for chatroom
@@ -44,16 +47,17 @@ app.MainController = function() {
       self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel });
       self.containerModel.set('viewState', self.chatroomView);
 
-      self.connectToRoom();
+      // self.connectToRoom();
       // self.initRoom();
        
     });
 
   };
 
-  self.connectToRoom = function(callback) {
-    self.chatClient.connectToRoom("Parlor");
-  };
+  // self.connectToRoom = function(callback) {
+  //   console.log('f.main.connectToRoom');
+  //   self.chatClient.connectToRoom("Parlor");
+  // };
 
   // self.initRoom = function(callback) {
   //   self.chatroomView.initRoom();
@@ -310,7 +314,6 @@ app.MainController = function() {
 
   self.appEventBus.on("setDMheader", function(header) {
     var newHeader = new app.ChatroomHeaderModel(header);
-    debugger;
     self.chatroomModel.set('chatroom', newHeader);
   });
 
