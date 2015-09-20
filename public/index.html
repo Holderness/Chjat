@@ -139,17 +139,54 @@
     <div class="chatbox-header-chatroom-name-container">
 	    <h3 class="chatbox-header-chatroom-name"> <%= name %></h3>
     </div>
-    <div class="btn-group chatroom-changeables">
-      <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="fa fa-cog"></span>
+    <% if (owner) { %>
+      <div class="btn-group chatroom-changeables">
+        <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="fa fa-cog"></span>
+        </div>
+        <ul class="dropdown-menu">
+          <li id="chatroom-settings" 
+              data-toggle="modal"
+              data-target="#chatroomSettingsModal">
+              settings
+          </li>
+          <% if (owner === currentUser) { %>
+            <li id="destroy-chatroom">destroy</li>
+          <% } %>
+        </ul>
       </div>
-      <ul class="dropdown-menu">
-        <li id="chatroom-settings">settings</li>
-        <% if (owner === currentUser) { %>
-          <li id="destroy-chatroom">destroy</li>
-        <% } %>
-      </ul>
-    </div>
+    <% } %>
+
+
+  <!-- chatroomSettings modal -->
+        <div class="modal fade" id="chatroomSettingsModal" tabindex="-1" role="dialog" aria-labelledby="chatroomSettingsModal" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="chatroomSettingsModalLabel">Chatroom Settings</h4>
+              </div>
+              <div class="modal-body">
+                <div id="chatroomSettingsContainer" class="modal-image">
+                  <img src="<%= roomImage %>" alt="" id="uploadedChatroomSettingsImage">
+                  <form id="chatroomSettingsForm">
+                      <input type="file" id="chatroomSettingsImageUpload" name="chatroomImageUpload">
+                      <label for="chatroomSettingsNameInput">Chatroom Name: </label>
+                      <input type="text" data-create="name" placeholder="<%= name %>" id="chatroomSettingsNameInput"/>
+                      <div id="chatroom-name-validation-container"></div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
+                      <input type="button" id="chatroomSettingsBtn" data-dismiss="modal" class="btn btn-primary-mod" value="Save & Close"></input>
+                    </div>
+                  </form>
+                  <div id="status"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
   </script>
 
   <script type="text/template" id="direct-message-header-template">  
@@ -234,33 +271,7 @@
               </div>
           </div> <!-- chatbox -->
 
-<!-- chatroomSettings modal -->
-        <div class="modal fade" id="chatroomSettingsModal" tabindex="-1" role="dialog" aria-labelledby="chatroomSettingsModal" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="chatroomSettingsModalLabel">Chatroom Settings</h4>
-              </div>
-              <div class="modal-body">
-                <div id="chatroomSettingsContainer">
-                  <img src="/img/fly-pig-serious-icon.png" alt="" id="uploadedChatroomImage">
-                  <form id="chatroomSettingsForm">
-                      <input type="file" id="chatroomSettingsImageUpload" name="chatroomSettingsImageUpload">
-                      <label for="chatroomSettingsNameInput">Chatroom Name: </label>
-                      <input type="text" data-create="name" id="chatroomSettingsNameInput"/>
-                      <div id="chatroom-name-validation-container"></div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
-                      <input type="button" id="chatroomSettingsBtn" data-dismiss="modal" class="btn btn-primary-mod" value="Save & Close"></input>
-                    </div>
-                  </form>
-                  <div id="status"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+
 
 
 <!-- chatImageUpload modal -->
@@ -272,7 +283,7 @@
                 <h4 class="modal-title" id="chatImageUploadModalLabel">Create a Chatroom</h4>
               </div>
               <div class="modal-body">
-                <div id="chatImageUploadContainer" data-chat-type="chat">
+                <div id="chatImageUploadContainer" class="modal-image" data-chat-type="chat">
                   <img src="/img/fly-pig-serious-icon.png" alt="" id="uploadedChatImage">
                   <form id="chatImageUploadForm">
                     <input type="file" id="chatImageUpload" name="chatImageUpload">
@@ -298,7 +309,7 @@
                 <h4 class="modal-title" id="createChatroomModalLabel">Create a Chatroom</h4>
               </div>
               <div class="modal-body">
-                <div id="createChatroomContainer">
+                <div id="createChatroomContainer" class="modal-image">
                   <img src="/img/fly-pig-serious-icon.png" alt="" id="uploadedChatroomImage">
                   <form id="createChatroomForm">
                       <input type="file" id="chatroomImageUpload" name="chatroomImageUpload">

@@ -197,6 +197,13 @@ var Server = function(options) {
       self.createRoom(user, formData);
     });
 
+    user.socket.on('updateRoom', function(formData) {
+      console.log('e.updateRoom');
+      console.log('updateRoom formData: ', formData);
+      console.log('updateRoom user: ', user.username);
+      self.updateRoom(user, formData);
+    });
+
     user.socket.on('destroyRoom', function(name) {
       console.log('e.destroyRoom');
       console.log('destroyRoom name: ', name);
@@ -299,6 +306,26 @@ var Server = function(options) {
       });
    };
 
+    self.updateRoom = function(user, formData) {
+      var id = formData.id;
+      delete formData.id;
+      ChatroomModel.findOneAndUpdate({ _id: id }, { '$set': formData }, function(err, chatroom) {
+        ChatroomModel.findOne({ _id: id }, function(err, chatroom) {
+          console.log('-----da real mvp: ', chatroom.name);
+
+
+
+            // hmm, 
+
+
+
+          // self.leaveRoom(user);
+          // self.addToRoom(user, chatroom.name);
+        });
+      });
+
+   };
+
 
     self.destroyRoom = function(user, chatroomName) {
       ChatroomModel.remove({name: chatroomName}, function(err) {
@@ -398,7 +425,7 @@ var Server = function(options) {
         user.socket.emit('chatlog', chatroom.chatlog.slice(-25));
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
         user.socket.emit('offlineUsers', offlineUsers);
-        user.socket.emit('chatroomHeader', {name: roomName, roomImage: chatroom.roomImage, owner: chatroom.owner, currentUser: user.username, chatlogLength: chatroom.chatlog.length, modelsLoadedSum: -1});
+        user.socket.emit('chatroomHeader', {id: chatroom._id, name: roomName, roomImage: chatroom.roomImage, owner: chatroom.owner, currentUser: user.username, chatlogLength: chatroom.chatlog.length, modelsLoadedSum: -1});
       } else {
         return console.log (err);
       }

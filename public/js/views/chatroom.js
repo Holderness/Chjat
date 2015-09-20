@@ -17,7 +17,7 @@ app.ChatroomView = Backbone.View.extend({
     'click .chat-directory .room': 'setRoom',
     'keypress #chat-search-input': 'search',
     'click .remove-chatroom': 'removeRoom',
-    'click #createChatroomBtn': 'createRoom',
+    // 'click #createChatroomBtn': 'createRoom',
     'click #destroy-chatroom': 'destroyRoom',
     'keyup #chatroom-name-input': 'doesChatroomExist',
     'click .user': 'initDirectMessage',
@@ -102,7 +102,7 @@ app.ChatroomView = Backbone.View.extend({
 
     this.listenTo(this.chatImageUploadView, 'chat-image-uploaded', this.chatUploadImage);
     this.listenTo(this.chatImageUploadView, 'message-image-uploaded', this.messageUploadImage);
-    this.listenTo(this.chatroomImageUploadView, 'createRoom', this.createChatroom);
+    this.listenTo(this.chatroomImageUploadView, 'createRoom', this.createRoom);
 
     this.listenTo(this.model, "moreChats", this.renderMoreChats, this);
 
@@ -164,6 +164,9 @@ app.ChatroomView = Backbone.View.extend({
 
   renderHeader: function() {
     this.$('#chatbox-header').html(this.headerTemplate(this.model.get('chatroom').toJSON()));
+    this.chatroomSettingsView = new app.ChatroomSettingsView();
+    this.chatroomSettingsView.setElement(this.$('#chatroomSettingsContainer'));
+    this.listenTo(this.chatroomSettingsView, 'updateRoom', this.updateRoom);
   },
 
   renderDirectMessageHeader: function() {
@@ -325,8 +328,15 @@ app.ChatroomView = Backbone.View.extend({
     return this;
   },
 
-  createChatroom: function(response) {
-    this.vent.trigger('createRoom', response);
+  createRoom: function(form) {
+    this.vent.trigger('createRoom', form);
+  },
+
+  updateRoom: function(form) {
+    var id = this.model.get('chatroom').get('id');
+    form.id = id;
+    debugger;
+    this.vent.trigger('updateRoom', form);
   },
 
 
