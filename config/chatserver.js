@@ -229,7 +229,7 @@ var Server = function(options) {
         console.log('this is the DM', DM);
         self.connectToDirectMessage(user, DM._id);
         user.socket.emit('setDirectMessageChatlog', DM.chatlog.slice(-25));
-        user.socket.emit('setDirectMessageHeader', {id: DM._id, 'name': recipient.username, 'owner': null, 'currentUser': user.username, chatlogLength: DM.chatlog.length, modelsLoadedSum: -1, chatType: 'message', roomImage: recipient.userImage});
+        user.socket.emit('setDirectMessageHeader', {id: DM._id, 'name': recipient.username, privacy: false, blockedUsers: [], 'owner': null, 'currentUser': user.username, chatlogLength: DM.chatlog.length, modelsLoadedSum: -1, chatType: 'message', roomImage: recipient.userImage});
       } else {
         var newDirectMessage = new DirectMessageModel({'participants': [{'username': user.username, 'userImage': user.userImage}, {'username': recipient.username}]});
         newDirectMessage.save(function(err, DM) {
@@ -237,7 +237,7 @@ var Server = function(options) {
              console.log('DM created');
              self.connectToDirectMessage(user, DM._id);
              user.socket.emit('setDirectMessageChatlog', DM.chatlog.slice(-25));
-             user.socket.emit('setDirectMessageHeader', {id: DM._id, 'name': recipient.username, 'owner': null, 'currentUser': user.username, chatlogLength: DM.chatlog.length, modelsLoadedSum: -1, chatType: 'message', roomImage: recipient.userImage});
+             user.socket.emit('setDirectMessageHeader', {id: DM._id, 'name': recipient.username, privacy: false, blockedUsers: [], 'owner': null, 'currentUser': user.username, chatlogLength: DM.chatlog.length, modelsLoadedSum: -1, chatType: 'message', roomImage: recipient.userImage});
            } else {
              console.log('DM not created', err);
            }
@@ -391,14 +391,42 @@ var Server = function(options) {
     };
   self.getChatrooms = function(user, socket) {
     console.log('f.getChatrooms');
-    ChatroomModel.find({ 'participants.username': user.username}, 'name owner roomImage', function( err, chatrooms ) {
+    ChatroomModel.find({ 'participants.username': user.username }, 'name owner roomImage privacy', function( err, chatrooms ) {
       if (!err) {
-        console.log('chatrooms', chatrooms);
-        socket.emit('chatrooms', chatrooms);
+        var priv = self.getPrivateRooms(chatrooms);
+        var pub = self.getPublicRooms(chatrooms);
+        console.log('priv', priv);
+        console.log('pub', pub);
+        socket.emit('chatrooms', pub);
+        socket.emit('privateRooms', priv);
       } else {
         return console.log (err);
       }
     });
+  };
+  // self.getPrivateRooms = function(user, socket) {
+  //   var pub = _.filter(chatrooms, function(room) { return room.privacy
+  //   console.log('f.getPrivateRooms');
+  //   ChatroomModel.find({ 'participants.username': user.username, 'privacy': true }, 'name owner roomImage', function( err, chatrooms ) {
+  //     if (!err) {
+  //       console.log('privateRooms', chatrooms);
+  //       socket.emit('privateRooms', chatrooms);
+  //     } else {
+  //       return console.log (err);
+  //     }
+  //   });
+  // };
+
+
+  self.getPrivateRooms = function(chatrooms) {
+    var priv = _.filter(chatrooms, function(room) { return room.privacy === true; });
+    console.log('f.getPrivateRooms');
+    return priv;
+  };
+  self.getPublicRooms = function(chatrooms) {
+    var pub = _.filter(chatrooms, function(room) { return room.privacy === false; });
+    console.log('f.getPublicRooms');
+    return pub;
   };
   self.getUsersAndHeader = function(user, roomName) {
     console.log('f.getChatsAndUsers');

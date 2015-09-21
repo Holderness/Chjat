@@ -14,6 +14,7 @@ app.ChatroomModel = Backbone.Model.extend({
       new app.ChatModel({ sender: 'Butters', message: 'awwwwww hamburgers. ||):||', timestamp: _.now() })
       ]),
     chatrooms: null,
+    privateRooms: null,
     owner: null,
     modelsLoadedSum: 0,
   },

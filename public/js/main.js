@@ -42,8 +42,10 @@ app.MainController = function() {
     // new model and view created for chatroom
     self.chatroomModel = new app.ChatroomModel({ name: 'Parlor' });
     self.chatroomList = new app.ChatroomList();
+    self.privateRoomCollection = new app.PrivateRoomCollection();
     self.chatroomList.fetch().done(function() {
       self.chatroomModel.set('chatrooms', self.chatroomList);
+      self.chatroomModel.set('privateRooms', self.privateRoomCollection);
       self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel });
       self.containerModel.set('viewState', self.chatroomView);
 
@@ -230,7 +232,6 @@ app.MainController = function() {
       return newChatModel;
     });
     oldChatlog.reset(updatedChatlog);
-
    $('#message-input').removeClass('direct-message-input').addClass('message-input');
     $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
   });
@@ -255,6 +256,15 @@ app.MainController = function() {
       return newChatroomModel;
     });
     oldChatrooms.reset(updatedChatrooms);
+  });
+
+  self.appEventBus.on("setPrivateRooms", function(rooms) {
+    var oldRooms = self.chatroomModel.get('privateRooms');
+    var newRooms = _.map(rooms, function(room) {
+      var newChatroomModel = new app.ChatroomModel({ name: room.name, owner: room.owner, roomImage: room.roomImage});
+      return newChatroomModel;
+    });
+    oldRooms.reset(newRooms);
   });
 
   self.appEventBus.on("setOnlineUsers", function(onlineUsers) {

@@ -205,6 +205,10 @@ var ChatClient = function(options) {
       console.log('sc.e.chatrooms:  ', chatrooms);
       self.vent.trigger("setChatrooms", chatrooms);
     });
+    socket.on('privateRooms', function(rooms) {
+      console.log('sc.e.privateRooms:  ', rooms);
+      self.vent.trigger("setPrivateRooms", rooms);
+    });
     socket.on('onlineUsers', function(onlineUsers) {
       console.log('sc.e.onlineUsers: ', onlineUsers);
       self.vent.trigger("setOnlineUsers", onlineUsers);

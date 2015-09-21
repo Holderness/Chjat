@@ -20,6 +20,8 @@ var DirectMessage = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+  privacy: Boolean,
+  blockedUsers: [],
 });
 
 module.exports = mongoose.model( 'DirectMessage', DirectMessage );

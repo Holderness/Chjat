@@ -25,6 +25,13 @@
   border-right: 2px solid $border;
   border-bottom: 2px solid $border;
 
+  .rooms-header {
+    text-align: center;
+    color: $marine;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
   .chat-search-container {
     margin-bottom: 10px;
     text-align: center;
@@ -57,12 +64,7 @@
 
 
 .public-rooms-container {
-  .public-rooms-header {
-    text-align: center;
-    color: $marine;
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 5px;
+  .rooms-header {
     #create-chatroom {
       margin-left: 7px;
       cursor: pointer;
@@ -103,7 +105,9 @@
       }
     }
   }
-  .room {
+}
+
+ .room {
     text-align: left;
     cursor: pointer;
     .room-name-container {
@@ -148,8 +152,20 @@
       }
     }
   }
+
+
+.private-rooms-container {
+  .rooms-header {
+    margin-top: 20px;
+  }
 }
 
+
+.direct-messages-container {
+  .rooms-header {
+    margin-top: 20px;
+  }
+}
 // .create-room-container {
   
 //   #create-chatroom {

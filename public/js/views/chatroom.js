@@ -98,6 +98,11 @@ app.ChatroomView = Backbone.View.extend({
     this.listenTo(chatrooms, "remove", this.renderRooms, this);
     this.listenTo(chatrooms, "reset", this.renderRooms, this);
 
+    var privateRooms = this.model.get('privateRooms');
+    this.listenTo(privateRooms, "add", this.renderPrivateRoom, this);
+    this.listenTo(privateRooms, "remove", this.renderPrivateRooms, this);
+    this.listenTo(privateRooms, "reset", this.renderPrivateRooms, this);
+
     this.listenTo(this.model, "change:chatroom", this.renderHeader, this);
 
     this.listenTo(this.chatImageUploadView, 'chat-image-uploaded', this.chatUploadImage);
@@ -327,18 +332,14 @@ app.ChatroomView = Backbone.View.extend({
     }
     return this;
   },
-
   createRoom: function(form) {
     this.vent.trigger('createRoom', form);
   },
-
   updateRoom: function(form) {
     var id = this.model.get('chatroom').get('id');
     form.id = id;
     this.vent.trigger('updateRoom', form);
   },
-
-
   destroyRoom: function(e) {
     e.preventDefault();
     var this_ = this;
@@ -361,12 +362,10 @@ app.ChatroomView = Backbone.View.extend({
       this_.vent.trigger('destroyRoom', this_.model.get('chatroom').get('name'));
     });
   },
-
   addChatroom: function(name) {
     console.log('crv.f.addChatroom');
     this.vent.trigger('addRoom', name);
   },
-
   removeRoom: function(e) {
     var this_ = this;
     var confirmation = swal({
@@ -389,7 +388,6 @@ app.ChatroomView = Backbone.View.extend({
       this_.vent.trigger('removeRoom', name);
     });
   },
-
   renderRooms: function() {
     console.log('crv.f.renderRooms');
     console.log('CHATROOMS: ', this.model.get("chatrooms"));
@@ -398,7 +396,6 @@ app.ChatroomView = Backbone.View.extend({
       this.renderRoom(room);
     }, this);
   },
-
   renderRoom: function(model) {
     var name1 = model.get('name'),
     name2 = this.model.get('chatroom').get('name');
@@ -407,7 +404,22 @@ app.ChatroomView = Backbone.View.extend({
       this.$('.room').last().find('.room-name').css('color', '#DEB0B0').fadeIn();
     }
   },
-
+  renderPrivateRooms: function() {
+    console.log('crv.f.renderPrivateRooms');
+    console.log('PRIVATEROOMS: ', this.model.get("privateRooms"));
+    this.$('#private-rooms').empty();
+    this.model.get('privateRooms').each(function (room) {
+      this.renderPrivateRoom(room);
+    }, this);
+  },
+  renderPrivateRoom: function(model) {
+    // var name1 = model.get('name'),
+    // name2 = this.model.get('chatroom').get('name');
+    this.$('#private-rooms').append(this.roomTemplate(model.toJSON()));
+    // if (name1 === name2) {
+    //   this.$('.room').last().find('.room-name').css('color', '#DEB0B0').fadeIn();
+    // }
+  },
   joinRoom: function(name) {
     console.log('crv.f.joinRoom');
      $('#chatImageUploadContainer').data('chat-type', 'chat');
@@ -415,7 +427,6 @@ app.ChatroomView = Backbone.View.extend({
     this.previousDate = '';
     this.vent.trigger('joinRoom', name);
   },
-
 // change to 'joinDirectMessage'
   initDirectMessage: function(e) {
     var recipient = {},
