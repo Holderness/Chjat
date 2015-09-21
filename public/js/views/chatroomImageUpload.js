@@ -64,7 +64,9 @@ var app = app || {};
           }
         });
       } else {
-       this.trigger('chatroom-image-uploaded');
+        var form = _this.createRoomFormData();
+        debugger;
+       this.trigger('createRoom', form);
       }
       return false;
     },
@@ -72,13 +74,19 @@ var app = app || {};
 
     createRoomFormData: function() {
       var formData = {};
+      formData.roomImage = '/img/chjat-icon1.png';
       this.$('#createChatroomForm').children( 'input' ).each(function(i, el) {
-        if ($(el).val() !== '') {
+        if ($(el).data('create') === 'privacy') {
+          var val = $(el).prop('checked');
+          formData['privacy'] = val;
+          debugger;
+        } else if ($(el).val() !== '') {
           formData[$(el).data('create')] = $(el).val();
           $(el).val('');
         }
       });
       return formData;
+
     },
 
     renderStatus: function( status ) {

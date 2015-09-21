@@ -148,7 +148,7 @@
           <li id="chatroom-settings" 
               data-toggle="modal"
               data-target="#chatroomSettingsModal">
-              settings
+              preferences
           </li>
           <% if (owner === currentUser) { %>
             <li id="destroy-chatroom">destroy</li>
@@ -171,9 +171,14 @@
                   <img src="<%= roomImage %>" alt="" id="uploadedChatroomSettingsImage">
                   <form id="chatroomSettingsForm">
                       <input type="file" id="chatroomSettingsImageUpload" name="chatroomImageUpload">
-                      <label for="chatroomSettingsNameInput">Chatroom Name: </label>
-                      <input type="text" data-create="name" placeholder="<%= name %>" id="chatroomSettingsNameInput"/>
-                      <div id="chatroom-name-validation-container"></div>
+                     <!-- <label for="chatroomSettingsNameInput">Chatroom Name: </label>
+                      <input type="text" data-create="name" placeholder="<%= name %>" id="chatroomSettingsNameInput"/> -->
+                      <label for="chatroomSettingsPrivacyInput">Private: </label>
+                      <input type="checkbox" data-create="privacy"  id="chatroomSettingsPrivacyInput" <% if ( privacy === true ) { %> checked <% } %>/>
+                      <label for="chatroomSettingsBlockAUserInput">Block A User: </label>
+                      <input type="text" data-create="block-user" id="chatroomSettingsBlockAUserInput"/>
+                      <label for="chatroomSettingsBlockedUsersInput">Blocked Users: </label>
+                      <input type="checkbox" data-create="blocked-user"  id="chatroomSettingsBlockedUsersInput" />
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
                       <input type="button" id="chatroomSettingsBtn" data-dismiss="modal" class="btn btn-primary-mod" value="Save & Close"></input>
@@ -315,7 +320,8 @@
                       <input type="file" id="chatroomImageUpload" name="chatroomImageUpload">
                       <label for="chatroom-name-input">Chatroom Name: </label>
                       <input type="text" data-create="name" id="chatroom-name-input"/>
-                      <div id="chatroom-name-validation-container"></div>
+                      <label for="chatroomPrivacyInput">Private: </label>
+                      <input type="checkbox" data-create="privacy" id="chatroomPrivacyInput"/>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
                       <input type="button" id="createChatroomBtn" data-dismiss="modal" class="btn btn-primary-mod" value="Save & Close"></input>

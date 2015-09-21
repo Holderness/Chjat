@@ -66,6 +66,7 @@ var app = app || {};
         });
       } else {
         var form = this.createRoomFormData();
+        debugger;
         this.trigger('updateRoom', form);
       }
       return false;
@@ -75,7 +76,10 @@ var app = app || {};
     createRoomFormData: function() {
       var formData = {};
       this.$('#chatroomSettingsForm').children( 'input' ).each(function(i, el) {
-        if ($(el).val() !== '') {
+        if ($(el).data('create') === 'privacy') {
+          var val = $(el).prop('checked');
+          formData['privacy'] = val;
+        } else if ($(el).val() !== '' && $(el).val() !== 'on') {
           formData[$(el).data('create')] = $(el).val();
           $(el).val('');
         }

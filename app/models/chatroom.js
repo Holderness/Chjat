@@ -25,6 +25,8 @@ var Chatroom = new mongoose.Schema({
         default: Date.now
     },
   roomImage: String,
+  privacy: Boolean,
+  blockedUsers: [],
 });
 
 module.exports = mongoose.model( 'Chatroom', Chatroom );

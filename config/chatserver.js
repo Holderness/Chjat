@@ -291,7 +291,7 @@ var Server = function(options) {
     self.createRoom = function(user, formData) {
       ChatroomModel.findOne({ name: formData.name }, function(err, chatroom) {
         if (!chatroom) {
-          var newChatroom = new ChatroomModel({name: formData.name, owner: user.username, roomImage: formData.roomImage});
+          var newChatroom = new ChatroomModel({name: formData.name, owner: user.username, roomImage: formData.roomImage, privacy: formData.privacy });
           newChatroom.save(function(err) {
             if (!err) {
               self.addUserToRoom(user, formData.name);
@@ -340,8 +340,6 @@ var Server = function(options) {
           if (err) {return console.log(err);}
           console.log('new chatroom users: ', chatroom.onlineUsers );
           var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
-
-
           user.socket.broadcast.to(currentRoom).emit('onlineUsers', chatroom.onlineUsers);
           user.socket.broadcast.to(currentRoom).emit('offlineUsers', offlineUsers);
         });
@@ -414,7 +412,7 @@ var Server = function(options) {
         user.socket.emit('chatlog', chatroom.chatlog.slice(-25));
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
         user.socket.emit('offlineUsers', offlineUsers);
-        user.socket.emit('chatroomHeader', {id: chatroom._id, name: roomName, roomImage: chatroom.roomImage, owner: chatroom.owner, currentUser: user.username, chatlogLength: chatroom.chatlog.length, modelsLoadedSum: -1});
+        user.socket.emit('chatroomHeader', {id: chatroom._id, name: roomName, roomImage: chatroom.roomImage, privacy: chatroom.privacy, owner: chatroom.owner, currentUser: user.username, chatlogLength: chatroom.chatlog.length, modelsLoadedSum: -1});
       } else {
         return console.log (err);
       }
