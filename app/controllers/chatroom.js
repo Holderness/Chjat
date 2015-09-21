@@ -127,7 +127,7 @@ exports.addChatroom = function(req, res, next) {
 
 exports.findBy = function(req, res, next) {
   // console.log( '-------------------------req: ', req);
-  return ChatroomModel.find({ name: new RegExp(req.query.name, "i") }, function( err, chatrooms ) {
+  return ChatroomModel.find({ name: new RegExp(req.query.name, "i"), privacy: false }, function( err, chatrooms ) {
     if (!err) {
       console.log('findBy!');
       // console.log( chatrooms );

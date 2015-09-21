@@ -135,8 +135,8 @@ app.ChatroomView = Backbone.View.extend({
        });
   },
 
-  chatroomSearchTypeahead: function() {
 
+  chatroomSearchTypeahead: function() {
     // interesting - the 'this' makes a difference, can't find #chat-search-input otherwise
     this.$('#chat-search-input').typeahead({
       onSelect: function(item) {
@@ -160,7 +160,6 @@ app.ChatroomView = Backbone.View.extend({
         }
       },
     });
-
   },
 
 
