@@ -17,7 +17,6 @@ app.ChatroomView = Backbone.View.extend({
     'click .chat-directory .room': 'setRoom',
     'keypress #chat-search-input': 'search',
     'click .remove-chatroom': 'removeRoom',
-    // 'click #createChatroomBtn': 'createRoom',
     'click #destroy-chatroom': 'destroyRoom',
     'keyup #chatroom-name-input': 'doesChatroomExist',
     'click .user': 'initDirectMessage',

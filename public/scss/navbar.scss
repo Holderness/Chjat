@@ -1,3 +1,10 @@
+
+#nav-container {
+  .modal {
+    color: black;
+  }
+}
+
 .chjat-title {
   font-family: "News Cycle", Helvetica, Arial, serif;
   font-size: 40px;
@@ -21,6 +28,9 @@
       display: inline-block;
       padding: 0 20px;
     }
+  }
+  .modal-btn {
+    cursor: pointer;
   }
 }
 
@@ -102,4 +112,49 @@
       text-shadow: 0px 0px 90px $power-button;
     }
   }
+  #inbox-modal {
+    .invitations-header {
+      text-align: left;
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+    #invitations {
+      list-style-type: none;
+      .invitation div {
+        display: inline-block;
+        margin-right: 20px;
+        span {
+          font-size: 20px;
+          font-weight: 900;
+          color: $marine;
+        }
+        &.fa {
+           font-size: 20px;
+           cursor: pointer;
+        }
+      }
+      .invitation-sender {
+
+      }
+      .invitation-room-name {}
+      .delete-invitation {
+        &:hover {
+          color: $validation-red;
+        }
+      }
+      .accept-invitation  {
+        &:hover {
+          color: $validation-green;
+        }
+      }
+    }
+  }
 }
+
+
+.nav-modal {
+
+
+}
+

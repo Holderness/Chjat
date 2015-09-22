@@ -23,6 +23,7 @@ module.exports = {
       'public/js/models/*.js',
       'public/js/collections/room.js',
       'public/js/collections/privateRoom.js',
+      'public/js/collections/invitation.js',
       'public/js/views/*.js',
       'public/js/socketclient.js',
       'public/js/main.js',

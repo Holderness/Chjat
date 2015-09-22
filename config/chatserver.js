@@ -53,9 +53,14 @@ var Server = function(options) {
         socket: socket,
         userImage: userModel.userImage,
         id: userModel._id,
+        invitations: userModel.invitations,
       });
       var callback = function() {
-        socket.emit('login', newUser.username);
+        console.log('------------------------------------------');
+        console.log('invites: ', userModel.invitations);
+        console.log('newUser: ', newUser);
+        console.log('------------------------------------------');
+        socket.emit('login', {username: newUser.username, invitations: newUser.invitations });
       };
       self.setResponseListeners(newUser, callback);
     });
@@ -472,6 +477,7 @@ var User = function(args) {
   self.username = args.username;
   self.userImage = args.userImage;
   self.id = args.id;
+  self.invitations = args.invitations;
 };
 
 // allows export to server.js

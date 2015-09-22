@@ -17,6 +17,7 @@ app.MainController = function() {
     self.registerView = new app.RegisterView({vent: self.viewEventBus });
     self.navbarView = new app.NavbarView();
 
+
     // The ContainerModel gets passed a viewState, LoginView, which
     // is the login page. That LoginView gets passed the viewEventBus
     // and the LoginModel.
@@ -26,6 +27,7 @@ app.MainController = function() {
     // the login page is then rendered.
     self.containerView = new app.ContainerView({ model: self.containerModel });
     self.containerView.render();
+
 
   };
 
@@ -51,7 +53,7 @@ app.MainController = function() {
 
       // self.connectToRoom();
       // self.initRoom();
-       
+           ;
     });
 
   };
@@ -65,7 +67,6 @@ app.MainController = function() {
   //   self.chatroomView.initRoom();
   // };
 
-  
 
 
 
@@ -156,10 +157,17 @@ app.MainController = function() {
 
 
 
-  self.appEventBus.on("loginUser", function(username) {
-    console.log('main.e.loginUser: ', username);
-    var user = new app.UserModel({username: username});
-    self.navbarView.model.set(user.toJSON());
+  self.appEventBus.on("loginUser", function(user) {
+    console.log('main.e.loginUser: ', user);
+    invitations = self.navbarView.model.get('invitations');
+    username = self.navbarView.model.get('username');
+    var currentUser = new app.UserModel(user);
+    newInvitations = _.map(user.invitations, function(invite) {
+       var newInvitation = new app.InvitationModel(invite);
+       return newInvitation;
+    });
+    invitations.reset(newInvitations);
+    self.navbarView.model.set('username', user.username);
   });
 
 

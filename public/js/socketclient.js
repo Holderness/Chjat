@@ -143,9 +143,9 @@ var ChatClient = function(options) {
 
 
 // LOGIN
-    socket.on('login', function(username) {
+    socket.on('login', function(user) {
       console.log('sc.e.login');
-      self.vent.trigger('loginUser', username);
+      self.vent.trigger('loginUser', user);
       self.connectToRoom("Parlor");
     });
 

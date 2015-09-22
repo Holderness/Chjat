@@ -18,6 +18,7 @@ var UserSchema = new mongoose.Schema({
   providerId: String,
   providerData: {},
   userImage: String,
+  invitations: [],
 });
 
 
