@@ -472,7 +472,7 @@ var Server = function(options) {
         UserModel.findOne({ _id: user.id }, function( err, found ) {
           console.log('found', found);
           if (err) {return console.log(err);}
-          user.socket.emit('refreshInvitations', found.invitations);
+          // user.socket.emit('refreshInvitations', found.invitations);
         });
       }
     );

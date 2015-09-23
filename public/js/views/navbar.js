@@ -14,6 +14,10 @@ var app = app || {};
       this.vent = options.vent;
       this.model = new app.UserModel({ username: '', invitations: new app.InvitationCollection() });
       this.listenTo(this.model, "change", this.render, this);
+
+      var invitations = this.model.get('invitations');
+
+      this.listenTo(invitations, "reset", this.renderInvitations, this);
     },
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
@@ -21,6 +25,7 @@ var app = app || {};
       return this;
     },
     renderInvitations: function() {
+      this.$('#invitations').empty();
       var invitations = this.model.get('invitations');
       var this_ = this;
       invitations.each(function(invite) {
@@ -32,8 +37,7 @@ var app = app || {};
     },
     deleteInvitation: function(e) {
       var $tar = $(e.target).data('roomid');
-      debugger;
-      this.vent.trigger('deleteInvitation', {roomId: $tar});
+      this.vent.trigger('deleteInvitation', $tar);
     },
     acceptInvitation: function(e) {
 
