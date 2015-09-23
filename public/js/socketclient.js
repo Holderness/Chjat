@@ -131,6 +131,9 @@ var ChatClient = function(options) {
   self.deleteInvitation = function(roomId) {
     self.socket.emit("deleteInvitation", roomId);
   };
+  self.acceptInvitation = function(roomId) {
+    self.socket.emit("acceptInvitation", roomId);
+  };
 
 
 // ERROR HANDLING

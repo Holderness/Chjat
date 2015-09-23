@@ -186,6 +186,10 @@ var Server = function(options) {
       console.log('e.deleteInvitation');
       self.deleteInvitation(user, roomId);
     });
+    user.socket.on('acceptInvitation', function(roomId) {
+      console.log('e.acceptInvitation');
+      self.acceptInvitation(user, roomId);
+    });
 
 
 // CALLBACK
@@ -489,6 +493,22 @@ var Server = function(options) {
           if (err) {return console.log(err);}
           user.socket.emit('refreshInvitations', found.invitations);
         });
+      }
+    );
+  };
+  self.acceptInvitation = function(user, roomId) {
+    console.log('roomId', roomId);
+    ChatroomModel.update(
+      {_id: roomId},
+      { $push: {'participants': {'username': user.username, 'userImage': user.userImage } }},
+      function(err, raw) {
+        if (!err) {
+          console.log('userchatrooms', raw);
+          self.deleteInvitation(user, roomId);
+          self.getChatrooms(user, user.socket);
+        } else {
+          return console.log( err );
+        }
       }
     );
   };

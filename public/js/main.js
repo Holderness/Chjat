@@ -124,8 +124,10 @@ app.MainController = function() {
     self.chatClient.inviteUser(invitationObj);
   });
   self.viewEventBus.on("deleteInvitation", function(roomId) {
-    debugger;
     self.chatClient.deleteInvitation(roomId);
+  });
+  self.viewEventBus.on("acceptInvitation", function(roomId) {
+    self.chatClient.acceptInvitation(roomId);
   });
 
 

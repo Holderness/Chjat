@@ -36,11 +36,12 @@ var app = app || {};
       this.$('#invitations').append(this.invitationTemplate(model.toJSON()));
     },
     deleteInvitation: function(e) {
-      var $tar = $(e.target).data('roomid');
-      this.vent.trigger('deleteInvitation', $tar);
+      var roomId = $(e.target).data('roomid');
+      this.vent.trigger('deleteInvitation', roomId);
     },
     acceptInvitation: function(e) {
-
+      var roomId = $(e.target).data('roomid');
+      this.vent.trigger('acceptInvitation', roomId);
     },
 
   });
