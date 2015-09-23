@@ -461,8 +461,8 @@
 <script type="text/template" id="invitation-template">
   <li class="invitation">
     <div><span class='invitation-sender'><%= sender %></span> has invited you to join <span class='invitation-room-name'><%= roomName %></span></div>
-    <div class="accept-invitation fa fa-check"></div>
-    <div class="delete-invitation fa fa-times"></div>
+    <div class="accept-invitation fa fa-check" data-roomId="<%= roomId %>"></div>
+    <div class="delete-invitation fa fa-times" data-roomId="<%= roomId %>"></div>
   </li>
 </script>
 

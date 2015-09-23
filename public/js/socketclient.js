@@ -124,6 +124,12 @@ var ChatClient = function(options) {
   };
 
 
+// INVITATIONS
+  self.deleteInvitation = function(roomId) {
+    self.socket.emit("deleteInvitation", roomId);
+  };
+
+
 // ERROR HANDLING
   self.doesChatroomExist = function(chatroomQuery) {
     self.socket.emit('doesChatroomExist', chatroomQuery);
@@ -239,8 +245,10 @@ var ChatClient = function(options) {
       self.vent.trigger("chatroomAlreadyExists");
     });
 
-
-
+// INVITATIONS
+    socket.on('refreshInvitations', function(invitations) {
+      self.vent.trigger("refreshInvitations", invitations);
+    });
 
 
 	};

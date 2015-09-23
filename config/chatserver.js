@@ -177,6 +177,12 @@ var Server = function(options) {
       self.doesChatroomExist(user, chatroomQuery);
     });
 
+// INVITATIONS
+    user.socket.on('deleteInvitation', function(roomId) {
+      console.log('e.deleteInvitation');
+      self.deleteInvitation(user, roomId);
+    });
+
 
 // CALLBACK
     if (callback) {
@@ -400,8 +406,6 @@ var Server = function(options) {
       if (!err) {
         var priv = self.getPrivateRooms(chatrooms);
         var pub = self.getPublicRooms(chatrooms);
-        console.log('priv', priv);
-        console.log('pub', pub);
         socket.emit('chatrooms', pub);
         socket.emit('privateRooms', priv);
       } else {
@@ -450,6 +454,24 @@ var Server = function(options) {
         return console.log (err);
       }
     });
+  };
+
+
+// INVITATIONS
+  self.deleteInvitation = function(user, roomId) {
+    console.log('roomId', roomId);
+    UserModel.update(
+      { _id: user.id },
+      {$pull: {'invitations': {roomId: roomId}}},
+      function(err, raw) {
+        if (err) { return console.log(err); }
+        UserModel.findOne({ _id: user.id }, function( err, found ) {
+              console.log('found', found);
+          if (err) {return console.log(err);}
+          user.socket.emit('refreshInvitations', found.invitations);
+        });
+      }
+    );
   };
 
 

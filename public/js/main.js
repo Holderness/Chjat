@@ -15,7 +15,7 @@ app.MainController = function() {
     self.loginModel = new app.LoginModel();
     self.loginView = new app.LoginView({vent: self.viewEventBus, model: self.loginModel});
     self.registerView = new app.RegisterView({vent: self.viewEventBus });
-    self.navbarView = new app.NavbarView();
+    self.navbarView = new app.NavbarView({vent: self.viewEventBus});
 
 
     // The ContainerModel gets passed a viewState, LoginView, which
@@ -53,7 +53,7 @@ app.MainController = function() {
 
       // self.connectToRoom();
       // self.initRoom();
-           ;
+           // ;
     });
 
   };
@@ -120,7 +120,9 @@ app.MainController = function() {
   self.viewEventBus.on("getMoreDirectMessages", function(directMessageReq) {
     self.chatClient.getMoreDirectMessages(directMessageReq);
   });
-
+  self.viewEventBus.on("deleteInvitation", function(roomId) {
+    self.chatClient.deleteInvitation(roomId);
+  });
 
 
 
@@ -160,8 +162,6 @@ app.MainController = function() {
   self.appEventBus.on("loginUser", function(user) {
     console.log('main.e.loginUser: ', user);
     invitations = self.navbarView.model.get('invitations');
-    username = self.navbarView.model.get('username');
-    var currentUser = new app.UserModel(user);
     newInvitations = _.map(user.invitations, function(invite) {
        var newInvitation = new app.InvitationModel(invite);
        return newInvitation;
@@ -170,7 +170,16 @@ app.MainController = function() {
     self.navbarView.model.set('username', user.username);
   });
 
-
+  self.appEventBus.on("refreshInvitations", function(invitations) {
+    console.log('main.e.refreshInvitations: ', invitations);
+    oldInvitations = self.navbarView.model.get('invitations');
+    newInvitations = _.map(invitations, function(invite) {
+       var newInvitation = new app.InvitationModel(invite);
+       return newInvitation;
+    });
+    debugger;
+    oldInvitations.reset(newInvitations);
+  });
 
   // self.appEventBus.on("setRoom", function(model) {
   //   console.log('main.e.setRoom: ', model);
