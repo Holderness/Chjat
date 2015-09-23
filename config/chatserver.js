@@ -178,6 +178,10 @@ var Server = function(options) {
     });
 
 // INVITATIONS
+    user.socket.on('inviteUser', function(invitationObj) {
+      console.log('e.inviteUser');
+      self.inviteUser(user, invitationObj);
+    });
     user.socket.on('deleteInvitation', function(roomId) {
       console.log('e.deleteInvitation');
       self.deleteInvitation(user, roomId);
@@ -458,6 +462,21 @@ var Server = function(options) {
 
 
 // INVITATIONS
+
+  self.inviteUser = function(user, invitationObj){
+    UserModel.update(
+      { username: invitationObj.recipient },
+      { $push: {'invitations': {sender: invitationObj.sender, roomName: invitationObj.roomName, roomId: invitationObj.roomId}}},
+      function(err, raw) {
+        if (err) { return console.log(err); }
+        UserModel.findOne({ _id: user.id }, function( err, found ) {
+          console.log('found', found);
+          if (err) {return console.log(err);}
+          user.socket.emit('refreshInvitations', found.invitations);
+        });
+      }
+    );
+  };
   self.deleteInvitation = function(user, roomId) {
     console.log('roomId', roomId);
     UserModel.update(
@@ -466,7 +485,7 @@ var Server = function(options) {
       function(err, raw) {
         if (err) { return console.log(err); }
         UserModel.findOne({ _id: user.id }, function( err, found ) {
-              console.log('found', found);
+          console.log('found', found);
           if (err) {return console.log(err);}
           user.socket.emit('refreshInvitations', found.invitations);
         });

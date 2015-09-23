@@ -144,6 +144,8 @@ app.ChatroomView = Backbone.View.extend({
       ajax: {
         url: '/api/searchChatrooms',
         triggerLength: 1,
+        limit: 5,
+        minLength: 5,
         preDispatch: function (query) {
           return {
             name: query
@@ -167,7 +169,7 @@ app.ChatroomView = Backbone.View.extend({
 
   renderHeader: function() {
     this.$('#chatbox-header').html(this.headerTemplate(this.model.get('chatroom').toJSON()));
-    this.chatroomSettingsView = new app.ChatroomSettingsView();
+    this.chatroomSettingsView = new app.ChatroomSettingsView({vent: this.vent, model: this.model.get('chatroom')});
     this.chatroomSettingsView.setElement(this.$('#chatroomSettingsContainer'));
     this.listenTo(this.chatroomSettingsView, 'updateRoom', this.updateRoom);
   },

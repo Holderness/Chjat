@@ -10,6 +10,13 @@ var app = app || {};
       'change #chatroomSettingsImageUpload': 'renderThumb',
       'attachImage #chatroomSettingsForm': 'upload',
       'click #chatroomSettingsBtn': 'submit',
+      'keyup #chatroomSettingsInviteUserInput': 'inviteUser',
+    },
+
+    initialize: function(options) {
+      this.vent = options.vent;
+      this.model = options.model;
+      this.userSearchTypeahead();
     },
 
     render: function() {
@@ -66,7 +73,6 @@ var app = app || {};
         });
       } else {
         var form = this.createRoomFormData();
-        debugger;
         this.trigger('updateRoom', form);
       }
       return false;
@@ -95,7 +101,50 @@ var app = app || {};
     clearField: function() {
       this.$('#uploadedChatroomSettingsImage')[0].src = '';
       this.$('#chatroomSettingsImageUpload').val('');
-    }
+    },
+
+    inviteUser: function(e) {
+      var recipient = $.trim($('#chatroomSettingsInviteUserInput').val());
+      if (e.keyCode === 13 && recipient.length > 0) {
+        e.preventDefault();
+        var sender = this.model.get('currentUser'),
+            roomId = this.model.get('id'),
+            roomName = this.model.get('name'),
+            invitationObj = {sender: sender, roomId: roomId, roomName: roomName, recipient: recipient};
+        this.vent.trigger('inviteUser', invitationObj);
+        this.$('#chatroomSettingsInviteUserInput').val('');
+      } else {
+        // console.log('search typing');
+      }
+      return this;
+    },
+
+    userSearchTypeahead: function() {
+      $('#chatroomSettingsInviteUserInput').typeahead({
+        limit: 5,
+        minLength: 5,
+        onSelect: function(item) {
+          console.log(item);
+        },
+        ajax: {
+          url: '/searchUsers',
+          triggerLength: 5,
+          preDispatch: function (query) {
+            return {
+              username: query
+            };
+          },
+          preProcess: function (data) {
+            console.log(data);
+            if (data.success === false) {
+            // Hide the list, there was some error
+              return false;
+            }
+            return data;
+          }
+        },
+      });
+    },
 
   });
 

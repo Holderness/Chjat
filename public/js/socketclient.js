@@ -125,6 +125,9 @@ var ChatClient = function(options) {
 
 
 // INVITATIONS
+  self.inviteUser = function(invitationObj) {
+    self.socket.emit("inviteUser", invitationObj);
+  };
   self.deleteInvitation = function(roomId) {
     self.socket.emit("deleteInvitation", roomId);
   };

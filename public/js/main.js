@@ -120,9 +120,13 @@ app.MainController = function() {
   self.viewEventBus.on("getMoreDirectMessages", function(directMessageReq) {
     self.chatClient.getMoreDirectMessages(directMessageReq);
   });
+  self.viewEventBus.on("inviteUser", function(invitationObj) {
+    self.chatClient.inviteUser(invitationObj);
+  });
   self.viewEventBus.on("deleteInvitation", function(roomId) {
     self.chatClient.deleteInvitation(roomId);
   });
+
 
 
 
@@ -177,7 +181,6 @@ app.MainController = function() {
        var newInvitation = new app.InvitationModel(invite);
        return newInvitation;
     });
-    debugger;
     oldInvitations.reset(newInvitations);
   });
 

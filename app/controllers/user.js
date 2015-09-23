@@ -198,6 +198,23 @@ exports.userByID = function(req, res, next, id) {
   );
 };
 
+exports.findBy = function(req, res, next) {
+  console.log( '----------findBy---------------req: ', req);
+  return User.find({ username: new RegExp(req.query.username, "i")}, function( err, users ) {
+    if (!err) {
+      console.log('findBy!');
+      var usernames = [];
+      for (i = 0; i < users.length; i++) {
+        usernames.push(users[i].username);
+      }
+      console.log(usernames);
+      return res.send( usernames );
+    } else {
+      return console.log( err );
+    }
+  });
+};
+
 exports.update = function(req, res, next) {
   User.findByIdAndUpdate(req.user.id, req.body, function(err, user) {
     if (err) {
