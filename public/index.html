@@ -170,17 +170,27 @@
                 <div id="chatroomSettingsContainer" class="modal-image">
                   <img src="<%= roomImage %>" alt="" id="uploadedChatroomSettingsImage">
                   <form id="chatroomSettingsForm">
+                    <div class="row">
                       <input type="file" id="chatroomSettingsImageUpload" name="chatroomImageUpload">
+                    </div>
                      <!-- <label for="chatroomSettingsNameInput">Chatroom Name: </label>
                       <input type="text" data-create="name" placeholder="<%= name %>" id="chatroomSettingsNameInput"/> -->
+                    <div class="row">
                       <label for="chatroomSettingsPrivacyInput">Private: </label>
                       <input type="checkbox" data-create="privacy"  id="chatroomSettingsPrivacyInput" <% if ( privacy === true ) { %> checked <% } %>/>
+                    </div>
+                    <div class="row">
                       <label for="chatroomSettingsInviteUserInput">Invite User: </label>
                       <input type="text" data-create="invite-user" id="chatroomSettingsInviteUserInput"/>
+                    </div>
+                    <div class="row">
                       <label for="chatroomSettingsBlockAUserInput">Block A User: </label>
                       <input type="text" data-create="block-user" id="chatroomSettingsBlockAUserInput"/>
+                    </div>
+                    <div class="row">
                       <label for="chatroomSettingsBlockedUsersInput">Blocked Users: </label>
                       <input type="checkbox" data-create="blocked-user"  id="chatroomSettingsBlockedUsersInput" />
+                    </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
                       <input type="button" id="chatroomSettingsBtn" data-dismiss="modal" class="btn btn-primary-mod" value="Save & Close"></input>
@@ -256,7 +266,7 @@
           </div>
 
 
-          <div class="chatbox">
+          <div class="chatbox" id="chatbox">
               <div class="chatbox-header" id='chatbox-header'>
               </div>
               <div class="date-divider-style-insurance"></div>
@@ -294,9 +304,11 @@
               </div>
               <div class="modal-body">
                 <div id="chatImageUploadContainer" class="modal-image" data-chat-type="chat">
-                  <img src="/img/fly-pig-serious-icon.png" alt="" id="uploadedChatImage">
+                  <img src="/img/chjat-icon1.png" alt="" id="uploadedChatImage">
                   <form id="chatImageUploadForm">
-                    <input type="file" id="chatImageUpload" name="chatImageUpload">
+                    <div class="row">
+                      <input type="file" id="chatImageUpload" name="chatImageUpload">
+                    </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
                       <input type="button" id="addChatImageBtn" class="btn btn-primary-mod" value="Save & Close"></input>
@@ -320,13 +332,19 @@
               </div>
               <div class="modal-body">
                 <div id="createChatroomContainer" class="modal-image">
-                  <img src="/img/fly-pig-serious-icon.png" alt="" id="uploadedChatroomImage">
+                  <img src="/img/chjat-icon1.png" alt="" id="uploadedChatroomImage">
                   <form id="createChatroomForm">
+                    <div class="row">
                       <input type="file" id="chatroomImageUpload" name="chatroomImageUpload">
+                    </div>
+                    <div class="row">
                       <label for="chatroom-name-input">Chatroom Name: </label>
                       <input type="text" data-create="name" id="chatroom-name-input"/>
+                    </div>
+                    <div class="row">
                       <label for="chatroomPrivacyInput">Private: </label>
                       <input type="checkbox" data-create="privacy" id="chatroomPrivacyInput"/>
+                    </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
                       <input type="button" id="createChatroomBtn" data-dismiss="modal" class="btn btn-primary-mod" value="Save & Close"></input>

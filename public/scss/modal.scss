@@ -1,0 +1,36 @@
+.modal {
+  .row {
+    text-align: left;
+    margin-left: 70px;
+    margin-bottom: 15px;
+    label {
+      min-width: 120px;
+      text-align: right;
+    }
+    input {
+
+    }
+  }
+
+
+
+}
+.modal-image {
+  text-align: center;
+  img {
+    margin: 30px;
+    box-shadow: 3px 3px 1em $marine, -3px -3px 1em $pink-oink;
+    max-width: 425px;
+    max-height: 230px;
+    border-radius: 11px;
+  }
+}
+
+#chatImageUploadModal {
+  #chatImageUploadContainer {
+
+    #addChatImageBtn {
+
+    }
+  }
+}

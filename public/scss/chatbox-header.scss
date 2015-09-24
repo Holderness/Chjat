@@ -1,0 +1,75 @@
+#chatbox-header {
+    background: $white;
+    position: relative;
+    color: $dark-gray-text;
+    border-bottom: 2px solid $main-bkgd;
+    height: 62px;
+  .chatbox-header-avatar {
+    float: left;
+    height: 50px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 50%;
+  }
+  .astricks {
+    font-size: 40px;
+    display: inline-block;
+  }
+  .room-header-image-container {
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    margin: 0 15px;
+    text-align: center;
+    .room-header-image {
+      margin-top: -10px;
+      max-height: 45px;
+      max-width: 45px;
+      border-radius: 10px;
+    }
+  }
+  .chatbox-header-chatroom-name-container {
+    display: inline-block;
+    .chatbox-header-chatroom-name {
+      color: $dark-gray-text;
+      font-family: 'Open-Sans', sans-serif;
+      margin: 0px;
+      padding: 17px 0;
+    }
+  }
+  .chatroom-changeables {
+    margin: 4px 5px 0 0;
+    float: right;
+    color: $dark-gray-text;
+    cursor: pointer;
+    &:hover, &:focus, &:active {
+      .fa-cog {
+        color: $pink-oink;
+      }
+    }
+    .fa-cog {
+      font-size: 18px;
+    }
+    .dropdown-toggle {
+      box-shadow: none;
+      -webkit-box-shadow: none;
+    }
+    li {
+      padding: 0 10px;
+      &:hover {
+        background-color: $marine;
+        color: $pink-oink;
+      }
+    }
+    .dropdown-menu {
+      left: auto;
+      right: 0;
+      min-width: 100%;
+      #chatroom-settings {
+        white-space: nowrap;
+      }
+      #chatroom-destroy {
+      }
+    }
+  }
+}
