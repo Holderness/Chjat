@@ -170,7 +170,9 @@ app.ChatroomView = Backbone.View.extend({
   renderHeader: function() {
     this.$('#chatbox-header').html(this.headerTemplate(this.model.get('chatroom').toJSON()));
     this.chatroomSettingsView = new app.ChatroomSettingsView({vent: this.vent, model: this.model.get('chatroom')});
-    this.chatroomSettingsView.setElement(this.$('#chatroomSettingsContainer'));
+    // debugger;
+    this.chatroomSettingsView.setElement(this.$('#preferences-container'));
+    // debugger;
     this.listenTo(this.chatroomSettingsView, 'updateRoom', this.updateRoom);
   },
 

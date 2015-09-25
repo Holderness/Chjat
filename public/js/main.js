@@ -28,6 +28,11 @@ app.MainController = function() {
     self.containerView = new app.ContainerView({ model: self.containerModel });
     self.containerView.render();
 
+ 
+    $('form').keypress(function(e) {
+      return e.keyCode != 13;
+    });
+
 
   };
 
@@ -37,6 +42,9 @@ app.MainController = function() {
     console.log('f.main.authenticated');
        
     $("body").css("overflow", "hidden");
+    $('form').keypress(function(e) {
+      return e.keyCode != 13;
+    });
     self.chatClient = new ChatClient({ vent: self.appEventBus });
           console.log('huh');
     self.chatClient.connect();
@@ -50,6 +58,7 @@ app.MainController = function() {
       self.chatroomModel.set('privateRooms', self.privateRoomCollection);
       self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel });
       self.containerModel.set('viewState', self.chatroomView);
+      
 
       // self.connectToRoom();
       // self.initRoom();

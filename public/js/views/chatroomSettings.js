@@ -5,18 +5,22 @@ var app = app || {};
 
   app.ChatroomSettingsView = Backbone.View.extend({
 
-    el: $('#chatroomSettingsContainer'),
+    el: $('#chatroom-settings'),
     events: {
-      'change #chatroomSettingsImageUpload': 'renderThumb',
-      'attachImage #chatroomSettingsForm': 'upload',
-      'click #chatroomSettingsBtn': 'submit',
-      'keyup #chatroomSettingsInviteUserInput': 'inviteUser',
+      'change #preferences-image-upload': 'renderThumb',
+      'attachImage #preferences-form': 'upload',
+      'click #preferences-btn': 'submit',
+      'keypress #invite-user-input': 'inviteUser',
     },
 
     initialize: function(options) {
       this.vent = options.vent;
-      this.model = options.model;
       this.userSearchTypeahead();
+      var this_ = this;
+      $("form").submit(function(e) {
+        e.preventDefault();
+        this_.inviteUser();
+      });
     },
 
     render: function() {
@@ -24,8 +28,8 @@ var app = app || {};
     },
 
     renderThumb: function() {
-      var input = this.$('#chatroomSettingsImageUpload');
-      var img = this.$('#uploadedChatroomSettingsImage')[0];
+      var input = this.$('#preferences-image-upload');
+      var img = this.$('#uploaded-preferences-image')[0];
       if(input.val() !== '') {
         var selected_file = input[0].files[0];
         var reader = new FileReader();
@@ -42,14 +46,14 @@ var app = app || {};
     submit: function(e) {
       e.preventDefault();
 
-      this.$form = this.$('#chatroomSettingsForm');
+      this.$form = this.$('#preferences-form');
       this.$form.trigger('attachImage');
     },
 
     upload: function() {
       var _this = this;
         var formData = new FormData(this.$form[0]);
-      if (this.$('#chatroomSettingsImageUpload')[0].files.length > 0) {
+      if (this.$('#preferences-image-upload')[0].files.length > 0) {
         $.ajax({
           type: 'POST',
           url: '/api/uploadChatroomImage',
@@ -67,7 +71,7 @@ var app = app || {};
             var form = _this.createRoomFormData();
             form.roomImage = response.roomImage;
             _this.trigger('updateRoom', form);
-            $('#chatroomSettingsModal').modal('hide');
+            $('#preferences-modal').modal('hide');
             _this.clearField();
           }
         });
@@ -81,7 +85,7 @@ var app = app || {};
 
     createRoomFormData: function() {
       var formData = {};
-      this.$('#chatroomSettingsForm').children( 'input' ).each(function(i, el) {
+      this.$('#preferences-form').find( 'input' ).each(function(i, el) {
         if ($(el).data('create') === 'privacy') {
           var val = $(el).prop('checked');
           formData['privacy'] = val;
@@ -99,20 +103,22 @@ var app = app || {};
     },
 
     clearField: function() {
-      this.$('#uploadedChatroomSettingsImage')[0].src = '';
-      this.$('#chatroomSettingsImageUpload').val('');
+      this.$('#uploaded-preferences-image')[0].src = '';
+      this.$('#preferences-image-upload').val('');
     },
 
     inviteUser: function(e) {
-      var recipient = $.trim($('#chatroomSettingsInviteUserInput').val());
-      if (e.keyCode === 13 && recipient.length > 0) {
-        e.preventDefault();
+      // e.preventDefault();
+      var recipient = $.trim($('#invite-user-input').val());
+        debugger;
+      if (recipient.length > 0) {
+        // e.preventDefault();
         var sender = this.model.get('currentUser'),
             roomId = this.model.get('id'),
             roomName = this.model.get('name'),
             invitationObj = {sender: sender, roomId: roomId, roomName: roomName, recipient: recipient};
         this.vent.trigger('inviteUser', invitationObj);
-        this.$('#chatroomSettingsInviteUserInput').val('');
+        $('#invite-user-input').val('');
       } else {
         // console.log('search typing');
       }
@@ -120,7 +126,7 @@ var app = app || {};
     },
 
     userSearchTypeahead: function() {
-      $('#chatroomSettingsInviteUserInput').typeahead({
+      $('#invite-user-input').typeahead({
         limit: 5,
         minLength: 5,
         onSelect: function(item) {

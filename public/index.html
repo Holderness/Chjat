@@ -144,11 +144,21 @@
         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="fa fa-cog"></span>
         </div>
-        <ul class="dropdown-menu">
-          <li id="chatroom-settings" 
+        <ul class="dropdown-menu" id="chatroom-settings">
+          <li id="chatroom-preferences"
               data-toggle="modal"
-              data-target="#chatroomSettingsModal">
+              data-target="#preferences-modal">
               preferences
+          </li>
+          <li id="invite-user" 
+              data-toggle="modal"
+              data-target="#invite-user-modal">
+              invite user
+          </li>
+          <li id="block-user" 
+              data-toggle="modal"
+              data-target="#block-user-modal">
+              block user
           </li>
           <% if (owner === currentUser) { %>
             <li id="destroy-chatroom">destroy</li>
@@ -158,42 +168,87 @@
     <% } %>
 
 
-  <!-- chatroomSettings modal -->
-        <div class="modal fade" id="chatroomSettingsModal" tabindex="-1" role="dialog" aria-labelledby="chatroomSettingsModal" aria-hidden="true">
+<!-- preferences- modal -->
+        <div class="modal fade" id="preferences-modal" tabindex="-1" role="dialog" aria-labelledby="preferences-modal" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="chatroomSettingsModalLabel">Chatroom Settings</h4>
+                <h4 class="modal-title" id="preferences-modal-label">Chatroom Preferences</h4>
               </div>
               <div class="modal-body">
-                <div id="chatroomSettingsContainer" class="modal-image">
-                  <img src="<%= roomImage %>" alt="" id="uploadedChatroomSettingsImage">
-                  <form id="chatroomSettingsForm">
+                <div id="preferences-container" class="modal-image">
+                  <img src="<%= roomImage %>" alt="" id="uploaded-preferences-image">
+                  <form id="preferences-form">
                     <div class="row">
-                      <input type="file" id="chatroomSettingsImageUpload" name="chatroomImageUpload">
+                      <input type="file" id="preferences-image-upload" name="chatroomImageUpload">
                     </div>
-                     <!-- <label for="chatroomSettingsNameInput">Chatroom Name: </label>
-                      <input type="text" data-create="name" placeholder="<%= name %>" id="chatroomSettingsNameInput"/> -->
+                     <!-- <label for="preferences-name-input">Chatroom Name: </label>
+                      <input type="text" data-create="name" placeholder="<%= name %>" id="preferences-name-input"/> -->
                     <div class="row">
-                      <label for="chatroomSettingsPrivacyInput">Private: </label>
-                      <input type="checkbox" data-create="privacy"  id="chatroomSettingsPrivacyInput" <% if ( privacy === true ) { %> checked <% } %>/>
-                    </div>
-                    <div class="row">
-                      <label for="chatroomSettingsInviteUserInput">Invite User: </label>
-                      <input type="text" data-create="invite-user" id="chatroomSettingsInviteUserInput"/>
-                    </div>
-                    <div class="row">
-                      <label for="chatroomSettingsBlockAUserInput">Block A User: </label>
-                      <input type="text" data-create="block-user" id="chatroomSettingsBlockAUserInput"/>
-                    </div>
-                    <div class="row">
-                      <label for="chatroomSettingsBlockedUsersInput">Blocked Users: </label>
-                      <input type="checkbox" data-create="blocked-user"  id="chatroomSettingsBlockedUsersInput" />
+                      <label for="preferences-privacy-input">Private: </label>
+                      <input type="checkbox" data-create="privacy"  id="preferences-privacy-input" <% if ( privacy === true ) { %> checked <% } %>/>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
-                      <input type="button" id="chatroomSettingsBtn" data-dismiss="modal" class="btn btn-primary-mod" value="Save & Close"></input>
+                      <input type="button" id="preferences-btn" data-dismiss="modal" class="btn btn-primary-mod" value="Save & Close"></input>
+                    </div>
+                  </form>
+                  <div id="status"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!-- invite user modal -->
+        <div class="modal fade" id="invite-user-modal" tabindex="-1" role="dialog" aria-labelledby="invite-user-modal" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="invite-user-modal-label">Chatroom Settings</h4>
+              </div>
+              <div class="modal-body">
+                <div id="invite-user-container" class="modal-image">
+                  <form id="invite-user-form">
+                    <div class="row">
+                      <label for="invite-user-input">Invite User: </label>
+                      <input type="text" data-create="invite-user" id="invite-user-input"/>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
+                      <input type="button" id="preferences-btn" data-dismiss="modal" class="btn btn-primary-mod" value="Save & Close"></input>
+                    </div>
+                  </form>
+                  <div id="status"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!-- block user modal -->
+        <div class="modal fade" id="block-user-modal" tabindex="-1" role="dialog" aria-labelledby="block-user-modal" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="block-user-modal-label">Chatroom Settings</h4>
+              </div>
+              <div class="modal-body">
+                <div id="block-user-container" class="modal-image">
+                  <form id="block-user-form">
+                    <div class="row">
+                      <label for="block-user-input">Block User: </label>
+                      <input type="text" data-create="block-user" id="block-user-input"/>
+                    </div>
+                    <div class="row">
+                      <label for="block-users-input">Blocked Users: </label>
+                      <input type="checkbox" data-create="blocked-user"  id="blocked-users-input" />
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
                     </div>
                   </form>
                   <div id="status"></div>
