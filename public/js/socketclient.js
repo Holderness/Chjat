@@ -255,7 +255,9 @@ var ChatClient = function(options) {
     socket.on('refreshInvitations', function(invitations) {
       self.vent.trigger("refreshInvitations", invitations);
     });
-
+    socket.on('userInvited', function(user) {
+      self.vent.trigger("userInvited", user);
+    });
 
 	};
 };

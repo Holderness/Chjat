@@ -40,6 +40,9 @@ app.ChatroomModel = Backbone.Model.extend({
     this.get('chatlog').add(new app.ChatModel({ sender: chat.sender, message: chat.message, timestamp: now, url: chat.url}));
     // this.trigger('gorp', chat);
   },
+  dangus: function() {
+    console.log('dangus');
+  },
 });
 
 })();

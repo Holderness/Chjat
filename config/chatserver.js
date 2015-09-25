@@ -473,9 +473,12 @@ var Server = function(options) {
       { $push: {'invitations': {sender: invitationObj.sender, roomName: invitationObj.roomName, roomId: invitationObj.roomId}}},
       function(err, raw) {
         if (err) { return console.log(err); }
-        UserModel.findOne({ _id: user.id }, function( err, found ) {
-          console.log('found', found);
-          if (err) {return console.log(err);}
+        UserModel.findOne({ username: invitationObj.recipient}, function( err, found ) {
+          user.socket.emit('userInvited', found.username);
+          if (err) {
+            user.socket.emit('userInvited', { 'error': 'error'});
+            return console.log(err);
+          }
           // user.socket.emit('refreshInvitations', found.invitations);
         });
       }

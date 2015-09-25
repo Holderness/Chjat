@@ -110,6 +110,8 @@ app.ChatroomView = Backbone.View.extend({
 
     this.listenTo(this.model, "moreChats", this.renderMoreChats, this);
 
+    this.listenTo(this.model, "userInvited", this.userInvited, this);
+
     this.listenTo(this.model, "chatroomAvailability", this.renderChatroomAvailability, this);
 
     var this_ = this;
@@ -134,7 +136,9 @@ app.ChatroomView = Backbone.View.extend({
        });
   },
 
-
+  wat: function() {
+    console.log('wat');
+  },
   chatroomSearchTypeahead: function() {
     // interesting - the 'this' makes a difference, can't find #chat-search-input otherwise
     this.$('#chat-search-input').typeahead({
@@ -170,14 +174,18 @@ app.ChatroomView = Backbone.View.extend({
   renderHeader: function() {
     this.$('#chatbox-header').html(this.headerTemplate(this.model.get('chatroom').toJSON()));
     this.chatroomSettingsView = new app.ChatroomSettingsView({vent: this.vent, model: this.model.get('chatroom')});
-    // debugger;
-    this.chatroomSettingsView.setElement(this.$('#preferences-container'));
+    this.chatroomSettingsView.setElement(this.$('#chatroom-header-container'));
     // debugger;
     this.listenTo(this.chatroomSettingsView, 'updateRoom', this.updateRoom);
   },
 
   renderDirectMessageHeader: function() {
     this.$('#chatbox-header').html(this.directMessageHeaderTemplate(this.model.get('chatroom').toJSON()));
+  },
+
+  userInvited: function(data) {
+    debugger;
+    this.chatroomSettingsView.trigger('userInvited', data);
   },
 
 

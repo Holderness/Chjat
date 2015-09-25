@@ -196,6 +196,7 @@ app.MainController = function() {
     oldInvitations.reset(newInvitations);
   });
 
+
   // self.appEventBus.on("setRoom", function(model) {
   //   console.log('main.e.setRoom: ', model);
 
@@ -364,5 +365,20 @@ app.MainController = function() {
     self.chatroomModel.addChat(message);
     $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
   });
-};
 
+
+
+  self.appEventBus.on("userInvited", function(user) {
+    console.log('main.e.userInvited: ', user);
+    self.chatroomModel.trigger('userInvited', user);
+  });
+
+
+
+
+
+
+
+
+
+};

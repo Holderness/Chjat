@@ -128,8 +128,8 @@
 
 <!-- chatbox-header -->
 
-  <script type="text/template" id="chatroom-header-template">  
-    <!-- <div class="astricks fa">*</div> -->
+  <script type="text/template" id="chatroom-header-template">
+    <div id="chatroom-header-container">
     <div class="room-header-image-container">
       <img class="room-header-image" 
            data-toggle="modal"
@@ -144,7 +144,7 @@
         <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="fa fa-cog"></span>
         </div>
-        <ul class="dropdown-menu" id="chatroom-settings">
+        <ul class="dropdown-menu">
           <li id="chatroom-preferences"
               data-toggle="modal"
               data-target="#preferences-modal">
@@ -212,7 +212,7 @@
               <div class="modal-body">
                 <div id="invite-user-container" class="modal-image">
                   <form id="invite-user-form">
-                    <div class="row">
+                    <div class="row invite-user-container">
                       <label for="invite-user-input">Invite User: </label>
                       <input type="text" data-create="invite-user" id="invite-user-input"/>
                     </div>
@@ -258,7 +258,7 @@
           </div>
         </div>
 
-
+  </div>
   </script>
 
   <script type="text/template" id="direct-message-header-template">  

@@ -1,0 +1,14 @@
+#chatroom-header-container {
+
+    .user-invited-response {
+      display: inline-block;
+      margin-left: 10px;
+      &.success {
+        color: $validation-green;
+      }
+      &.failure {
+        color: $validation-red;
+      }
+    }
+
+}

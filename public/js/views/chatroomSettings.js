@@ -6,6 +6,8 @@ var app = app || {};
   app.ChatroomSettingsView = Backbone.View.extend({
 
     el: $('#chatroom-settings'),
+    userInvitedTemplate: _.template('<div class="user-invited-response success"><%= username %> Invited!</div>'),
+    invitationErrorTemplate: _.template('<div class="user-invited-response failure">Failure!</div>'),
     events: {
       'change #preferences-image-upload': 'renderThumb',
       'attachImage #preferences-form': 'upload',
@@ -21,6 +23,8 @@ var app = app || {};
         e.preventDefault();
         this_.inviteUser();
       });
+
+      this.listenTo(this, "userInvited", this.userInvited, this);
     },
 
     render: function() {
@@ -110,7 +114,6 @@ var app = app || {};
     inviteUser: function(e) {
       // e.preventDefault();
       var recipient = $.trim($('#invite-user-input').val());
-        debugger;
       if (recipient.length > 0) {
         // e.preventDefault();
         var sender = this.model.get('currentUser'),
@@ -151,6 +154,23 @@ var app = app || {};
         },
       });
     },
+
+    userInvited: function(username) {
+      debugger;
+      if (username.error === 'error') {
+        $('.invite-user-container').append(this.invitationErrorTemplate());
+      }
+      $('.invite-user-container').append(this.userInvitedTemplate({username: username}));
+      setTimeout(function() {
+        $('.invite-user-container .success').fadeOut(300, function() {
+          $(this).remove();
+        });
+        $('.invite-user-container .failure').fadeOut(300, function() {
+          $(this).remove();
+        });
+      }, 1000);
+    },
+
 
   });
 
