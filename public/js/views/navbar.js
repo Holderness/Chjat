@@ -25,12 +25,16 @@ var app = app || {};
       return this;
     },
     renderInvitations: function() {
+      debugger;
       this.$('#invitations').empty();
       var invitations = this.model.get('invitations');
       var this_ = this;
       invitations.each(function(invite) {
         this_.renderInvitation(invite);
       }, this);
+      if (invitations.length === 0) {
+        this.$('#invitations').append("<div>You've got no invitations, like dang</div>");
+      }
     },
     renderInvitation: function(model) {
       this.$('#invitations').append(this.invitationTemplate(model.toJSON()));

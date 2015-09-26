@@ -5,14 +5,14 @@ var app = app || {};
 
   app.ChatroomSettingsView = Backbone.View.extend({
 
-    el: $('#chatroom-settings'),
+    el: $('#chatroom-header-container'),
     userInvitedTemplate: _.template('<div class="user-invited-response success"><%= username %> Invited!</div>'),
     invitationErrorTemplate: _.template('<div class="user-invited-response failure">Failure!</div>'),
     events: {
       'change #preferences-image-upload': 'renderThumb',
       'attachImage #preferences-form': 'upload',
       'click #preferences-btn': 'submit',
-      'keypress #invite-user-input': 'inviteUser',
+      'keyup #invite-user-input': 'inviteUser',
     },
 
     initialize: function(options) {
@@ -21,7 +21,6 @@ var app = app || {};
       var this_ = this;
       $("form").submit(function(e) {
         e.preventDefault();
-        this_.inviteUser();
       });
 
       this.listenTo(this, "userInvited", this.userInvited, this);
@@ -112,9 +111,10 @@ var app = app || {};
     },
 
     inviteUser: function(e) {
-      // e.preventDefault();
+      e.preventDefault();
       var recipient = $.trim($('#invite-user-input').val());
-      if (recipient.length > 0) {
+      if (e.keyCode === 13 && recipient.length > 0) {
+        debugger;
         // e.preventDefault();
         var sender = this.model.get('currentUser'),
             roomId = this.model.get('id'),

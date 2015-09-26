@@ -155,11 +155,11 @@
               data-target="#invite-user-modal">
               invite user
           </li>
-          <li id="block-user" 
+          <!--<li id="block-user" 
               data-toggle="modal"
               data-target="#block-user-modal">
               block user
-          </li>
+          </li> -->
           <% if (owner === currentUser) { %>
             <li id="destroy-chatroom">destroy</li>
           <% } %>
@@ -181,6 +181,7 @@
                   <img src="<%= roomImage %>" alt="" id="uploaded-preferences-image">
                   <form id="preferences-form">
                     <div class="row">
+                      <label for="preferences-image-upload">Chatroom Image: </label>
                       <input type="file" id="preferences-image-upload" name="chatroomImageUpload">
                     </div>
                      <!-- <label for="preferences-name-input">Chatroom Name: </label>
@@ -214,11 +215,10 @@
                   <form id="invite-user-form">
                     <div class="row invite-user-container">
                       <label for="invite-user-input">Invite User: </label>
-                      <input type="text" data-create="invite-user" id="invite-user-input"/>
+                      <input type="text" data-create="invite-user" id="invite-user-input" autocomplete="off" />
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
-                      <input type="button" id="preferences-btn" data-dismiss="modal" class="btn btn-primary-mod" value="Save & Close"></input>
                     </div>
                   </form>
                   <div id="status"></div>
@@ -228,7 +228,7 @@
           </div>
         </div>
 
-<!-- block user modal -->
+<!-- block user modal 
         <div class="modal fade" id="block-user-modal" tabindex="-1" role="dialog" aria-labelledby="block-user-modal" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -257,7 +257,7 @@
             </div>
           </div>
         </div>
-
+-->
   </div>
   </script>
 
@@ -362,6 +362,7 @@
                   <img src="/img/chjat-icon1.png" alt="" id="uploadedChatImage">
                   <form id="chatImageUploadForm">
                     <div class="row">
+                      <label for="chatImageUpload">Chat Image: </label>
                       <input type="file" id="chatImageUpload" name="chatImageUpload">
                     </div>
                     <div class="modal-footer">
@@ -390,6 +391,7 @@
                   <img src="/img/chjat-icon1.png" alt="" id="uploadedChatroomImage">
                   <form id="createChatroomForm">
                     <div class="row">
+                      <label for="chatroomImageUpload">Chatroom Image: </label>
                       <input type="file" id="chatroomImageUpload" name="chatroomImageUpload">
                     </div>
                     <div class="row">
