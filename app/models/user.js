@@ -17,7 +17,14 @@ var UserSchema = new mongoose.Schema({
   provider: String,
   providerId: String,
   providerData: {},
-  userImage: String,
+  userImage: {
+    type: String,
+    default: '/img/chjat-icon1.png'
+  },
+  homeRoom: {
+    type: String,
+    default: 'Parlor'
+  },
   invitations: [],
 });
 

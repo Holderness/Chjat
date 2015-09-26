@@ -18,6 +18,8 @@ var app = app || {};
       var invitations = this.model.get('invitations');
 
       this.listenTo(invitations, "reset", this.renderInvitations, this);
+
+      this.render();
     },
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
@@ -25,7 +27,6 @@ var app = app || {};
       return this;
     },
     renderInvitations: function() {
-      debugger;
       this.$('#invitations').empty();
       var invitations = this.model.get('invitations');
       var this_ = this;

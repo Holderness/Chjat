@@ -158,7 +158,7 @@ var ChatClient = function(options) {
     socket.on('login', function(user) {
       console.log('sc.e.login');
       self.vent.trigger('loginUser', user);
-      self.connectToRoom("Parlor");
+      self.connectToRoom(user.homeRoom);
     });
 
 
