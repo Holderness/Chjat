@@ -267,15 +267,42 @@ var Server = function(options) {
         console.log('this is the DM', DM);
         self.connectToDirectMessage(user, DM._id);
         user.socket.emit('setDirectMessageChatlog', DM.chatlog.slice(-25));
-        user.socket.emit('setDirectMessageHeader', {id: DM._id, 'name': recipient.username, privacy: false, blockedUsers: [], 'owner': null, 'currentUser': user.username, chatlogLength: DM.chatlog.length, modelsLoadedSum: -1, chatType: 'message', roomImage: recipient.userImage});
+        user.socket.emit('setDirectMessageHeader', {
+          id: DM._id,
+          name: recipient.username,
+          privacy: false,
+          blockedUsers: [],
+          owner: null,
+          currentUser: user.username,
+          chatlogLength: DM.chatlog.length,
+          modelsLoadedSum: -1,
+          chatType: 'message',
+          roomImage: recipient.userImage
+        });
       } else {
-        var newDirectMessage = new DirectMessageModel({'participants': [{'username': user.username, 'userImage': user.userImage}, {'username': recipient.username}]});
+        var newDirectMessage = new DirectMessageModel(
+          {'participants': [{
+            'username': user.username,
+            'userImage': user.userImage
+          },
+          {'username': recipient.username}
+          ]});
         newDirectMessage.save(function(err, DM) {
            if (!err) {
              console.log('DM created');
              self.connectToDirectMessage(user, DM._id);
              user.socket.emit('setDirectMessageChatlog', DM.chatlog.slice(-25));
-             user.socket.emit('setDirectMessageHeader', {id: DM._id, 'name': recipient.username, privacy: false, blockedUsers: [], 'owner': null, 'currentUser': user.username, chatlogLength: DM.chatlog.length, modelsLoadedSum: -1, chatType: 'message', roomImage: recipient.userImage});
+             user.socket.emit('setDirectMessageHeader', {
+              id: DM._id,
+              name: recipient.username,
+              privacy: false,
+              blockedUsers: [],
+              owner: null,
+              currentUser: user.username,
+              chatlogLength: DM.chatlog.length,
+              modelsLoadedSum: -1,
+              chatType: 'message',
+              roomImage: recipient.userImage});
            } else {
              console.log('DM not created', err);
            }
@@ -370,7 +397,7 @@ var Server = function(options) {
     console.log('user leaving: ', user.username);
     if (user.socket.chat.room) {
     ChatroomModel.update({ name: currentRoom },
-      {$pull: {'onlineUsers': {username: user.username, userImage: user.userImage}}},
+      {$pull: {'onlineUsers': {username: user.username, userImage: user.userImage, id: user.id}}},
       function(err, raw) {
         if (err) {return console.log(err);}
         user.socket.broadcast.to(currentRoom).emit('userLeft', { username: user.username, userImage: user.userImage });
@@ -390,7 +417,7 @@ var Server = function(options) {
     user.socket.chat.room = roomName;
     console.log('user socket id: ', user.socket.id);
     ChatroomModel.update({ name: roomName},
-      {$push: {'onlineUsers': { username: user.username, userImage: user.userImage}}},
+      {$push: {'onlineUsers': { username: user.username, userImage: user.userImage, id: user.id }}},
       function(err, raw){
         if (err) { return console.log(err); }
         ChatroomModel.findOne({ name: roomName }, function( err, chatroom ) {
@@ -408,7 +435,7 @@ var Server = function(options) {
 
 // ROOM MANAGEMENT
     self.addUserToRoom = function(user, chatroomName) {
-      ChatroomModel.update({name: chatroomName}, { $push: {'participants': {'username': user.username, 'userImage': user.userImage } }}, function(err, raw) {
+      ChatroomModel.update({name: chatroomName}, { $push: {'participants': {'username': user.username, 'userImage': user.userImage, 'id': user.id } }}, function(err, raw) {
             if (!err) {
               console.log('userchatrooms', raw);
               self.getChatrooms(user, user.socket);
@@ -418,7 +445,7 @@ var Server = function(options) {
       });
     };
     self.removeUserFromRoom = function(user, chatroomName) {
-      ChatroomModel.update({name: chatroomName}, { $pull: { 'participants': {'username': user.username, 'userImage': user.userImage }}}, function(err, raw) {
+      ChatroomModel.update({name: chatroomName}, { $pull: { 'participants': {'username': user.username, 'userImage': user.userImage, 'id': user.id }}}, function(err, raw) {
             if (!err) {
               console.log('userchatrooms', raw);
               self.getChatrooms(user, user.socket);
@@ -429,7 +456,7 @@ var Server = function(options) {
     };
   self.getChatrooms = function(user, socket) {
     console.log('f.getChatrooms');
-    ChatroomModel.find({ 'participants.username': user.username }, 'name owner roomImage privacy', function( err, chatrooms ) {
+    ChatroomModel.find({ 'participants.id': user.id }, 'name owner roomImage privacy', function( err, chatrooms ) {
       if (!err) {
         var priv = self.getPrivateRooms(chatrooms);
         var pub = self.getPublicRooms(chatrooms);
@@ -469,7 +496,15 @@ var Server = function(options) {
     ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
       if (!err) {
         // console.log('chatroom: ', chatroom);
-        var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
+        var offlineUsers = _.filter(chatroom.participants,
+          function(obj){
+            return !_.find(chatroom.onlineUsers,
+              function(onlineObj) {
+                 if (onlineObj.id.equals(obj.id)) {
+                   return onlineObj;
+                 }
+              });
+          });
         // console.log('participants: ', chatroom.participants);
         // console.log('oonlneinusers: ', chatroom.onlineUsers);
         // console.log('offlineusers: ', offlineUsers);
@@ -522,7 +557,7 @@ var Server = function(options) {
     console.log('roomId', roomId);
     ChatroomModel.update(
       {_id: roomId},
-      { $push: {'participants': {'username': user.username, 'userImage': user.userImage } }},
+      { $push: {'participants': { 'username': user.username, 'userImage': user.userImage, 'id': user.id } }},
       function(err, raw) {
         if (!err) {
           console.log('userchatrooms', raw);
@@ -540,26 +575,16 @@ var Server = function(options) {
   self.updateUser = function(user, userObj){
     UserModel.findOneAndUpdate({ _id: user.id }, { '$set': userObj }, function(err, oldUser) {
         if (err) { return console.log(err); }
+        user.socket.leave(user.socket.chat.room);
+        self.leaveRoom(user);
         UserModel.findOne({ _id: user.id }, function( err, updatedUser ) {
-                    user.socket.leave(user.socket.chat.room);
-          self.leaveRoom(user);
           newEventList = _.filter(Object.keys(user.socket._events), function(eventKey) {
             return eventKey === 'login' || eventKey === 'logout';
           });
           user.socket._events = newEventList;
           console.log('new user.socket', user.socket);
-          // var userUpdate = new User({
-          //   username: updatedUser.username,
-          //   socket: user.socket,
-          //   userImage: updatedUser.userImage,
-          //   id: updatedUser._id,
-          //   invitations: updatedUser.invitations,
-          //   homeRoom: updatedUser.homeRoom
-          // });
           self.initUser(user.socket, updatedUser);
-          // user = userUpdate;
-          // user.socket.emit('userUpdated', updatedUser.username);
-          self.addToRoom(user, updatedUser.homeRoom);
+          // self.addToRoom(user, updatedUser.homeRoom);
           if (err) {
             user.socket.emit('userUpdated', { 'error': 'error'});
             return console.log(err);
