@@ -241,11 +241,11 @@
                   <form id="block-user-form">
                     <div class="row">
                       <label for="block-user-input">Block User: </label>
-                      <input type="text" data-create="block-user" id="block-user-input"/>
+                      <input type="text" data-create="block-user" id="block-user-input" autocomplete="off"/>
                     </div>
                     <div class="row">
                       <label for="block-users-input">Blocked Users: </label>
-                      <input type="checkbox" data-create="blocked-user"  id="blocked-users-input" />
+                      <input type="checkbox" data-create="blocked-user"  id="blocked-users-input" autocomplete="off"/>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
@@ -396,7 +396,7 @@
                     </div>
                     <div class="row">
                       <label for="chatroom-name-input">Chatroom Name: </label>
-                      <input type="text" data-create="name" id="chatroom-name-input"/>
+                      <input type="text" data-create="name" id="chatroom-name-input" autocomplete="off"/>
                     </div>
                     <div class="row">
                       <label for="chatroomPrivacyInput">Private: </label>
@@ -540,7 +540,7 @@
               </div>
               <div class="row">
                 <label for="user-preferences-home-room-input">Home Room: </label>
-                <input type="text" data-create="homeRoom" placeholder="<%= homeRoom %>" id="user-preferences-name-input"/>
+                <input type="text" data-create="homeRoom" placeholder="<%= homeRoom %>" id="user-preferences-home-room-input" autocomplete="off"/>
               </div>
             </form>
             <div class="modal-footer">

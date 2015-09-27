@@ -27,6 +27,7 @@ var app = app || {};
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
       this.renderInvitations();
+      this.setHomeRoomTyepahead();
       return this;
     },
     renderInvitations: function() {
@@ -76,7 +77,6 @@ var app = app || {};
     },
 
     upload: function() {
-      debugger;
       var this_ = this;
         var formData = new FormData(this.$form[0]);
       if (this.$('#user-preferences-image-upload')[0].files.length > 0) {
@@ -95,7 +95,6 @@ var app = app || {};
           success: function( response ) {
             console.log('imgUpload response: ', response);
             var form = this_.createUserFormData();
-            debugger;
             form.userImage = response.userImage;
             this_.vent.trigger('updateUser', form);
             $('#user-preferences-modal').modal('hide');
@@ -104,7 +103,6 @@ var app = app || {};
         });
       } else {
         var form = this.createUserFormData();
-        debugger;
         this.vent.trigger('updateUser', form);
       }
       return false;
@@ -112,7 +110,6 @@ var app = app || {};
 
     createUserFormData: function() {
       var formData = {};
-      debugger;
       this.$('#user-preferences-form').find( 'input' ).each(function(i, el) {
         if ($(el).data('create') === 'privacy') {
           var val = $(el).prop('checked');
@@ -129,6 +126,33 @@ var app = app || {};
     clearField: function() {
       this.$('#uploaded-user-preferences-image')[0].src = '';
       this.$('#user-preferences-image-upload').val('');
+    },
+
+    setHomeRoomTyepahead: function() {
+      this.$('#user-preferences-home-room-input').typeahead({
+        onSelect: function(item) {
+          console.log(item);
+        },
+        ajax: {
+          url: '/api/searchChatrooms',
+          triggerLength: 1,
+          limit: 5,
+          minLength: 5,
+          preDispatch: function (query) {
+            return {
+              name: query
+            };
+          },
+          preProcess: function (data) {
+            console.log(data);
+            if (data.success === false) {
+            // Hide the list, there was some error
+              return false;
+            }
+            return data;
+          }
+        },
+      });
     },
 
   });
