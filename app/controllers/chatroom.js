@@ -2,7 +2,7 @@ var express = require('express'),
     mongoose = require('mongoose'),
     passport = require('passport'),
     bodyParser = require('body-parser'),
-    multer = require('multer');
+    multer = require('multer'),
     fs = require('fs'),
     AWS = require('aws-sdk');
 

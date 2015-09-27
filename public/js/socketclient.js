@@ -32,6 +32,9 @@ var ChatClient = function(options) {
   };
 
 
+  self.reconnect = function() {
+    self.connect();
+  };
 
 
 ///// ViewEventBus methods ////
@@ -134,6 +137,12 @@ var ChatClient = function(options) {
   self.acceptInvitation = function(roomId) {
     self.socket.emit("acceptInvitation", roomId);
   };
+
+// UPDATE USER
+  self.updateUser = function(userObj) {
+    self.socket.emit("updateUser", userObj);
+  };
+
 
 
 // ERROR HANDLING
@@ -258,6 +267,10 @@ var ChatClient = function(options) {
     socket.on('userInvited', function(user) {
       self.vent.trigger("userInvited", user);
     });
+
+   socket.on('reconnect', function() {
+     self.reconnect();
+   });
 
 	};
 };

@@ -6,6 +6,8 @@ module.exports = function(app) {
 
   app.route('/searchUsers').get(users.findBy);
 
+  app.route('/updateUserImage').post(users.multerRestrictions, users.updateUserImage);
+
   app.route('/users/:userId').get(users.read).put(users.update).delete(users.delete);
 
   app.param('userId', users.userByID);

@@ -184,7 +184,6 @@ app.ChatroomView = Backbone.View.extend({
   },
 
   userInvited: function(data) {
-    debugger;
     this.chatroomSettingsView.trigger('userInvited', data);
   },
 

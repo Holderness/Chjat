@@ -48,28 +48,37 @@ var Server = function(options) {
   self.manageConnection = function(socket, userdata) {
     console.log('f.manageConnection');
     UserModel.findOne({'username': userdata.username}, function(err, userModel) {
+      self.initUser(socket, userModel);
+    });
+  };
+
+  self.initUser = function(socket, model) {
       var newUser = new User({
-        username: userdata.username,
+        username: model.username,
         socket: socket,
-        userImage: userModel.userImage,
-        id: userModel._id,
-        invitations: userModel.invitations,
-        homeRoom: userModel.homeRoom
+        userImage: model.userImage,
+        id: model._id,
+        invitations: model.invitations,
+        homeRoom: model.homeRoom
       });
       var callback = function() {
         console.log('------------------------------------------');
-        console.log('invites: ', userModel.invitations);
+        console.log('invites: ', model.invitations);
         console.log('newUser: ', newUser);
         console.log('------------------------------------------');
-        socket.emit('login', {username: newUser.username, invitations: newUser.invitations, homeRoom: newUser.homeRoom});
+        socket.emit('login', { username: newUser.username,
+                            invitations: newUser.invitations,
+                               homeRoom: newUser.homeRoom,
+                              userImage: newUser.userImage });
       };
       self.setResponseListeners(newUser, callback);
-    });
+      return newUser;
   };
     
 
   self.setResponseListeners = function(user, callback) {
-    console.log('f.setResponseListeners: ');
+    console.log('f.setResponseListeners: ----------------------------------');
+
 
 // CONNECTION
     user.socket.on('disconnect', function() {
@@ -192,7 +201,16 @@ var Server = function(options) {
       self.acceptInvitation(user, roomId);
     });
 
+// UPDATE USER
 
+    user.socket.on('updateUser', function(userObj) {
+      console.log('e.updateUser');
+      self.updateUser(user, userObj);
+    });
+
+
+    console.log('io: ----------------------------------', self.io);
+    console.log('user.socket: ----------------------------------', user.socket._events);
 // CALLBACK
     if (callback) {
       callback();
@@ -516,6 +534,41 @@ var Server = function(options) {
       }
     );
   };
+
+
+// UPDATE USER
+  self.updateUser = function(user, userObj){
+    UserModel.findOneAndUpdate({ _id: user.id }, { '$set': userObj }, function(err, oldUser) {
+        if (err) { return console.log(err); }
+        UserModel.findOne({ _id: user.id }, function( err, updatedUser ) {
+                    user.socket.leave(user.socket.chat.room);
+          self.leaveRoom(user);
+          newEventList = _.filter(Object.keys(user.socket._events), function(eventKey) {
+            return eventKey === 'login' || eventKey === 'logout';
+          });
+          user.socket._events = newEventList;
+          console.log('new user.socket', user.socket);
+          // var userUpdate = new User({
+          //   username: updatedUser.username,
+          //   socket: user.socket,
+          //   userImage: updatedUser.userImage,
+          //   id: updatedUser._id,
+          //   invitations: updatedUser.invitations,
+          //   homeRoom: updatedUser.homeRoom
+          // });
+          self.initUser(user.socket, updatedUser);
+          // user = userUpdate;
+          // user.socket.emit('userUpdated', updatedUser.username);
+          self.addToRoom(user, updatedUser.homeRoom);
+          if (err) {
+            user.socket.emit('userUpdated', { 'error': 'error'});
+            return console.log(err);
+          }
+        });
+      }
+    );
+  };
+
 
 
 // ERROR HANDLING

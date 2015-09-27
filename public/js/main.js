@@ -138,6 +138,9 @@ app.MainController = function() {
   self.viewEventBus.on("acceptInvitation", function(roomId) {
     self.chatClient.acceptInvitation(roomId);
   });
+  self.viewEventBus.on("updateUser", function(userObj) {
+    self.chatClient.updateUser(userObj);
+  });
 
 
 
@@ -183,7 +186,7 @@ app.MainController = function() {
        return newInvitation;
     });
     invitations.reset(newInvitations);
-    self.navbarView.model.set('username', user.username);
+    self.navbarView.model.set({ 'username': user.username, 'homeRoom': user.homeRoom, 'userImage': user.userImage });
   });
 
   self.appEventBus.on("refreshInvitations", function(invitations) {

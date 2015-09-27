@@ -168,7 +168,7 @@
     <% } %>
 
 
-<!-- preferences- modal -->
+<!-- chatroom preferences- modal -->
         <div class="modal fade" id="preferences-modal" tabindex="-1" role="dialog" aria-labelledby="preferences-modal" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -378,7 +378,7 @@
         </div>
 
 
-    <!-- createChatroom modal -->
+<!-- createChatroom modal -->
         <div class="modal fade" id="createChatroomModal" tabindex="-1" role="dialog" aria-labelledby="createChatroomModal" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -448,7 +448,6 @@
 
 
 <!-- online users -->
-
 <script type="text/template" id="online-users-list-template">
   <div class="user user-online">
       <img class="user-image on" src="<%= userImage %>">
@@ -459,7 +458,6 @@
 
 
 <!-- offline users -->
-
 <script type="text/template" id="offline-users-list-template">
   <div class="user user-offline">
       <img class="user-image off" src="<%= userImage %>">
@@ -470,7 +468,6 @@
 
 
 <!-- user rooms -->
-
 <script type="text/template" id="room-list-template">
   <div class="room" data-room="<%= name %>">
     <div class="room-name-container">
@@ -484,6 +481,8 @@
   </div>
 </script>
 
+
+<!-- navbar -->
 <script type="text/template" id="navbar-template">
   <ul class='nav navbar-right'>
     <% if (username) { %>
@@ -531,8 +530,25 @@
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4 class="modal-title" id="user-preferences-modal-label">User Preferences</h4>
         </div>
-        <div class="modal-body"></div>
-        <div class="modal-footer"></div>
+        <div class="modal-body">
+          <div id="user-preferences-container" class="modal-image">
+            <img src="<%= userImage %>" alt="" id="uploaded-user-preferences-image">
+            <form id="user-preferences-form">
+              <div class="row">
+                <label for="user-preferences-image-upload">Avatar: </label>
+                <input type="file" id="user-preferences-image-upload" name="userImageUpload">
+              </div>
+              <div class="row">
+                <label for="user-preferences-home-room-input">Home Room: </label>
+                <input type="text" data-create="homeRoom" placeholder="<%= homeRoom %>" id="user-preferences-name-input"/>
+              </div>
+            </form>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
+              <input type="button" id="user-preferences-btn" data-dismiss="modal" class="btn btn-primary-mod" value="Save & Close"></input>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

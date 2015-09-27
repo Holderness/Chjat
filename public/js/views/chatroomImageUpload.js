@@ -40,7 +40,7 @@ var app = app || {};
 
     upload: function() {
       var _this = this;
-        var formData = new FormData(this.$form[0]);
+      var formData = new FormData(this.$form[0]);
       if (this.$('#chatroomImageUpload')[0].files.length > 0) {
         $.ajax({
           type: 'POST',

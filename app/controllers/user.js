@@ -1,5 +1,66 @@
 var User = require('mongoose').model('User'),
-    passport = require('passport');
+    passport = require('passport'),
+    multer = require('multer'),
+    fs = require('fs'),
+    AWS = require('aws-sdk');
+
+
+
+
+
+//////////// AWS
+var AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY,
+    AWS_SECRET_KEY = process.env.AWS_SECRET_KEY,
+    S3_BUCKET = process.env.S3_BUCKET;
+
+AWS.config.update({
+  accessKeyId: AWS_ACCESS_KEY,
+  secretAccessKey: AWS_SECRET_KEY
+});
+
+s3 = new AWS.S3({params: {Bucket: S3_BUCKET }});
+
+var uploadToS3 = function(file, destFileName, callback) {
+  s3
+    .upload({
+      ACL: 'public-read',
+      Body: fs.createReadStream(file.path),
+      Key: destFileName.toString()
+    })
+    .send(callback);
+};
+
+exports.multerRestrictions = multer({limits: {fileSize:1024*1024}});
+
+exports.updateUserImage = function (req, res, next) {
+
+  console.log('req: ', req);
+  console.log('----------------------------------------------------------------');
+  console.log('req.files.userImageUpload: ', req.files.userImageUpload);
+
+  if (!req.files || !req.files.userImageUpload) {
+    return res.status(403).send('expect 1 file upload named userImageUpload').end();
+  }
+  var userImageUpload = req.files.userImageUpload;
+
+  // this is mainly for user friendliness. this field can be tampered by attacker.
+  if (!/^image\/(jpe?g|png|gif)$/i.test(userImageUpload.mimetype)) {
+    return res.status(403).send('expect image file').end();
+  }
+
+  uploadToS3(userImageUpload, userImageUpload.name, function (err, data) {
+    if (err) {
+      console.error(err);
+      return res.status(500)
+        .send('failed to upload to s3')
+        .end();
+    }
+      // console.log('data: ', data);
+    res.status(200)
+      .send({ userImage: data.Location, ETag: data.ETag, timestamp: _.now()})
+      .end();
+  });
+};
 
 var getErrorMessage = function(err) {
   var message = '';
