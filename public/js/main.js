@@ -286,19 +286,20 @@ app.MainController = function() {
     self.chatroomModel.stopListening('moreChats');
   });
   
-  self.appEventBus.on("setChatrooms", function(chatrooms) {
-    var oldChatrooms = self.chatroomModel.get('chatrooms');
-    var updatedChatrooms = _.map(chatrooms, function(chatroom) {
-      var newChatroomModel = new app.ChatroomModel({ name: chatroom.name, owner: chatroom.owner, roomImage: chatroom.roomImage});
+  self.appEventBus.on("setChatrooms", function(rooms) {
+    var oldRooms = self.chatroomModel.get('chatrooms');
+    var newRooms = _.map(rooms, function(room) {
+      var newChatroomModel = new app.ChatroomModel({ name: room.name, owner: room.owner, roomImage: room.roomImage, privacy: room.privacy});
       return newChatroomModel;
     });
-    oldChatrooms.reset(updatedChatrooms);
+    oldRooms.reset(newRooms);
   });
 
   self.appEventBus.on("setPrivateRooms", function(rooms) {
+    debugger;
     var oldRooms = self.chatroomModel.get('privateRooms');
     var newRooms = _.map(rooms, function(room) {
-      var newChatroomModel = new app.ChatroomModel({ name: room.name, owner: room.owner, roomImage: room.roomImage});
+      var newChatroomModel = new app.ChatroomModel({ name: room.name, owner: room.owner, roomImage: room.roomImage, privacy: room.privacy, currentUser: room.currentUser});
       return newChatroomModel;
     });
     oldRooms.reset(newRooms);

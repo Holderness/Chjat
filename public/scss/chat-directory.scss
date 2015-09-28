@@ -120,6 +120,10 @@
             display: inline-block;
             color: $pink-oink;
           }
+          .destroy-chatroom {
+            display: inline-block;
+            color: $pink-oink;
+          }
           .room-image-container {
             display: none;
           }
@@ -134,6 +138,12 @@
         }
       }
       .remove-chatroom {
+        border: none;
+        background-color: transparent;
+        color: #eee;
+        display: none;
+      }
+      .destroy-chatroom {
         border: none;
         background-color: transparent;
         color: #eee;

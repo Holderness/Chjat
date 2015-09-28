@@ -460,9 +460,10 @@ var Server = function(options) {
     };
   self.getChatrooms = function(user, socket) {
     console.log('f.getChatrooms');
-    ChatroomModel.find({ 'participants.id': user.id }, 'name owner roomImage privacy', function( err, chatrooms ) {
+    // use lean() for a modifiable returned object, like you see in self.getPrivateRooms();
+    ChatroomModel.find({ 'participants.id': user.id }, 'name owner roomImage privacy').lean().exec(function( err, chatrooms ) {
       if (!err) {
-        var priv = self.getPrivateRooms(chatrooms);
+        var priv = self.getPrivateRooms(user, chatrooms);
         var pub = self.getPublicRooms(chatrooms);
         socket.emit('chatrooms', pub);
         socket.emit('privateRooms', priv);
@@ -471,24 +472,15 @@ var Server = function(options) {
       }
     });
   };
-  // self.getPrivateRooms = function(user, socket) {
-  //   var pub = _.filter(chatrooms, function(room) { return room.privacy
-  //   console.log('f.getPrivateRooms');
-  //   ChatroomModel.find({ 'participants.username': user.username, 'privacy': true }, 'name owner roomImage', function( err, chatrooms ) {
-  //     if (!err) {
-  //       console.log('privateRooms', chatrooms);
-  //       socket.emit('privateRooms', chatrooms);
-  //     } else {
-  //       return console.log (err);
-  //     }
-  //   });
-  // };
-
-
-  self.getPrivateRooms = function(chatrooms) {
-    var priv = _.filter(chatrooms, function(room) { return room.privacy === true; });
+  self.getPrivateRooms = function(user, chatrooms) {
+    var priv = _.filter(chatrooms, function(room) {
+        return room.privacy === true;
+    });
+    var modifiedPriv = _.each(priv, function(room) {
+      room.currentUser = user.username;
+    });
     console.log('f.getPrivateRooms');
-    return priv;
+    return  modifiedPriv;
   };
   self.getPublicRooms = function(chatrooms) {
     var pub = _.filter(chatrooms, function(room) { return room.privacy === false; });

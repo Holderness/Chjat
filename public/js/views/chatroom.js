@@ -17,7 +17,7 @@ app.ChatroomView = Backbone.View.extend({
     'click .chat-directory .room': 'setRoom',
     'keypress #chat-search-input': 'search',
     'click .remove-chatroom': 'removeRoom',
-    'click #destroy-chatroom': 'destroyRoom',
+    'click .destroy-chatroom': 'destroyRoom',
     'keyup #chatroom-name-input': 'doesChatroomExist',
     'click .user': 'initDirectMessage',
   },
@@ -238,7 +238,6 @@ app.ChatroomView = Backbone.View.extend({
   },
 
   renderChat: function(model) {
-    debugger;
     this.renderDateDividers(model);
     var chatTemplate = $(this.chatTemplate(model.toJSON()));
     chatTemplate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
@@ -373,7 +372,6 @@ app.ChatroomView = Backbone.View.extend({
         type: "success",
         confirmButtonColor: "#749CA8",
       });
-      debugger;
       this_.vent.trigger('destroyRoom', {id: this_.model.get('chatroom').id, name: this_.model.get('chatroom').get('name')});
     });
   },
@@ -430,6 +428,7 @@ app.ChatroomView = Backbone.View.extend({
   renderPrivateRoom: function(model) {
     var name1 = model.get('name'),
     name2 = this.model.get('chatroom').get('name');
+    debugger;
     this.$('#private-rooms').append(this.roomTemplate(model.toJSON()));
     if (name1 === name2) {
       this.$('#private-rooms').find('.room-name').last().addClass('active').fadeIn();
