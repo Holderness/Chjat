@@ -453,7 +453,7 @@ var Server = function(options) {
     };
     self.removeUserFromRoom = function(user, roomData) {
       console.log('removeUserFromRoom');
-      ChatroomModel.update({name: roomData.roomName}, { $pull: { 'participants': {'id': user.id }}}, function(err, raw) {
+      ChatroomModel.update({_id: roomData.id}, { $pull: { 'participants': {'id': user.id }}}, function(err, raw) {
             if (!err) {
               console.log('userchatrooms', raw);
               self.getChatrooms(user, user.socket);
