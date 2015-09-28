@@ -59,9 +59,9 @@ var ChatClient = function(options) {
     console.log('sc.f.addRoom: ', name);
     self.socket.emit("addRoom", name);
   };
-  self.removeRoom = function(name) {
-    console.log('sc.f.removeRoom: ', name);
-    self.socket.emit("removeRoom", name);
+  self.removeRoom = function(roomData) {
+    console.log('sc.f.removeRoom: ', roomData);
+    self.socket.emit("removeRoom", roomData);
   };
   self.createRoom = function(formData) {
     console.log('sc.f.createRoom: ', formData);
@@ -244,10 +244,10 @@ var ChatClient = function(options) {
     });
 
 
-// MODIFY ROOM
-    socket.on('roomDestroyed', function(data) {
-      console.log('sc.e.roomDestroyed: ', data);
-      self.vent.trigger("roomDestroyed", data);
+// REDIRECT TO HOME ROOM
+    socket.on('redirectToHomeRoom', function(data) {
+      console.log('sc.e.redirectToHomeRoom: ', data);
+      self.vent.trigger("redirectToHomeRoom", data);
     });
 
 // CREATE ROOM

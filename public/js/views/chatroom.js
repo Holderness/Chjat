@@ -397,8 +397,11 @@ app.ChatroomView = Backbone.View.extend({
         type: "success",
         confirmButtonColor: "#749CA8"
       });
+      debugger;
+      var currentRoom = this_.model.get('chatroom').get('name')
       var name = $(e.target).data("room-name");
-      this_.vent.trigger('removeRoom', name);
+      var userInRoom = currentRoom === name;
+      this_.vent.trigger('removeRoom', {roomName: name, userInRoom: userInRoom});
     });
   },
   renderRooms: function() {

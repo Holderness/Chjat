@@ -102,8 +102,8 @@ app.MainController = function() {
   self.viewEventBus.on("addRoom", function(room) {
     self.chatClient.addRoom(room);
   });
-  self.viewEventBus.on("removeRoom", function(room) {
-    self.chatClient.removeRoom(room);
+  self.viewEventBus.on("removeRoom", function(roomData) {
+    self.chatClient.removeRoom(roomData);
   });
   self.viewEventBus.on("createRoom", function(formData) {
     self.chatClient.createRoom(formData);
@@ -250,11 +250,8 @@ app.MainController = function() {
 
 
 
-  self.appEventBus.on("roomDestroyed", function(data) {
-    debugger;
+  self.appEventBus.on("redirectToHomeRoom", function(data) {
     self.chatClient.connectToRoom(data.homeRoom);
-    // self.initRoom();
-    // alert('Chatroom ' + name + ' destroyed');
   });
 
   self.appEventBus.on("setChatroomHeader", function(headerObj) {
