@@ -26,3 +26,16 @@
     border-radius: 11px;
   }
 }
+
+
+  .room-name-validation-message {
+    display: inline-block;
+    padding-left: 20px;
+    font-size: 12px;
+    .fa-check {
+      color: $validation-green;
+    }
+    .fa-times {
+      color: $validation-red;
+    }
+  }

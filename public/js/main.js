@@ -293,7 +293,6 @@ app.MainController = function() {
   });
 
   self.appEventBus.on("setPrivateRooms", function(rooms) {
-    debugger;
     var oldRooms = self.chatroomModel.get('privateRooms');
     var newRooms = _.map(rooms, function(room) {
       var newChatroomModel = new app.ChatroomModel({ id: room._id, name: room.name, owner: room.owner, roomImage: room.roomImage, privacy: room.privacy, currentUser: room.currentUser});
@@ -325,6 +324,10 @@ app.MainController = function() {
 
   self.appEventBus.on("chatroomAvailability", function(availability) {
     self.chatroomModel.trigger('chatroomAvailability', availability);
+  });
+
+  self.appEventBus.on("homeRoomAvailability", function(availability) {
+    self.navbarView.trigger('homeRoomAvailability', availability);
   });
 
 

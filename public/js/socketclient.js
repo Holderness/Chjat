@@ -252,10 +252,11 @@ var ChatClient = function(options) {
       self.vent.trigger("redirectToHomeRoom", data);
     });
 
-// CREATE ROOM
+// ROOM AVAILABILITY
     socket.on('chatroomAvailability', function(availabilty) {
       self.vent.trigger('chatroomAvailability', availabilty);
     });
+
 
 // ERROR HANDLING
     socket.on('chatroomAlreadyExists', function() {

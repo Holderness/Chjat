@@ -79,7 +79,6 @@ var app = app || {};
         });
       } else {
         var form = _this.createRoomFormData();
-        debugger;
        this.vent.trigger('createRoom', form);
       }
       return false;
@@ -95,7 +94,6 @@ var app = app || {};
         } else if ($(el).data('create') === 'privacy') {
           var val = $(el).prop('checked');
           formData['privacy'] = val;
-          debugger;
         } else if ($(el).val() !== '') {
           formData[$(el).data('create')] = $(el).val();
           $(el).val('');
@@ -115,15 +113,24 @@ var app = app || {};
     },
 
     renderChatroomAvailability: function(availability) {
-      this.$('#chatroom-name-input').removeClass('input-valid input-invalid');
-      $('#chatroom-name-validation-container').children().remove();
-      if (availability === true) {
-        this.$('#chatroom-name-input').addClass('input-valid');
-        this.$('#chatroom-name-validation-container').append('<div id="#chatroom-name-validation" class="fa fa-check">Name Available</div>');
-      } else {
-        this.$('#chatroom-name-input').addClass('input-invalid fa fa-times');
-        this.$('#chatroom-name-validation-container').append('<div id="#chatroom-name-validation" class="fa fa-times">Name Unavailable</div>');
-      }
+      var this_ = this;
+      var render = function() {
+        this_.$('.room-name-validation').removeClass('input-valid input-invalid');
+        this_.$('.room-name-validation-message').children().remove();
+        if (availability === true) {
+          this_.$('.room-name-validation').addClass('input-valid');
+          this_.$('.room-name-validation-message').append('<div id="#chatroom-name-validation" class="fa fa-check">Name Available</div>');
+        } else {
+          this_.$('.room-name-validation').addClass('input-invalid fa fa-times');
+          this_.$('.room-name-validation-message').append('<div id="#chatroom-name-validation" class="fa fa-times">Name Unavailable</div>');
+        }
+        setTimeout(function() {
+          this_.$('.room-name-validation-message').children().fadeOut(600, function(){
+            $(this).children.remove();
+          });
+        }, 2000);
+      };
+      _.debounce(render(), 200);
     }
 
   });
