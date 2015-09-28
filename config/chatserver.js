@@ -384,7 +384,10 @@ var Server = function(options) {
     self.destroyRoom = function(user, roomInfo) {
       ChatroomModel.remove({_id: roomInfo.id}, function(err) {
         if (!err) {
-          user.socket.emit('redirectToHomeRoom', {roomLeft: roomInfo.name, homeRoom: user.homeRoom});
+          self.getChatrooms(user, user.socket);
+          if (roomInfo.userInRoom === true) {
+            user.socket.emit('redirectToHomeRoom', {roomLeft: roomInfo.roomName, homeRoom: user.homeRoom});
+          }
         } else {
           return console.log( err );
         }
@@ -465,7 +468,7 @@ var Server = function(options) {
   self.getChatrooms = function(user, socket) {
     console.log('f.getChatrooms');
     // use lean() for a modifiable returned object, like you see in self.getPrivateRooms();
-    ChatroomModel.find({ 'participants.id': user.id }, 'name owner roomImage privacy').lean().exec(function( err, chatrooms ) {
+    ChatroomModel.find({ 'participants.id': user.id }, 'name owner roomImage privacy id').lean().exec(function( err, chatrooms ) {
       if (!err) {
         var priv = self.getPrivateRooms(user, chatrooms);
         var pub = self.getPublicRooms(chatrooms);

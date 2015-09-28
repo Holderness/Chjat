@@ -372,7 +372,11 @@ app.ChatroomView = Backbone.View.extend({
         type: "success",
         confirmButtonColor: "#749CA8",
       });
-      this_.vent.trigger('destroyRoom', {id: this_.model.get('chatroom').id, name: this_.model.get('chatroom').get('name')});
+      var currentRoom = this_.model.get('chatroom').id;
+      var roomId = $(e.target).data("room-id");
+      var roomName = $(e.target).data("room-name");
+      var userInRoom = currentRoom === roomId;
+      this_.vent.trigger('destroyRoom', { id: roomId, roomName: roomName, userInRoom: userInRoom });
     });
   },
   addChatroom: function(name) {
@@ -399,9 +403,9 @@ app.ChatroomView = Backbone.View.extend({
       });
       debugger;
       var currentRoom = this_.model.get('chatroom').get('name')
-      var name = $(e.target).data("room-name");
+      var roomName = $(e.target).data("room-name");
       var userInRoom = currentRoom === name;
-      this_.vent.trigger('removeRoom', {roomName: name, userInRoom: userInRoom});
+      this_.vent.trigger('removeRoom', {roomName: roomName, userInRoom: userInRoom});
     });
   },
   renderRooms: function() {

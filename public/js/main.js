@@ -286,7 +286,7 @@ app.MainController = function() {
   self.appEventBus.on("setChatrooms", function(rooms) {
     var oldRooms = self.chatroomModel.get('chatrooms');
     var newRooms = _.map(rooms, function(room) {
-      var newChatroomModel = new app.ChatroomModel({ name: room.name, owner: room.owner, roomImage: room.roomImage, privacy: room.privacy});
+      var newChatroomModel = new app.ChatroomModel({ id: room._id, name: room.name, owner: room.owner, roomImage: room.roomImage, privacy: room.privacy});
       return newChatroomModel;
     });
     oldRooms.reset(newRooms);
@@ -296,7 +296,7 @@ app.MainController = function() {
     debugger;
     var oldRooms = self.chatroomModel.get('privateRooms');
     var newRooms = _.map(rooms, function(room) {
-      var newChatroomModel = new app.ChatroomModel({ name: room.name, owner: room.owner, roomImage: room.roomImage, privacy: room.privacy, currentUser: room.currentUser});
+      var newChatroomModel = new app.ChatroomModel({ id: room._id, name: room.name, owner: room.owner, roomImage: room.roomImage, privacy: room.privacy, currentUser: room.currentUser});
       return newChatroomModel;
     });
     oldRooms.reset(newRooms);
