@@ -3,13 +3,18 @@ var app = app || {};
 
 (function($) {
 
-  app.ChatroomImageUploadView = Backbone.View.extend({
+  app.CreateChatroomView = Backbone.View.extend({
 
     el: $('#createChatroomContainer'),
     events: {
       'change #chatroomImageUpload': 'renderThumb',
       'attachImage #createChatroomForm': 'upload',
       'click #createChatroomBtn': 'submit',
+    },
+
+    initialize: function(options) {
+      this.vent = options.vent;
+      this.listenTo(this, "chatroomAvailability", this.renderChatroomAvailability, this);
     },
 
     render: function() {
@@ -34,8 +39,17 @@ var app = app || {};
 
     submit: function(e) {
       e.preventDefault();
-      this.$form = this.$('#createChatroomForm');
-      this.$form.trigger('attachImage');
+      if (this.$('#chatroom-name-input').hasClass('input-invalid')) {
+        swal({
+          title: "OH NO OH NO OH NO",
+          text: "Chatroom Already, It Already Exists! And. Don't Go In There. Don't. You. You Should Have. I Threw Up In My Hat. Those Poor . . . They Were Just! OH NO WHY. WHY OH NO. OH NO.",
+          type: "error",
+          confirmButtonColor: "#749CA8"
+        });
+      } else {
+        this.$form = this.$('#createChatroomForm');
+        this.$form.trigger('attachImage');
+      }
     },
 
     upload: function() {
@@ -58,7 +72,7 @@ var app = app || {};
             console.log('imgUpload response: ', response);
             var form = _this.createRoomFormData();
             response.name = form.name;
-              _this.trigger('createRoom', response);
+              _this.vent.trigger('createRoom', response);
             $('#createChatroomModal').modal('hide');
             _this.clearField();
           }
@@ -66,7 +80,7 @@ var app = app || {};
       } else {
         var form = _this.createRoomFormData();
         debugger;
-       this.trigger('createRoom', form);
+       this.vent.trigger('createRoom', form);
       }
       return false;
     },
@@ -98,6 +112,18 @@ var app = app || {};
     clearField: function() {
       this.$('#uploadedChatroomImage')[0].src = '';
       this.$('#chatroomImageUpload').val('');
+    },
+
+    renderChatroomAvailability: function(availability) {
+      this.$('#chatroom-name-input').removeClass('input-valid input-invalid');
+      $('#chatroom-name-validation-container').children().remove();
+      if (availability === true) {
+        this.$('#chatroom-name-input').addClass('input-valid');
+        this.$('#chatroom-name-validation-container').append('<div id="#chatroom-name-validation" class="fa fa-check">Name Available</div>');
+      } else {
+        this.$('#chatroom-name-input').addClass('input-invalid fa fa-times');
+        this.$('#chatroom-name-validation-container').append('<div id="#chatroom-name-validation" class="fa fa-times">Name Unavailable</div>');
+      }
     }
 
   });

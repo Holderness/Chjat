@@ -14,7 +14,7 @@ app.ChatroomView = Backbone.View.extend({
   events: {
     'keypress .message-input': 'messageInputPressed',
     'keypress .direct-message-input': 'directMessageInputPressed',
-    'click .chat-directory .room': 'onClickRoom',
+    'click .chat-directory .room': 'setRoom',
     'keypress #chat-search-input': 'search',
     'click .remove-chatroom': 'removeRoom',
     'click #destroy-chatroom': 'destroyRoom',
@@ -22,16 +22,6 @@ app.ChatroomView = Backbone.View.extend({
     'click .user': 'initDirectMessage',
   },
 
-  onClickRoom: function(e) {
-     this.setRoom(e);
-     // this.setRoomColor(e);
-  },
-
-  // setRoomColor: function(e) {
-  //   debugger;
-  //   $('.room-name').removeClass('active');
-  //   $(e.target).addClass('active');
-  // },
 
   doesChatroomExist: function(e) {
     e.preventDefault();
@@ -49,6 +39,10 @@ app.ChatroomView = Backbone.View.extend({
   },
 
   renderChatroomAvailability: function(availability) {
+    this.createChatroomView.trigger('chatroomAvailability', availability);
+  },
+
+  renderHomeRoomAvailability: function(availability) {
     this.$('#chatroom-name-input').removeClass('input-valid input-invalid');
     $('#chatroom-name-validation-container').children().remove();
     if (availability === true) {
@@ -83,8 +77,8 @@ app.ChatroomView = Backbone.View.extend({
   setSubViews: function() {
     this.chatImageUploadView = new app.ChatImageUploadView();
     this.chatImageUploadView.setElement(this.$('#chatImageUploadContainer'));
-    this.chatroomImageUploadView = new app.ChatroomImageUploadView();
-    this.chatroomImageUploadView.setElement(this.$('#createChatroomContainer'));
+    this.createChatroomView = new app.CreateChatroomView({vent: this.vent});
+    this.createChatroomView.setElement(this.$('#createChatroomContainer'));
   },
   setChatListeners: function() {
 
@@ -117,13 +111,14 @@ app.ChatroomView = Backbone.View.extend({
 
     this.listenTo(this.chatImageUploadView, 'chat-image-uploaded', this.chatUploadImage);
     this.listenTo(this.chatImageUploadView, 'message-image-uploaded', this.messageUploadImage);
-    this.listenTo(this.chatroomImageUploadView, 'createRoom', this.createRoom);
+    // this.listenTo(this.createChatroomView, 'createRoom', this.createRoom);
 
     this.listenTo(this.model, "moreChats", this.renderMoreChats, this);
 
     this.listenTo(this.model, "userInvited", this.userInvited, this);
 
     this.listenTo(this.model, "chatroomAvailability", this.renderChatroomAvailability, this);
+    this.listenTo(this.model, "homeRoomAvailability", this.renderHomeRoomAvailability, this);
 
     var this_ = this;
     this.$('#chatbox-content').scroll(function(){
@@ -147,9 +142,7 @@ app.ChatroomView = Backbone.View.extend({
        });
   },
 
-  wat: function() {
-    console.log('wat');
-  },
+
   chatroomSearchTypeahead: function() {
     // interesting - the 'this' makes a difference, can't find #chat-search-input otherwise
     this.$('#chat-search-input').typeahead({
@@ -245,6 +238,7 @@ app.ChatroomView = Backbone.View.extend({
   },
 
   renderChat: function(model) {
+    debugger;
     this.renderDateDividers(model);
     var chatTemplate = $(this.chatTemplate(model.toJSON()));
     chatTemplate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
@@ -379,6 +373,7 @@ app.ChatroomView = Backbone.View.extend({
         type: "success",
         confirmButtonColor: "#749CA8",
       });
+      debugger;
       this_.vent.trigger('destroyRoom', this_.model.get('chatroom').get('name'));
     });
   },
