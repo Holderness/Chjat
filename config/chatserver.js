@@ -173,11 +173,11 @@ var Server = function(options) {
       console.log('updateRoom user: ', user.username);
       self.updateRoom(user, formData);
     });
-    user.socket.on('destroyRoom', function(name) {
+    user.socket.on('destroyRoom', function(roomInfo) {
       console.log('e.destroyRoom');
-      console.log('destroyRoom name: ', name);
+      console.log('destroyRoom roomInfo: ', roomInfo);
       console.log('destroyRoom user: ', user.username);
-      self.destroyRoom(user, name);
+      self.destroyRoom(user, roomInfo);
     });
 
 
@@ -381,10 +381,10 @@ var Server = function(options) {
         });
       });
     };
-    self.destroyRoom = function(user, chatroomName) {
-      ChatroomModel.remove({name: chatroomName}, function(err) {
+    self.destroyRoom = function(user, roomInfo) {
+      ChatroomModel.remove({_id: roomInfo.id}, function(err) {
         if (!err) {
-          user.socket.emit('roomDestroyed', chatroomName);
+          user.socket.emit('roomDestroyed', {roomDestroyed: roomInfo.name, homeRoom: user.homeRoom});
         } else {
           return console.log( err );
         }

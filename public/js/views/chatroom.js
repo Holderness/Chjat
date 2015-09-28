@@ -374,7 +374,7 @@ app.ChatroomView = Backbone.View.extend({
         confirmButtonColor: "#749CA8",
       });
       debugger;
-      this_.vent.trigger('destroyRoom', this_.model.get('chatroom').get('name'));
+      this_.vent.trigger('destroyRoom', {id: this_.model.get('chatroom').id, name: this_.model.get('chatroom').get('name')});
     });
   },
   addChatroom: function(name) {

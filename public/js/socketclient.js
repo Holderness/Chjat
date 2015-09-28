@@ -71,9 +71,9 @@ var ChatClient = function(options) {
     console.log('sc.f.updateRoom: ', formData);
     self.socket.emit("updateRoom", formData);
   };
-  self.destroyRoom = function(name) {
-    console.log('sc.f.destroyRoom: ', name);
-    self.socket.emit("destroyRoom", name);
+  self.destroyRoom = function(roomInfo) {
+    console.log('sc.f.destroyRoom: ', roomInfo);
+    self.socket.emit("destroyRoom", roomInfo);
   };
 
 
@@ -245,9 +245,9 @@ var ChatClient = function(options) {
 
 
 // MODIFY ROOM
-    socket.on('roomDestroyed', function(name) {
-      console.log('sc.e.roomDestroyed: ', name);
-      self.vent.trigger("roomDestroyed", name);
+    socket.on('roomDestroyed', function(data) {
+      console.log('sc.e.roomDestroyed: ', data);
+      self.vent.trigger("roomDestroyed", data);
     });
 
 // CREATE ROOM

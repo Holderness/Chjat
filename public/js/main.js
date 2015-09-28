@@ -67,7 +67,7 @@ app.MainController = function() {
 
   };
 
-  // self.connectToRoom = function(callback) {
+  // self.connectToRoom = function() {
   //   console.log('f.main.connectToRoom');
   //   self.chatClient.connectToRoom("Parlor");
   // };
@@ -111,8 +111,8 @@ app.MainController = function() {
   self.viewEventBus.on("updateRoom", function(formData) {
     self.chatClient.updateRoom(formData);
   });
-  self.viewEventBus.on("destroyRoom", function(room) {
-    self.chatClient.destroyRoom(room);
+  self.viewEventBus.on("destroyRoom", function(roomInfo) {
+    self.chatClient.destroyRoom(roomInfo);
   });
   self.viewEventBus.on("getMoreChats", function(chatReq) {
     self.chatClient.getMoreChats(chatReq);
@@ -250,8 +250,9 @@ app.MainController = function() {
 
 
 
-  self.appEventBus.on("roomDestroyed", function(name) {
-    self.connectToRoom();
+  self.appEventBus.on("roomDestroyed", function(data) {
+    debugger;
+    self.chatClient.connectToRoom(data.homeRoom);
     // self.initRoom();
     // alert('Chatroom ' + name + ' destroyed');
   });
