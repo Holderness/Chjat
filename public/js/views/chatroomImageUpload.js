@@ -75,8 +75,10 @@ var app = app || {};
     createRoomFormData: function() {
       var formData = {};
       formData.roomImage = '/img/chjat-icon1.png';
-      this.$('#createChatroomForm').children( 'input' ).each(function(i, el) {
-        if ($(el).data('create') === 'privacy') {
+      this.$('#createChatroomForm').find( 'input' ).each(function(i, el) {
+        if ($(el).prop('type') === "button") {
+
+        } else if ($(el).data('create') === 'privacy') {
           var val = $(el).prop('checked');
           formData['privacy'] = val;
           debugger;

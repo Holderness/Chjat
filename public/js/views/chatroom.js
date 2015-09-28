@@ -14,13 +14,24 @@ app.ChatroomView = Backbone.View.extend({
   events: {
     'keypress .message-input': 'messageInputPressed',
     'keypress .direct-message-input': 'directMessageInputPressed',
-    'click .chat-directory .room': 'setRoom',
+    'click .chat-directory .room': 'onClickRoom',
     'keypress #chat-search-input': 'search',
     'click .remove-chatroom': 'removeRoom',
     'click #destroy-chatroom': 'destroyRoom',
     'keyup #chatroom-name-input': 'doesChatroomExist',
     'click .user': 'initDirectMessage',
   },
+
+  onClickRoom: function(e) {
+     this.setRoom(e);
+     // this.setRoomColor(e);
+  },
+
+  // setRoomColor: function(e) {
+  //   debugger;
+  //   $('.room-name').removeClass('active');
+  //   $(e.target).addClass('active');
+  // },
 
   doesChatroomExist: function(e) {
     e.preventDefault();
@@ -400,7 +411,7 @@ app.ChatroomView = Backbone.View.extend({
   renderRooms: function() {
     console.log('crv.f.renderRooms');
     console.log('CHATROOMS: ', this.model.get("chatrooms"));
-    this.$('.public-rooms').empty();
+    this.$('#public-rooms').empty();
     this.model.get('chatrooms').each(function (room) {
       this.renderRoom(room);
     }, this);
@@ -408,9 +419,9 @@ app.ChatroomView = Backbone.View.extend({
   renderRoom: function(model) {
     var name1 = model.get('name'),
     name2 = this.model.get('chatroom').get('name');
-    this.$('.public-rooms').append(this.roomTemplate(model.toJSON()));
+    this.$('#public-rooms').append(this.roomTemplate(model.toJSON()));
     if (name1 === name2) {
-      this.$('.room').last().find('.room-name').css('color', '#DEB0B0').fadeIn();
+      this.$('#public-rooms').find('.room-name').last().addClass('active').fadeIn();
     }
   },
   renderPrivateRooms: function() {
@@ -422,12 +433,12 @@ app.ChatroomView = Backbone.View.extend({
     }, this);
   },
   renderPrivateRoom: function(model) {
-    // var name1 = model.get('name'),
-    // name2 = this.model.get('chatroom').get('name');
+    var name1 = model.get('name'),
+    name2 = this.model.get('chatroom').get('name');
     this.$('#private-rooms').append(this.roomTemplate(model.toJSON()));
-    // if (name1 === name2) {
-    //   this.$('.room').last().find('.room-name').css('color', '#DEB0B0').fadeIn();
-    // }
+    if (name1 === name2) {
+      this.$('#private-rooms').find('.room-name').last().addClass('active').fadeIn();
+    }
   },
   joinRoom: function(name) {
     console.log('crv.f.joinRoom');
