@@ -5,6 +5,7 @@ module.exports = function(app) {
   app.route('/users').post(users.create).get(users.list);
 
   app.route('/searchUsers').get(users.findBy);
+  app.route('/allUsers').get(users.allUsers);
 
   app.route('/updateUserImage').post(users.multerRestrictions, users.updateUserImage);
 

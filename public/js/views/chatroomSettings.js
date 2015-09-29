@@ -128,29 +128,46 @@ var app = app || {};
     },
 
     userSearchTypeahead: function() {
-      $('#invite-user-input').typeahead({
-        limit: 5,
-        minLength: 5,
-        onSelect: function(item) {
-          console.log(item);
-        },
-        ajax: {
-          url: '/searchUsers',
-          triggerLength: 5,
-          preDispatch: function (query) {
-            return {
-              username: query
-            };
+      debugger;
+      var this_ = this;
+      var blood = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('username'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: {
+          url: '/allUsers',
+          filter: function(data) {
+            console.log('------daaataa----', data);
+             return _.map(data, function(user) {
+                return { username: user };
+             });
           },
-          preProcess: function (data) {
-            console.log(data);
-            if (data.success === false) {
-            // Hide the list, there was some error
-              return false;
-            }
-            return data;
-          }
+          ttl: 0,
         },
+        remote: {
+          url: '/searchUsers?username=%QUERY',
+          wildcard: '%QUERY',
+          rateLimitWait: 300,
+        }
+      });
+      blood.initialize();
+      $('#invite-user-input').typeahead({
+        minLength: 2,
+        classNames: {
+          input: 'typeahead-input',
+          hint: 'typeahead-hint',
+          selectable: 'typeahead-selectable',
+          menu: 'typeahead-menu',
+          highlight: 'typeahead-highlight',
+          dataset: 'typeahead-dataset',
+        },
+      },
+      {
+        limit: 5,
+        source: blood,
+        name: 'user-search',
+        display: 'username',
+      }).on('typeahead:select typeahead:autocomplete', function(obj) {
+
       });
     },
 

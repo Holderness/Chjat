@@ -232,9 +232,8 @@ exports.list = function(req, res, next) {
   User.find({}, function(err, users) {
     if (err) {
       return next(err);
-    }
-    else {
-      res.json(users);
+    } else {
+      res.send(users);
     }
   });
 };
@@ -260,10 +259,10 @@ exports.userByID = function(req, res, next, id) {
 };
 
 exports.findBy = function(req, res, next) {
-  console.log( '----------findBy---------------req: ', req);
+  console.log( '----------userfindBy---------------req: ', req.query);
   return User.find({ username: new RegExp(req.query.username, "i")}, function( err, users ) {
     if (!err) {
-      console.log('findBy!');
+      console.log('userfindBy!');
       var usernames = [];
       for (i = 0; i < users.length; i++) {
         usernames.push(users[i].username);
@@ -272,6 +271,22 @@ exports.findBy = function(req, res, next) {
       return res.send( usernames );
     } else {
       return console.log( err );
+    }
+  });
+};
+
+exports.allUsers = function(req, res, next) {
+  User.find({}, function(err, users) {
+    if (err) {
+      return next(err);
+    } else {
+      var usernames = [];
+      for (i = 0; i < users.length; i++) {
+       // console.log(users[i]);
+      usernames.push(users[i].username);
+    }
+    console.log('allusers---------', usernames);
+      res.send(usernames);
     }
   });
 };
