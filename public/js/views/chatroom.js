@@ -133,30 +133,38 @@ app.ChatroomView = Backbone.View.extend({
 
   chatroomSearchTypeahead: function() {
     // interesting - the 'this' makes a difference, can't find #chat-search-input otherwise
-    this.$('#chat-search-input').typeahead({
-      onSelect: function(item) {
-        console.log(item);
-      },
-      ajax: {
-        url: '/api/searchChatrooms',
-        triggerLength: 1,
-        limit: 5,
-        minLength: 5,
-        preDispatch: function (query) {
-          return {
-            name: query
-          };
+      var this_ = this;
+      var blood = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: {
+          url: '/api/publicChatrooms',
+          filter: function(data) {
+             return _.map(data, function(chatroom) {
+                return { name: chatroom };
+             });
+          },
+          ttl: 0,
         },
-        preProcess: function (data) {
-          console.log(data);
-          if (data.success === false) {
-            // Hide the list, there was some error
-            return false;
-          }
-          return data;
+        remote: {
+          url: '/api/searchChatrooms?name=%QUERY',
+          wildcard: '%QUERY',
+          rateLimitWait: 300,
         }
+      });
+      blood.initialize();
+      var type =  this.$('#chat-search-input').typeahead({
+        minLength: 3,
       },
-    });
+      {
+        limit: 5,
+        source: blood,
+        name: 'home-room-search',
+        display: 'name',
+      }).on('typeahead:select typeahead:autocomplete', function(obj) {
+
+      });
+
   },
 
 
