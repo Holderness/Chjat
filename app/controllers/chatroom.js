@@ -144,6 +144,23 @@ exports.findBy = function(req, res, next) {
   });
 };
 
+exports.publicChatrooms = function(req, res, next) {
+  // console.log( '-------------------------req: ', req);
+  return ChatroomModel.find({ privacy: false }, function( err, chatrooms ) {
+    if (!err) {
+      console.log('publicRooms!');
+    var chatroomNames = [];
+    for (i = 0; i < chatrooms.length; i++) {
+      // console.log(chatrooms[i]);
+        chatroomNames.push(chatrooms[i].name);
+    }
+    console.log(chatroomNames);
+      return res.send( chatroomNames );
+    } else {
+      return console.log( err );
+    }
+  });
+};
 
 exports.findAllChatroomMessagess = function(req, res, next) {
   return ChatroomModel.find( { name: req.body.chatroom.name }, function( err, chatroom) {

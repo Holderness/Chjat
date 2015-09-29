@@ -42,18 +42,6 @@ app.ChatroomView = Backbone.View.extend({
     this.createChatroomView.trigger('chatroomAvailability', availability);
   },
 
-  renderHomeRoomAvailability: function(availability) {
-    this.$('#chatroom-name-input').removeClass('input-valid input-invalid');
-    $('#chatroom-name-validation-container').children().remove();
-    if (availability === true) {
-      this.$('#chatroom-name-input').addClass('input-valid');
-      this.$('#chatroom-name-validation-container').append('<div id="#chatroom-name-validation" class="fa fa-check">Name Available</div>');
-    } else {
-      this.$('#chatroom-name-input').addClass('input-invalid fa fa-times');
-      this.$('#chatroom-name-validation-container').append('<div id="#chatroom-name-validation" class="fa fa-times">Name Unavailable</div>');
-    }
-  },
-
 
 
   initialize: function(options) {

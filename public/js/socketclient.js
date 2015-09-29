@@ -151,6 +151,9 @@ var ChatClient = function(options) {
   self.doesChatroomExist = function(chatroomQuery) {
     self.socket.emit('doesChatroomExist', chatroomQuery);
   };
+  self.doesHomeRoomExist = function(homeRoomQuery) {
+    self.socket.emit('doesHomeRoomExist', homeRoomQuery);
+  };
 
 
   
@@ -255,6 +258,10 @@ var ChatClient = function(options) {
 // ROOM AVAILABILITY
     socket.on('chatroomAvailability', function(availabilty) {
       self.vent.trigger('chatroomAvailability', availabilty);
+    });
+
+    socket.on('homeRoomAvailability', function(availabilty) {
+      self.vent.trigger('homeRoomAvailability', availabilty);
     });
 
 

@@ -120,6 +120,9 @@ app.MainController = function() {
   self.viewEventBus.on("doesChatroomExist", function(chatroomQuery) {
     self.chatClient.doesChatroomExist(chatroomQuery);
   });
+  self.viewEventBus.on("doesHomeRoomExist", function(chatroomQuery) {
+    self.chatClient.doesHomeRoomExist(chatroomQuery);
+  });
   self.viewEventBus.on("initDirectMessage", function(recipient) {
     self.chatClient.initDirectMessage(recipient);
   });
@@ -327,6 +330,7 @@ app.MainController = function() {
   });
 
   self.appEventBus.on("homeRoomAvailability", function(availability) {
+    debugger;
     self.navbarView.trigger('homeRoomAvailability', availability);
   });
 

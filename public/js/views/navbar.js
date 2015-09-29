@@ -12,7 +12,10 @@ var app = app || {};
       'change #user-preferences-image-upload': 'renderThumb',
       'attachImage #user-preferences-form': 'upload',
       'click #user-preferences-btn': 'submit',
+      'keyup #user-preferences-home-room-input': 'doesHomeRoomExist',
+      // 'keypress #user-preferences-home-room-input': 'doesHomeRoomExist',
     },
+
     initialize: function(options) {
       this.vent = options.vent;
       this.model = new app.UserModel({ username: '', userImage: '', homeRoom: '', invitations: new app.InvitationCollection() });
@@ -21,13 +24,17 @@ var app = app || {};
       var invitations = this.model.get('invitations');
 
       this.listenTo(invitations, "reset", this.renderInvitations, this);
+      this.listenTo(this, "homeRoomAvailability", this.renderHomeRoomAvailability, this);
 
       this.render();
     },
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
+
       this.renderInvitations();
       this.setHomeRoomTyepahead();
+
+
       return this;
     },
     renderInvitations: function() {
@@ -71,9 +78,17 @@ var app = app || {};
 
     submit: function(e) {
       e.preventDefault();
-
-      this.$form = this.$('#user-preferences-form');
-      this.$form.trigger('attachImage');
+      if (this.$('#user-preferences-home-room-input').hasClass('input-invalid')) {
+        swal({
+          title: "OH NO OH NO OH NO",
+          text: "Chatroom Can't, It Doesn't Exist! And. I Don't Know. Should I? Should You? Who. I Mean How DO we. I Mean HOW DO?? Create? SO MUCH PRESSURE.",
+          type: "error",
+          confirmButtonColor: "#749CA8"
+        });
+      } else {
+        this.$form = this.$('#user-preferences-form');
+        this.$form.trigger('attachImage');
+      }
     },
 
     upload: function() {
@@ -129,31 +144,70 @@ var app = app || {};
     },
 
     setHomeRoomTyepahead: function() {
-      this.$('#user-preferences-home-room-input').typeahead({
-        onSelect: function(item) {
-          console.log(item);
-        },
-        ajax: {
-          url: '/api/searchChatrooms',
-          triggerLength: 1,
-          limit: 5,
-          minLength: 5,
-          preDispatch: function (query) {
-            return {
-              name: query
-            };
+      var this_ = this;
+      var blood = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: {
+          url: '/api/publicChatrooms',
+          filter: function(data) {
+             return _.map(data, function(chatroom) {
+                return { name: chatroom };
+             });
           },
-          preProcess: function (data) {
-            console.log(data);
-            if (data.success === false) {
-            // Hide the list, there was some error
-              return false;
-            }
-            return data;
-          }
+          ttl: 0,
         },
+        remote: {
+          url: '/api/searchChatrooms?name=%QUERY',
+          wildcard: '%QUERY',
+          rateLimitWait: 300,
+        }
+      });
+      blood.initialize();
+      var type = this.$('#user-preferences-home-room-input').typeahead({
+        minLength: 3,
+      },
+      {
+        limit: 5,
+        source: blood,
+        name: 'home-room-search',
+        display: 'name',
+      }).on('typeahead:select typeahead:autocomplete', function(obj) {
+        this_.doesHomeRoomExist();
       });
     },
+
+    doesHomeRoomExist: function() {
+      var this_ = this;
+      var check = function() {
+        if ($.trim($('#user-preferences-home-room-input').val()).length > 0) {
+          var chatroomName = $('#user-preferences-home-room-input').val();
+          this_.vent.trigger('doesHomeRoomExist', chatroomName);
+        } else {
+         this_.$('#user-preferences-home-room-input').children().remove();
+         this_.$('#user-preferences-home-room-input').removeClass('input-valid input-invalid');
+       }
+     };
+     _.debounce(check(), 30);
+   },
+
+   renderHomeRoomAvailability: function(availability) {
+
+    this.$('.room-name-validation').removeClass('input-valid input-invalid');
+    this.$('.room-name-validation-message').children().remove();
+    if (availability === false) {
+      this.$('.room-name-validation').addClass('input-valid');
+      this.$('.room-name-validation-message').append('<div id="#chatroom-name-validation" class="fa fa-check"></div>');
+    } else {
+      this.$('.room-name-validation').addClass('input-invalid fa fa-times');
+      this.$('.room-name-validation-message').append('<div id="#chatroom-name-validation" class="fa fa-times">Chatroom Does Not Exist</div>');
+    }
+    setTimeout(function() {
+      this.$('.room-name-validation-message').children().fadeOut(600, function(){
+        $(this).children().remove();
+      });
+    }, 2000);
+  },
 
   });
 

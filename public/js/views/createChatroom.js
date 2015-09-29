@@ -113,24 +113,20 @@ var app = app || {};
     },
 
     renderChatroomAvailability: function(availability) {
-      var this_ = this;
-      var render = function() {
-        this_.$('.room-name-validation').removeClass('input-valid input-invalid');
-        this_.$('.room-name-validation-message').children().remove();
-        if (availability === true) {
-          this_.$('.room-name-validation').addClass('input-valid');
-          this_.$('.room-name-validation-message').append('<div id="#chatroom-name-validation" class="fa fa-check">Name Available</div>');
-        } else {
-          this_.$('.room-name-validation').addClass('input-invalid fa fa-times');
-          this_.$('.room-name-validation-message').append('<div id="#chatroom-name-validation" class="fa fa-times">Name Unavailable</div>');
-        }
-        setTimeout(function() {
-          this_.$('.room-name-validation-message').children().fadeOut(600, function(){
-            $(this).children.remove();
-          });
-        }, 2000);
-      };
-      _.debounce(render(), 200);
+      this.$('.room-name-validation').removeClass('input-valid input-invalid');
+      this.$('.room-name-validation-message').children().remove();
+      if (availability === true) {
+        this.$('.room-name-validation').addClass('input-valid');
+        this.$('.room-name-validation-message').append('<div id="#chatroom-name-validation" class="fa fa-check">Name Available</div>');
+      } else {
+        this.$('.room-name-validation').addClass('input-invalid fa fa-times');
+        this.$('.room-name-validation-message').append('<div id="#chatroom-name-validation" class="fa fa-times">Name Unavailable</div>');
+      }
+      setTimeout(function() {
+        this.$('.room-name-validation-message').children().fadeOut(600, function(){
+          $(this).children().remove();
+        });
+      }, 2000);
     }
 
   });

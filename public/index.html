@@ -545,7 +545,8 @@
               </div>
               <div class="row">
                 <label for="user-preferences-home-room-input">Home Room: </label>
-                <input type="text" data-create="homeRoom" placeholder="<%= homeRoom %>" id="user-preferences-home-room-input" autocomplete="off"/>
+                <input type="text" id="user-preferences-home-room-input" class='room-name-validation' data-create="homeRoom" placeholder="<%= homeRoom %>" autocomplete="off"/>
+                <div class='room-name-validation-message'></div>
               </div>
             </form>
             <div class="modal-footer">

@@ -12,7 +12,7 @@ module.exports = {
       'public/js/lib/livestamp.js',
       'public/js/lib/wow.js',
       'public/js/lib/progressbar.js',
-      'public/js/lib/bootstrap-typeahead.js',
+      'public/js/lib/typeahead.js',
       'node_modules/sweetalert/dist/sweetalert.min.js',
     ],
     src: [
