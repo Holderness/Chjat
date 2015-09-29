@@ -81,7 +81,7 @@ var app = app || {};
       if (this.$('#user-preferences-home-room-input').hasClass('input-invalid')) {
         swal({
           title: "OH NO OH NO OH NO",
-          text: "Chatroom Can't, It Doesn't Exist! And. I Don't Know. Should I? Should You? Who. I Mean How DO we. I Mean HOW DO?? Create? SO MUCH PRESSURE.",
+          text: "Chatroom Can't, It Doesn't Exist! And. I Don't Know. Should I? Should You? Who. I Mean How DO we. How do? How do now?",
           type: "error",
           confirmButtonColor: "#749CA8"
         });
@@ -155,7 +155,7 @@ var app = app || {};
                 return { name: chatroom };
              });
           },
-          ttl: 0,
+          // ttl: 0,
         },
         remote: {
           url: '/api/searchChatrooms?name=%QUERY',
@@ -165,7 +165,15 @@ var app = app || {};
       });
       blood.initialize();
       var type = this.$('#user-preferences-home-room-input').typeahead({
-        minLength: 3,
+        minLength: 2,
+        classNames: {
+          input: 'typeahead-input',
+          hint: 'typeahead-hint',
+          selectable: 'typeahead-selectable',
+          menu: 'typeahead-menu',
+          highlight: 'typeahead-highlight',
+          dataset: 'typeahead-dataset',
+        },
       },
       {
         limit: 5,
@@ -178,6 +186,7 @@ var app = app || {};
     },
 
     doesHomeRoomExist: function() {
+      this.$('.room-name-validation').removeClass('input-valid input-invalid');
       var this_ = this;
       var check = function() {
         if ($.trim($('#user-preferences-home-room-input').val()).length > 0) {

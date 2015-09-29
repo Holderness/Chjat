@@ -19,6 +19,10 @@
   padding: 10px;
 }
 
+.navbar-default {
+  border-bottom-left-radius:0;
+}
+
 .nav {
   &.navbar-right {
     padding: 25px;
@@ -151,6 +155,29 @@
   }
 }
 
+#user-preferences-modal {
+  .twitter-typeahead {
+    input {
+      height: 24px;
+    }
+    .typeahead-menu {
+      background-color: white;
+      margin-left: 18px;
+      margin-top: 5px;
+      width: 172px;
+      .typeahead-dataset {
+        .typeahead-selectable {
+          padding: 2px 5px;
+          &:hover {
+            }
+          }
+          .typeahead-highlight {
+
+          }
+        }
+      } 
+    }
+  }
 
 .nav-modal {
 

@@ -60,7 +60,6 @@ var ChatClient = function(options) {
     self.socket.emit("addRoom", name);
   };
   self.removeRoom = function(roomData) {
-    debugger;
     console.log('sc.f.removeRoom: ', roomData);
     self.socket.emit("removeRoom", roomData);
   };
@@ -73,7 +72,6 @@ var ChatClient = function(options) {
     self.socket.emit("updateRoom", formData);
   };
   self.destroyRoom = function(roomInfo) {
-    debugger;
     console.log('sc.f.destroyRoom: ', roomInfo);
     self.socket.emit("destroyRoom", roomInfo);
   };

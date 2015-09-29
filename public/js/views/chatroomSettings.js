@@ -114,7 +114,6 @@ var app = app || {};
       e.preventDefault();
       var recipient = $.trim($('#invite-user-input').val());
       if (e.keyCode === 13 && recipient.length > 0) {
-        debugger;
         // e.preventDefault();
         var sender = this.model.get('currentUser'),
             roomId = this.model.get('id'),
@@ -156,7 +155,6 @@ var app = app || {};
     },
 
     userInvited: function(username) {
-      debugger;
       if (username.error === 'error') {
         $('.invite-user-container').append(this.invitationErrorTemplate());
       }

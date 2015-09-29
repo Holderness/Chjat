@@ -33,25 +33,58 @@
     margin-bottom: 5px;
   }
   .chat-search-container {
-    margin-bottom: 10px;
-    text-align: center;
+    // margin-bottom: 10px;
+    // text-align: center;
     form {
       .chatroom-search {
+        z-index: 102;
         position: absolute;
         left: 0;
         color: $pink-oink;
         margin: 10px 0 0 10px;
       }
     }
-    input.form-control {
-      padding-left: 27px;
-      border-top-left-radius: 0px;
-      border-top-right-radius: 0px;
-      text-align: left;
+    .twitter-typeahead {
+      input {
+        width: 204px;
+        padding: 2px 5px 2px 27px;
+        height: 33px;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+        &:focus {
+          width: 203px;
+          border-color: transparent;
+          border: 1.4px solid $pink-oink;
+        }
+      }
+      .typeahead-menu {
+        width: 204px;
+        background-color: white;
+        border: 1px solid $pink-oink;
+        border-radius: 4px;
+        .typeahead-dataset {
+          .typeahead-selectable {
+            padding: 0 5px 0 27px;
+          }
+        }
+      }
+      input#chat-search-input:focus {
+      // border-color: $white;
+      // border: 1px solid $border;
+      }
+      
     }
-    input.form-control.chat-search-input:focus {
-      border-color: $white;
-      border: 1px solid $border;
+    input#chat-search-input {
+
+      //       padding-left: 27px;
+      // border-top-left-radius: 0px;
+      // border-top-right-radius: 0px;
+      // text-align: left;
+    }
+    input#chat-search-input:focus {
+      // border-color: $white;
+      // border: 1px solid $border;
+
     }
   }
 
@@ -240,7 +273,29 @@
 
 
 
+    .twitter-typeahead {
+      input {
 
+      }
+      .typeahead-menu {
+        background-color: white;
+        border: 1px solid $pink-oink;
+        border-radius: 4px;
+        .typeahead-dataset {
+          .typeahead-selectable {
+            &:hover {
+              cursor: pointer;
+              border-radius: 3px;
+              // color: $pink-oink;
+              background-color: $marine;
+            }
+          }
+          .typeahead-highlight {
+
+          }
+        }
+      } 
+    }
 
 
 

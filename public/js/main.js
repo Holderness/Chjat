@@ -330,7 +330,6 @@ app.MainController = function() {
   });
 
   self.appEventBus.on("homeRoomAvailability", function(availability) {
-    debugger;
     self.navbarView.trigger('homeRoomAvailability', availability);
   });
 

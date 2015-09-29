@@ -144,7 +144,7 @@ app.ChatroomView = Backbone.View.extend({
                 return { name: chatroom };
              });
           },
-          ttl: 0,
+          // ttl: 0,
         },
         remote: {
           url: '/api/searchChatrooms?name=%QUERY',
@@ -154,7 +154,15 @@ app.ChatroomView = Backbone.View.extend({
       });
       blood.initialize();
       var type =  this.$('#chat-search-input').typeahead({
-        minLength: 3,
+        minLength: 2,
+        classNames: {
+          input: 'typeahead-input',
+          hint: 'typeahead-hint',
+          selectable: 'typeahead-selectable',
+          menu: 'typeahead-menu',
+          highlight: 'typeahead-highlight',
+          dataset: 'typeahead-dataset',
+        },
       },
       {
         limit: 5,
@@ -175,7 +183,6 @@ app.ChatroomView = Backbone.View.extend({
     this.$('#chatbox-header').html(this.headerTemplate(this.model.get('chatroom').toJSON()));
     this.chatroomSettingsView = new app.ChatroomSettingsView({vent: this.vent, model: this.model.get('chatroom')});
     this.chatroomSettingsView.setElement(this.$('#chatroom-header-container'));
-    // debugger;
     this.listenTo(this.chatroomSettingsView, 'updateRoom', this.updateRoom);
   },
 
@@ -431,7 +438,6 @@ app.ChatroomView = Backbone.View.extend({
   renderPrivateRoom: function(model) {
     var name1 = model.get('name'),
     name2 = this.model.get('chatroom').get('name');
-    debugger;
     this.$('#private-rooms').append(this.roomTemplate(model.toJSON()));
     if (name1 === name2) {
       this.$('#private-rooms').find('.room-name').last().addClass('active').fadeIn();
