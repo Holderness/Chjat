@@ -1,0 +1,23 @@
+
+.twitter-typeahead {
+  input {
+
+  }
+  .typeahead-menu {
+    background-color: white;
+    border: 1px solid $pink-oink;
+    border-radius: 4px;
+    .typeahead-dataset {
+      .typeahead-selectable {
+        &:hover {
+          cursor: pointer;
+          border-radius: 3px;
+          background-color: $marine;
+        }
+      }
+      .typeahead-highlight {
+
+      }
+    }
+  } 
+}
