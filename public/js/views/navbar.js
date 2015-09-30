@@ -164,6 +164,7 @@ var app = app || {};
           rateLimitWait: 300,
         }
       });
+      blood.clearPrefetchCache();
       blood.initialize();
       var type = this.$('#user-preferences-home-room-input').typeahead({
         minLength: 2,

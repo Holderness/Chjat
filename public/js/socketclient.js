@@ -72,7 +72,6 @@ var ChatClient = function(options) {
     self.socket.emit("updateRoom", formData);
   };
   self.destroyRoom = function(roomInfo) {
-    debugger;
     console.log('sc.f.destroyRoom: ', roomInfo);
     self.socket.emit("destroyRoom", roomInfo);
   };

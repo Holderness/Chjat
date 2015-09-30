@@ -152,6 +152,7 @@ app.ChatroomView = Backbone.View.extend({
           rateLimitWait: 300,
         }
       });
+      blood.clearPrefetchCache();
       blood.initialize();
       var type =  this.$('#chat-search-input').typeahead({
         minLength: 2,
@@ -167,7 +168,7 @@ app.ChatroomView = Backbone.View.extend({
       {
         limit: 5,
         source: blood,
-        name: 'home-room-search',
+        name: 'chatroom-search',
         display: 'name',
       }).on('typeahead:select typeahead:autocomplete', function(obj) {
 

@@ -148,6 +148,7 @@ var app = app || {};
           rateLimitWait: 300,
         }
       });
+      blood.clearPrefetchCache();
       blood.initialize();
       $('#invite-user-input').typeahead({
         minLength: 2,
