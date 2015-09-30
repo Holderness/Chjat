@@ -128,7 +128,6 @@ var app = app || {};
     },
 
     userSearchTypeahead: function() {
-      debugger;
       var this_ = this;
       var blood = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('username'),

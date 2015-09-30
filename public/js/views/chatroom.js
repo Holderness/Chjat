@@ -144,7 +144,7 @@ app.ChatroomView = Backbone.View.extend({
                 return { name: chatroom };
              });
           },
-          // ttl: 0,
+          ttl: 0,
         },
         remote: {
           url: '/api/searchChatrooms?name=%QUERY',
@@ -172,7 +172,6 @@ app.ChatroomView = Backbone.View.extend({
       }).on('typeahead:select typeahead:autocomplete', function(obj) {
 
       });
-
   },
 
 
@@ -231,12 +230,15 @@ app.ChatroomView = Backbone.View.extend({
 
   renderChats: function() {
     console.log('crv.f.renderChats');
-    console.log('CHATLOG: ', this.model.get("chatlog"));
+    var chatlog = this.model.get("chatlog");
+    console.log('CHATLOG: ', chatlog);
     this.$('#chatbox-content').empty();
-    this.model.get('chatlog').each(function(chat) {
+    chatlog.each(function(chat) {
       this.renderChat(chat);
     }, this);
-
+    if ( chatlog.length === 0) {
+      chatlog.push(new app.ChatModel({ sender: 'Chjat', message: "¯\\_(ツ)_/¯", timestamp: _.now(), url: ''}));
+    }
     this.afterChatsRender();
   },
 
@@ -375,10 +377,9 @@ app.ChatroomView = Backbone.View.extend({
         type: "success",
         confirmButtonColor: "#749CA8",
       });
-      var currentRoom = this_.model.get('chatroom').id;
-      var roomId = $(e.target).data("room-id");
-      var roomName = $(e.target).data("room-name");
-      var userInRoom = currentRoom === roomId;
+      var roomId = this_.model.get('chatroom').id;
+      var roomName = this_.model.get('chatroom').get('name');
+      var userInRoom = true;
       this_.vent.trigger('destroyRoom', { id: roomId, roomName: roomName, userInRoom: userInRoom });
     });
   },

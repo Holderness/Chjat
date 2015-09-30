@@ -11,7 +11,7 @@ app.ChatroomModel = Backbone.Model.extend({
     offlineUsers: new app.UserCollection(),
     chatlog: new app.ChatCollection([
       // message and sender upon entering chatroom
-      new app.ChatModel({ sender: 'Butters', message: 'awwwwww hamburgers. ||):||', timestamp: _.now() })
+      new app.ChatModel({ sender: 'Butters', message: 'awwwwww hamburgers. ||):||', timestamp: _.now(), url: ''})
       ]),
     chatrooms: null,
     privateRooms: null,

@@ -151,11 +151,12 @@ var app = app || {};
         prefetch: {
           url: '/api/publicChatrooms',
           filter: function(data) {
+            console.log('---------homeRoomData: ', data);
              return _.map(data, function(chatroom) {
                 return { name: chatroom };
              });
           },
-          // ttl: 0,
+          ttl_ms: 0,
         },
         remote: {
           url: '/api/searchChatrooms?name=%QUERY',
