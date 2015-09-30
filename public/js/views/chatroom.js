@@ -10,7 +10,7 @@ app.ChatroomView = Backbone.View.extend({
   directMessageHeaderTemplate: _.template($('#direct-message-header-template').html()),
   onlineUserTemplate: _.template($('#online-users-list-template').html()),
   offlineUserTemplate: _.template($('#offline-users-list-template').html()),
-  dateTemplate: _.template('<div class="followWrap"><div class="followMeBar"><span>-----</span><span> <%= moment(timestamp).format("MMMM Do") %> </span><span>-----</span></div></div>'),
+  dateTemplate: _.template('<div class="followWrap"><div class="followMeBar"><span> <%= moment(timestamp).format("MMMM Do") %> </span></div></div>'),
   events: {
     'keypress .message-input': 'messageInputPressed',
     'keypress .direct-message-input': 'directMessageInputPressed',

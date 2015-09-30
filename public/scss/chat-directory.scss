@@ -42,20 +42,20 @@
       }
     }
     .twitter-typeahead {
+      width: 100%;
       input {
-        width: 204px;
+        width: 100%;
         padding: 2px 5px 2px 27px;
         height: 33px;
         border-top-left-radius: 0px;
         border-top-right-radius: 0px;
         &:focus {
-          width: 203px;
           border-color: transparent;
           border: 1.4px solid $pink-oink;
         }
       }
       .typeahead-menu {
-        width: 204px;
+        width: 100%;
         .typeahead-dataset {
           .typeahead-selectable {
             padding: 0 5px 0 27px;
