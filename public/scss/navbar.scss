@@ -29,6 +29,13 @@
     li {
       display: inline-block;
       padding: 0 20px;
+      .pink-fuzz {
+        position: absolute;
+        display: none;
+        width: 8px;
+        margin-left: 11px;
+        margin-top: -18px;
+      }
     }
   }
   .modal-btn {

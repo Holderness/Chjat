@@ -494,12 +494,14 @@
 
 <!-- navbar -->
 <script type="text/template" id="navbar-template">
+
   <ul class='nav navbar-right'>
     <% if (username) { %>
       <li>Hello, <%= username %></li>
       <li class='fa fa-inbox modal-btn'
           data-toggle="modal"
           data-target="#inbox-modal">
+          <img class='pink-fuzz' src="/img/pink-fuzz.png">
       </li>
       <li class='fa fa-cogs modal-btn'
           data-toggle="modal"
@@ -550,7 +552,7 @@
               </div>
               <div class="row">
                 <label for="user-preferences-home-room-input">Home Room: </label>
-                <input type="text" id="user-preferences-home-room-input" class='room-name-validation' data-create="homeRoom" placeholder="<%= homeRoom %>" autocomplete="off"/>
+                <input type="text" id="user-preferences-home-room-input" class='room-name-validation' data-create="homeRoom" placeholder="<%= homeRoom %><% if (homeRoom === 'Parlor') { %> (default) <%}%>" autocomplete="off"/>
                 <div class='room-name-validation-message'></div>
               </div>
             </form>

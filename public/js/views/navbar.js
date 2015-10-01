@@ -45,7 +45,10 @@ var app = app || {};
         this_.renderInvitation(invite);
       }, this);
       if (invitations.length === 0) {
+        this.$('.pink-fuzz').hide();
         this.$('#invitations').append("<div>You've got no invitations, like dang</div>");
+      } else {
+        this.$('.pink-fuzz').show();
       }
     },
     renderInvitation: function(model) {
