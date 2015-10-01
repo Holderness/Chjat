@@ -26,6 +26,7 @@ var UserSchema = new mongoose.Schema({
     default: 'Parlor'
   },
   invitations: [],
+  socketId: String,
 });
 
 

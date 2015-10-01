@@ -49,10 +49,12 @@ var Server = function(options) {
     console.log('f.manageConnection');
     UserModel.findOne({'username': userdata.username}, function(err, userModel) {
       self.initUser(socket, userModel);
+      UserModel.findOneAndUpdate({_id: userModel._id}, { '$set': {'socketId': socket.id}}, function(err, userM){});
     });
   };
-
+  
   self.initUser = function(socket, model) {
+    console.log('socketID: ', socket.id);
       var newUser = new User({
         username: model.username,
         socket: socket,
@@ -213,7 +215,7 @@ var Server = function(options) {
       self.updateUser(user, userObj);
     });
 
-
+    // console.log('socket-------------', user.socket);
     // console.log('io: ----------------------------------', self.io);
     // console.log('user.socket: ----------------------------------', user.socket._events);
 // CALLBACK
@@ -540,7 +542,10 @@ var Server = function(options) {
       { $push: {'invitations': {sender: invitationObj.sender, roomName: invitationObj.roomName, roomId: invitationObj.roomId}}},
       function(err, raw) {
         if (err) { return console.log(err); }
-        UserModel.findOne({ username: invitationObj.recipient}, function( err, found ) {
+        UserModel.findOne({ username: invitationObj.recipient }, function( err, found ) {
+          if (self.io.sockets.connected[found.socketId]) {
+            self.io.to(found.socketId).emit('refreshInvitations', found.invitations);
+          }
           user.socket.emit('userInvited', found.username);
           if (err) {
             user.socket.emit('userInvited', { 'error': 'error'});
