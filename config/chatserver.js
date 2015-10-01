@@ -387,16 +387,21 @@ var Server = function(options) {
       });
     };
     self.destroyRoom = function(user, roomInfo) {
-      ChatroomModel.remove({_id: roomInfo.id}, function(err) {
-        if (!err) {
-          self.getChatrooms(user, user.socket);
-          if (roomInfo.userInRoom === true) {
-            user.socket.emit('redirectToHomeRoom', {roomLeft: roomInfo.roomName, homeRoom: user.homeRoom});
+      if (user.homeRoom === roomInfo.roomName) {
+        user.socket.emit('destroyRoomResponse', {error: 'homeRoomError'});
+      } else {
+        ChatroomModel.remove({_id: roomInfo.id}, function(err) {
+          if (!err) {
+            self.getChatrooms(user, user.socket);
+            if (roomInfo.userInRoom === true) {
+              user.socket.emit('redirectToHomeRoom', {roomLeft: roomInfo.roomName, homeRoom: user.homeRoom});
+            }
+          } else {
+            return console.log( err );
           }
-        } else {
-          return console.log( err );
-        }
-      });
+          user.socket.emit('destroyRoomResponse', {success: 'destroyed'});
+        });
+      }
     };
   self.leaveRoom = function(user, callback) {
     var currentRoom = user.socket.chat.room;

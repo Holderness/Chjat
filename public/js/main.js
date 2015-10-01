@@ -348,6 +348,25 @@ app.MainController = function() {
 
 
 
+  self.appEventBus.on("destroyRoomResponse", function(res) {
+    if (res.error) {
+      swal({
+        title: "No Touchy!",
+        text: "You Can't Delete Your Home Room, Nuh Uh. Who are you, Franz Reichelt?",
+        type: "error",
+        confirmButtonColor: "#749CA8",
+      });
+    }
+    if (res.success) {
+      swal({
+        title: "Eviscerated!",
+        text: "Your chatroom has been purged.",
+        type: "success",
+        confirmButtonColor: "#749CA8",
+      });
+    }
+  });
+
   // DirectMessage
 
   self.appEventBus.on("setDMchatlog", function(chatlog) {

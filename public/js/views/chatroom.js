@@ -372,12 +372,6 @@ app.ChatroomView = Backbone.View.extend({
       closeOnConfirm: false,
       html: false
     }, function(){
-      swal({
-        title: "Eviscerated!",
-        text: "Your chatroom has been purged.",
-        type: "success",
-        confirmButtonColor: "#749CA8",
-      });
       var roomId = this_.model.get('chatroom').id;
       var roomName = this_.model.get('chatroom').get('name');
       var userInRoom = true;

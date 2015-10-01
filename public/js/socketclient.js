@@ -32,10 +32,6 @@ var ChatClient = function(options) {
   };
 
 
-  self.reconnect = function() {
-    self.connect();
-  };
-
 
 ///// ViewEventBus methods ////
     // methods that emit to the chatserver
@@ -268,6 +264,10 @@ var ChatClient = function(options) {
       self.vent.trigger("chatroomAlreadyExists");
     });
 
+    socket.on('destroyRoomResponse', function(res) {
+      self.vent.trigger("destroyRoomResponse", res);
+    });
+
 // INVITATIONS
     socket.on('refreshInvitations', function(invitations) {
       self.vent.trigger("refreshInvitations", invitations);
@@ -276,9 +276,6 @@ var ChatClient = function(options) {
       self.vent.trigger("userInvited", user);
     });
 
-   socket.on('reconnect', function() {
-     self.reconnect();
-   });
 
 	};
 };
