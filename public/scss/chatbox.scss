@@ -90,6 +90,12 @@
       margin-top: 5px;
     }
   }
+  @media (max-width: 500px) {
+    .chatbox-message-timestamp {
+      display: none;
+    }
+    padding-left: 10px;
+  }
   .chatbox-message-content {
     width: 87.33333%;
     padding-left: 0;
@@ -121,7 +127,7 @@
       }
       @media (max-width: 550px) {
         max-height: 180px;
-        max-width: 200px;
+        max-width: 270px;
       }
     }
   }
