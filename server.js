@@ -23,7 +23,6 @@ var db = mongoose(),
   //   store: new sessionStore({ db: config.db})
   // });
 
-console.log('>>>>>>>>>>>>>>>>>>', app.sessionStore);
   // app.use(session);
 
   io.use(sharedsession(app.sessionStore, {

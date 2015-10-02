@@ -26,8 +26,7 @@ var app = app || {};
       app.mainController.init();
       if (callback) {
         callback();
-      } 
-      else {
+      } else {
         $.ajax({
           url: "/logout",
         });
@@ -56,8 +55,10 @@ var app = app || {};
     authenticated: function() {
       if (!app.mainController) {
         this.start();
-      }
+      } else {
         app.mainController.authenticated();
+      }
+        
     },
     facebook: function() {
       this.start(this.authenticated);
