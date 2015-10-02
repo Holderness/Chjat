@@ -275,9 +275,6 @@ var ChatClient = function(options) {
     socket.on('userInvited', function(user) {
       self.vent.trigger("userInvited", user);
     });
-    socket.on('updateInbox', function() {
-      self.vent.trigger("updateInbox");
-    });
 
 
 	};
