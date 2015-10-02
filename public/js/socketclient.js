@@ -18,7 +18,8 @@ var ChatClient = function(options) {
   // this vent holds the appEventBus
 	self.vent = options.vent;
 
-	self.hostname = 'http://' + window.location.host;
+  //must be https on heroku and http on localhost
+	self.hostname = 'https://' + window.location.host;
 
   // connects to socket, sets response listeners
 	self.connect = function() {
