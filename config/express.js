@@ -19,22 +19,25 @@ module.exports = function() {
 
   ejs.delimiter = '$';
 
-  // parses request body and populates request.body
+// parses request body and populates request.body
   app.use( bodyParser.json() );
   app.use( bodyParser.urlencoded({ extended: true }) );
   app.use( cookieParser( process.env.SESSION_SECRET ));
 
-  app.use(session({
+  app.sessionStore = session({
     saveUninitialized: true,
     resave: false,
     secret: process.env.SESSION_SECRET,
     store: new sessionStore({ db: config.db})
-  }));
+  });
 
+  app.use(app.sessionStore);
 
   app.use(flash());
   app.use(passport.initialize());
   app.use(passport.session());
+
+
 
 
 

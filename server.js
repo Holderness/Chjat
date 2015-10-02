@@ -16,17 +16,17 @@ var db = mongoose(),
     server = http.Server(app),
     io = require('socket.io')(server);
 
-  var session = session({
-    saveUninitialized: true,
-    resave: true,
-    secret: process.env.SESSION_SECRET,
-    store: new sessionStore({ db: config.db})
-  });
+  // var session = session({
+  //   saveUninitialized: true,
+  //   resave: true,
+  //   secret: process.env.SESSION_SECRET,
+  //   store: new sessionStore({ db: config.db})
+  // });
 
-
+console.log('>>>>>>>>>>>>>>>>>>', app.sessionStore);
   // app.use(session);
 
-  io.use(sharedsession(session, {
+  io.use(sharedsession(app.sessionStore, {
     autoSave: true
   }));
 
