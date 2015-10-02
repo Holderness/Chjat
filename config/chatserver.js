@@ -17,11 +17,7 @@ var Server = function(options) {
 
       ChatroomModel.findOne({ name: 'Parlor' }, function(err, chatroom) {
       if (!err) {
-        console.log('1chat.url', chat.url);
-        chatroom.chatlog.push( { room: user.socket.chat.name, sender: user.username, message: chat.message, url: chat.url } );
-        chatroom.save(function(err) {
-          if (err) { return console.log( err );}
-        });
+        console.log('parlor already exists');
       } else {
         var Parlor = new ChatroomModel({'name': 'Parlor'});
         Parlor.save(function(err) {
