@@ -28,7 +28,10 @@ module.exports = function() {
     saveUninitialized: true,
     resave: false,
     secret: process.env.SESSION_SECRET,
-    store: new sessionStore({ db: config.db})
+    store: new sessionStore({
+      // db: config.db,
+      url: config.db
+    })
   });
 
   app.use(app.sessionStore);
