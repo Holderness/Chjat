@@ -17,7 +17,7 @@ var Server = function(options) {
 
       ChatroomModel.findOne({ name: 'Parlor' }, function(err, chatroom) {
         console.log('chatroomparlorcreateion:', chatroom);
-      if (chatroom === undefined) {
+      if (chatroom === null) {
         var Parlorr = new ChatroomModel({'name': 'Parlor'});
         Parlorr.save(function(err) {
           if (err) { return console.log( err );}
