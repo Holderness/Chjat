@@ -16,13 +16,21 @@ console.log('chatserver');
 var Server = function(options) {
 
       ChatroomModel.findOne({ name: 'Parlor' }, function(err, chatroom) {
-      if (!err) {
+        console.log('chatroomparlorcreateion:', chatroom);
+      if (chatroom === undefined) {
+        var Parlorr = new ChatroomModel({'name': 'Parlor'});
+        Parlorr.save(function(err) {
+          if (err) { return console.log( err );}
+        });
+        console.log('parlor created1');
+      } else if (!err) {
         console.log('parlor already exists');
       } else {
         var Parlor = new ChatroomModel({'name': 'Parlor'});
         Parlor.save(function(err) {
           if (err) { return console.log( err );}
         });
+        console.log('parlor created2');
         return console.log( err );
       }
     });
