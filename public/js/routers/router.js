@@ -26,11 +26,12 @@ var app = app || {};
       app.mainController.init();
       if (callback) {
         callback();
-      } else {
-        $.ajax({
-          url: "/logout",
-        });
-      }
+      } 
+      // else {
+      //   $.ajax({
+      //     url: "/logout",
+      //   });
+      // }
     },
 
 
