@@ -15,8 +15,26 @@ console.log('chatserver');
 // the chatserver listens to the chatclient
 var Server = function(options) {
 
+      ChatroomModel.findOne({ name: 'Parlor' }, function(err, chatroom) {
+      if (!err) {
+        console.log('1chat.url', chat.url);
+        chatroom.chatlog.push( { room: user.socket.chat.name, sender: user.username, message: chat.message, url: chat.url } );
+        chatroom.save(function(err) {
+          if (err) { return console.log( err );}
+        });
+      } else {
+        var Parlor = new ChatroomModel({'name': 'Parlor'});
+        Parlor.save(function(err) {
+          if (err) { return console.log( err );}
+        });
+        return console.log( err );
+      }
+    });
+
   var self = this;
   self.io = options.io;
+
+
 
   self.init = function() {
     self.io.on('connection', function(socket){
