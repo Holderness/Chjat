@@ -28,11 +28,7 @@ var db = mongoose(),
   io.use(sharedsession(app.sessionStore, {
     autoSave: true
   }));
-  io.configure(function() {
-    io.set('transports', ['xhr-polling']);
-    io.set('polling duration', 10);
-    io.set("close timeout", 10);
-  });
+
   // io.use(function(req, res, next) {
   //   console.log('>>>>>>>>>>>>>>>>>>>>>REQ<<<<<<<<<<<<', req.handshake);
   //   console.log('>>>>>>>>>>>>>>>>>>>>>RES<<<<<<<<<<<<', res);
