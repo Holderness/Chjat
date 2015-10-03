@@ -15,25 +15,25 @@ console.log('chatserver');
 // the chatserver listens to the chatclient
 var Server = function(options) {
 
-      ChatroomModel.findOne({ name: 'Parlor' }, function(err, chatroom) {
-        console.log('chatroomparlorcreateion:', chatroom);
-      if (chatroom === null) {
-        var Parlorr = new ChatroomModel({'name': 'Parlor'});
-        Parlorr.save(function(err) {
-          if (err) { return console.log( err );}
-        });
-        console.log('parlor created1');
-      } else if (!err) {
-        console.log('parlor already exists');
-      } else {
-        var Parlor = new ChatroomModel({'name': 'Parlor'});
-        Parlor.save(function(err) {
-          if (err) { return console.log( err );}
-        });
-        console.log('parlor created2');
-        return console.log( err );
-      }
-    });
+    //   ChatroomModel.findOne({ name: 'Parlor' }, function(err, chatroom) {
+    //     console.log('chatroomparlorcreateion:', chatroom);
+    //   if (chatroom === null) {
+    //     var Parlorr = new ChatroomModel({'name': 'Parlor'});
+    //     Parlorr.save(function(err) {
+    //       if (err) { return console.log( err );}
+    //     });
+    //     console.log('parlor created1');
+    //   } else if (!err) {
+    //     console.log('parlor already exists');
+    //   } else {
+    //     var Parlor = new ChatroomModel({'name': 'Parlor'});
+    //     Parlor.save(function(err) {
+    //       if (err) { return console.log( err );}
+    //     });
+    //     console.log('parlor created2');
+    //     return console.log( err );
+    //   }
+    // });
 
   var self = this;
   self.io = options.io;
@@ -456,7 +456,6 @@ var Server = function(options) {
     console.log("f.addToRoom: ", roomName);
     user.socket.join(roomName);
     user.socket.chat.room = roomName;
-    console.log('user socket id: ', user.socket.id);
     ChatroomModel.update({ name: roomName},
       {$push: {'onlineUsers': { username: user.username, userImage: user.userImage, id: user.id }}},
       function(err, raw){

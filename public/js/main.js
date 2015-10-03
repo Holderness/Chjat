@@ -46,7 +46,6 @@ app.MainController = function() {
       return e.keyCode != 13;
     });
 
-    debugger;
     self.chatClient = new ChatClient({ vent: self.appEventBus });
           console.log('huh');
     self.chatClient.connect();
