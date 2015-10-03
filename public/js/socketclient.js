@@ -28,7 +28,7 @@ var ChatClient = function(options) {
 		// it's coming from the static middleware on server.js bc everything
 		// in the /public folder has been attached to the server, and visa
 		// versa.
-		self.socket = io.connect(self.hostname);
+		self.socket = io.connect();
     self.setResponseListeners(self.socket);
   };
 
