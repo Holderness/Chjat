@@ -15,7 +15,8 @@ var db = mongoose(),
     passport = passport(),
     server = http.Server(app),
     io = require('socket.io')(server, {
-      'transports': ['websocket', 'polling']
+      path: '/socket.io-client',
+      transports: ['websocket']
     });
 
   // var session = session({
