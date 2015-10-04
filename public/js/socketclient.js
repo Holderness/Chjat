@@ -30,7 +30,7 @@ var ChatClient = function(options) {
 		// versa.
 
 		self.socket = io.connect('https://chjat.herokuapp.com/', {
-      path: '/socket.io-client',
+      // path: '/socket.io-client',
       transports: ['websocket']
     });
     self.setResponseListeners(self.socket);
