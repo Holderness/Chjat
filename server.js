@@ -14,10 +14,7 @@ var db = mongoose(),
     app = express(),
     passport = passport(),
     server = http.Server(app),
-    io = require('socket.io')(server, {
-      path: '/socket.io-client',
-      transports: ['websocket']
-    });
+    io = require('socket.io')(server);
 
   // var session = session({
   //   saveUninitialized: true,
