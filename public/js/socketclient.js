@@ -28,10 +28,11 @@ var ChatClient = function(options) {
 		// it's coming from the static middleware on server.js bc everything
 		// in the /public folder has been attached to the server, and visa
 		// versa.
-		self.socket = io.connect('http://chjat.herokuapp.com:80', {
+    io.set({
       path: '/socket.io-client',
       transports: ['websocket']
     });
+		self.socket = io.connect();
     self.setResponseListeners(self.socket);
   };
 
