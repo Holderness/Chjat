@@ -29,10 +29,13 @@ var ChatClient = function(options) {
 		// in the /public folder has been attached to the server, and visa
 		// versa.
 
-		self.socket = io.connect('https://chjat.herokuapp.com/', {
-      // path: '/socket.io-client',
-      transports: ['websocket']
-    });
+		self.socket = io.connect();
+
+    // uncomment for heroku, comment above
+    // self.socket = io.connect('https://chjat.herokuapp.com/', {
+    //   transports: ['websocket']
+    // });
+
     self.setResponseListeners(self.socket);
   };
 

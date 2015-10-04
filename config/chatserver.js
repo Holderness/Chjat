@@ -42,10 +42,12 @@ var Server = function(options) {
 
   self.init = function() {
     self.io.on('connection', function(socket){
-      // self.io.set('path', '/socket.io-client');
-      self.io.set('polling duration', 10);
-      // self.io.set("close timeout", 10);
-      self.io.set('transports', ['websocket']);
+      //
+      // uncomment for heroku
+      // self.io.set('polling duration', 10);
+      // self.io.set('transports', ['websocket']);
+      //
+      //
       self.socket = socket;
       socket.chat = { room: 'Parlor' };
       socket.on("login", function(userdata) {
