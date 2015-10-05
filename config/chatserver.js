@@ -445,7 +445,10 @@ var Server = function(options) {
             if (err) {return console.log(err);}
             console.log('new chatroom users: ', chatroom.onlineUsers );
             var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
+            console.log('v----leaveroom------v');
             console.log('chatroom.onlineUSers: ', chatroom.onlineUsers);
+            console.log('chatroom.onlineUSers: ', offlineUsers);
+            console.log('^--------------------^');
             user.socket.broadcast.to(currentRoom).emit('onlineUsers', chatroom.onlineUsers);
             user.socket.broadcast.to(currentRoom).emit('offlineUsers', offlineUsers);
             if (callback) {
@@ -469,6 +472,10 @@ var Server = function(options) {
           self.getUsersAndHeader(user, roomName);
           self.getChatrooms(user);
           var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
+            console.log('v----addToRoom------v');
+            console.log('chatroom.onlineUSers: ', chatroom.onlineUsers);
+            console.log('chatroom.onlineUSers: ', offlineUsers);
+            console.log('^--------------------^');
           user.socket.broadcast.to(roomName).emit('userJoined', { username: user.username, userImage: user.userImage });
           user.socket.broadcast.to(roomName).emit('onlineUsers', chatroom.onlineUsers);
           user.socket.broadcast.to(roomName).emit('offlineUsers', offlineUsers);
@@ -542,10 +549,12 @@ var Server = function(options) {
     return pub;
   };
   self.getUsersAndHeader = function(user, roomName) {
-    console.log('f.getChatsAndUsers');
+    console.log('f.getUsersAndHeader');
     ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
       if (!err) {
-        // console.log('chatroom: ', chatroom);
+        
+        console.log('chatroom: ', chatroom);
+       
         var offlineUsers = _.filter(chatroom.participants,
           function(obj){
             return !_.find(chatroom.onlineUsers,
@@ -555,9 +564,11 @@ var Server = function(options) {
                  }
               });
           });
-        // console.log('participants: ', chatroom.participants);
-        // console.log('oonlneinusers: ', chatroom.onlineUsers);
-        // console.log('offlineusers: ', offlineUsers);
+        console.log('v-----getUsersAndHeader-----v');
+        console.log('participants: ', chatroom.participants);
+        console.log('oonlneinusers: ', chatroom.onlineUsers);
+        console.log('offlineusers: ', offlineUsers);
+         console.log('^--------------------------^');
         user.socket.emit('chatlog', chatroom.chatlog.slice(-25));
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
         user.socket.emit('offlineUsers', offlineUsers);
