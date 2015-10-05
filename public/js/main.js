@@ -182,8 +182,8 @@ app.MainController = function() {
 
 
 
-  self.appEventBus.on("loginUser", function(user) {
-    console.log('main.e.loginUser: ', user);
+  self.appEventBus.on("initUser", function(user) {
+    console.log('main.e.initUser: ', user);
     invitations = self.navbarView.model.get('invitations');
     newInvitations = _.map(user.invitations, function(invite) {
        var newInvitation = new app.InvitationModel(invite);

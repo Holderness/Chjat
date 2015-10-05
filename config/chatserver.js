@@ -63,7 +63,7 @@ var Server = function(options) {
         }
       });
       if (socket.handshake.session.passport.user) {
-        console.log(socket.handshake.session);
+        console.log('if socket.handshake.session>>>>>> ', socket.handshake.session);
         UserModel.findById(socket.handshake.session.passport.user, function(err, found) {
           socket.handshake.session.userdata = { username: found.username };
           return self.manageConnection(socket, found);
@@ -82,6 +82,7 @@ var Server = function(options) {
   };
   
   self.initUser = function(socket, model) {
+    console.log('f.initUser');
     console.log('socketID: ', socket.id);
       var newUser = new User({
         username: model.username,
@@ -91,17 +92,13 @@ var Server = function(options) {
         invitations: model.invitations,
         homeRoom: model.homeRoom
       });
-      var callback = function() {
-        // console.log('------------------------------------------');
-        // console.log('invites: ', model.invitations);
-        // console.log('newUser: ', newUser);
-        // console.log('------------------------------------------');
-        socket.emit('login', { username: newUser.username,
+      var initUserClient = function() {
+        socket.emit('initUser', { username: newUser.username,
                             invitations: newUser.invitations,
                                homeRoom: newUser.homeRoom,
                               userImage: newUser.userImage });
       };
-      self.setResponseListeners(newUser, callback);
+      self.setResponseListeners(newUser, initUserClient);
       return newUser;
   };
     
