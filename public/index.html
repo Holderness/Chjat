@@ -454,7 +454,7 @@
 
 
 
-<!-- online users -->
+<!-- online user -->
 <script type="text/template" id="online-users-list-template">
   <div class="user user-online">
       <img class="user-image on" src="<%= userImage %>">
@@ -464,7 +464,7 @@
 
 
 
-<!-- offline users -->
+<!-- offline user -->
 <script type="text/template" id="offline-users-list-template">
   <div class="user user-offline">
       <img class="user-image off" src="<%= userImage %>">
@@ -474,11 +474,11 @@
 
 
 
-<!-- user rooms -->
+<!-- user room -->
 <script type="text/template" id="room-list-template">
   <div class="room" data-room="<%= name %>">
     <div class="room-name-container">
-      <div class="room-name" data-room="<%= name %>" ><%= name %>
+      <div class="room-name" data-room="<%= name %>" data-room-id="<%= id %>"><%= name %>
         <div class="room-image-container pull-right">
           <img class="room-image" src="<%= roomImage %>" alt="chatroom image">
         </div>

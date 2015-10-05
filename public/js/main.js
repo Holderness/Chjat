@@ -97,8 +97,8 @@ app.MainController = function() {
   self.viewEventBus.on("typing", function() {
     self.chatClient.updateTyping();
   });
-  self.viewEventBus.on("joinRoom", function(room) {
-    self.chatClient.joinRoom(room);
+  self.viewEventBus.on("joinRoom", function(roomName) {
+    self.chatClient.joinRoom(roomName);
   });
   self.viewEventBus.on("addRoom", function(room) {
     self.chatClient.addRoom(room);

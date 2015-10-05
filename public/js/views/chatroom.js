@@ -439,12 +439,12 @@ app.ChatroomView = Backbone.View.extend({
       this.$('#private-rooms').find('.room-name').last().addClass('active').fadeIn();
     }
   },
-  joinRoom: function(name) {
+  joinRoom: function(obj) {
     console.log('crv.f.joinRoom');
-     $('#chatImageUploadContainer').data('chat-type', 'chat');
+     // $('#chatImageUploadContainer').data('chat-type', 'chat');
     this.currentDate = '';
     this.previousDate = '';
-    this.vent.trigger('joinRoom', name);
+    this.vent.trigger('joinRoom', obj.name);
   },
 // change to 'joinDirectMessage'
   initDirectMessage: function(e) {
@@ -514,7 +514,7 @@ app.ChatroomView = Backbone.View.extend({
     console.log('crv.f.setRoom');
     var $tar = $(e.target);
     if ($tar.is('.room-name')) {
-      this.joinRoom($tar.data('room'));
+      this.joinRoom({id: $tar.data('room-id'), name: $tar.data('room')});
     }
   },
 

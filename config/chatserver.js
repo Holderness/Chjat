@@ -116,7 +116,6 @@ var Server = function(options) {
     });
     user.socket.on("connectToRoom", function(name) {
       console.log('e.connectToRoom');
-      console.log('user.socket.id: ', user.socket.id);
       self.addToRoom(user, name);
     });
 
@@ -171,9 +170,9 @@ var Server = function(options) {
 // ROOM
     user.socket.on('joinRoom', function(roomName) {
       console.log('e.joinRoom');
-      console.log("USER: ", user.username);
-      console.log('ROOMNAME: ', roomName);
-       user.socket.leave(user.socket.chat.room);
+      console.log("--USER: ", user.username);
+      console.log('--roomName: ', roomName);
+      user.socket.leave(user.socket.chat.room);
       self.leaveRoom(user);
       self.addToRoom(user, roomName);
     });
@@ -419,7 +418,7 @@ var Server = function(options) {
       } else {
         ChatroomModel.remove({_id: roomInfo.id}, function(err) {
           if (!err) {
-            self.getChatrooms(user, user.socket);
+            self.getChatrooms(user);
             if (roomInfo.userInRoom === true) {
               user.socket.emit('redirectToHomeRoom', {roomLeft: roomInfo.roomName, homeRoom: user.homeRoom});
             }
@@ -431,28 +430,30 @@ var Server = function(options) {
       }
     };
   self.leaveRoom = function(user, callback) {
+    console.log("f.leaveRoom");
     var currentRoom = user.socket.chat.room;
-    console.log("f.leaveRoom: ", currentRoom);
-    // console.log('--------------leavroom socket-------------', user.socket);
-    console.log('user leaving: ', user.username);
+    console.log("--user leaving: ", user.username);
+    console.log("--room leaving: ", currentRoom);
     if (user.socket.chat.room) {
-    ChatroomModel.update({ name: currentRoom },
-      {$pull: {'onlineUsers': {username: user.username, userImage: user.userImage}}},
-      function(err, raw) {
-        if (err) {return console.log(err);}
-        user.socket.broadcast.to(currentRoom).emit('userLeft', { username: user.username, userImage: user.userImage });
-        ChatroomModel.findOne({ name: currentRoom }, function( err, chatroom ) {
+      ChatroomModel.update(
+        { name: currentRoom },
+        {$pull: {'onlineUsers': {username: user.username, userImage: user.userImage}}},
+        function(err, raw) {
           if (err) {return console.log(err);}
-          console.log('new chatroom users: ', chatroom.onlineUsers );
-          var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
-          console.log('chatroom.onlineUSers: ', chatroom.onlineUsers);
-          user.socket.broadcast.to(currentRoom).emit('onlineUsers', chatroom.onlineUsers);
-          user.socket.broadcast.to(currentRoom).emit('offlineUsers', offlineUsers);
-          if (callback) {
-            callback();
-          }
-        });
-      });
+          user.socket.broadcast.to(currentRoom).emit('userLeft', { username: user.username, userImage: user.userImage });
+          ChatroomModel.findOne({ name: currentRoom }, function( err, chatroom ) {
+            if (err) {return console.log(err);}
+            console.log('new chatroom users: ', chatroom.onlineUsers );
+            var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
+            console.log('chatroom.onlineUSers: ', chatroom.onlineUsers);
+            user.socket.broadcast.to(currentRoom).emit('onlineUsers', chatroom.onlineUsers);
+            user.socket.broadcast.to(currentRoom).emit('offlineUsers', offlineUsers);
+            if (callback) {
+              callback();
+            }
+          });
+        }
+      );
     }
   };
   self.addToRoom = function(user, roomName) {
@@ -466,13 +467,14 @@ var Server = function(options) {
         ChatroomModel.findOne({ name: roomName }, function( err, chatroom ) {
           if (err) {return console.log(err);}
           self.getUsersAndHeader(user, roomName);
-          self.getChatrooms(user, user.socket);
+          self.getChatrooms(user);
           var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
           user.socket.broadcast.to(roomName).emit('userJoined', { username: user.username, userImage: user.userImage });
           user.socket.broadcast.to(roomName).emit('onlineUsers', chatroom.onlineUsers);
           user.socket.broadcast.to(roomName).emit('offlineUsers', offlineUsers);
         });
-      });
+      }
+    );
   };
 
 
@@ -481,7 +483,7 @@ var Server = function(options) {
       ChatroomModel.update({name: chatroomName}, { $push: {'participants': {'username': user.username, 'userImage': user.userImage, 'id': user.id } }}, function(err, raw) {
             if (!err) {
               console.log('userchatrooms', raw);
-              self.getChatrooms(user, user.socket);
+              self.getChatrooms(user);
             } else {
               return console.log( err );
             }
@@ -492,7 +494,7 @@ var Server = function(options) {
       ChatroomModel.update({_id: roomData.id}, { $pull: { 'participants': {'id': user.id }}}, function(err, raw) {
             if (!err) {
               console.log('userchatrooms', raw);
-              self.getChatrooms(user, user.socket);
+              self.getChatrooms(user);
               if (roomData.userInRoom === true) {
                 user.socket.emit('redirectToHomeRoom', { roomLeft: roomData.roomName, homeRoom: user.homeRoom });
               }
@@ -501,15 +503,15 @@ var Server = function(options) {
             }
       });
     };
-  self.getChatrooms = function(user, socket) {
+  self.getChatrooms = function(user) {
     console.log('f.getChatrooms');
     // use lean() for a modifiable returned object, like you see in self.getPrivateRooms();
     ChatroomModel.find({ 'participants.id': user.id }, 'name owner roomImage privacy id').lean().exec(function( err, chatrooms ) {
       if (!err) {
         var priv = self.getPrivateRooms(user, chatrooms);
         var pub = self.getPublicRooms(chatrooms);
-        socket.emit('chatrooms', pub);
-        socket.emit('privateRooms', priv);
+        user.socket.emit('chatrooms', pub);
+        user.socket.emit('privateRooms', priv);
       } else {
         return console.log (err);
       }
@@ -603,7 +605,7 @@ var Server = function(options) {
       function(err, raw) {
         if (!err) {
           self.deleteInvitation(user, roomId);
-          self.getChatrooms(user, user.socket);
+          self.getChatrooms(user);
         } else {
           return console.log( err );
         }
@@ -617,16 +619,15 @@ var Server = function(options) {
     UserModel.findOneAndUpdate({ _id: user.id }, { '$set': userObj }, function(err, oldUser) {
         if (err) { return console.log(err); }
         UserModel.findOne({ _id: user.id }, function( err, updatedUser ) {
-          var callback = function() {
+          var updateUser = function() {
             self.initUser(user.socket, updatedUser);
-            // self.addToRoom(user, updatedUser.homeRoom);
           };
           newEventList = _.filter(Object.keys(user.socket._events), function(eventKey) {
             return eventKey === 'login' || eventKey === 'logout';
           });
           user.socket._events = newEventList;
           user.socket.leave(user.socket.chat.room);
-          self.leaveRoom(user, callback);
+          self.leaveRoom(user, updateUser);
           if (err) {
             user.socket.emit('userUpdated', { 'error': 'error'});
             return console.log(err);

@@ -52,16 +52,16 @@ var ChatClient = function(options) {
 
 
 // ROOM
-  self.connectToRoom = function(name) {
-    console.log('sc.f.connectToRoom: ', name);
-    self.socket.emit("connectToRoom", name);
+  self.connectToRoom = function(roomName) {
+    console.log('sc.f.connectToRoom: ', roomName);
+    self.socket.emit("connectToRoom", roomName);
   };
-  self.joinRoom = function(name) {
-    self.socket.emit('joinRoom', name);
+  self.joinRoom = function(roomName) {
+    self.socket.emit('joinRoom', roomName);
   };
-  self.addRoom = function(name) {
-    console.log('sc.f.addRoom: ', name);
-    self.socket.emit("addRoom", name);
+  self.addRoom = function(roomName) {
+    console.log('sc.f.addRoom: ', roomName);
+    self.socket.emit("addRoom", roomName);
   };
   self.removeRoom = function(roomData) {
     console.log('sc.f.removeRoom: ', roomData);
