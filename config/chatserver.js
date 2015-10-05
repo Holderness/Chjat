@@ -44,8 +44,8 @@ var Server = function(options) {
     self.io.on('connection', function(socket){
       //
       // uncomment for heroku
-      self.io.set('polling duration', 10);
-      self.io.set('transports', ['websocket']);
+      // self.io.set('polling duration', 10);
+      // self.io.set('transports', ['websocket']);
       //
       //
       self.socket = socket;
@@ -446,13 +446,8 @@ var Server = function(options) {
             console.log('new chatroom users: ', chatroom.onlineUsers );
             var offlineUsers = _.filter(chatroom.participants,
               function(obj){
-                console.log('obj.username: ', obj.username);
-                console.log('user.username: ', user.username);
-                console.log('same? ', obj.username !== user.username);
-                return obj.username !== user.username;
-                // console.log('obj: ', obj);
-                // console.log('findwhere: ', _.findWhere(chatroom.onlineUsers, obj));
-                // return !_.findWhere(chatroom.onlineUsers, obj);
+                console.log('obj: ', obj);
+                return !_.findWhere(chatroom.onlineUsers, obj);
               });
             console.log('v----leaveroom------v');
             console.log('chatroom.onlineUSers: ', chatroom.onlineUsers);
@@ -481,13 +476,10 @@ var Server = function(options) {
           self.getUsersAndHeader(user, roomName);
           self.getChatrooms(user);
           var offlineUsers = _.filter(chatroom.participants,
-            function(obj){ 
-                console.log('obj.username: ', obj.username);
-                console.log('user.username: ', user.username);
-                console.log('same? ', obj.username !== user.username);
-                return obj.username !== user.username;
-            }
-          );
+            function(obj){
+              console.log('obj: ', obj);
+              return !_.findWhere(chatroom.onlineUsers, obj);
+            });
             console.log('v----addToRoom------v');
             console.log('chatroom.onlineUSers: ', chatroom.onlineUsers);
             console.log('chatroom.offlineUsers: ', offlineUsers);
@@ -570,13 +562,11 @@ var Server = function(options) {
       if (!err) {
         
         console.log('chatroom: ', chatroom.name);
-       
+
         var offlineUsers = _.filter(chatroom.participants,
-          function(obj){
-                console.log('obj.username: ', obj.username);
-                console.log('user.username: ', user.username);
-                console.log('same? ', obj.username !== user.username);
-                return obj.username !== user.username;
+            function(obj){
+              console.log('obj: ', obj);
+              return !_.findWhere(chatroom.onlineUsers, obj);
           });
         console.log('v-----getUsersAndHeader-----v');
         console.log('participants: ', chatroom.participants);
