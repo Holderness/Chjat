@@ -479,15 +479,24 @@ var Server = function(options) {
 
 
 // ROOM MANAGEMENT
-    self.addUserToRoom = function(user, chatroomName) {
-      ChatroomModel.update({name: chatroomName}, { $push: {'participants': {'username': user.username, 'userImage': user.userImage, 'id': user.id } }}, function(err, raw) {
+    self.addUserToRoom = function(user, roomName) {
+      console.log('f.addUserToRoom');
+      ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
+        console.log('userid: ', user.id);
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>participants: ', chatroom.participants);
+        var filtered = _.filter(chatroom.participants, function(obj){ return user.id === obj.id; });
+        if (filtered.length === 0) {
+          ChatroomModel.update({_id: chatroom.id}, { $push: {'participants': {'username': user.username, 'userImage': user.userImage, 'id': user.id } }}, function(err, raw) {
             if (!err) {
               console.log('userchatrooms', raw);
               self.getChatrooms(user);
             } else {
               return console.log( err );
             }
+          });
+        }
       });
+
     };
     self.removeUserFromRoom = function(user, roomData) {
       console.log('removeUserFromRoom');
