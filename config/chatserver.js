@@ -44,8 +44,8 @@ var Server = function(options) {
     self.io.on('connection', function(socket){
       //
       // uncomment for heroku
-      self.io.set('polling duration', 10);
-      self.io.set('transports', ['websocket']);
+      // self.io.set('polling duration', 10);
+      // self.io.set('transports', ['websocket']);
       //
       //
       self.socket = socket;
@@ -444,10 +444,19 @@ var Server = function(options) {
           ChatroomModel.findOne({ name: currentRoom }, function( err, chatroom ) {
             if (err) {return console.log(err);}
             console.log('new chatroom users: ', chatroom.onlineUsers );
-            var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
+            var offlineUsers = _.filter(chatroom.participants,
+              function(obj){
+                console.log('obj.username: ', obj.username);
+                console.log('user.username: ', user.username);
+                console.log('same? ', obj.username !== user.username);
+                return obj.username !== user.username;
+                // console.log('obj: ', obj);
+                // console.log('findwhere: ', _.findWhere(chatroom.onlineUsers, obj));
+                // return !_.findWhere(chatroom.onlineUsers, obj);
+              });
             console.log('v----leaveroom------v');
             console.log('chatroom.onlineUSers: ', chatroom.onlineUsers);
-            console.log('chatroom.onlineUSers: ', offlineUsers);
+            console.log('chatroom.offlineUsers: ', offlineUsers);
             console.log('^--------------------^');
             user.socket.broadcast.to(currentRoom).emit('onlineUsers', chatroom.onlineUsers);
             user.socket.broadcast.to(currentRoom).emit('offlineUsers', offlineUsers);
@@ -471,10 +480,17 @@ var Server = function(options) {
           if (err) {return console.log(err);}
           self.getUsersAndHeader(user, roomName);
           self.getChatrooms(user);
-          var offlineUsers = _.filter(chatroom.participants, function(obj){ return !_.findWhere(chatroom.onlineUsers, obj); });
+          var offlineUsers = _.filter(chatroom.participants,
+            function(obj){ 
+                console.log('obj.username: ', obj.username);
+                console.log('user.username: ', user.username);
+                console.log('same? ', obj.username !== user.username);
+                return obj.username !== user.username;
+            }
+          );
             console.log('v----addToRoom------v');
             console.log('chatroom.onlineUSers: ', chatroom.onlineUsers);
-            console.log('chatroom.onlineUSers: ', offlineUsers);
+            console.log('chatroom.offlineUsers: ', offlineUsers);
             console.log('^--------------------^');
           user.socket.broadcast.to(roomName).emit('userJoined', { username: user.username, userImage: user.userImage });
           user.socket.broadcast.to(roomName).emit('onlineUsers', chatroom.onlineUsers);
@@ -553,16 +569,14 @@ var Server = function(options) {
     ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
       if (!err) {
         
-        console.log('chatroom: ', chatroom);
+        console.log('chatroom: ', chatroom.name);
        
         var offlineUsers = _.filter(chatroom.participants,
           function(obj){
-            return !_.find(chatroom.onlineUsers,
-              function(onlineObj) {
-                 if (onlineObj.id.equals(obj.id)) {
-                   return onlineObj;
-                 }
-              });
+                console.log('obj.username: ', obj.username);
+                console.log('user.username: ', user.username);
+                console.log('same? ', obj.username !== user.username);
+                return obj.username !== user.username;
           });
         console.log('v-----getUsersAndHeader-----v');
         console.log('participants: ', chatroom.participants);
