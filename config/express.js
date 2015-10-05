@@ -29,9 +29,9 @@ module.exports = function() {
     resave: false,
     secret: process.env.SESSION_SECRET,
     store: new sessionStore({
-      db: config.db,
+      // db: config.db,
       // comment db and uncomment url for heroku
-      // url: config.db
+      url: config.db
     })
   });
 
