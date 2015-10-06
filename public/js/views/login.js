@@ -38,7 +38,7 @@ var app = app || {};
            }
            else if (data === 200) {
             app.ChatroomRouter.navigate('authenticated', { trigger: true });
-
+             this_.vent.trigger("login", sendData);
            }
            else {
             console.log('oops, the else: ', data);
@@ -46,7 +46,7 @@ var app = app || {};
         }
       }).done(function() {
         console.log('doneeeeeeee');
-                    this_.vent.trigger("login", sendData);
+                    
       });
     },
     renderValidation: function(what) {
