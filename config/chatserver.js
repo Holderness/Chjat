@@ -444,11 +444,15 @@ var Server = function(options) {
           ChatroomModel.findOne({ name: currentRoom }, function( err, chatroom ) {
             if (err) {return console.log(err);}
             console.log('new chatroom users: ', chatroom.onlineUsers );
-            var offlineUsers = _.filter(chatroom.participants,
-              function(obj){
-                console.log('obj: ', obj);
-                return !_.findWhere(chatroom.onlineUsers, obj);
-              });
+          var offlineUsers = _.filter(chatroom.participants,
+            function(obj) {
+              return !_find(chatroom.onlineUsers,
+                function(onlineObj) {
+                  if (onlineObj.id.equals(obj.id)) {
+                    return onlineObj;
+                  }
+                });
+            });
             console.log('v----leaveroom------v');
             console.log('chatroom.onlineUSers: ', chatroom.onlineUsers);
             console.log('chatroom.offlineUsers: ', offlineUsers);
@@ -476,9 +480,13 @@ var Server = function(options) {
           self.getUsersAndHeader(user, roomName);
           self.getChatrooms(user);
           var offlineUsers = _.filter(chatroom.participants,
-            function(obj){
-              console.log('obj: ', obj);
-              return !_.findWhere(chatroom.onlineUsers, obj);
+            function(obj) {
+              return !_find(chatroom.onlineUsers,
+                function(onlineObj) {
+                  if (onlineObj.id.equals(obj.id)) {
+                    return onlineObj;
+                  }
+                });
             });
             console.log('v----addToRoom------v');
             console.log('chatroom.onlineUSers: ', chatroom.onlineUsers);
@@ -563,11 +571,15 @@ var Server = function(options) {
         
         console.log('chatroom: ', chatroom.name);
 
-        var offlineUsers = _.filter(chatroom.participants,
-            function(obj){
-              console.log('obj: ', obj);
-              return !_.findWhere(chatroom.onlineUsers, obj);
-          });
+          var offlineUsers = _.filter(chatroom.participants,
+            function(obj) {
+              return !_find(chatroom.onlineUsers,
+                function(onlineObj) {
+                  if (onlineObj.id.equals(obj.id)) {
+                    return onlineObj;
+                  }
+                });
+            });
         console.log('v-----getUsersAndHeader-----v');
         console.log('participants: ', chatroom.participants);
         console.log('oonlneinusers: ', chatroom.onlineUsers);
