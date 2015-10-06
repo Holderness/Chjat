@@ -36,9 +36,9 @@ var app = app || {};
            if (data.message) {
              this_.renderValidation(this_.errorTemplate(data));
            }
-           else if (data === 200) {
+           else if (data._id) {
             app.ChatroomRouter.navigate('authenticated', { trigger: true });
-             this_.vent.trigger("login", sendData);
+            this_.vent.trigger("login", data);
            }
            else {
             console.log('oops, the else: ', data);

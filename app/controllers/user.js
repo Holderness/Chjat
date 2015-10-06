@@ -103,7 +103,7 @@ exports.login = function(req, res, next) {
       console.log('user--> ', user);
       console.log('fail--> ', fail);
       if (fail) { return res.send(fail); }
-      return res.json(200);
+      return res.json(user);
     })(req, res, next);
   };
 
