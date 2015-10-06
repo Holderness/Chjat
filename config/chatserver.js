@@ -314,7 +314,6 @@ var Server = function(options) {
         var newDirectMessage = new DirectMessageModel(
           {'participants': [{
             'username': user.username,
-            'userImage': user.userImage
           },
           {'username': recipient.username}
           ]});
