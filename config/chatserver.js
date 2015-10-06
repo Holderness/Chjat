@@ -446,7 +446,7 @@ var Server = function(options) {
             console.log('new chatroom users: ', chatroom.onlineUsers );
           var offlineUsers = _.filter(chatroom.participants,
             function(obj) {
-              return !_find(chatroom.onlineUsers,
+              return !_.find(chatroom.onlineUsers,
                 function(onlineObj) {
                   if (onlineObj.id.equals(obj.id)) {
                     return onlineObj;
@@ -481,7 +481,7 @@ var Server = function(options) {
           self.getChatrooms(user);
           var offlineUsers = _.filter(chatroom.participants,
             function(obj) {
-              return !_find(chatroom.onlineUsers,
+              return !_.find(chatroom.onlineUsers,
                 function(onlineObj) {
                   if (onlineObj.id.equals(obj.id)) {
                     return onlineObj;
@@ -573,7 +573,7 @@ var Server = function(options) {
 
           var offlineUsers = _.filter(chatroom.participants,
             function(obj) {
-              return !_find(chatroom.onlineUsers,
+              return !_.find(chatroom.onlineUsers,
                 function(onlineObj) {
                   if (onlineObj.id.equals(obj.id)) {
                     return onlineObj;
