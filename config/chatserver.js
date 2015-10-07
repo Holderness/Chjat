@@ -63,7 +63,6 @@ var Server = function(options) {
       socket.on("login", function(userdata) {
         console.log('e.login');
         console.log('userdata: ', userdata);
-        socket.handshake.session.passport = {};
         socket.handshake.session.userdata = userdata;
         self.manageConnection(socket, userdata);
       });
@@ -73,7 +72,7 @@ var Server = function(options) {
           delete socket.handshake.session.userdata;
         }
       });
-      if (socket.handshake.session.passport.user && !socket.handshake.session.userdata) {
+      if (socket.handshake.session.passport.user) {
         console.log('if socket.handshake.session>>>>>> ', socket.handshake.session);
         UserModel.findById(socket.handshake.session.passport.user, function(err, found) {
           socket.handshake.session.userdata = { username: found.username };
@@ -122,7 +121,6 @@ var Server = function(options) {
     user.socket.on('disconnect', function() {
       self.io.sockets.emit("userLeft", { username: user.username, userImage: user.userImage });
       self.leaveRoom(user);
-      user.socket.handshake.session.passport = {};
       console.log("e.disconnect: ", user.username);
       console.log('he gone.');
     });
