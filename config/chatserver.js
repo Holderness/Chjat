@@ -127,7 +127,7 @@ var Server = function(options) {
       self.leaveRoom(user);
       user.socket.disconnect();
       user.socket.handshake.session = {};
-      user.socket.trigger('logout1');
+      self.socket.trigger('logout1');
       console.log("e.disconnect: ", user.username);
       console.log('he gone.');
     });
