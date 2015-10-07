@@ -50,7 +50,15 @@ var Server = function(options) {
       //
       //
       self.socket = socket;
+      console.log('vv-----------------------------------------------vv');
       console.log('socket: ', self.socket);
+      console.log('-----------------------------------------------');
+      console.log('socket.handshake.session.cookie: ', socket.handshake.session.cookie);
+      console.log('-----------------------------------------------');
+      console.log('socket.handshake.session.userdata: ', socket.handshake.session.userdata);
+      console.log('-----------------------------------------------');
+      console.log('socket.handshake.session.passport: ', socket.handshake.session.passport);
+      console.log('^^-----------------------------------------------^^');
       socket.chat = { room: 'Parlor' };
       socket.on("login", function(userdata) {
         console.log('e.login');
