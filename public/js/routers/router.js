@@ -15,7 +15,7 @@ var app = app || {};
       'log': 'login',
       'reg': 'register',
       'out': 'out',
-      'authenticated': 'authenticated',
+      'auth': 'authenticated',
       'facebook': 'facebook',
       'twitter': 'twitter'
     },

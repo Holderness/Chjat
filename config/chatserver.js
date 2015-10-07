@@ -41,6 +41,7 @@ var Server = function(options) {
 
 
   self.init = function() {
+    console.log('f.init');
     self.io.on('connection', function(socket){
       //
       // uncomment for heroku
@@ -49,6 +50,7 @@ var Server = function(options) {
       //
       //
       self.socket = socket;
+      console.log('socket: ', self.socket);
       socket.chat = { room: 'Parlor' };
       socket.on("login", function(userdata) {
         console.log('e.login');

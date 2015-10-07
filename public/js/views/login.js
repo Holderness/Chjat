@@ -37,7 +37,7 @@ var app = app || {};
              this_.renderValidation(this_.errorTemplate(data));
            }
            else if (data._id) {
-            app.ChatroomRouter.navigate('authenticated', { trigger: true });
+            app.ChatroomRouter.navigate('auth', { trigger: true });
             this_.vent.trigger("login", data);
            }
            else {
