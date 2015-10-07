@@ -45,8 +45,8 @@ var Server = function(options) {
     self.io.on('connection', function(socket){
       //
       // uncomment for heroku
-      // self.io.set('polling duration', 10);
-      // self.io.set('transports', ['websocket']);
+      self.io.set('polling duration', 10);
+      self.io.set('transports', ['websocket']);
       //
       //
       self.socket = socket;
@@ -67,11 +67,11 @@ var Server = function(options) {
         self.manageConnection(socket, userdata);
       });
       socket.on("disconnect", function(userdata) {
-        console.log('e.disconnect1 - userdata', socket.handshake.session.userdata);
+        // console.log('e.disconnect1 - userdata', socket.handshake.session.userdata);
         if (socket.handshake.session.userdata) {
           delete socket.handshake.session.userdata;
         }
-        console.log('e.disconnect1 - passport', socket.handshake.session.passport);
+        // console.log('e.disconnect1 - passport', socket.handshake.session.passport);
         if (socket.handshake.session.passport) {
           delete socket.handshake.session.passport;
         }
