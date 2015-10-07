@@ -122,6 +122,7 @@ var Server = function(options) {
     user.socket.on('disconnect', function() {
       self.io.sockets.emit("userLeft", { username: user.username, userImage: user.userImage });
       self.leaveRoom(user);
+      user.socket.handshake.session.passport = {};
       console.log("e.disconnect: ", user.username);
       console.log('he gone.');
     });
