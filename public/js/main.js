@@ -151,6 +151,7 @@ app.MainController = function() {
 
 
 
+
   //// appEventBus Listeners ////
 
 	// self.appEventBus.on("usersInfo", function(data) {
@@ -333,6 +334,7 @@ app.MainController = function() {
   self.appEventBus.on("homeRoomAvailability", function(availability) {
     self.navbarView.trigger('homeRoomAvailability', availability);
   });
+
 
 
 // errors

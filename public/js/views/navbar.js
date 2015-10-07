@@ -16,6 +16,7 @@ var app = app || {};
       // 'keypress #user-preferences-home-room-input': 'doesHomeRoomExist',
     },
 
+
     initialize: function(options) {
       this.vent = options.vent;
       this.model = new app.UserModel({ username: '', userImage: '', homeRoom: '', invitations: new app.InvitationCollection() });
