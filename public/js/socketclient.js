@@ -34,7 +34,7 @@ var ChatClient = function(options) {
 		// self.socket = io.connect();
 
     // heroku
-    self.socket = io.connect('https://www.chjat.com/', { transports: ['websocket'] } );
+    self.socket = io.connect('http://www.chjat.com/', { transports: ['websocket'] } );
 
     self.setResponseListeners(self.socket);
   };
