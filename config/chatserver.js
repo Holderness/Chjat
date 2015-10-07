@@ -73,7 +73,7 @@ var Server = function(options) {
           delete socket.handshake.session.userdata;
         }
       });
-      if (socket.handshake.session.passport.user) {
+      if (socket.handshake.session.passport.user && !socket.handshake.session.userdata) {
         console.log('if socket.handshake.session>>>>>> ', socket.handshake.session);
         UserModel.findById(socket.handshake.session.passport.user, function(err, found) {
           socket.handshake.session.userdata = { username: found.username };
