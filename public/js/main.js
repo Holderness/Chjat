@@ -145,7 +145,9 @@ app.MainController = function() {
   self.viewEventBus.on("updateUser", function(userObj) {
     self.chatClient.updateUser(userObj);
   });
-
+  self.viewEventBus.on("logout", function() {
+    self.chatClient.logout();
+  });
 
 
 

@@ -14,8 +14,12 @@ var app = app || {};
       'click #user-preferences-btn': 'submit',
       'keyup #user-preferences-home-room-input': 'doesHomeRoomExist',
       // 'keypress #user-preferences-home-room-input': 'doesHomeRoomExist',
+      'click .fa-power-off': 'logout',
     },
 
+    logout: function() {
+      this.vent.trigger('logout');
+    },
 
     initialize: function(options) {
       this.vent = options.vent;

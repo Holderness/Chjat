@@ -49,6 +49,10 @@ var ChatClient = function(options) {
     console.log('sc.f.login: ', user);
     self.socket.emit("login", user);
   };
+  self.logout = function(user) {
+    console.log('sc.f.logout: ', user);
+    self.socket.emit("logout");
+  };
 
 
 // ROOM
