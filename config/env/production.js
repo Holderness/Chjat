@@ -8,10 +8,10 @@ var port = process.env.PORT || 3000;
 var db = process.env.MONGOLAB_URI || 'mongodb://localhost/chat_database';
 var fbCallback = port === 3000 ?
       'http://localhost:'+ port +'/oauth/facebook/callback' :
-      'https://www.chjat.com/oauth/facebook/callback';
+      'http://www.chjat.com/oauth/facebook/callback';
 var twCallback = port === 3000 ?
       'http://localhost:'+ port + '/oauth/twitter/callback' :
-      'https://www.chjat.com/oauth/twitter/callback';
+      'http://www.chjat.com/oauth/twitter/callback';
 
 module.exports = {
   port: port,
