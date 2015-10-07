@@ -66,7 +66,7 @@ var Server = function(options) {
         socket.handshake.session.userdata = userdata;
         self.manageConnection(socket, userdata);
       });
-      socket.on("disconnect", function(userdata) {
+      socket.on("logout1", function(userdata) {
         console.log('e.disconnect1 - userdata', socket.handshake.session.userdata);
         if (socket.handshake.session.userdata) {
           delete socket.handshake.session.userdata;
@@ -127,6 +127,7 @@ var Server = function(options) {
       self.leaveRoom(user);
       user.socket.disconnect();
       user.socket.handshake.session = {};
+      user.socket.trigger('logout1');
       console.log("e.disconnect: ", user.username);
       console.log('he gone.');
     });
