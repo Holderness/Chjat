@@ -483,7 +483,7 @@
           <img class="room-image" src="<%= roomImage %>" alt="chatroom image">
         </div>
         <% if (privacy === true && owner === currentUser) { %>
-          <button data-room-name="<%= name %>" data-room-id="<%= id %>" class="pull-right destroy-chatroom fa fa-times"></button>
+          <button data-room-name="<%= name %>" data-room-id="<%= id %>" class="pull-right destroy-this-particular-chatroom fa fa-times"></button>
         <% } else { %>
           <button data-room-name="<%= name %>" data-room-id="<%= id %>" class="pull-right remove-chatroom fa fa-times"></button>
         <% } %>

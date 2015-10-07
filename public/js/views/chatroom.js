@@ -18,6 +18,7 @@ app.ChatroomView = Backbone.View.extend({
     'keypress #chat-search-input': 'search',
     'click .remove-chatroom': 'removeRoom',
     'click .destroy-chatroom': 'destroyRoom',
+    'click .destroy-this-particular-chatroom': 'destroyThisParticularRoom',
     'keyup #chatroom-name-input': 'doesChatroomExist',
     'click .user': 'initDirectMessage',
   },
@@ -361,9 +362,10 @@ app.ChatroomView = Backbone.View.extend({
   },
   destroyRoom: function(e) {
     e.preventDefault();
+    var roomName = this.model.get('chatroom').get('name');
     var this_ = this;
     var confirmation = swal({
-      title: "Do you wish to destroy the room?",
+      title: "Do you wish to destroy " + roomName + "?",
       text: "This kills the room.",
       type: "warning",
       showCancelButton: true,
@@ -373,8 +375,27 @@ app.ChatroomView = Backbone.View.extend({
       html: false
     }, function(){
       var roomId = this_.model.get('chatroom').id;
-      var roomName = this_.model.get('chatroom').get('name');
       var userInRoom = true;
+      this_.vent.trigger('destroyRoom', { id: roomId, roomName: roomName, userInRoom: userInRoom });
+    });
+  },
+  destroyThisParticularRoom: function(e) {
+    e.preventDefault();
+    var roomName = $(e.target).data("room-name");
+    var this_ = this;
+    var confirmation = swal({
+      title: "Do you wish to destroy " + roomName + "?",
+      text: "This kills the room.",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DEB0B0",
+      confirmButtonText: "Muahaha!",
+      closeOnConfirm: false,
+      html: false
+    }, function(){
+      var currentRoomId = this_.model.get('chatroom').id;
+      var roomId = $(e.target).data("room-id");
+      var userInRoom = currentRoomId === roomId;
       this_.vent.trigger('destroyRoom', { id: roomId, roomName: roomName, userInRoom: userInRoom });
     });
   },
@@ -400,10 +421,10 @@ app.ChatroomView = Backbone.View.extend({
         type: "success",
         confirmButtonColor: "#749CA8"
       });
-      var currentRoom = this_.model.get('chatroom').id;
+      var currentRoomId = this_.model.get('chatroom').id;
       var roomId = $(e.target).data("room-id");
       var roomName = $(e.target).data("room-name");
-      var userInRoom = currentRoom === roomId;
+      var userInRoom = currentRoomId === roomId;
       this_.vent.trigger('removeRoom', {id: roomId, roomName: roomName, userInRoom: userInRoom});
     });
   },

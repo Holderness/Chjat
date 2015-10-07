@@ -45,20 +45,11 @@ var Server = function(options) {
     self.io.on('connection', function(socket){
       //
       // uncomment for heroku
-      self.io.set('polling duration', 10);
-      self.io.set('transports', ['websocket']);
+      // self.io.set('polling duration', 10);
+      // self.io.set('transports', ['websocket']);
       //
       //
       self.socket = socket;
-      console.log('vv-----------------------------------------------vv');
-      console.log('socket: ', self.socket);
-      console.log('-----------------------------------------------');
-      console.log('socket.handshake.session.cookie: ', socket.handshake.session.cookie);
-      console.log('-----------------------------------------------');
-      console.log('socket.handshake.session.userdata: ', socket.handshake.session.userdata);
-      console.log('-----------------------------------------------');
-      console.log('socket.handshake.session.passport: ', socket.handshake.session.passport);
-      console.log('^^-----------------------------------------------^^');
       socket.chat = { room: 'Parlor' };
       socket.on("login", function(userdata) {
         console.log('e.login');
@@ -468,10 +459,6 @@ var Server = function(options) {
                   }
                 });
             });
-            console.log('v----leaveroom------v');
-            console.log('chatroom.onlineUSers: ', chatroom.onlineUsers);
-            console.log('chatroom.offlineUsers: ', offlineUsers);
-            console.log('^--------------------^');
             user.socket.broadcast.to(currentRoom).emit('onlineUsers', chatroom.onlineUsers);
             user.socket.broadcast.to(currentRoom).emit('offlineUsers', offlineUsers);
             if (callback) {
@@ -503,10 +490,6 @@ var Server = function(options) {
                   }
                 });
             });
-            console.log('v----addToRoom------v');
-            console.log('chatroom.onlineUSers: ', chatroom.onlineUsers);
-            console.log('chatroom.offlineUsers: ', offlineUsers);
-            console.log('^--------------------^');
           user.socket.broadcast.to(roomName).emit('userJoined', { username: user.username, userImage: user.userImage });
           user.socket.broadcast.to(roomName).emit('onlineUsers', chatroom.onlineUsers);
           user.socket.broadcast.to(roomName).emit('offlineUsers', offlineUsers);
@@ -520,8 +503,6 @@ var Server = function(options) {
     self.addUserToRoom = function(user, roomName) {
       console.log('f.addUserToRoom');
       ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
-        console.log('userid: ', user.id);
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>participants: ', chatroom.participants);
         var filtered = _.filter(chatroom.participants, function(obj){ return user.id === obj.id; });
         if (filtered.length === 0) {
           ChatroomModel.update({_id: chatroom.id}, { $push: {'participants': {'username': user.username, 'userImage': user.userImage, 'id': user.id } }}, function(err, raw) {
@@ -595,11 +576,6 @@ var Server = function(options) {
                   }
                 });
             });
-        console.log('v-----getUsersAndHeader-----v');
-        console.log('participants: ', chatroom.participants);
-        console.log('oonlneinusers: ', chatroom.onlineUsers);
-        console.log('offlineusers: ', offlineUsers);
-         console.log('^--------------------------^');
         user.socket.emit('chatlog', chatroom.chatlog.slice(-25));
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
         user.socket.emit('offlineUsers', offlineUsers);
@@ -677,6 +653,7 @@ var Server = function(options) {
             return eventKey === 'login' || eventKey === 'logout';
           });
           user.socket._events = newEventList;
+          self.updateUserRooms(updatedUser, oldUser);
           user.socket.leave(user.socket.chat.room);
           self.leaveRoom(user, updateUser);
           if (err) {
@@ -688,6 +665,20 @@ var Server = function(options) {
     );
   };
 
+  self.updateUserRooms = function(user, oldUser) {
+    ChatroomModel.update(
+      {
+        'participants': {$elemMatch: { id: user.id}},
+        'participants.userImage': oldUser.userImage
+      },
+      {
+        $set: {'participants.$.userImage': user.userImage}
+      },
+      {
+        multi: true
+      }
+    );
+  };
 
 
 // ERROR HANDLING
