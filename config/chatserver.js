@@ -63,6 +63,7 @@ var Server = function(options) {
       socket.on("login", function(userdata) {
         console.log('e.login');
         console.log('userdata: ', userdata);
+        socket.handshake.session.passport = {};
         socket.handshake.session.userdata = userdata;
         self.manageConnection(socket, userdata);
       });
