@@ -118,12 +118,6 @@ app.MainController = function() {
   self.viewEventBus.on("getMoreChats", function(chatReq) {
     self.chatClient.getMoreChats(chatReq);
   });
-  self.viewEventBus.on("doesChatroomExist", function(chatroomQuery) {
-    self.chatClient.doesChatroomExist(chatroomQuery);
-  });
-  self.viewEventBus.on("doesHomeRoomExist", function(chatroomQuery) {
-    self.chatClient.doesHomeRoomExist(chatroomQuery);
-  });
   self.viewEventBus.on("initDirectMessage", function(recipient) {
     self.chatClient.initDirectMessage(recipient);
   });
@@ -150,6 +144,13 @@ app.MainController = function() {
   });
 
 
+// ERROR HANDLING
+  self.viewEventBus.on("doesChatroomExist", function(chatroomQuery) {
+    self.chatClient.doesChatroomExist(chatroomQuery);
+  });
+  self.viewEventBus.on("doesHomeRoomExist", function(chatroomQuery) {
+    self.chatClient.doesHomeRoomExist(chatroomQuery);
+  });
 
 
 

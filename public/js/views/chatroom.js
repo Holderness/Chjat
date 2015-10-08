@@ -15,7 +15,7 @@ app.ChatroomView = Backbone.View.extend({
     'keypress .message-input': 'messageInputPressed',
     'keypress .direct-message-input': 'directMessageInputPressed',
     'click .chat-directory .room': 'setRoom',
-    'keypress #chat-search-input': 'search',
+    'keyup #chat-search-input': 'searchValidation',
     'click .remove-chatroom': 'removeRoom',
     'click .destroy-chatroom': 'destroyRoom',
     'click .destroy-this-particular-chatroom': 'destroyThisParticularRoom',
@@ -41,6 +41,7 @@ app.ChatroomView = Backbone.View.extend({
 
   renderChatroomAvailability: function(availability) {
     this.createChatroomView.trigger('chatroomAvailability', availability);
+    this.renderSearchAvailability(availability);
   },
 
 
@@ -172,7 +173,8 @@ app.ChatroomView = Backbone.View.extend({
         name: 'chatroom-search',
         display: 'name',
       }).on('typeahead:select typeahead:autocomplete', function(obj) {
-
+         var chatroomName = $('#chat-search-input').val();
+         this_.vent.trigger('doesChatroomExist', chatroomName);
       });
   },
 
@@ -341,16 +343,28 @@ app.ChatroomView = Backbone.View.extend({
 // rooms
 
 
-  search: function(e) {
-    if (e.keyCode === 13 && $.trim($('#chat-search-input').val()).length > 0) {
-      e.preventDefault();
+  searchRoom: function() {
       var name = $('#chat-search-input').val();
       this.addChatroom(name);
       this.$('#chat-search-input').val('');
+  },
+  searchValidation: function(e) {
+    if (e.keyCode === 13 && $.trim($('#chat-search-input').val()).length > 0 && $('#chat-search-input').hasClass('input-valid')) {
+      this.searchRoom();
+    } else if ($('#chat-search-input').val() === '') {
+      $('#chat-search-input').removeClass('input-valid input-invalid');
     } else {
-      console.log('search typing');
+      this.vent.trigger('doesChatroomExist', $('#chat-search-input').val());
     }
     return this;
+  },
+  renderSearchAvailability: function(availability) {
+    $('#chat-search-input').removeClass('input-valid input-invalid');
+    if (availability === false) {
+      $('#chat-search-input').addClass('input-valid');
+    } else {
+      $('#chat-search-input').addClass('input-invalid');
+    }
   },
   createRoom: function(form) {
     this.vent.trigger('createRoom', form);
