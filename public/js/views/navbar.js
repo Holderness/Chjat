@@ -120,8 +120,12 @@ var app = app || {};
           processData: false,
           contentType: false,
           error: function( xhr ) {
-            this_.renderStatus('Error: ' + xhr.status);
-            alert('Your image is either too large or it is not a .jpeg, .png, or .gif.');
+            swal({
+              title: "OH NO OH NO OH NO",
+              text: "Your image. It uh, won't fit. 'Too big' the computer monkeys say. Either that, or it's not a .jpeg, .png, or .gif. But what do I know, I'm just the guy staring at the computer screen behind you.",
+              type: "error",
+              confirmButtonColor: "#749CA8"
+            });
           },
           success: function( response ) {
             console.log('imgUpload response: ', response);
