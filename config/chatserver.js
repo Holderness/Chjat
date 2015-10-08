@@ -71,7 +71,7 @@ var Server = function(options) {
       //     // delete socket.handshake.session.passport;
       //   }
       // });
-      console.log('self.socket----; ', self.socket.handshake.session);
+console.log('self.socket----; ', self.socket);
       if (socket.handshake.session.passport.user) {
         console.log('if socket.handshake.session>>>>>> ', socket.handshake.session);
         UserModel.findById(socket.handshake.session.passport.user, function(err, found) {
@@ -122,6 +122,7 @@ var Server = function(options) {
       self.io.sockets.emit("userLeft", { username: user.username, userImage: user.userImage });
       delete user.socket.handshake.session.userdata;
       delete user.socket.handshake.session.passport;
+      delete user.socket.handshake.session.cookie;
       console.log('user.socket----; ', user.socket.handshake.session);
       console.log('self.socket----; ', self.socket.handshake.session);
       self.leaveRoom(user);
