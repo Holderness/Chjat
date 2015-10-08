@@ -19,7 +19,7 @@ var ChatClient = function(options) {
 	self.vent = options.vent;
 
   //must be https on heroku and http on localhost
-	self.hostname = 'https://' + window.location.host;
+	self.hostname = 'http://' + window.location.host;
 
   // connects to socket, sets response listeners
 	self.connect = function() {
@@ -31,10 +31,10 @@ var ChatClient = function(options) {
 
 
     // local
-		// self.socket = io.connect();
+		self.socket = io.connect(self.hostname);
 
     // heroku
-    self.socket = io.connect('http://www.chjat.com/', { transports: ['websocket'] } );
+    // self.socket = io.connect('http://www.chjat.com/', { transports: ['websocket'] } );
 
     self.setResponseListeners(self.socket);
   };
@@ -49,8 +49,8 @@ var ChatClient = function(options) {
     console.log('sc.f.login: ', user);
     self.socket.emit("login", user);
   };
-  self.logout = function(user) {
-    console.log('sc.f.logout: ', user);
+  self.logout = function() {
+    console.log('sc.f.logout: ');
     self.socket.emit("logout");
   };
 
@@ -286,6 +286,11 @@ var ChatClient = function(options) {
     });
     socket.on('userInvited', function(user) {
       self.vent.trigger("userInvited", user);
+    });
+
+
+        socket.on('logout', function() {
+      self.logout();
     });
 
 

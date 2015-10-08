@@ -45,8 +45,8 @@ var Server = function(options) {
     self.io.on('connection', function(socket){
       //
       // uncomment for heroku
-      self.io.set('polling duration', 10);
-      self.io.set('transports', ['websocket']);
+      // self.io.set('polling duration', 10);
+      // self.io.set('transports', ['websocket']);
       //
       //
       self.socket = socket;
@@ -57,16 +57,21 @@ var Server = function(options) {
         socket.handshake.session.userdata = userdata;
         self.manageConnection(socket, userdata);
       });
-      socket.on("logout", function(userdata) {
-        console.log('e.disconnect1 - userdata', socket.handshake.session.userdata);
-        if (socket.handshake.session.userdata) {
-          delete socket.handshake.session.userdata;
-        }
-        console.log('e.disconnect1 - passport', socket.handshake.session.passport);
-        if (socket.handshake.session.passport) {
-          delete socket.handshake.session.passport;
-        }
-      });
+      // socket.on("logout", function() {
+         
+      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      //   console.log('e.disconnect1 - userdata', socket.handshake.session.userdata);
+      //   if (socket.handshake.session.userdata) {
+      //     // delete socket.handshake.session.userdata;
+      //   }
+      //   console.log('e.disconnect1 - passport', socket.handshake.session.passport);
+      //   if (socket.handshake.session.passport) {
+      //     // delete socket.handshake.session.passport;
+      //   }
+      // });
+      console.log('self.socket----; ', self.socket.handshake.session);
       if (socket.handshake.session.passport.user) {
         console.log('if socket.handshake.session>>>>>> ', socket.handshake.session);
         UserModel.findById(socket.handshake.session.passport.user, function(err, found) {
@@ -115,6 +120,10 @@ var Server = function(options) {
 // CONNECTION
     user.socket.on('disconnect', function() {
       self.io.sockets.emit("userLeft", { username: user.username, userImage: user.userImage });
+      delete user.socket.handshake.session.userdata;
+      delete user.socket.handshake.session.passport;
+      console.log('user.socket----; ', user.socket.handshake.session);
+      console.log('self.socket----; ', self.socket.handshake.session);
       self.leaveRoom(user);
       user.socket.disconnect();
       user.socket.handshake.session = {};
@@ -643,6 +652,7 @@ var Server = function(options) {
 
 // UPDATE USER
   self.updateUser = function(user, userObj){
+    console.log('f.updateUser');
     UserModel.findOneAndUpdate({ _id: user.id }, { '$set': userObj }, function(err, oldUser) {
         if (err) { return console.log(err); }
         UserModel.findOne({ _id: user.id }, function( err, updatedUser ) {
@@ -653,7 +663,9 @@ var Server = function(options) {
             return eventKey === 'login' || eventKey === 'logout';
           });
           user.socket._events = newEventList;
-          self.updateUserRooms(updatedUser, oldUser);
+          console.log('oldUser: ', oldUser);
+          console.log('updatedUser.userImage: ', updatedUser.userImage);
+          self.updateUserRooms(updatedUser);
           user.socket.leave(user.socket.chat.room);
           self.leaveRoom(user, updateUser);
           if (err) {
@@ -665,21 +677,38 @@ var Server = function(options) {
     );
   };
 
-  self.updateUserRooms = function(user, oldUser) {
+  self.updateUserRooms = function(user) {
+    console.log('f.updateUserRooms>>>>>>>>>>>');
+    console.log('user: ', user);
+    // console.log('oldUser: ', oldUser);
+    console.log('<<<<<<<<<<<<<<<<');
     ChatroomModel.update(
       {
-        'participants': {$elemMatch: { id: user.id}},
-        'participants.userImage': oldUser.userImage
+        // 'participants': {$elemMatch: { id: user.id}},
+        'participants.id': user.id
       },
       {
         $set: {'participants.$.userImage': user.userImage}
       },
       {
         multi: true
+      },
+      function(err, raw) {
+         console.log('raw: ', raw);
+         console.log('err: ', err);
       }
     );
   };
-
+// db.chatrooms.update(
+//   { 
+//     'participants': {$elemMatch: { id: ObjectId("55e38d196282a318d1ac38b1")}}, 
+//     'participants.userImage': "https://chjat.s3.amazonaws.com/446ded9ac16a8232c5f3b71a98a5d883.png"
+//   }, 
+//   {
+//     $set: {'participants.$.userImage': 'https://chjat.s3.amazonaws.com/ccb0975d3e19b271fe68d39a54a2cffd.png'}
+//   }, 
+//   { multi: true }
+// )
 
 // ERROR HANDLING
     self.doesChatroomExist = function(user, chatroomQuery) {
