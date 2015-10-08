@@ -253,6 +253,7 @@ console.log('self.socket----; ', self.socket);
 
     user.socket.on('updateUser', function(userObj) {
       console.log('e.updateUser');
+      self.updateUserRooms(user, userObj);
       self.updateUser(user, userObj);
     });
 
@@ -469,6 +470,13 @@ console.log('self.socket----; ', self.socket);
                   }
                 });
             });
+                  console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        console.log('onlineusersLEAVEROOM: ', chatroom.onlineUsers);
+                console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
             user.socket.broadcast.to(currentRoom).emit('onlineUsers', chatroom.onlineUsers);
             user.socket.broadcast.to(currentRoom).emit('offlineUsers', offlineUsers);
             if (callback) {
@@ -500,6 +508,13 @@ console.log('self.socket----; ', self.socket);
                   }
                 });
             });
+                  console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        console.log('onlineusersADDTOROOM: ', chatroom.onlineUsers);
+                console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
           user.socket.broadcast.to(roomName).emit('userJoined', { username: user.username, userImage: user.userImage });
           user.socket.broadcast.to(roomName).emit('onlineUsers', chatroom.onlineUsers);
           user.socket.broadcast.to(roomName).emit('offlineUsers', offlineUsers);
@@ -587,6 +602,13 @@ console.log('self.socket----; ', self.socket);
                 });
             });
         user.socket.emit('chatlog', chatroom.chatlog.slice(-25));
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        console.log('onlineusersGETUSERSANDHEADER: ', chatroom.onlineUsers);
+                console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
         user.socket.emit('offlineUsers', offlineUsers);
         user.socket.emit('chatroomHeader', {id: chatroom._id, name: roomName, roomImage: chatroom.roomImage, privacy: chatroom.privacy, owner: chatroom.owner, currentUser: user.username, chatlogLength: chatroom.chatlog.length, modelsLoadedSum: -1});
@@ -657,6 +679,7 @@ console.log('self.socket----; ', self.socket);
     UserModel.findOneAndUpdate({ _id: user.id }, { '$set': userObj }, function(err, oldUser) {
         if (err) { return console.log(err); }
         UserModel.findOne({ _id: user.id }, function( err, updatedUser ) {
+          // self.updateUserRooms(updatedUser);
           var updateUser = function() {
             self.initUser(user.socket, updatedUser);
           };
@@ -666,7 +689,6 @@ console.log('self.socket----; ', self.socket);
           user.socket._events = newEventList;
           console.log('oldUser: ', oldUser);
           console.log('updatedUser.userImage: ', updatedUser.userImage);
-          self.updateUserRooms(updatedUser);
           user.socket.leave(user.socket.chat.room);
           self.leaveRoom(user, updateUser);
           if (err) {
@@ -678,9 +700,9 @@ console.log('self.socket----; ', self.socket);
     );
   };
 
-  self.updateUserRooms = function(user) {
+  self.updateUserRooms = function(user, userObj) {
     console.log('f.updateUserRooms>>>>>>>>>>>');
-    console.log('user: ', user);
+    console.log('userObj: ', userObj);
     // console.log('oldUser: ', oldUser);
     console.log('<<<<<<<<<<<<<<<<');
     ChatroomModel.update(
@@ -689,7 +711,7 @@ console.log('self.socket----; ', self.socket);
         'participants.id': user.id
       },
       {
-        $set: {'participants.$.userImage': user.userImage}
+        $set: {'participants.$.userImage': userObj.userImage}
       },
       {
         multi: true
