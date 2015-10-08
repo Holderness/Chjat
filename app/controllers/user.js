@@ -167,14 +167,15 @@ exports.validateUsername = function(req, res, next) {
 };
 
 exports.logout = function(req, res) {
-  console.log('HELLO');
+  // console.log('HELLO');
   req.session.passport = {};
   req.session.userdata = {};
-  console.log('HELLOAGAIN', req.session);
-  req.session.save(function (err) {
-    console.log('HELLOAGAINATHIRDTIME', req.session);
-    res.json(200);
-  });
+  // console.log('HELLOAGAIN', req.session);
+  req.session.destroy();
+  // req.session.save(function (err) {
+  //   console.log('HELLOAGAINATHIRDTIME', req.session);
+  //   res.json(200);
+  // });
 };
 
 exports.saveOAuthUserProfile = function(req, profile, done) {

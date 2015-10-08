@@ -23,7 +23,7 @@ module.exports = function(app) {
   app.route('/login')
     .post(users.login);
 
-  app.get('/logout', users.logout);
+  app.post('/logout', users.logout);
   
   app.get('/oauth/facebook', passport.authenticate('facebook', {
     failureRedirect: '/', scope:['email'] }),

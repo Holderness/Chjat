@@ -18,7 +18,15 @@ var app = app || {};
     },
 
     logout: function() {
-      this.vent.trigger('logout');
+       $.ajax({
+          type: 'POST',
+          url: '/logout',
+          processData: false,
+          contentType: false,
+          error: function( xhr ) {
+            console.log('error: ', xhr );
+          }
+        });
     },
 
     initialize: function(options) {
