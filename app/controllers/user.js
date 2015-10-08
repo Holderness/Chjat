@@ -167,7 +167,7 @@ exports.validateUsername = function(req, res, next) {
 };
 
 exports.logout = function(req, res) {
-  // console.log('HELLO');
+  console.log('controller - logout - session destroy');
   req.session.passport = {};
   req.session.userdata = {};
   // console.log('HELLOAGAIN', req.session);
