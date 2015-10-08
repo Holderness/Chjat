@@ -120,6 +120,7 @@ exports.renderRegister = function(req, res, next) {
 };
 
 exports.register = function(req, res, next) {
+  console.log('register');
   User.findOne({username: req.body.username },
     function(err, user) {
       if (user) {
@@ -127,6 +128,7 @@ exports.register = function(req, res, next) {
         // req.flash('error', message);
         return res.redirect('/');
       } else if (!user) {
+        console.log('no user!');
         var newUser = new User(req.body);
         newUser.provider = 'local';
         newUser.save(function(err) {
@@ -135,14 +137,16 @@ exports.register = function(req, res, next) {
             req.flash('error', message);
             return res.redirect('/');
           }
-          req.login(newUser, function(err) {
-            if (err) {
-             return next(err);
-            }
-            return res.redirect('/');
-          });
+          // req.login(newUser, function(err) {
+          //   if (err) {
+          //    return next(err);
+          //   }
+            
+          // });
         });
+        return res.send({user: newUser});
       } else {
+        console.log('register else');
         return res.redirect('/');
       }
     }

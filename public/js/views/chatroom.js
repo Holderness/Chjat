@@ -435,6 +435,9 @@ app.ChatroomView = Backbone.View.extend({
     this.model.get('chatrooms').each(function (room) {
       this.renderRoom(room);
     }, this);
+    if (this.model.get('chatrooms').length === 0 && this.model.get("privateRooms").length === 0) {
+      this.$('#public-rooms').append('<div class="no-rooms">Welcome to the Parlor. Search or create chatrooms yonder <i class="fa fa-long-arrow-up"></i>.</div>');
+    }
   },
   renderRoom: function(model) {
     var name1 = model.get('name'),

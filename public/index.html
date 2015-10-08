@@ -91,37 +91,34 @@
   </script>
 
 
-
   <!-- register -->
 
   <script type="text/template" id="register">
     <div class="register container">
-    <form class="form-register" action="/register" method="post">
-          <h2 class="form-register-header text-center">Create Account</h2>
-          <div class="register-error-container"></div>
+      <form class="form-register" action="/register" method="post">
+        <h2 class="form-register-header text-center">Create Account</h2>
+        <div class="register-error-container"></div>
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Username" autocomplete="off" required autofocus minlength="5">
 
-        
-          <label for="username" class="sr-only">Username</label>
-          <input type="text" id="username" name="username" class="form-control" placeholder="Username" autocomplete="off" required autofocus minlength="5">
+        <label for="name" class="sr-only">Name</label>
+        <input type="text" id="name" name="name" class="form-control" placeholder="Name" required autofocus>
 
-          <label for="name" class="sr-only">Name</label>
-          <input type="text" id="name" name="name" class="form-control" placeholder="Name" required autofocus>
-
-          <label for="email" class="sr-only">E-mail</label>
-          <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required>
+        <label for="email" class="sr-only">E-mail</label>
+        <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required>
           
-          <label for="password" class="sr-only">Password</label>
-          <input type="password" name="password" id="password" class="form-control" placeholder="Password" autocomplete="off" required minlength="5">
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" name="password" id="password" class="form-control" placeholder="Password" autocomplete="off" required minlength="5">
           
-          <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
-        </form>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+      </form>
 
-        <div class="row">
+      <div class="row">
         <div class="center-block text-center">
-        <a href="/oauth/facebook">Login with Facebook</a> |
-        <a href="/oauth/twitter">Login with Twitter</a>
+          <a href="/oauth/facebook">Login with Facebook</a> |
+          <a href="/oauth/twitter">Login with Twitter</a>
+        </div>
       </div>
-    </div>
     </div>
   </script>
 

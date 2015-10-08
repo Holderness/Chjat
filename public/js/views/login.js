@@ -6,8 +6,8 @@ var app = app || {};
     template: _.template($('#login').html()),
     errorTemplate: _.template('<div class="login-error"><%= message %></div>'),
     events: {
-      'submit': 'onLogin',
-      'keypress': 'onHitEnter'
+      'submit': 'submit',
+      'keyup': 'onHitEnter'
     },
     initialize: function(options) {
     // LoginView gets passed the viewEventBus when the MainController is initialized
@@ -22,10 +22,19 @@ var app = app || {};
       this.$el.html(this.template(this.model.toJSON()));
       return this;
     },
-    onLogin: function(e) {
+    submit: function(e) {
+      e.preventDefault();
+      this.onLogin();
+    },
+    onHitEnter: function(e) {
+      if(e.keyCode == 13) {
+        this.onLogin();
+        return false;
+      }
+    },
+    onLogin: function() {
       // triggers the login event and passing the username data to js/main.js
       var this_ = this;
-      e.preventDefault();
       var sendData = {username: this.$('#username').val(), password: this.$('#password').val()};
     $.ajax({
         url: "/login",
@@ -45,7 +54,7 @@ var app = app || {};
           }
         }
       }).done(function() {
-        console.log('doneeeeeeee');
+        console.log('logged in');
                     
       });
     },
@@ -56,13 +65,8 @@ var app = app || {};
         $('.login-error-container').children().first().fadeOut();
       }, 2000);
 
-    }
-    // onHitEnter: function(e) {
-    //   if(e.keyCode == 13) {
-    //     this.onLogin();
-    //     return false;
-    //   }
-    // }
+    },
+
   });
   
 })(jQuery);

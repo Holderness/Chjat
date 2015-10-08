@@ -22,8 +22,7 @@ var app = app || {};
 
     start: function(callback) {
       window.location.href = '/#';
-      app.mainController = new app.MainController();
-      app.mainController.init();
+      this.initMainController();
       if (callback) {
         callback();
       } 
@@ -36,12 +35,18 @@ var app = app || {};
 
 
     login: function() {
+      if (!app.mainController) {
+        this.initMainController();
+      }
       var loginModel = new app.LoginModel();
       var loginView = new app.LoginView({vent: app.mainController.viewEventBus, model: loginModel});
       app.mainController.containerModel.set("viewState", loginView);
     },
 
     register: function() {
+      if (!app.mainController) {
+        this.initMainController();
+      }
       var registerView = new app.RegisterView({vent: app.mainController.viewEventBus });
       app.mainController.containerModel.set("viewState", registerView);
     },
@@ -66,6 +71,11 @@ var app = app || {};
     },
     twitter: function() {
       this.start(this.authenticated);
+    },
+
+    initMainController: function() {
+      app.mainController = new app.MainController();
+      app.mainController.init();
     },
 
   });
