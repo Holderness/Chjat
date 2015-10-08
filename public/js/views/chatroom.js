@@ -41,7 +41,6 @@ app.ChatroomView = Backbone.View.extend({
 
   renderChatroomAvailability: function(availability) {
     this.createChatroomView.trigger('chatroomAvailability', availability);
-    this.renderSearchAvailability(availability);
   },
 
 
@@ -107,6 +106,7 @@ app.ChatroomView = Backbone.View.extend({
 
     this.listenTo(this.model, "userInvited", this.userInvited, this);
 
+    this.listenTo(this.model, "chatroomExists", this.chatroomExists, this);
     this.listenTo(this.model, "chatroomAvailability", this.renderChatroomAvailability, this);
     this.listenTo(this.model, "homeRoomAvailability", this.renderHomeRoomAvailability, this);
 
@@ -174,7 +174,7 @@ app.ChatroomView = Backbone.View.extend({
         display: 'name',
       }).on('typeahead:select typeahead:autocomplete', function(obj) {
          var chatroomName = $('#chat-search-input').val();
-         this_.vent.trigger('doesChatroomExist', chatroomName);
+         this_.vent.trigger('doesSearchChatroomExist', chatroomName);
       });
   },
 
@@ -354,11 +354,11 @@ app.ChatroomView = Backbone.View.extend({
     } else if ($('#chat-search-input').val() === '') {
       $('#chat-search-input').removeClass('input-valid input-invalid');
     } else {
-      this.vent.trigger('doesChatroomExist', $('#chat-search-input').val());
+      this.vent.trigger('doesSearchChatroomExist', $('#chat-search-input').val());
     }
     return this;
   },
-  renderSearchAvailability: function(availability) {
+  chatroomExists: function(availability) {
     $('#chat-search-input').removeClass('input-valid input-invalid');
     if (availability === false) {
       $('#chat-search-input').addClass('input-valid');

@@ -233,6 +233,10 @@ console.log('self.socket----; ', self.socket);
       console.log('e.doesHomeRoomExist');
       self.doesHomeRoomExist(user, homeRoomQuery);
     });
+    user.socket.on('doesSearchChatroomExist', function(homeRoomQuery) {
+      console.log('e.doesSearchChatroomExist');
+      self.doesSearchChatroomExist(user, homeRoomQuery);
+    });
 
 
 // INVITATIONS
@@ -754,7 +758,16 @@ console.log('self.socket----; ', self.socket);
         }
       });
     };
-
+    self.doesSearchChatroomExist = function(user, chatroomQuery) {
+      console.log('chatroomQuery: ', chatroomQuery);
+      ChatroomModel.findOne({ name: chatroomQuery }, function(err, chatroom) {
+        if (!chatroom) {
+          user.socket.emit('chatroomExists', true);
+        } else {
+          user.socket.emit('chatroomExists', false);
+        }
+      });
+    };
 
 
 

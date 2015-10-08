@@ -151,7 +151,9 @@ app.MainController = function() {
   self.viewEventBus.on("doesHomeRoomExist", function(chatroomQuery) {
     self.chatClient.doesHomeRoomExist(chatroomQuery);
   });
-
+  self.viewEventBus.on("doesSearchChatroomExist", function(chatroomQuery) {
+    self.chatClient.doesSearchChatroomExist(chatroomQuery);
+  });
 
 
 
@@ -333,11 +335,12 @@ app.MainController = function() {
   self.appEventBus.on("chatroomAvailability", function(availability) {
     self.chatroomModel.trigger('chatroomAvailability', availability);
   });
-
   self.appEventBus.on("homeRoomAvailability", function(availability) {
     self.navbarView.trigger('homeRoomAvailability', availability);
   });
-
+  self.appEventBus.on("chatroomExists", function(availability) {
+    self.chatroomModel.trigger('chatroomExists', availability);
+  });
 
 
 // errors
