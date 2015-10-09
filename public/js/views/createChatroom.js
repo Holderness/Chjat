@@ -43,7 +43,7 @@ var app = app || {};
         swal({
           title: "OH NO OH NO OH NO",
           text: "Chatroom Already, It Already Exists! And. Don't Go In There. Don't. You. You Should Have. I Threw Up In My Hat. Those Poor . . . They Were Just! OH NO WHY. WHY OH NO. OH NO.",
-          type: "error",
+          imageUrl: '/img/scuba-pig.png',
           confirmButtonColor: "#749CA8"
         });
       } else {
@@ -68,7 +68,7 @@ var app = app || {};
             swal({
               title: "OH NO OH NO OH NO",
               text: "Your image. It uh, won't fit. 'Too big' the computer monkeys say. Either that, or it's not a .jpeg, .png, or .gif. But what do I know, I'm just the guy staring at the computer screen behind you.",
-              type: "error",
+              imageUrl: '/img/scuba-pig.png',
               confirmButtonColor: "#749CA8"
             });
           },
