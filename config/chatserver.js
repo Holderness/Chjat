@@ -119,14 +119,12 @@ console.log('self.socket----; ', self.socket);
 
 // CONNECTION
     user.socket.on('disconnect', function() {
-      self.io.sockets.emit("userLeft", { username: user.username, userImage: user.userImage });
       delete user.socket.handshake.session.userdata;
       delete user.socket.handshake.session.passport;
       delete user.socket.handshake.session.cookie;
       console.log('user.socket----; ', user.socket.handshake.session);
       console.log('self.socket----; ', self.socket.handshake.session);
       self.leaveRoom(user);
-      user.socket.disconnect();
       user.socket.handshake.session = {};
       console.log("e.disconnect: ", user.username);
       console.log('he gone.');
