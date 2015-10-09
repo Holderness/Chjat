@@ -241,14 +241,14 @@ app.MainController = function() {
 	self.appEventBus.on("userJoined", function(user) {
         console.log('main.e.userJoined: ', user);
 		self.chatroomModel.addUser(user);
-		self.chatroomModel.addChat({sender: "Butters", message: user.username + " joined room." });
+		self.chatroomModel.addChat({sender: "Chatroom Pig", message: user.username + " joined room." });
 	});
 
 	// removes user from users collection, sends default leaving message
 	self.appEventBus.on("userLeft", function(user) {
         console.log('main.e.userLeft: ', user);
 		self.chatroomModel.removeUser(user);
-		self.chatroomModel.addChat({sender: "Butters", message: user.username + " left room." });
+		self.chatroomModel.addChat({sender: "Chatroom Pig", message: user.username + " left room." });
 	});
 
 	// chat passed from socketclient, adds a new chat message using chatroomModel method
