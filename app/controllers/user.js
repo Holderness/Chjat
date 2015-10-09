@@ -127,6 +127,9 @@ exports.register = function(req, res, next) {
         // var message = "User already exists";
         // req.flash('error', message);
         return res.redirect('/');
+
+      } else if (!req.body.username.match(/^[a-zA-Z0-9.\-_$@*!]{5,20}$/)) {
+        return res.send({message: 'username invalid'});
       } else if (!user) {
         console.log('no user!');
         var newUser = new User(req.body);
