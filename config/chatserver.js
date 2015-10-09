@@ -408,6 +408,7 @@ console.log('self.socket----; ', self.socket);
     self.createRoom = function(user, formData) {
       ChatroomModel.findOne({ name: formData.name }, function(err, chatroom) {
         if (!chatroom) {
+          console.log('CREATE ROOM FOORM DATA: ', formData);
           var newChatroom = new ChatroomModel({name: formData.name, owner: user.username, roomImage: formData.roomImage, privacy: formData.privacy });
           newChatroom.save(function(err) {
             if (!err) {
@@ -474,13 +475,6 @@ console.log('self.socket----; ', self.socket);
                   }
                 });
             });
-                  console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log('onlineusersLEAVEROOM: ', chatroom.onlineUsers);
-                console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
             user.socket.broadcast.to(currentRoom).emit('onlineUsers', chatroom.onlineUsers);
             user.socket.broadcast.to(currentRoom).emit('offlineUsers', offlineUsers);
             if (callback) {
@@ -512,13 +506,6 @@ console.log('self.socket----; ', self.socket);
                   }
                 });
             });
-                  console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log('onlineusersADDTOROOM: ', chatroom.onlineUsers);
-                console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
           user.socket.broadcast.to(roomName).emit('userJoined', { username: user.username, userImage: user.userImage });
           user.socket.broadcast.to(roomName).emit('onlineUsers', chatroom.onlineUsers);
           user.socket.broadcast.to(roomName).emit('offlineUsers', offlineUsers);
@@ -606,13 +593,6 @@ console.log('self.socket----; ', self.socket);
                 });
             });
         user.socket.emit('chatlog', chatroom.chatlog.slice(-25));
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log('onlineusersGETUSERSANDHEADER: ', chatroom.onlineUsers);
-                console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
         user.socket.emit('offlineUsers', offlineUsers);
         user.socket.emit('chatroomHeader', {id: chatroom._id, name: roomName, roomImage: chatroom.roomImage, privacy: chatroom.privacy, owner: chatroom.owner, currentUser: user.username, chatlogLength: chatroom.chatlog.length, modelsLoadedSum: -1});
@@ -726,16 +706,7 @@ console.log('self.socket----; ', self.socket);
       }
     );
   };
-// db.chatrooms.update(
-//   { 
-//     'participants': {$elemMatch: { id: ObjectId("55e38d196282a318d1ac38b1")}}, 
-//     'participants.userImage': "https://chjat.s3.amazonaws.com/446ded9ac16a8232c5f3b71a98a5d883.png"
-//   }, 
-//   {
-//     $set: {'participants.$.userImage': 'https://chjat.s3.amazonaws.com/ccb0975d3e19b271fe68d39a54a2cffd.png'}
-//   }, 
-//   { multi: true }
-// )
+
 
 // ERROR HANDLING
     self.doesChatroomExist = function(user, chatroomQuery) {
