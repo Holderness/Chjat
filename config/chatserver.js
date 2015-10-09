@@ -15,22 +15,22 @@ console.log('chatserver');
 // the chatserver listens to the chatclient
 var Server = function(options) {
 
-    //   ChatroomModel.findOne({ name: 'Parlor' }, function(err, chatroom) {
-    //     console.log('chatroomparlorcreateion:', chatroom);
+    //   ChatroomModel.findOne({ name: 'Chjat' }, function(err, chatroom) {
+    //     console.log('chatroomChjatcreateion:', chatroom);
     //   if (chatroom === null) {
-    //     var Parlorr = new ChatroomModel({'name': 'Parlor'});
-    //     Parlorr.save(function(err) {
+    //     var Chjatr = new ChatroomModel({'name': 'Chjat'});
+    //     Chjatr.save(function(err) {
     //       if (err) { return console.log( err );}
     //     });
-    //     console.log('parlor created1');
+    //     console.log('Chjat created1');
     //   } else if (!err) {
-    //     console.log('parlor already exists');
+    //     console.log('Chjat already exists');
     //   } else {
-    //     var Parlor = new ChatroomModel({'name': 'Parlor'});
-    //     Parlor.save(function(err) {
+    //     var Chjat = new ChatroomModel({'name': 'Chjat'});
+    //     Chjat.save(function(err) {
     //       if (err) { return console.log( err );}
     //     });
-    //     console.log('parlor created2');
+    //     console.log('Chjat created2');
     //     return console.log( err );
     //   }
     // });
@@ -45,12 +45,12 @@ var Server = function(options) {
     self.io.on('connection', function(socket){
       //
       // uncomment for heroku
-      self.io.set('polling duration', 10);
-      self.io.set('transports', ['websocket']);
+      // self.io.set('polling duration', 10);
+      // self.io.set('transports', ['websocket']);
       //
       //
       self.socket = socket;
-      socket.chat = { room: 'Parlor' };
+      socket.chat = { room: 'Chjat' };
       socket.on("login", function(userdata) {
         console.log('e.login');
         console.log('userdata: ', userdata);

@@ -51,7 +51,7 @@ app.MainController = function() {
     self.chatClient.connect();
 
     // new model and view created for chatroom
-    self.chatroomModel = new app.ChatroomModel({ name: 'Parlor' });
+    self.chatroomModel = new app.ChatroomModel({ name: 'Chjat' });
     self.chatroomList = new app.ChatroomList();
     self.privateRoomCollection = new app.PrivateRoomCollection();
     self.chatroomList.fetch().done(function() {
@@ -70,7 +70,7 @@ app.MainController = function() {
 
   // self.connectToRoom = function() {
   //   console.log('f.main.connectToRoom');
-  //   self.chatClient.connectToRoom("Parlor");
+  //   self.chatClient.connectToRoom("Chjat");
   // };
 
   // self.initRoom = function(callback) {

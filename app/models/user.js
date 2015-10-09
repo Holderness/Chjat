@@ -23,7 +23,7 @@ var UserSchema = new mongoose.Schema({
   },
   homeRoom: {
     type: String,
-    default: 'Parlor'
+    default: 'Chjat'
   },
   invitations: [],
   socketId: String,

@@ -450,7 +450,18 @@ app.ChatroomView = Backbone.View.extend({
       this.renderRoom(room);
     }, this);
     if (this.model.get('chatrooms').length === 0 && this.model.get("privateRooms").length === 0) {
-      this.$('#public-rooms').append('<div class="no-rooms">Welcome to the Parlor. Search or create chatrooms yonder <i class="fa fa-long-arrow-up"></i>.</div>');
+      // this.$('#public-rooms').append('<div class="no-rooms">Welcome to the Parlor. To start, join this room by searching and pressing enter. The room will be saved to your list of rooms.</div><div class="no-rooms">Search or create chatrooms yonder <i class="fa fa-long-arrow-up"></i></div>');
+      swal({
+        title: "Welcome to Chjat",
+        text: "To start, join the Chjat room by searching and pressing enter. The room will be saved to your list of rooms. Or, if you're feeling adventurous, search for a public room, join it, create your own, invite your friends, enemies, awkward acquaintinces, make your room private, get down and dirty, you know what I mean, discuss dirty things, you know? Root vegetables.",
+        // type: "info",
+        // showCancelButton: true,
+        confirmButtonColor: "#749CA8",
+        confirmButtonText: "Boop",
+        // closeOnConfirm: false,
+        // html: false
+        imageUrl: "/img/fly-pig-serious-icon.png",
+      });
     }
   },
   renderRoom: function(model) {
