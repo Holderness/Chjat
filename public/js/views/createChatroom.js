@@ -76,7 +76,8 @@ var app = app || {};
             console.log('imgUpload response: ', response);
             var form = _this.createRoomFormData();
             response.name = form.name;
-              _this.vent.trigger('createRoom', form);
+            response.privacy = form.privacy;
+              _this.vent.trigger('createRoom', response);
             $('#createChatroomModal').modal('hide');
             _this.clearField();
           }

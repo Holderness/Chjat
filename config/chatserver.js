@@ -45,8 +45,8 @@ var Server = function(options) {
     self.io.on('connection', function(socket){
       //
       // uncomment for heroku
-      self.io.set('polling duration', 10);
-      self.io.set('transports', ['websocket']);
+      // self.io.set('polling duration', 10);
+      // self.io.set('transports', ['websocket']);
       //
       //
       self.socket = socket;

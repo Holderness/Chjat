@@ -31,10 +31,10 @@ var ChatClient = function(options) {
 
 
     // local
-		// self.socket = io.connect(self.hostname);
+		self.socket = io.connect(self.hostname);
 
     // heroku
-    self.socket = io.connect('http://www.chjat.com/', { transports: ['websocket'] } );
+    // self.socket = io.connect('http://www.chjat.com/', { transports: ['websocket'] } );
 
     self.setResponseListeners(self.socket);
   };
