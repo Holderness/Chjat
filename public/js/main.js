@@ -64,6 +64,10 @@ app.MainController = function() {
       // self.connectToRoom();
       // self.initRoom();
            // ;
+
+      $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+      });
     });
 
   };
