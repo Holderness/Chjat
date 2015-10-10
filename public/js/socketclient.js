@@ -30,11 +30,15 @@ var ChatClient = function(options) {
 		// versa.
 
 
+    if (self.hostname === 'http://localhost:3001' || self.hostname === 'http://localhost:3000') {
     // local
-		// self.socket = io.connect(self.hostname);
-
+      self.socket = io.connect(self.hostname);
+    } else {
     // heroku
-    self.socket = io.connect('http://www.chjat.com/', { transports: ['websocket'] } );
+      self.socket = io.connect('http://www.chjat.com/', { transports: ['websocket'] } );
+    }
+    
+
 
     self.setResponseListeners(self.socket);
   };
