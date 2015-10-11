@@ -226,57 +226,7 @@
           </div>
         </div>
 
-<!-- inbox modal -->
-  <div class="modal fade" id="inbox-modal" tabindex="-1" role="dialog" aria-labelledby="inbox-modal" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" id="inbox-modal-label">Inbox</h4>
-        </div>
-        <div class="modal-body">
-          <div id="inbox-container">
-            <h6 class="invitations-header">Invitations</h6>
-            <ul id="invitations"></ul>
-          </div>
-        </div>
-        <div class="modal-footer"></div>
-      </div>
-    </div>
-  </div>
 
-
-<!-- user preferences modal -->
-  <div class="modal fade" id="user-preferences-modal" tabindex="-1" role="dialog" aria-labelledby="user-preferences-modal" aria-hidden="true"> 
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" id="user-preferences-modal-label">User Preferences</h4>
-        </div>
-        <div class="modal-body">
-          <div id="user-preferences-container" class="modal-image">
-            <img src="<%= userImage %>" alt="" id="uploaded-user-preferences-image">
-            <form id="user-preferences-form">
-              <div class="row">
-                <label for="user-preferences-image-upload">Avatar: </label>
-                <input type="file" id="user-preferences-image-upload" name="userImageUpload">
-              </div>
-              <div class="row">
-                <label for="user-preferences-home-room-input">Home Room: </label>
-                <input type="text" id="user-preferences-home-room-input" class='room-name-validation' data-create="homeRoom" placeholder="<%= homeRoom %><% if (homeRoom === 'Chjat') { %> (default) <%}%>" autocomplete="off"/>
-                <div class='room-name-validation-message'></div>
-              </div>
-            </form>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
-              <input type="button" id="user-preferences-btn" data-dismiss="modal" class="btn btn-primary-mod" value="Save & Close"></input>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
 
 <!-- block user modal 
@@ -562,7 +512,57 @@
     <% } %>
   </ul>
 
+<!-- inbox modal -->
+  <div class="modal fade" id="inbox-modal" tabindex="-1" role="dialog" aria-labelledby="inbox-modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="inbox-modal-label">Inbox</h4>
+        </div>
+        <div class="modal-body">
+          <div id="inbox-container">
+            <h6 class="invitations-header">Invitations</h6>
+            <ul id="invitations"></ul>
+          </div>
+        </div>
+        <div class="modal-footer"></div>
+      </div>
+    </div>
+  </div>
 
+
+<!-- user preferences modal -->
+  <div class="modal fade" id="user-preferences-modal" tabindex="-1" role="dialog" aria-labelledby="user-preferences-modal" aria-hidden="true"> 
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="user-preferences-modal-label">User Preferences</h4>
+        </div>
+        <div class="modal-body">
+          <div id="user-preferences-container" class="modal-image">
+            <img src="<%= userImage %>" alt="" id="uploaded-user-preferences-image">
+            <form id="user-preferences-form">
+              <div class="row">
+                <label for="user-preferences-image-upload">Avatar: </label>
+                <input type="file" id="user-preferences-image-upload" name="userImageUpload">
+              </div>
+              <div class="row">
+                <label for="user-preferences-home-room-input">Home Room: </label>
+                <input type="text" id="user-preferences-home-room-input" class='room-name-validation' data-create="homeRoom" placeholder="<%= homeRoom %><% if (homeRoom === 'Chjat') { %> (default) <%}%>" autocomplete="off"/>
+                <div class='room-name-validation-message'></div>
+              </div>
+            </form>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default-mod" data-dismiss="modal">Close</button>
+              <input type="button" id="user-preferences-btn" data-dismiss="modal" class="btn btn-primary-mod" value="Save & Close"></input>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </script>
 
 <script type="text/template" id="invitation-template">
