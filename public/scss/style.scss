@@ -63,10 +63,15 @@ html, body {
   background: $main-bkgd;
 }
 
+//fixes modal display on mobile
 .modal {
 position: fixed;
 width: auto;
 margin: 0;
+}
+
+.navbar {
+    z-index: 9999;
 }
 
 .nav > li > a {

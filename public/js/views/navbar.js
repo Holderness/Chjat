@@ -14,7 +14,7 @@ var app = app || {};
       'click #user-preferences-btn': 'submit',
       'keyup #user-preferences-home-room-input': 'doesHomeRoomExist',
       // 'keypress #user-preferences-home-room-input': 'doesHomeRoomExist',
-      'click .fa-power-off': 'logout',
+      'click .logout': 'logout',
     },
 
     logout: function() {
