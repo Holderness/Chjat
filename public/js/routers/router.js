@@ -49,14 +49,8 @@ var app = app || {};
       }
       var registerView = new app.RegisterView({vent: app.mainController.viewEventBus });
       app.mainController.containerModel.set("viewState", registerView);
+      registerView.helpers();
     },
-
-    // out: function() {
-    //     var this_ = this;
-    //     $.ajax({
-    //       url: "/logout",
-    //     })
-    // },
 
     authenticated: function() {
       if (!app.mainController) {

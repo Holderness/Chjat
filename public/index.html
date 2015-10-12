@@ -75,16 +75,14 @@
       <form class="form-register" action="/register" method="post">
         <h2 class="form-register-header text-center">Create Account</h2>
         <div class="register-error-container"></div>
-        <label for="username" class="sr-only">Username</label>
-        <input type="text" id="username" name="username" class="form-control" placeholder="Username" autocomplete="off" required autofocus minlength="5">
+        <label for="username" >Username must be 5-20 characters</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus minlength="5">
 
-        <label for="name" class="sr-only">Name</label>
         <input type="text" id="name" name="name" class="form-control" placeholder="Name" required autofocus>
 
-        <label for="email" class="sr-only">E-mail</label>
         <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required>
           
-        <label for="password" class="sr-only">Password</label>
+        <label for="password" >Password must be at least 5 characters</label>
         <input type="password" name="password" id="password" class="form-control" placeholder="Password" autocomplete="off" required minlength="5">
           
         <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>

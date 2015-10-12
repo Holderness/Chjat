@@ -10,6 +10,7 @@ var app = app || {};
     events: {
       "submit": "submit",
       "keyup #username": "validateUsername",
+      // "focus input": 'instructions',
     },
     initialize: function(options) {
       this.render();
@@ -19,8 +20,20 @@ var app = app || {};
       e.preventDefault();
       this.signUp();
     },
+    helpers: function() {
+      this.instructions();
+    },
+    instructions: function() {
+      $('input').on('focus', function(e) {
+         $(this).parent().find("label[for="+e.target.name+"]").fadeIn(400);
+      });
+      $('input').on('blur', function(e) {
+         $(this).parent().find("label[for="+e.target.name+"]").fadeOut(400);
+      });
+    },
     render: function() {
       this.$el.html(this.template());
+      // this.instructions();
       return this;
     },
     signUp: function() {

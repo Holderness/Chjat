@@ -61,10 +61,6 @@ app.MainController = function() {
       self.containerModel.set('viewState', self.chatroomView);
       
 
-      // self.connectToRoom();
-      // self.initRoom();
-           // ;
-
       $('body').on('hidden.bs.modal', '.modal', function () {
         $(this).removeData('bs.modal');
       });
