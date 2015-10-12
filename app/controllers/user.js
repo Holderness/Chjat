@@ -165,8 +165,23 @@ exports.validateUsername = function(req, res, next) {
        if (user) {
          return res.send({usernameAvailable: false});
        } else if (!user) {
-
          return res.send({usernameAvailable: true});
+       } else {
+        console.log(err);
+      }
+    }
+  );
+};
+
+exports.validateEmail = function(req, res, next) {
+  console.log('req.body: ', req.body);
+  User.findOne({email: req.body.email },
+    function(err, user) {
+       console.log(user);
+       if (user) {
+         return res.send({emailAvailable: false});
+       } else if (!user) {
+         return res.send({emailAvailable: true});
        } else {
         console.log(err);
       }

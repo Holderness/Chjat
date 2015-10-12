@@ -40,13 +40,13 @@
   height: 20px;
   margin-bottom: 10px;
   text-align: center;
-  .username-taken {
+  .user-info-taken {
     font-size: 12px;
     position: relative;
     color: $pink-oink;
     text-shadow: .5px .5px 0px black;
   }
-  .username-available {
+  .user-info-available {
     font-size: 12px;
     position: relative;
     color: green;

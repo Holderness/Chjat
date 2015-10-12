@@ -17,8 +17,11 @@ module.exports = function(app) {
     .get(users.renderRegister)
     .post(users.register);
 
-  app.route('/registerValidation')
+  app.route('/usernameValidation')
     .post(users.validateUsername);
+
+  app.route('/emailValidation')
+    .post(users.validateEmail);
     
   app.route('/login')
     .post(users.login);

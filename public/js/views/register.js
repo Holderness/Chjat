@@ -4,13 +4,15 @@ var app = app || {};
 
   app.RegisterView = Backbone.View.extend({
     template: _.template($('#register').html()),
-    usernameAvailableTemplate: _.template('<div class="username-available fa fa-check">username available</div>'),
-    usernameTakenTemplate: _.template('<div class="username-taken fa fa-times">username taken</div>'),
+    usernameAvailableTemplate: _.template('<div class="user-info-available fa fa-check">username available</div>'),
+    usernameTakenTemplate: _.template('<div class="user-info-taken fa fa-times">username taken</div>'),
+    emailAvailableTemplate: _.template('<div class="user-info-available fa fa-check">email available</div>'),
+    emailTakenTemplate: _.template('<div class="user-info-taken fa fa-times">email taken</div>'),
     errorTemplate: _.template('<div class="login-error"><%= message %></div>'),
     events: {
       "submit": "submit",
       "keyup #username": "validateUsername",
-      // "focus input": 'instructions',
+      "keyup #email": "validateEmail",
     },
     initialize: function(options) {
       this.render();
@@ -33,7 +35,6 @@ var app = app || {};
     },
     render: function() {
       this.$el.html(this.template());
-      // this.instructions();
       return this;
     },
     signUp: function() {
@@ -69,17 +70,29 @@ var app = app || {};
     validateUsername: function() {
       if ($('#username').val().length < 5) { return; }
       var this_ = this;
-      _.debounce($.post('/registerValidation', { username: $('#username').val() },function(data) {
+      _.debounce($.post('/usernameValidation', { username: $('#username').val() },function(data) {
          data.usernameAvailable ?
            this_.renderValidation(this_.usernameAvailableTemplate())
          :
            this_.renderValidation(this_.usernameTakenTemplate());
       }), 150);
     },
+    validateEmail: function() {
+      if (!$('#email').val().match(/^\S+@\S+\.\S+$/)) { return; }
+      var this_ = this;
+      _.debounce($.post('/emailValidation', { email: $('#email').val() },function(data) {
+         data.emailAvailable ?
+           this_.renderValidation(this_.emailAvailableTemplate())
+         :
+           this_.renderValidation(this_.emailTakenTemplate());
+      }), 150);
+    },
     renderValidation: function(what) {
       $('.register-error-container').empty();
       $(what).appendTo($('.register-error-container')).hide().fadeIn();
-      setTimeout(function() {
+      this.validationtimout = null;
+      clearTimeout(this.validationTimeout);
+      this.validationTimeout = setTimeout(function() {
         $('.register-error-container').children().first().fadeOut();
       }, 2000);
     }
