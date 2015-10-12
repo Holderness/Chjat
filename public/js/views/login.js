@@ -35,7 +35,7 @@ var app = app || {};
     onLogin: function() {
       // triggers the login event and passing the username data to js/main.js
       var this_ = this;
-      var sendData = {username: this.$('#username').val(), password: this.$('#password').val()};
+      var sendData = {username: this.$('#emailOrUsername').val(), password: this.$('#password').val()};
     $.ajax({
         url: "/login",
         method: 'POST',

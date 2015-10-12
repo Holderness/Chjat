@@ -99,6 +99,7 @@ exports.renderLogin = function(req, res, next) {
 };
 
 exports.login = function(req, res, next) {
+  console.log('login');
     passport.authenticate('local', function(err, user, fail) {
       console.log('user--> ', user);
       console.log('fail--> ', fail);
