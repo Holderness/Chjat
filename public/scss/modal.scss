@@ -14,14 +14,13 @@
     }
 
     @media (max-width: 550px) {
-      margin-left: 5%;
-      label {
-        min-width: 120px;
-        text-align: right;
-      }
+      margin-left: 7%;
       input {
-        margin-left: 20px;
+        margin-left: 7px;
       }
+    }
+    @media (max-width: 360px) {
+      margin-left: 0%;
     }
   }
 }
@@ -29,7 +28,7 @@
 
  @media (max-width: 550px) {
    input[type='file'] {  
-     width: 180px;
+     width: 185px;
    }
  }
 
