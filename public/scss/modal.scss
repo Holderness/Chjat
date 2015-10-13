@@ -62,20 +62,4 @@
   position: fixed;
 }
 
-@media (max-width: 640px) {
 
-  .navbar-default .navbar-right {
-    height: auto;
-    overflow: visible;
-    // position: absolute;
-    z-index: 0;
-  }
-
-  .navbar-default .navbar-collapse, .navbar-default .navbar-form {
-    border:none;
-    padding:none;
-    overflow: visible;
-
-  }
-
-}
