@@ -346,7 +346,7 @@ app.ChatroomView = Backbone.View.extend({
   searchRoom: function() {
       var name = $('#chat-search-input').val();
       this.addChatroom(name);
-      this.$('#chat-search-input').val('');
+      $('#chat-search-input').val('');
   },
   searchValidation: function(e) {
     if (e.keyCode === 13 && $.trim($('#chat-search-input').val()).length > 0 && $('#chat-search-input').hasClass('input-valid')) {
