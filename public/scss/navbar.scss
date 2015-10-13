@@ -188,13 +188,13 @@
 // fixes user-preferences and inbox modal visibility
 @media (max-width: 640px) {
   .navbar-default .navbar-right {
-    height: auto;
-    // overflow: visible;
+    // height: auto;
+    overflow: visible;
     z-index: 0;
   }
   .navbar-default .navbar-collapse, .navbar-default .navbar-form {
-    border:none;
-    padding:none;
+    // border:none;
+    // padding:none;
     // overflow: visible;
   }
 }
