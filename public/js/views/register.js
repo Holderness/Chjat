@@ -8,11 +8,14 @@ var app = app || {};
     usernameTakenTemplate: _.template('<div class="user-info-taken fa fa-times">username taken</div>'),
     emailAvailableTemplate: _.template('<div class="user-info-available fa fa-check">email available</div>'),
     emailTakenTemplate: _.template('<div class="user-info-taken fa fa-times">email taken</div>'),
+    passwordMatchTemplate: _.template('<div class="user-info-available fa fa-check">password match</div>'),
+    passwordInvalidTemplate: _.template('<div class="user-info-taken fa fa-times">password does not match</div>'),
     errorTemplate: _.template('<div class="login-error"><%= message %></div>'),
     events: {
       "submit": "submit",
       "keyup #username": "validateUsername",
       "keyup #email": "validateEmail",
+      "keyup #retypePassword": "validatePassword",
     },
     initialize: function(options) {
       this.render();
@@ -20,7 +23,13 @@ var app = app || {};
     },
     submit: function(e) {
       e.preventDefault();
-      this.signUp();
+      var passwordValidation = this.validatePassword();
+      debugger;
+      if (passwordValidation) {
+        this.signUp();
+      } else {
+
+      }
     },
     helpers: function() {
       this.instructions();
@@ -38,6 +47,7 @@ var app = app || {};
       return this;
     },
     signUp: function() {
+      debugger;
       var this_ = this;
       var sendData = {
         username: this.$('#username').val(),
@@ -95,7 +105,18 @@ var app = app || {};
       this.validationTimeout = setTimeout(function() {
         $('.register-error-container').children().first().fadeOut();
       }, 2000);
-    }
+    },
+    validatePassword: function() {
+      if ($('#retypePassword').val().length > 5) {
+        if ($('#password').val() !== $('#retypePassword').val()) {
+          this.renderValidation(this.passwordInvalidTemplate());
+          return false;
+        } else {
+          this.renderValidation(this.passwordMatchTemplate());
+          return true;
+        }
+      }
+    },
 
   });
 
