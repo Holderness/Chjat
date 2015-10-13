@@ -18,7 +18,6 @@ var ChatClient = function(options) {
   // this vent holds the appEventBus
 	self.vent = options.vent;
 
-  //must be https on heroku and http on localhost
 	self.hostname = 'http://' + window.location.host;
 
   // connects to socket, sets response listeners
@@ -29,7 +28,6 @@ var ChatClient = function(options) {
 		// in the /public folder has been attached to the server, and visa
 		// versa.
 
-
     if (self.hostname === 'http://localhost:3001' || self.hostname === 'http://localhost:3000') {
     // local
       self.socket = io.connect(self.hostname);
@@ -37,8 +35,6 @@ var ChatClient = function(options) {
     // heroku
       self.socket = io.connect('http://www.chjat.com/', { transports: ['websocket'] } );
     }
-    
-
 
     self.setResponseListeners(self.socket);
   };
@@ -61,33 +57,32 @@ var ChatClient = function(options) {
 
 // ROOM
   self.connectToRoom = function(roomName) {
-    console.log('sc.f.connectToRoom: ', roomName);
+    console.log('sc.f.connectToRoom');
     self.socket.emit("connectToRoom", roomName);
   };
   self.joinRoom = function(roomName) {
     self.socket.emit('joinRoom', roomName);
   };
   self.addRoom = function(roomName) {
-    console.log('sc.f.addRoom: ', roomName);
+    console.log('sc.f.addRoom');
     self.socket.emit("addRoom", roomName);
   };
   self.removeRoom = function(roomData) {
-    console.log('sc.f.removeRoom: ', roomData);
+    console.log('sc.f.removeRoom');
     self.socket.emit("removeRoom", roomData);
   };
   self.createRoom = function(formData) {
-    console.log('sc.f.createRoom: ', formData);
+    console.log('sc.f.createRoom');
     self.socket.emit("createRoom", formData);
   };
   self.updateRoom = function(formData) {
-    console.log('sc.f.updateRoom: ', formData);
+    console.log('sc.f.updateRoom');
     self.socket.emit("updateRoom", formData);
   };
   self.destroyRoom = function(roomInfo) {
-    console.log('sc.f.destroyRoom: ', roomInfo);
+    console.log('sc.f.destroyRoom');
     self.socket.emit("destroyRoom", roomInfo);
   };
-
 
 
 // CHAT
@@ -156,7 +151,6 @@ var ChatClient = function(options) {
   };
 
 
-
 // ERROR HANDLING
   self.doesChatroomExist = function(chatroomQuery) {
     self.socket.emit('doesChatroomExist', chatroomQuery);
@@ -191,17 +185,15 @@ var ChatClient = function(options) {
 
 // CHAT
 		socket.on('userJoined', function(user) {
-			console.log('sc.e.userJoined: ', user);
-      // socket.emit("onlineUsers");
+			console.log('sc.e.userJoined');
 			self.vent.trigger("userJoined", user);
 		});
 		socket.on('userLeft', function(user) {
-			console.log('sc.e.userLeft: ', user);
-      // socket.emit("onlineUsers");
+			console.log('sc.e.userLeft');
 			self.vent.trigger("userLeft", user);
 		});
 		socket.on('chat', function(chat) {
-			console.log('sc.e.chat: ', chat);
+			console.log('sc.e.chat');
 			self.vent.trigger("chatReceived", chat);
 		});
     socket.on('moreChats', function(chats) {
@@ -220,7 +212,6 @@ var ChatClient = function(options) {
       self.vent.trigger("setDMheader", header);
     });
     socket.on('directMessage', function(message) {
-      // self.vent.trigger("renderDirectMessage", DM);
       self.vent.trigger("directMessageReceived", message);
     });
 
@@ -237,34 +228,34 @@ var ChatClient = function(options) {
 
 // SET ROOM
     socket.on('chatlog', function(chatlog) {
-      console.log('sc.e.chatlog: ', chatlog);
+      console.log('sc.e.chatlog');
       self.vent.trigger("setChatlog", chatlog);
     });
     socket.on('chatrooms', function(chatrooms) {
-      console.log('sc.e.chatrooms:  ', chatrooms);
+      console.log('sc.e.chatrooms');
       self.vent.trigger("setChatrooms", chatrooms);
     });
     socket.on('privateRooms', function(rooms) {
-      console.log('sc.e.privateRooms:  ', rooms);
+      console.log('sc.e.privateRooms');
       self.vent.trigger("setPrivateRooms", rooms);
     });
     socket.on('onlineUsers', function(onlineUsers) {
-      console.log('sc.e.onlineUsers: ', onlineUsers);
+      console.log('sc.e.onlineUsers');
       self.vent.trigger("setOnlineUsers", onlineUsers);
     });
     socket.on('offlineUsers', function(offlineUsers) {
-      console.log('sc.e.offlineUsers: ', offlineUsers);
+      console.log('sc.e.offlineUsers');
       self.vent.trigger("setOfflineUsers", offlineUsers);
     });
     socket.on('chatroomHeader', function(headerObj) {
-      console.log('sc.e.chatroomHeader: ', headerObj);
+      console.log('sc.e.chatroomHeader');
       self.vent.trigger("setChatroomHeader", headerObj);
     });
 
 
 // REDIRECT TO HOME ROOM
     socket.on('redirectToHomeRoom', function(data) {
-      console.log('sc.e.redirectToHomeRoom: ', data);
+      console.log('sc.e.redirectToHomeRoom');
       self.vent.trigger("redirectToHomeRoom", data);
     });
 
@@ -296,8 +287,8 @@ var ChatClient = function(options) {
       self.vent.trigger("userInvited", user);
     });
 
-
-        socket.on('logout', function() {
+// LOGOUT
+    socket.on('logout', function() {
       self.logout();
     });
 

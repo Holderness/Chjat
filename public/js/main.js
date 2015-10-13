@@ -17,7 +17,6 @@ app.MainController = function() {
     self.registerView = new app.RegisterView({vent: self.viewEventBus });
     self.navbarView = new app.NavbarView({vent: self.viewEventBus});
 
-
     // The ContainerModel gets passed a viewState, LoginView, which
     // is the login page. That LoginView gets passed the viewEventBus
     // and the LoginModel.
@@ -28,7 +27,6 @@ app.MainController = function() {
     self.containerView = new app.ContainerView({ model: self.containerModel });
     self.containerView.render();
 
- 
     $('form').keypress(function(e) {
       return e.keyCode != 13;
     });
@@ -38,7 +36,6 @@ app.MainController = function() {
 
 
   self.authenticated = function() {
-
     console.log('f.main.authenticated');
        
     $("body").css("overflow", "hidden");
@@ -47,7 +44,6 @@ app.MainController = function() {
     });
 
     self.chatClient = new ChatClient({ vent: self.appEventBus });
-          console.log('huh');
     self.chatClient.connect();
 
     // new model and view created for chatroom
@@ -59,8 +55,6 @@ app.MainController = function() {
       self.chatroomModel.set('privateRooms', self.privateRoomCollection);
       self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel });
       self.containerModel.set('viewState', self.chatroomView);
-      
-
       $('body').on('hidden.bs.modal', '.modal', function () {
         $(this).removeData('bs.modal');
       });
@@ -68,14 +62,6 @@ app.MainController = function() {
 
   };
 
-  // self.connectToRoom = function() {
-  //   console.log('f.main.connectToRoom');
-  //   self.chatClient.connectToRoom("Chjat");
-  // };
-
-  // self.initRoom = function(callback) {
-  //   self.chatroomView.initRoom();
-  // };
 
 
 
@@ -84,6 +70,7 @@ app.MainController = function() {
   ////////////  Busses ////////////
     // These Busses listen to the socketclient
    //    ---------------------------------
+
 
 
   //// viewEventBus Listeners /////
@@ -157,37 +144,14 @@ app.MainController = function() {
 
 
 
+
+
+
+
   //// appEventBus Listeners ////
 
-	// self.appEventBus.on("usersInfo", function(data) {
- //    console.log('main.e.usersInfo: ', data);
- //    //data is an array of usernames, including the new user
-	// 	// This method gets the online users collection from chatroomModel.
-	// 	// onlineUsers is the collection
-	// 	var onlineUsers = self.chatroomModel.get("onlineUsers");
- //    console.log("...onlineUsers: ", onlineUsers);
-	// 	var users = _.map(data, function(item) {
-	// 		return new app.UserModel({username: item});
-	// 	});
- //    console.log("users: ", users);
-	// 	onlineUsers.reset(users);
-	// });
 
- //  self.appEventBus.on("roomInfo", function(data) {
- //    debugger;
- //    console.log('main.e.roomInfo: ', data);
- //    var rooms = self.chatroomModel.get("chatrooms");
- //     console.log("...rooms: ", rooms);
- //    var updatedRooms = _.map(data, function(room) {
- //      var newChatroomModel = new app.ChatroomModel({name: room});
- //      return newChatroomModel;
- //    });
- //    console.log("...updatedrooms: ", updatedRooms);
- //    rooms.reset(updatedRooms);
- //  });
-
-
-
+// Navbar
   self.appEventBus.on("initUser", function(user) {
     console.log('main.e.initUser: ', user);
     invitations = self.navbarView.model.get('invitations');
@@ -200,7 +164,7 @@ app.MainController = function() {
   });
 
   self.appEventBus.on("refreshInvitations", function(invitations) {
-    console.log('main.e.refreshInvitations: ', invitations);
+    console.log('main.e.refreshInvitations');
     oldInvitations = self.navbarView.model.get('invitations');
     newInvitations = _.map(invitations, function(invite) {
        var newInvitation = new app.InvitationModel(invite);
@@ -210,24 +174,9 @@ app.MainController = function() {
   });
 
 
-  // self.appEventBus.on("setRoom", function(model) {
-  //   console.log('main.e.setRoom: ', model);
-
-  //   var chatlog = new app.ChatCollection(model.chatlog);
-  //   self.chatroomModel.set('chatlog', chatlog);
-
-  //   var rooms = new app.ChatroomList(model.chatrooms);
-  //   self.chatroomModel.set('chatrooms', rooms);
-
-  //   var users = new app.UserCollection(model.onlineUsers);
-  //   self.chatroomModel.set('onlineUsers', users);
-
-  // });
-
-
-
+// CHATROOM CONTAINER
   self.appEventBus.on("ChatroomModel", function(model) {
-    console.log('main.e.ChatroomModel: ', model);
+    console.log('main.e.ChatroomModel');
     self.chatroomModel = new app.ChatroomModel();
     self.chatroomList = new app.ChatroomList();
     self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel, collection: self.chatroomList});
@@ -236,39 +185,11 @@ app.MainController = function() {
   });
 
 
-
-  // adds new user to users collection, sends default joining message
-	self.appEventBus.on("userJoined", function(user) {
-        console.log('main.e.userJoined: ', user);
-		self.chatroomModel.addUser(user);
-		self.chatroomModel.addChat({sender: "Chatroom Pig", message: user.username + " joined room." });
-	});
-
-	// removes user from users collection, sends default leaving message
-	self.appEventBus.on("userLeft", function(user) {
-        console.log('main.e.userLeft: ', user);
-		self.chatroomModel.removeUser(user);
-		self.chatroomModel.addChat({sender: "Chatroom Pig", message: user.username + " left room." });
-	});
-
-	// chat passed from socketclient, adds a new chat message using chatroomModel method
-	self.appEventBus.on("chatReceived", function(chat) {
-    self.chatroomModel.addChat(chat);
-		$('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
-	});
-
-
-
-
-  self.appEventBus.on("redirectToHomeRoom", function(data) {
-    self.chatClient.connectToRoom(data.homeRoom);
-  });
-
+// SET CHATROOM
   self.appEventBus.on("setChatroomHeader", function(headerObj) {
     var newHeader = new app.ChatroomHeaderModel(headerObj);
     self.chatroomModel.set('chatroom', newHeader);
   });
-
   self.appEventBus.on("setChatlog", function(chatlog) {
     var oldChatlog = self.chatroomModel.get('chatlog');
     var updatedChatlog = _.map(chatlog, function(chat) {
@@ -279,20 +200,6 @@ app.MainController = function() {
    $('#message-input').removeClass('direct-message-input').addClass('message-input');
     $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
   });
-
-  self.appEventBus.on("moreChats", function(chatlog) {
-    var oldChatlog = self.chatroomModel.get('chatlog');
-    var moreChatlog = _.map(chatlog, function(chat) {
-      var newChatModel = new app.ChatModel({ room: chat.room, message: chat.message, sender: chat.sender, timestamp: chat.timestamp, url: chat.url });
-      return newChatModel;
-    });
-    self.chatroomModel.trigger('moreChats', moreChatlog);
-  });
-
-  self.appEventBus.on("noMoreChats", function(chatlog) {
-    self.chatroomModel.stopListening('moreChats');
-  });
-  
   self.appEventBus.on("setChatrooms", function(rooms) {
     var oldRooms = self.chatroomModel.get('chatrooms');
     var newRooms = _.map(rooms, function(room) {
@@ -301,7 +208,6 @@ app.MainController = function() {
     });
     oldRooms.reset(newRooms);
   });
-
   self.appEventBus.on("setPrivateRooms", function(rooms) {
     var oldRooms = self.chatroomModel.get('privateRooms');
     var newRooms = _.map(rooms, function(room) {
@@ -310,7 +216,6 @@ app.MainController = function() {
     });
     oldRooms.reset(newRooms);
   });
-
   self.appEventBus.on("setOnlineUsers", function(onlineUsers) {
     var oldOnlineUsers = self.chatroomModel.get('onlineUsers');
     var updatedOnlineUsers = _.map(onlineUsers, function(user) {
@@ -319,7 +224,6 @@ app.MainController = function() {
     });
     oldOnlineUsers.reset(updatedOnlineUsers);
   });
-
   self.appEventBus.on("setOfflineUsers", function(offlineUsers) {
     var oldOfflineUsers = self.chatroomModel.get('offlineUsers');
     var updatedOfflineUsers = _.map(offlineUsers, function(user) {
@@ -330,8 +234,68 @@ app.MainController = function() {
   });
 
 
-// chatroom availability
 
+// USER JOIN/LEAVE CHATROOM
+  // adds new user to users collection, sends default joining message
+	self.appEventBus.on("userJoined", function(user) {
+        console.log('main.e.userJoined');
+		self.chatroomModel.addUser(user);
+		self.chatroomModel.addChat({sender: "Chatroom Pig", message: user.username + " joined room." });
+	});
+	// removes user from users collection, sends default leaving message
+	self.appEventBus.on("userLeft", function(user) {
+        console.log('main.e.userLeft');
+		self.chatroomModel.removeUser(user);
+		self.chatroomModel.addChat({sender: "Chatroom Pig", message: user.username + " left room." });
+	});
+
+
+// CHATROOM MESSAGING
+	// chat passed from socketclient, adds a new chat message using chatroomModel method
+	self.appEventBus.on("chatReceived", function(chat) {
+    self.chatroomModel.addChat(chat);
+		$('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
+	});
+  self.appEventBus.on("moreChats", function(chatlog) {
+    var oldChatlog = self.chatroomModel.get('chatlog');
+    var moreChatlog = _.map(chatlog, function(chat) {
+      var newChatModel = new app.ChatModel({ room: chat.room, message: chat.message, sender: chat.sender, timestamp: chat.timestamp, url: chat.url });
+      return newChatModel;
+    });
+    self.chatroomModel.trigger('moreChats', moreChatlog);
+  });
+  self.appEventBus.on("noMoreChats", function(chatlog) {
+    self.chatroomModel.stopListening('moreChats');
+  });
+
+
+// SET DIRECT MESSAGE
+  self.appEventBus.on("setDMchatlog", function(chatlog) {
+    var oldChatlog = self.chatroomModel.get('chatlog');
+    var updatedChatlog = _.map(chatlog, function(chat) {
+      var newChatModel = new app.ChatModel({ room: chat.room, message: chat.message, sender: chat.sender, timestamp: chat.timestamp, url: chat.url });
+      return newChatModel;
+    });
+    oldChatlog.reset(updatedChatlog);
+    $('#message-input').removeClass('message-input').addClass('direct-message-input');
+    $('#chatImageUploadContainer').data('chat-type', 'message');
+    $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
+  });
+  self.appEventBus.on("setDMheader", function(header) {
+    var newHeader = new app.ChatroomHeaderModel(header);
+    self.chatroomModel.set('chatroom', newHeader);
+  });
+
+
+// DIRECT MESSAGING
+  self.appEventBus.on("directMessageReceived", function(message) {
+    self.chatroomModel.addChat(message);
+    $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
+  });
+
+
+
+// CHATROOM AVAILABILITY
   self.appEventBus.on("chatroomAvailability", function(availability) {
     self.chatroomModel.trigger('chatroomAvailability', availability);
   });
@@ -343,9 +307,20 @@ app.MainController = function() {
   });
 
 
-// errors
+// CHATROOM INVITATION
+  self.appEventBus.on("userInvited", function(user) {
+    console.log('main.e.userInvited');
+    self.chatroomModel.trigger('userInvited', user);
+  });
 
 
+// REDIRECT
+  self.appEventBus.on("redirectToHomeRoom", function(data) {
+    self.chatClient.connectToRoom(data.homeRoom);
+  });
+
+
+// ERROR HANDLING
   self.appEventBus.on("chatroomAlreadyExists", function() {
     swal({
       title: "OH NO OH NO OH NO",
@@ -354,9 +329,6 @@ app.MainController = function() {
       confirmButtonColor: "#749CA8"
     });
   });
-
-
-
   self.appEventBus.on("destroyRoomResponse", function(res) {
     if (res.error) {
       swal({
@@ -374,39 +346,6 @@ app.MainController = function() {
         confirmButtonColor: "#749CA8",
       });
     }
-  });
-
-  // DirectMessage
-
-  self.appEventBus.on("setDMchatlog", function(chatlog) {
-    var oldChatlog = self.chatroomModel.get('chatlog');
-    var updatedChatlog = _.map(chatlog, function(chat) {
-      var newChatModel = new app.ChatModel({ room: chat.room, message: chat.message, sender: chat.sender, timestamp: chat.timestamp, url: chat.url });
-      return newChatModel;
-    });
-    oldChatlog.reset(updatedChatlog);
-
-    $('#message-input').removeClass('message-input').addClass('direct-message-input');
-    $('#chatImageUploadContainer').data('chat-type', 'message');
-    $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
-  });
-
-  self.appEventBus.on("setDMheader", function(header) {
-    var newHeader = new app.ChatroomHeaderModel(header);
-    self.chatroomModel.set('chatroom', newHeader);
-  });
-
-
-  self.appEventBus.on("directMessageReceived", function(message) {
-    self.chatroomModel.addChat(message);
-    $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight;
-  });
-
-
-
-  self.appEventBus.on("userInvited", function(user) {
-    console.log('main.e.userInvited: ', user);
-    self.chatroomModel.trigger('userInvited', user);
   });
 
 

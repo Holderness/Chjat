@@ -53,21 +53,15 @@ var app = app || {};
         method: 'POST',
         data: sendData,
         success: function(data) {
-           console.log('success data: ', data);
-           if (data.message) {
-             this_.renderValidation(this_.errorTemplate(data));
-           }
-           else if (data.user) {
+          if (data.message) {
+            this_.renderValidation(this_.errorTemplate(data));
+          } else if (data.user) {
             app.ChatroomRouter.navigate('auth', { trigger: true });
             this_.vent.trigger("login", data.user);
-           }
-           else {
+          } else {
             console.log('oops, the else: ', data);
           }
         }
-      }).done(function() {
-        console.log('register in');
-                    
       });
     },
     validateUsername: function() {

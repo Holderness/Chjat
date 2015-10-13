@@ -13,10 +13,6 @@ var app = app || {};
       'click #addChatImageBtn': 'submit',
     },
 
-    // initialize: function() {
-    //   this.listenTo(this, "file-chosen", this.renderThumb, this);
-    //   this.listenTo(this, "file-chosen", this.renderThumb, this);
-    // },
 
     render: function() {
       this.renderThumb();
@@ -35,7 +31,6 @@ var app = app || {};
         })(img);
         reader.readAsDataURL( selected_file );
       }
-
     },
 
     submit: function(e) {

@@ -122,8 +122,6 @@ var app = app || {};
             invitationObj = {sender: sender, roomId: roomId, roomName: roomName, recipient: recipient};
         this.vent.trigger('inviteUser', invitationObj);
         $('#invite-user-input').val('');
-      } else {
-        // console.log('search typing');
       }
       return this;
     },
@@ -136,7 +134,6 @@ var app = app || {};
         prefetch: {
           url: '/allUsers',
           filter: function(data) {
-            console.log('------daaataa----', data);
              return _.map(data, function(user) {
                 return { username: user };
              });

@@ -36,26 +36,21 @@ var app = app || {};
       // triggers the login event and passing the username data to js/main.js
       var this_ = this;
       var sendData = {username: this.$('#emailOrUsername').val(), password: this.$('#password').val()};
-    $.ajax({
+      $.ajax({
         url: "/login",
         method: 'POST',
         data: sendData,
         success: function(data) {
-           console.log('success data: ', data);
-           if (data.message) {
-             this_.renderValidation(this_.errorTemplate(data));
-           }
-           else if (data._id) {
+          console.log('success data: ', data);
+          if (data.message) {
+            this_.renderValidation(this_.errorTemplate(data));
+          } else if (data._id) {
             app.ChatroomRouter.navigate('auth', { trigger: true });
             this_.vent.trigger("login", data);
-           }
-           else {
+          } else {
             console.log('oops, the else: ', data);
           }
         }
-      }).done(function() {
-        console.log('logged in');
-                    
       });
     },
     renderValidation: function(what) {
@@ -64,9 +59,8 @@ var app = app || {};
       setTimeout(function() {
         $('.login-error-container').children().first().fadeOut();
       }, 2000);
-
     },
-
+    
   });
   
 })(jQuery);

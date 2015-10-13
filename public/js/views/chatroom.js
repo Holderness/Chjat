@@ -100,7 +100,6 @@ app.ChatroomView = Backbone.View.extend({
 
     this.listenTo(this.chatImageUploadView, 'chat-image-uploaded', this.chatUploadImage);
     this.listenTo(this.chatImageUploadView, 'message-image-uploaded', this.messageUploadImage);
-    // this.listenTo(this.createChatroomView, 'createRoom', this.createRoom);
 
     this.listenTo(this.model, "moreChats", this.renderMoreChats, this);
 
@@ -122,14 +121,14 @@ app.ChatroomView = Backbone.View.extend({
       }
     });
 
-       $(window).resize(function() {
-        var windowHeight = $(window).height();
-        if (windowHeight > 500) {
-          var newHeight = windowHeight - 285;
-          $('#chatbox-content').height(newHeight);
-        }
+    $(window).resize(function() {
+      var windowHeight = $(window).height();
+      if (windowHeight > 500) {
+        var newHeight = windowHeight - 285;
+        $('#chatbox-content').height(newHeight);
+      }
+    });
 
-       });
   },
 
 
@@ -205,7 +204,6 @@ app.ChatroomView = Backbone.View.extend({
   renderUsers: function() {
     console.log('crv.f.renderUsers');
     onlineUsers = this.model.get("onlineUsers");
-    console.log('USERS: ', onlineUsers);
     this.$('.online-users').empty();
     this.model.get("onlineUsers").each(function (user) {
       this.renderUser(user);
@@ -216,7 +214,6 @@ app.ChatroomView = Backbone.View.extend({
   },
   renderOfflineUsers: function() {
     console.log('crv.f.renderOfflineUsers');
-    console.log('Offline USERS: ', this.model.get("offlineUsers"));
     this.$('.offline-users').empty();
     this.model.get("offlineUsers").each(function (user) {
       this.renderOfflineUser(user);
@@ -235,7 +232,6 @@ app.ChatroomView = Backbone.View.extend({
   renderChats: function() {
     console.log('crv.f.renderChats');
     var chatlog = this.model.get("chatlog");
-    console.log('CHATLOG: ', chatlog);
     this.$('#chatbox-content').empty();
     chatlog.each(function(chat) {
       this.renderChat(chat);
@@ -284,7 +280,6 @@ app.ChatroomView = Backbone.View.extend({
 
   renderMoreChats: function(chats) {
     console.log('crv.f.renderMoreChats');
-    // this.$('#chatbox-content');
     var this_ = this;
     var originalHeight = $('#chatbox-content')[0].scrollHeight;
     this.moreChatCollection = [];
@@ -292,22 +287,19 @@ app.ChatroomView = Backbone.View.extend({
       this_.renderMoreDateDividers(model);
       var chatTemplate = $(this.chatTemplate(model.toJSON()));
       this_.moreChatCollection.push(chatTemplate);
-      // chatTemplate.prependTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
     }, this);
     _.each(this.moreChatCollection.reverse(), function(template) {
       template.prependTo(this.$('#chatbox-content'));
     });
 
-     this.dateDivider.load($(".followMeBar"));
-     $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight - originalHeight;
-     
+    this.dateDivider.load($(".followMeBar"));
+    $('#chatbox-content')[0].scrollTop = $('#chatbox-content')[0].scrollHeight - originalHeight;
   },
 
   renderMoreDateDividers: function(model) {
     this.currentDate = moment(model.attributes.timestamp).format('dddd, MMMM Do YYYY');
     if ( this.currentDate !== this.previousDate ) {
       var currentDate = $(this.dateTemplate(model.toJSON()));
-      // currentDate.appendTo(this.$('#chatbox-content')).hide().fadeIn().slideDown();
       this.moreChatCollection.push(currentDate);
       this.previousDate = this.currentDate;
     }
@@ -337,11 +329,7 @@ app.ChatroomView = Backbone.View.extend({
 
 
 
-
-
-
 // rooms
-
 
   searchRoom: function() {
       var name = $('#chat-search-input').val();
@@ -444,7 +432,6 @@ app.ChatroomView = Backbone.View.extend({
   },
   renderRooms: function() {
     console.log('crv.f.renderRooms');
-    console.log('CHATROOMS: ', this.model.get("chatrooms"));
     this.$('#public-rooms').empty();
     this.model.get('chatrooms').each(function (room) {
       this.renderRoom(room);
@@ -474,7 +461,6 @@ app.ChatroomView = Backbone.View.extend({
   },
   renderPrivateRooms: function() {
     console.log('crv.f.renderPrivateRooms');
-    console.log('PRIVATEROOMS: ', this.model.get("privateRooms"));
     this.$('#private-rooms').empty();
     this.model.get('privateRooms').each(function (room) {
       this.renderPrivateRoom(room);
@@ -490,7 +476,6 @@ app.ChatroomView = Backbone.View.extend({
   },
   joinRoom: function(obj) {
     console.log('crv.f.joinRoom');
-     // $('#chatImageUploadContainer').data('chat-type', 'chat');
     this.currentDate = '';
     this.previousDate = '';
     this.vent.trigger('joinRoom', obj.name);
@@ -498,7 +483,7 @@ app.ChatroomView = Backbone.View.extend({
 // change to 'joinDirectMessage'
   initDirectMessage: function(e) {
     var recipient = {},
-        $tar = $(e.currentTarget);
+    $tar = $(e.currentTarget);
     recipient.username = $tar.text().trim();
     recipient.userImage = $tar.find('img').attr('src');
     this.currentDate = '';
@@ -514,24 +499,20 @@ app.ChatroomView = Backbone.View.extend({
 
 // image upload
 
- chatUploadImage: function(response) {
-    console.log('img url: ', response);
+  chatUploadImage: function(response) {
     this.vent.trigger("chat", response);
     this.scrollBottomInsurance();
   },
-
   messageUploadImage: function(response) {
-   console.log('img url: ', response);
-   this.vent.trigger("directMessage", response);
-   this.scrollBottomInsurance();
- },
+    this.vent.trigger("directMessage", response);
+    this.scrollBottomInsurance();
+  },
 
 
 
 
 
   //events
-
 
   messageInputPressed: function(e) {
     if (e.keyCode === 13 && $.trim($('.message-input').val()).length > 0) {
@@ -559,7 +540,6 @@ app.ChatroomView = Backbone.View.extend({
       return false;
     } else {
       this.vent.trigger("typing");
-      console.log('huh');
     }
     return this;
   },

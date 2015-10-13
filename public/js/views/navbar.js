@@ -13,7 +13,6 @@ var app = app || {};
       'attachImage #user-preferences-form': 'upload',
       'click #user-preferences-btn': 'submit',
       'keyup #user-preferences-home-room-input': 'doesHomeRoomExist',
-      // 'keypress #user-preferences-home-room-input': 'doesHomeRoomExist',
       'click .logout': 'logout',
     },
 
@@ -171,7 +170,6 @@ var app = app || {};
         prefetch: {
           url: '/api/publicChatrooms',
           filter: function(data) {
-            console.log('---------homeRoomData: ', data);
              return _.map(data, function(chatroom) {
                 return { name: chatroom };
              });

@@ -193,12 +193,8 @@ exports.logout = function(req, res) {
   console.log('controller - logout - session destroy');
   req.session.passport = {};
   req.session.userdata = {};
-  // console.log('HELLOAGAIN', req.session);
   req.session.destroy();
-  req.session.save(function (err) {
-    console.log('saving session', req.session);
-    res.json(200);
-  });
+  res.json(200);
 };
 
 exports.saveOAuthUserProfile = function(req, profile, done) {
@@ -309,7 +305,6 @@ exports.allUsers = function(req, res, next) {
        // console.log(users[i]);
       usernames.push(users[i].username);
     }
-    console.log('allusers---------', usernames);
       res.send(usernames);
     }
   });
