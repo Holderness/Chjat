@@ -537,9 +537,13 @@ app.ChatroomView = Backbone.View.extend({
     if (e.keyCode === 13 && $.trim($('.message-input').val()).length > 0) {
       // fun fact: separate events with a space in trigger's first arg and you
       // can trigger multiple events.
-      this.vent.trigger("chat", { message: this.$('.message-input').val()});
-      this.$('.message-input').val('');
-      return false;
+      if (e.shiftKey || e.ctrlKey) {
+        console.log('shift');
+      } else {
+        this.vent.trigger("chat", { message: this.$('.message-input').val()});
+        this.$('.message-input').val('');
+        return false;
+      }
     } else {
       this.vent.trigger("typing");
       console.log('wut');
