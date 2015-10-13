@@ -60,3 +60,20 @@
 #inbox-modal, #user-preferences-modal {
   position: fixed;
 }
+
+@media (max-width: 640px) {
+
+  .navbar-default .navbar-right {
+    height: auto;
+    overflow: hidden;
+    // position: absolute;
+    z-index: 0;
+  }
+
+  .navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    border:none;
+    padding:none;
+
+  }
+
+}
