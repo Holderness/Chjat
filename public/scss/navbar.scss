@@ -189,12 +189,12 @@
 @media (max-width: 640px) {
   .navbar-default .navbar-right {
     height: auto;
-    overflow: visible;
+    // overflow: visible;
     z-index: 0;
   }
   .navbar-default .navbar-collapse, .navbar-default .navbar-form {
     border:none;
     padding:none;
-    overflow: visible;
+    // overflow: visible;
   }
 }
