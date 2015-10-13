@@ -1,4 +1,5 @@
 .modal {
+  z-index: 9999;
   color: black;
   .row {
     text-align: left;
@@ -65,7 +66,7 @@
 
   .navbar-default .navbar-right {
     height: auto;
-    overflow: hidden;
+    overflow: visible;
     // position: absolute;
     z-index: 0;
   }
@@ -73,6 +74,7 @@
   .navbar-default .navbar-collapse, .navbar-default .navbar-form {
     border:none;
     padding:none;
+    overflow: visible;
 
   }
 
