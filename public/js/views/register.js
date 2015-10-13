@@ -4,13 +4,8 @@ var app = app || {};
 
   app.RegisterView = Backbone.View.extend({
     template: _.template($('#register').html()),
-    usernameAvailableTemplate: _.template('<div class="user-info-available fa fa-check">username available</div>'),
-    usernameTakenTemplate: _.template('<div class="user-info-taken fa fa-times">username taken</div>'),
-    emailAvailableTemplate: _.template('<div class="user-info-available fa fa-check">email available</div>'),
-    emailTakenTemplate: _.template('<div class="user-info-taken fa fa-times">email taken</div>'),
-    passwordMatchTemplate: _.template('<div class="user-info-available fa fa-check">password match</div>'),
-    passwordInvalidTemplate: _.template('<div class="user-info-taken fa fa-times">password does not match</div>'),
-    errorTemplate: _.template('<div class="login-error"><%= message %></div>'),
+    invalidTemplate: _.template('<div class="user-info-invalid fa fa-times"><%= message %></div>'),
+    validTemplate: _.template('<div class="user-info-valid fa fa-check"><%= message %></div>'),
     events: {
       "submit": "submit",
       "keyup #username": "validateUsername",
@@ -24,7 +19,6 @@ var app = app || {};
     submit: function(e) {
       e.preventDefault();
       var passwordValidation = this.validatePassword();
-      debugger;
       if (passwordValidation) {
         this.signUp();
       } else {
@@ -47,7 +41,6 @@ var app = app || {};
       return this;
     },
     signUp: function() {
-      debugger;
       var this_ = this;
       var sendData = {
         username: this.$('#username').val(),
@@ -82,9 +75,9 @@ var app = app || {};
       var this_ = this;
       _.debounce($.post('/usernameValidation', { username: $('#username').val() },function(data) {
          data.usernameAvailable ?
-           this_.renderValidation(this_.usernameAvailableTemplate())
+           this_.renderValidation(this_.validTemplate({message: ' username available'}))
          :
-           this_.renderValidation(this_.usernameTakenTemplate());
+           this_.renderValidation(this_.invalidTemplate({message: ' username taken'}));
       }), 150);
     },
     validateEmail: function() {
@@ -92,9 +85,9 @@ var app = app || {};
       var this_ = this;
       _.debounce($.post('/emailValidation', { email: $('#email').val() },function(data) {
          data.emailAvailable ?
-           this_.renderValidation(this_.emailAvailableTemplate())
+           this_.renderValidation(this_.validTemplate({message: ' email available'}))
          :
-           this_.renderValidation(this_.emailTakenTemplate());
+           this_.renderValidation(this_.invalidTemplate({message: ' email taken'}));
       }), 150);
     },
     renderValidation: function(what) {
@@ -109,10 +102,10 @@ var app = app || {};
     validatePassword: function() {
       if ($('#retypePassword').val().length > 5) {
         if ($('#password').val() !== $('#retypePassword').val()) {
-          this.renderValidation(this.passwordInvalidTemplate());
+          this.renderValidation(this.invalidTemplate({message: ' password does not match'}));
           return false;
         } else {
-          this.renderValidation(this.passwordMatchTemplate());
+          this.renderValidation(this.validTemplate({message: ' password match'}));
           return true;
         }
       }

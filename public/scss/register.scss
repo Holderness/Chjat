@@ -40,13 +40,13 @@
   height: 20px;
   margin-bottom: 10px;
   text-align: center;
-  .user-info-taken {
+  .user-info-invalid {
     font-size: 12px;
     position: relative;
     color: $pink-oink;
     text-shadow: .5px .5px 0px black;
   }
-  .user-info-available {
+  .user-info-valid {
     font-size: 12px;
     position: relative;
     color: green;
