@@ -56,3 +56,7 @@
     color: $validation-red;
   }
 }
+
+#inbox-modal, #user-preferences-modal {
+  position: fixed;
+}

@@ -66,9 +66,6 @@ app.MainController = function() {
       });
     });
 
-    $("#inbox-modal").appendTo("body");
-    $("#user-preferences-modal").appendTo("body");
-
   };
 
   // self.connectToRoom = function() {
