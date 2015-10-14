@@ -56,12 +56,6 @@ html, body {
   background: $main-bkgd;
 }
 
-//fixes modal display on mobile
-.modal {
-position: fixed;
-width: auto;
-margin: 0;
-}
 
 .nav > li > a {
   background-color: transparent;
