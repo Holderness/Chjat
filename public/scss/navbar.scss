@@ -6,6 +6,7 @@
 .chjat-title {
   font-family: "News Cycle", Helvetica, Arial, serif;
   font-size: 40px;
+  padding-left: 15px;
 }
 
 .nav-header {
@@ -33,7 +34,6 @@
         position: absolute;
         display: none;
         width: 8px;
-        // margin-left: 11px;
         margin-top: -18px;
       }
     }
@@ -54,6 +54,7 @@
     background-color: $nav-bkgd !important;
     position: relative;
     z-index: 1;
+    padding: 0;
     .navbar-collapse {
       // margin: 0 -35px;
     }
