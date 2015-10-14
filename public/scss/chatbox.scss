@@ -18,7 +18,7 @@
       background: -o-linear-gradient(top, rgba(255,255,255,1) 65%,rgba(255,255,255,0.7) 100%);
       background: -ms-linear-gradient(top, rgba(255,255,255,1) 65%,rgba(255,255,255,0.7) 100%);
       background: linear-gradient(to bottom, white 65%, rgba(255, 255, 255, 0) 100%);
-      @media (max-width: 1000px) {
+      @media #{$breakpoint-large} {
         width: 96%;
       }
       @media (max-width: 450px) {
@@ -33,7 +33,7 @@
     overflow-x: hidden;
 
   }
-  @media (max-width: 1000px) {
+  @media #{$breakpoint-large} {
     margin: 0 40px 0 40px;
   }
   .typetypetype {
@@ -90,7 +90,7 @@
       margin-top: 5px;
     }
   }
-  @media (max-width: 500px) {
+  @media #{$breakpoint-medium} {
     .chatbox-message-timestamp {
       display: none;
     }
@@ -107,7 +107,7 @@
       font-size: 15px;
       color: $chatbox-message-name;
       span {
-                word-wrap: break-word;
+        word-wrap: break-word;
         font-family: 'Source Sans Pro', sans-serif;
         margin-left: 10px;
         color: #0c0c0c;
@@ -125,7 +125,7 @@
         max-height: 350px;
         max-width: 350px;
       }
-      @media (max-width: 550px) {
+      @media #{$breakpoint-medium} {
         max-height: 180px;
         max-width: 270px;
       }
@@ -167,7 +167,7 @@
     .absolute {
       position: absolute;
     }
-    @media (max-width: 1000px) {
+    @media #{$breakpoint-large} {
       width: 50.7%;
       left: 24.6%;
     }

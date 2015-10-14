@@ -14,20 +14,20 @@
       margin-left: 20px;
     }
 
-    @media (max-width: 550px) {
+    @media #{$breakpoint-medium} {
       margin-left: 7%;
       input {
         margin-left: 7px;
       }
     }
-    @media (max-width: 380px) {
+    @media #{$breakpoint-small} {
       margin-left: -8px;
     }
   }
 }
 
 
- @media (max-width: 550px) {
+ @media #{$breakpoint-medium} {
    input[type='file'] {  
      width: 185px;
    }

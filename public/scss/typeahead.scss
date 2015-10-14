@@ -1,8 +1,6 @@
 
 .twitter-typeahead {
-  input {
-
-  }
+  input {}
   .typeahead-menu {
     background-color: white;
     border: 1px solid $pink-oink;
@@ -15,9 +13,7 @@
           background-color: $marine;
         }
       }
-      .typeahead-highlight {
-
-      }
+      .typeahead-highlight {}
     }
   } 
 }

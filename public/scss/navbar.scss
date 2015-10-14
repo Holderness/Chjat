@@ -182,7 +182,7 @@
 
 
 // fixes user-preferences and inbox modal visibility
-@media (max-width: 380px) {
+@media #{$breakpoint-small} {
   .navbar-default .navbar-right {
     height: auto;
     overflow: visible;

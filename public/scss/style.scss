@@ -12,7 +12,6 @@ $marine: #749CA8;
 $gray-gor: #E5EAEB;
 $white: white;
 
-
 $main-bkgd: $gray-gor;
 $nav-bkgd: $marine;
 $border: #ddd;
@@ -38,20 +37,14 @@ $validation-green: #4EA34E;
  // $bag: #DFBA47;
 
  // media queries
-
-$breakpoint-985: "(min-width: 985px)";
-$breakpoint-chatbox2: "(min-width: 1049px)";
-$breakpoint-1150: "(min-width: 1150px)";
-$breakpoint-540: "(min-width: 540px)";
-$breakpoint-chatbox4: "(min-width: 1250px)";
-$breakpoint-chatbox5: "(min-width: 1350px)";
-$breakpoint-chatbox6: "(min-width: 1450px)";
-
+$breakpoint-small: "(max-width: 380px)";
+$breakpoint-medium: "(max-width: 550px)";
+$breakpoint-large: "(max-width: 1000px)";
 
 // solves weird bootstrap bug that shifts content 15px on model-open
-body.modal-open {
-    left: -18px !important;
-}
+// body.modal-open {
+//     left: -18px !important;
+// }
 
 html, body {
   background: $main-bkgd;
