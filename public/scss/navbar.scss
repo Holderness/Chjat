@@ -1,107 +1,33 @@
 
+
+
 #nav-container {
-
-}
-
-.chjat-title {
-  font-family: "News Cycle", Helvetica, Arial, serif;
-  font-size: 40px;
-  padding-left: 15px;
-}
-
-.nav-header {
-  background: $nav-bkgd;
   color: $white;
-  padding-top: 0;
-}
-
-.navbar-header {
-  height: 75px;
-  padding: 10px;
-}
-
-.navbar-default {
-  border-bottom-left-radius:0;
-}
-
-.nav {
-  &.navbar-right {
-    padding: 25px;
-    li {
-      display: inline-block;
-      padding: 0 20px;
-      .pink-fuzz {
-        position: absolute;
-        display: none;
-        width: 8px;
-        margin-top: -18px;
+  .navbar.navbar-default {
+    border-bottom-left-radius:0;
+    background: $marine;
+    margin:0;
+    border:none;
+    height: 85px;
+    z-index: 103;
+    .navbar-header {
+      height: 75px;
+      padding: 10px;
+      .chjat-title {
+        font-family: "News Cycle", Helvetica, Arial, serif;
+        font-size: 40px;
+        padding-left: 15px;
       }
-    }
-  }
-  .modal-btn {
-    cursor: pointer;
-  }
-}
-
-.navbar {
-  background: $marine;
-  margin:0;
-  border:none;
-  box-shadow:none;
-  height: 85px;
-  z-index: 103;
-  .container-fluid {
-    background-color: $nav-bkgd !important;
-    position: relative;
-    z-index: 1;
-    padding: 0;
-    .navbar-collapse {
-      // margin: 0 -35px;
-    }
-  }
-  .navbar-brand {
-    padding: 3px 0 0 22px;
-    span {
-      height: .5px;
-      width: .5px;
-      top: 40px;
-      left: 64px;
-      color: #DEB0B0;
-      position: absolute;
-      visibility: hidden;
-      -o-transition:box-shadow 1.26333s ease-out;
-      -ms-transition: box-shadow 1.26333s ease-out;
-      -moz-transition:box-shadow 1.26333s ease-out;
-      -webkit-transition:box-shadow 1.26333s ease-out;
-      transition:box-shadow 1.26333s ease-out;
-    }
-    .nav-logo {
-      height: 60px;
-      -o-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
-      -ms-transition: color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
-      -moz-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
-      -webkit-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
-      transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
-      &:hover {
-        color: $power-button;
-        transform: scale(1.2);
-      }
-    }
-    &:hover {
-      span {
-        visibility: visible;
-        box-shadow: 0px 0px 40px 37px #DEB0B0;
-        border-radius: 20px;
-      }
+      .login-menu {}
     }
   }
 }
 
 .login-menu {
+  padding: 0;
   .nav.navbar-right {
     text-align: right;
     background-color: $nav-bkgd;
-    // width: 100%;
   }
   .power-off-style {
     background-color: $nav-bkgd;
@@ -118,44 +44,30 @@
       text-shadow: 0px 0px 90px $power-button;
     }
   }
-  #inbox-modal {
-    .invitations-header {
-      text-align: left;
-      font-weight: bold;
-      font-size: 16px;
-      margin-bottom: 5px;
-    }
-    #invitations {
-      list-style-type: none;
-      margin: 20px 0;
-      .invitation div {
-        display: inline-block;
-        margin-right: 20px;
-        span {
-          font-size: 20px;
-          font-weight: 900;
-          color: $marine;
-        }
-        &.fa {
-           font-size: 20px;
-           cursor: pointer;
-        }
-      }
-      .invitation-sender {
+}
 
-      }
-      .invitation-room-name {}
-      .delete-invitation {
-        &:hover {
-          color: $validation-red;
-        }
-      }
-      .accept-invitation  {
-        &:hover {
-          color: $validation-green;
-        }
+
+
+
+
+
+// navbar template
+.nav {
+  &.navbar-right {
+    padding: 25px;
+    li {
+      display: inline-block;
+      padding: 0 20px;
+      .pink-fuzz {
+        position: absolute;
+        display: none;
+        width: 8px;
+        margin-top: -18px;
       }
     }
+  }
+  .modal-btn {
+    cursor: pointer;
   }
 }
 
@@ -179,6 +91,45 @@
     } 
   }
 }
+
+#inbox-modal {
+  .invitations-header {
+    text-align: left;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  #invitations {
+    list-style-type: none;
+    margin: 20px 0;
+    .invitation div {
+      display: inline-block;
+      margin-right: 20px;
+      span {
+        font-size: 20px;
+        font-weight: 900;
+        color: $marine;
+      }
+      &.fa {
+       font-size: 20px;
+       cursor: pointer;
+      }
+    }
+    .invitation-sender {}
+    .invitation-room-name {}
+    .delete-invitation {
+      &:hover {
+        color: $validation-red;
+      }
+    }
+    .accept-invitation  {
+      &:hover {
+        color: $validation-green;
+      }
+    }
+  }
+}
+
 
 
 // fixes user-preferences and inbox modal visibility

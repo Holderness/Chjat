@@ -375,5 +375,46 @@ _whenScrolling = function() {
 
 
 
+  // scss pig image grow with background shadow grow
+
+    // .navbar-brand {
+  //   padding: 3px 0 0 22px;
+  //   span {
+  //     height: .5px;
+  //     width: .5px;
+  //     top: 40px;
+  //     left: 64px;
+  //     color: #DEB0B0;
+  //     position: absolute;
+  //     visibility: hidden;
+  //     -o-transition:box-shadow 1.26333s ease-out;
+  //     -ms-transition: box-shadow 1.26333s ease-out;
+  //     -moz-transition:box-shadow 1.26333s ease-out;
+  //     -webkit-transition:box-shadow 1.26333s ease-out;
+  //     transition:box-shadow 1.26333s ease-out;
+  //   }
+  //   .nav-logo {
+  //     height: 60px;
+  //     -o-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+  //     -ms-transition: color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+  //     -moz-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+  //     -webkit-transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+  //     transition:color 1s ease-out, transform .7s ease-out, text-shadow 1.34s ease-out;
+  //     &:hover {
+  //       color: $power-button;
+  //       transform: scale(1.2);
+  //     }
+  //   }
+  //   &:hover {
+  //     span {
+  //       visibility: visible;
+  //       box-shadow: 0px 0px 40px 37px #DEB0B0;
+  //       border-radius: 20px;
+  //     }
+  //   }
+  // }
+
+
+
 
 
