@@ -1,20 +1,20 @@
+
+
+
 #chatroom-header-container {
-
-    #preferences-image-upload {
-      display: inline-block;
+  #preferences-image-upload {
+    display: inline-block;
+  }
+  .user-invited-response {
+    display: inline-block;
+    margin-left: 10px;
+    &.success {
+      color: $validation-green;
     }
-
-    .user-invited-response {
-      display: inline-block;
-      margin-left: 10px;
-      &.success {
-        color: $validation-green;
-      }
-      &.failure {
-        color: $validation-red;
-      }
+    &.failure {
+      color: $validation-red;
     }
-
+  }
   .twitter-typeahead {
     input {
       height: 24px;
@@ -25,12 +25,9 @@
       .typeahead-dataset {
         .typeahead-selectable {
           padding: 2px 5px;
-          &:hover {
-            }
-          }
+          &:hover {}
         }
-      } 
-    }
-
-
+      }
+    } 
+  }
 }
