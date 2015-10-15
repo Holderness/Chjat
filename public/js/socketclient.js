@@ -28,13 +28,11 @@ var ChatClient = function(options) {
 		// in the /public folder has been attached to the server, and visa
 		// versa.
 
-    if (self.hostname === 'http://localhost:3001' || self.hostname === 'http://localhost:3000') {
     // local
-      self.socket = io.connect(self.hostname);
-    } else {
+      // self.socket = io.connect(self.hostname);
+
     // heroku
       self.socket = io.connect('http://www.chjat.com/', { transports: ['websocket'] } );
-    }
 
     self.setResponseListeners(self.socket);
   };

@@ -45,12 +45,12 @@ var Server = function(options) {
     self.io.on('connection', function(socket){
       //
       // for heroku
-      if (socket.handshake.headers.referer !== 'http://localhost:3001/' &&
-        socket.handshake.headers.referer !== 'http://localhost:3000/')
-      {
+      // if (socket.handshake.headers.referer !== 'http://localhost:3001/' &&
+      //   socket.handshake.headers.referer !== 'http://localhost:3000/')
+      // {
         self.io.set('transports', ['websocket']);
         self.io.set('polling duration', 10);
-      }
+      // }
       //
       self.socket = socket;
       socket.chat = { room: 'Chjat' };
