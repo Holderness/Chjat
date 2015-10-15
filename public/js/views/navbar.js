@@ -93,7 +93,7 @@ var app = app || {};
 
     submit: function(e) {
       e.preventDefault();
-      if (!this.$('#user-preferences-home-room-input').hasClass('input-valid')) {
+      if (this.$('#user-preferences-home-room-input').hasClass('input-invalid')) {
         swal({
           title: "OH NO OH NO OH NO",
           text: "Chatroom Can't, It Doesn't Exist! And. I Don't Know. Should. You? I Mean How DO we. How do? How do now?",
