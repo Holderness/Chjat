@@ -39,10 +39,10 @@ var app = app || {};
 
     submit: function(e) {
       e.preventDefault();
-      if (this.$('#chatroom-name-input').hasClass('input-invalid')) {
+      if (!this.$('#chatroom-name-input').hasClass('input-valid')) {
         swal({
           title: "OH NO OH NO OH NO",
-          text: "Chatroom Already, It Already Exists! And. Don't Go In There. Don't. You. You Should Have. I Threw Up In My Hat. Those Poor . . . They Were Just! OH NO WHY. WHY OH NO. OH NO.",
+          text: "Chatroom Already, It Already Exists! And. Don't Go In There. Don't. You. Those Poor . . . I Threw Up In My Hat! OH NO. WHY. OH NO. OH NO.",
           imageUrl: '/img/scuba-pig.png',
           confirmButtonColor: "#749CA8"
         });

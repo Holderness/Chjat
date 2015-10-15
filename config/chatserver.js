@@ -48,8 +48,8 @@ var Server = function(options) {
       if (socket.handshake.headers.referer !== 'http://localhost:3001/' &&
         socket.handshake.headers.referer !== 'http://localhost:3000/')
       {
-        self.io.set('polling duration', 10);
         self.io.set('transports', ['websocket']);
+        self.io.set('polling duration', 10);
       }
       //
       self.socket = socket;

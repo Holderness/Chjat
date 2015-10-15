@@ -93,10 +93,10 @@ var app = app || {};
 
     submit: function(e) {
       e.preventDefault();
-      if (this.$('#user-preferences-home-room-input').hasClass('input-invalid')) {
+      if (!this.$('#user-preferences-home-room-input').hasClass('input-valid')) {
         swal({
           title: "OH NO OH NO OH NO",
-          text: "Chatroom Can't, It Doesn't Exist! And. I Don't Know. Should I? Should You? Who. I Mean How DO we. How do? How do now?",
+          text: "Chatroom Can't, It Doesn't Exist! And. I Don't Know. Should. You? I Mean How DO we. How do? How do now?",
           imageUrl: '/img/scuba-pig.png',
           confirmButtonColor: "#749CA8"
         });
@@ -108,7 +108,7 @@ var app = app || {};
 
     upload: function() {
       var this_ = this;
-        var formData = new FormData(this.$form[0]);
+      var formData = new FormData(this.$form[0]);
       if (this.$('#user-preferences-image-upload')[0].files.length > 0) {
         $.ajax({
           type: 'POST',
