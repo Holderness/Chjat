@@ -480,37 +480,36 @@ var Server = function(options) {
 
 
 // ROOM MANAGEMENT
-    self.addUserToRoom = function(user, roomName) {
-      console.log('f.addUserToRoom');
-      ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
-        var filtered = _.filter(chatroom.participants, function(obj){ return user.id === obj.id; });
-        if (filtered.length === 0) {
-          ChatroomModel.update({_id: chatroom.id}, { $push: {'participants': {'username': user.username, 'userImage': user.userImage, 'id': user.id } }}, function(err, raw) {
-            if (!err) {
-              console.log('userchatrooms', raw);
-              self.getChatrooms(user);
-            } else {
-              return console.log( err );
-            }
-          });
+  self.addUserToRoom = function(user, roomName) {
+    console.log('f.addUserToRoom');
+    ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
+      var filtered = _.filter(chatroom.participants, function(obj){ return user.id === obj.id; });
+      if (filtered.length === 0) {
+        ChatroomModel.update({_id: chatroom.id}, { $push: {'participants': {'username': user.username, 'userImage': user.userImage, 'id': user.id } }}, function(err, raw) {
+          if (!err) {
+            console.log('userchatrooms', raw);
+            self.getChatrooms(user);
+          } else {
+            return console.log( err );
+          }
+        });
+      }
+    });
+  };
+  self.removeUserFromRoom = function(user, roomData) {
+    console.log('removeUserFromRoom');
+    ChatroomModel.update({_id: roomData.id}, { $pull: { 'participants': {'id': user.id }}}, function(err, raw) {
+      if (!err) {
+        console.log('userchatrooms', raw);
+        self.getChatrooms(user);
+        if (roomData.userInRoom === true) {
+          user.socket.emit('redirectToHomeRoom', { roomLeft: roomData.roomName, homeRoom: user.homeRoom });
         }
-      });
-
-    };
-    self.removeUserFromRoom = function(user, roomData) {
-      console.log('removeUserFromRoom');
-      ChatroomModel.update({_id: roomData.id}, { $pull: { 'participants': {'id': user.id }}}, function(err, raw) {
-            if (!err) {
-              console.log('userchatrooms', raw);
-              self.getChatrooms(user);
-              if (roomData.userInRoom === true) {
-                user.socket.emit('redirectToHomeRoom', { roomLeft: roomData.roomName, homeRoom: user.homeRoom });
-              }
-            } else {
-              return console.log( err );
-            }
-      });
-    };
+      } else {
+        return console.log( err );
+      }
+    });
+  };
   self.getChatrooms = function(user) {
     console.log('f.getChatrooms');
     // use lean() for a modifiable returned object, like you see in self.getPrivateRooms();
@@ -526,36 +525,36 @@ var Server = function(options) {
     });
   };
   self.getPrivateRooms = function(user, chatrooms) {
+    console.log('f.getPrivateRooms');
     var priv = _.filter(chatrooms, function(room) {
         return room.privacy === true;
     });
     var modifiedPriv = _.each(priv, function(room) {
       room.currentUser = user.username;
     });
-    console.log('f.getPrivateRooms');
     return  modifiedPriv;
   };
   self.getPublicRooms = function(chatrooms) {
-    var pub = _.filter(chatrooms, function(room) { return room.privacy === false; });
     console.log('f.getPublicRooms');
+    var pub = _.filter(chatrooms, function(room) { return room.privacy === false; });
     return pub;
   };
   self.getUsersAndHeader = function(user, roomName) {
     console.log('f.getUsersAndHeader');
     ChatroomModel.findOne({name: roomName}, function( err, chatroom ) {
       if (!err) {
-        
         console.log('chatroom: ', chatroom.name);
-
-          var offlineUsers = _.filter(chatroom.participants,
-            function(obj) {
-              return !_.find(chatroom.onlineUsers,
-                function(onlineObj) {
-                  if (onlineObj.id.equals(obj.id)) {
-                    return onlineObj;
-                  }
-                });
-            });
+        var offlineUsers = _.filter(chatroom.participants,
+          function(obj) {
+            return !_.find(chatroom.onlineUsers,
+              function(onlineObj) {
+                if (onlineObj.id.equals(obj.id)) {
+                  return onlineObj;
+                }
+              }
+            );
+          }
+        );
         user.socket.emit('chatlog', chatroom.chatlog.slice(-25));
         user.socket.emit('onlineUsers', chatroom.onlineUsers);
         user.socket.emit('offlineUsers', offlineUsers);
@@ -567,8 +566,8 @@ var Server = function(options) {
   };
 
 
-// INVITATIONS
 
+// INVITATIONS
   self.inviteUser = function(user, invitationObj){
     UserModel.update(
       { username: invitationObj.recipient },
@@ -581,10 +580,9 @@ var Server = function(options) {
           }
           user.socket.emit('userInvited', found.username);
           if (err) {
-            user.socket.emit('userInvited', { 'error': 'error'});
+            user.socket.emit('userInvited', { 'error': 'recipient not found'});
             return console.log(err);
           }
-          // user.socket.emit('refreshInvitations', found.invitations);
         });
       }
     );
@@ -627,7 +625,6 @@ var Server = function(options) {
     UserModel.findOneAndUpdate({ _id: user.id }, { '$set': userObj }, function(err, oldUser) {
         if (err) { return console.log(err); }
         UserModel.findOne({ _id: user.id }, function( err, updatedUser ) {
-          // self.updateUserRooms(updatedUser);
           var updateUser = function() {
             self.initUser(user.socket, updatedUser);
           };
@@ -649,13 +646,10 @@ var Server = function(options) {
   };
 
   self.updateUserRooms = function(user, userObj) {
-    console.log('f.updateUserRooms>>>>>>>>>>>');
+    console.log('f.updateUserRooms');
     console.log('userObj: ', userObj);
-    // console.log('oldUser: ', oldUser);
-    console.log('<<<<<<<<<<<<<<<<');
     ChatroomModel.update(
       {
-        // 'participants': {$elemMatch: { id: user.id}},
         'participants.id': user.id
       },
       {
@@ -707,7 +701,6 @@ var Server = function(options) {
 
 
 };  // END CONTROLLER
-
 
 
 
