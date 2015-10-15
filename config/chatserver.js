@@ -12,45 +12,20 @@ var UserModel = mongoose.model('User'),
 
 
 console.log('chatserver');
+
 // the chatserver listens to the chatclient
 var Server = function(options) {
 
-    //   ChatroomModel.findOne({ name: 'Chjat' }, function(err, chatroom) {
-    //     console.log('chatroomChjatcreateion:', chatroom);
-    //   if (chatroom === null) {
-    //     var Chjatr = new ChatroomModel({'name': 'Chjat'});
-    //     Chjatr.save(function(err) {
-    //       if (err) { return console.log( err );}
-    //     });
-    //     console.log('Chjat created1');
-    //   } else if (!err) {
-    //     console.log('Chjat already exists');
-    //   } else {
-    //     var Chjat = new ChatroomModel({'name': 'Chjat'});
-    //     Chjat.save(function(err) {
-    //       if (err) { return console.log( err );}
-    //     });
-    //     console.log('Chjat created2');
-    //     return console.log( err );
-    //   }
-    // });
-
   var self = this;
   self.io = options.io;
-
-
 
   self.init = function() {
     console.log('f.init');
     self.io.on('connection', function(socket){
       //
       // for heroku
-      // if (socket.handshake.headers.referer !== 'http://localhost:3001/' &&
-      //   socket.handshake.headers.referer !== 'http://localhost:3000/')
-      // {
-        self.io.set('transports', ['websocket']);
-        self.io.set('polling duration', 10);
-      // }
+        // self.io.set('transports', ['websocket']);
+        // self.io.set('polling duration', 10);
       //
       self.socket = socket;
       socket.chat = { room: 'Chjat' };
@@ -60,23 +35,11 @@ var Server = function(options) {
         socket.handshake.session.userdata = userdata;
         self.manageConnection(socket, userdata);
       });
-      // socket.on("logout", function() {
-         
-      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-      //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-      //   console.log('e.disconnect1 - userdata', socket.handshake.session.userdata);
-      //   if (socket.handshake.session.userdata) {
-      //     // delete socket.handshake.session.userdata;
-      //   }
-      //   console.log('e.disconnect1 - passport', socket.handshake.session.passport);
-      //   if (socket.handshake.session.passport) {
-      //     // delete socket.handshake.session.passport;
-      //   }
-      // });
-console.log('self.socket----; ', self.socket);
+
+
+      // console.log('self.socket----; ', self.socket);
       if (socket.handshake.session.passport.user) {
-        console.log('if socket.handshake.session>>>>>> ', socket.handshake.session);
+        // console.log('if socket.handshake.session>>>>>> ', socket.handshake.session);
         UserModel.findById(socket.handshake.session.passport.user, function(err, found) {
           socket.handshake.session.userdata = { username: found.username };
           return self.manageConnection(socket, found);
@@ -88,10 +51,15 @@ console.log('self.socket----; ', self.socket);
 
   self.manageConnection = function(socket, userdata) {
     console.log('f.manageConnection');
-    UserModel.findOne({'username': userdata.username}, function(err, userModel) {
-      self.initUser(socket, userModel);
-      UserModel.findOneAndUpdate({_id: userModel._id}, { '$set': {'socketId': socket.id}}, function(err, userM){});
-    });
+    UserModel.findOneAndUpdate(
+      {'username': userdata.username},
+      { '$set': {'socketId': socket.id}},
+      function(err, userModel) {
+        if (err) { return console.log(err); }
+        console.log('userModel: ', userModel);
+        self.initUser(socket, userModel);
+      }
+    );
   };
   
   self.initUser = function(socket, model) {
@@ -107,9 +75,9 @@ console.log('self.socket----; ', self.socket);
       });
       var initUserClient = function() {
         socket.emit('initUser', { username: newUser.username,
-                            invitations: newUser.invitations,
-                               homeRoom: newUser.homeRoom,
-                              userImage: newUser.userImage });
+                               invitations: newUser.invitations,
+                                  homeRoom: newUser.homeRoom,
+                                 userImage: newUser.userImage });
       };
       self.setResponseListeners(newUser, initUserClient);
       return newUser;
@@ -117,18 +85,18 @@ console.log('self.socket----; ', self.socket);
     
 
   self.setResponseListeners = function(user, callback) {
-    console.log('f.setResponseListeners: ----------------------------------');
+    console.log('f.setResponseListeners');
 
 
 // CONNECTION
     user.socket.on('disconnect', function() {
-      delete user.socket.handshake.session.userdata;
-      delete user.socket.handshake.session.passport;
-      delete user.socket.handshake.session.cookie;
-      console.log('user.socket----; ', user.socket.handshake.session);
-      console.log('self.socket----; ', self.socket.handshake.session);
+      // delete user.socket.handshake.session.userdata;
+      // delete user.socket.handshake.session.passport;
+      // delete user.socket.handshake.session.cookie;
+      // console.log('user.socket----; ', user.socket.handshake.session);
+      // console.log('self.socket----; ', self.socket.handshake.session);
       self.leaveRoom(user);
-      user.socket.handshake.session = {};
+      // user.socket.handshake.session = {};
       console.log("e.disconnect: ", user.username);
       console.log('he gone.');
     });
@@ -255,16 +223,12 @@ console.log('self.socket----; ', self.socket);
     });
 
 // UPDATE USER
-
     user.socket.on('updateUser', function(userObj) {
       console.log('e.updateUser');
       self.updateUserRooms(user, userObj);
       self.updateUser(user, userObj);
     });
 
-    // console.log('socket-------------', user.socket);
-    // console.log('io: ----------------------------------', self.io);
-    // console.log('user.socket: ----------------------------------', user.socket._events);
 // CALLBACK
     if (callback) {
       callback();
@@ -301,11 +265,9 @@ console.log('self.socket----; ', self.socket);
     items_per_load = (remainderCheck) ? MODELS_REMAINDER : MODELS_PER_LOAD;
 
     ChatroomModel.findOne({ name: name }, {'chatlog': { $slice: [MODELS_SKIPPED, items_per_load] }}, function( err, chatroom ) {
-      // console.log('chatroomLength: ', chatlogLength);
       if (chatlogLength >= (MODELS_SKIPPED * -1) || remainderCheck) {
         user.socket.emit('moreChats', chatroom.chatlog);
       } else {
-        // console.log('-------------------------------');
         user.socket.emit('noMoreChats');
       }
     });
@@ -335,11 +297,13 @@ console.log('self.socket----; ', self.socket);
         });
       } else {
         var newDirectMessage = new DirectMessageModel(
-          {'participants': [{
-            'username': user.username,
-          },
-          {'username': recipient.username}
-          ]});
+          { 'participants':
+            [
+              { 'username': user.username },
+              { 'username': recipient.username }
+            ]
+          }
+        );
         newDirectMessage.save(function(err, DM) {
            if (!err) {
              console.log('DM created');
@@ -398,7 +362,6 @@ console.log('self.socket----; ', self.socket);
       if (chatlogLength >= (MODELS_SKIPPED * -1) || remainderCheck) {
         user.socket.emit('moreChats', chatroom.chatlog);
       } else {
-        // console.log('-------------------------------');
         user.socket.emit('noMoreChats');
       }
     });
@@ -460,7 +423,7 @@ console.log('self.socket----; ', self.socket);
     if (user.socket.chat.room) {
       ChatroomModel.update(
         { name: currentRoom },
-        {$pull: {'onlineUsers': {username: user.username, userImage: user.userImage}}},
+        {$pull: {'onlineUsers': {id: user.id}}},
         function(err, raw) {
           if (err) {return console.log(err);}
           user.socket.broadcast.to(currentRoom).emit('userLeft', { username: user.username, userImage: user.userImage });

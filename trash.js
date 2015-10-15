@@ -418,3 +418,26 @@ _whenScrolling = function() {
 
 
 
+// upon heroku creation, create Chjat chatroom
+
+    //   ChatroomModel.findOne({ name: 'Chjat' }, function(err, chatroom) {
+    //     console.log('chatroomChjatcreateion:', chatroom);
+    //   if (chatroom === null) {
+    //     var Chjatr = new ChatroomModel({'name': 'Chjat'});
+    //     Chjatr.save(function(err) {
+    //       if (err) { return console.log( err );}
+    //     });
+    //     console.log('Chjat created1');
+    //   } else if (!err) {
+    //     console.log('Chjat already exists');
+    //   } else {
+    //     var Chjat = new ChatroomModel({'name': 'Chjat'});
+    //     Chjat.save(function(err) {
+    //       if (err) { return console.log( err );}
+    //     });
+    //     console.log('Chjat created2');
+    //     return console.log( err );
+    //   }
+    // });
+
+
