@@ -108,7 +108,6 @@ exports.uploadChatroomImage = function (req, res, next) {
 };
 
 
-
 exports.findAllChatrooms = function(req, res, next) {
   return ChatroomModel.find().exec(function(err, chatrooms) {
     if (!err) {
