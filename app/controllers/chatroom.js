@@ -34,7 +34,17 @@ var uploadToS3 = function(file, destFileName, callback) {
     .send(callback);
 };
 
-exports.multerRestrictions = multer({limits: {fileSize:10*1024*1024}});
+maxImageSize = 500 * 1000;
+
+exports.multerRestrictions = multer({
+    onFileUploadStart: function(file, req, res){
+      console.log("req>>>>>", req);
+      console.log("file>>>>>", file);
+      if(file.size < maxImageSize) {
+        return res.status(403).send('image too big').end();
+      }
+    }
+});
 
 exports.uploadChatImage = function (req, res, next) {
 

@@ -54,7 +54,7 @@ var app = app || {};
           error: function( xhr ) {
             swal({
               title: "OH NO OH NO OH NO",
-              text: "Your image. It uh, won't fit. 'Too big' the computer monkeys say. Either that, or it's not a .jpeg, .png, or .gif. But what do I know, I'm just the guy staring at the computer screen behind you.",
+              text: "Your image. It uh, won't fit. 'Too big. It needs to be less than 500 Kb,' the computer monkeys say. 'And .jpeg, .png, or .gif file'.",
               type: "error",
               imageUrl: '/img/scuba-pig.png',
               confirmButtonColor: "#749CA8",
