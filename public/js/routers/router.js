@@ -22,10 +22,12 @@ var app = app || {};
 
     start: function(callback) {
       window.location.href = '/#';
-      this.initMainController();
+      if (!app.mainController) {
+        this.initMainController();
+      }
       if (callback) {
         callback();
-      } 
+      }
       // else {
       //   $.ajax({
       //     url: "/logout",

@@ -43,9 +43,6 @@ app.MainController = function() {
       return e.keyCode != 13;
     });
 
-    self.chatClient = new ChatClient({ vent: self.appEventBus });
-    self.chatClient.connect();
-
     // new model and view created for chatroom
     self.chatroomModel = new app.ChatroomModel({ name: 'Chjat' });
     self.chatroomList = new app.ChatroomList();
@@ -54,9 +51,13 @@ app.MainController = function() {
     self.chatroomModel.set('privateRooms', self.privateRoomCollection);
     self.chatroomView  = new app.ChatroomView({vent: self.viewEventBus, model: self.chatroomModel });
     self.containerModel.set('viewState', self.chatroomView);
+
     $('body').on('hidden.bs.modal', '.modal', function () {
       $(this).removeData('bs.modal');
     });
+
+    self.chatClient = new ChatClient({ vent: self.appEventBus });
+    self.chatClient.connect();
   };
 
 
