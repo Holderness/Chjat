@@ -19,7 +19,6 @@ module.exports = function() {
 
   ejs.delimiter = '$';
 
-// parses request body and populates request.body
   app.use( bodyParser.json() );
   app.use( bodyParser.urlencoded({ extended: true }) );
   app.use( cookieParser( process.env.SESSION_SECRET ));
@@ -29,8 +28,6 @@ module.exports = function() {
     resave: false,
     secret: process.env.SESSION_SECRET,
     store: new sessionStore({
-      // db: config.db,
-      // comment db and uncomment url for heroku
       url: config.db
     })
   });
@@ -41,23 +38,12 @@ module.exports = function() {
   app.use(passport.initialize());
   app.use(passport.session());
 
-
-
-
-
   app.use(express.static(path.join(__dirname, '../public')));
-
   app.set('view engine', 'ejs');
 
 
-//routes
-  // var index = require('../app/routes/index');
-  // app.use('/', index);
-  // what the routes will look like...
-  // require('../app/routes/index.js')(app);
   require('../app/routes/user.js')(app);
   require('../app/routes/chatroom.js')(app);
-
 
 
   return app;

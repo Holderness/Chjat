@@ -1,5 +1,4 @@
 
-
 app.MainController = function() {
 
 	var self = this;

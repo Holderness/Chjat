@@ -46,6 +46,7 @@ app.ChatroomView = Backbone.View.extend({
 
 
   initialize: function(options) {
+    console.log('got damnit');
     console.log('chatroomView.f.initialize: ', options);
     // passed the viewEventBus
     var self = this;

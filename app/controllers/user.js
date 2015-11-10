@@ -30,23 +30,7 @@ var uploadToS3 = function(file, destFileName, callback) {
     .send(callback);
 };
 
-maxImageSize = 500 * 1000;
-
-exports.multerRestrictions = multer({
-    onFileUploadStart: function(file, req, res){
-      console.log("req>>>>>", req);
-      console.log("file>>>>>", file);
-      if(file.size < maxImageSize) {
-        return res.status(403).send('image too big').end();
-      }
-    }
-});
-
 exports.updateUserImage = function (req, res, next) {
-
-  console.log('req: ', req);
-  console.log('----------------------------------------------------------------');
-  console.log('req.files.userImageUpload: ', req.files.userImageUpload);
 
   if (!req.files || !req.files.userImageUpload) {
     return res.status(403).send('expect 1 file upload named userImageUpload').end();
@@ -103,7 +87,7 @@ exports.renderLogin = function(req, res, next) {
     });
   }
   else {
-    console.log('wwwwwwuttttttuuu');
+    console.log('err: render login failed');
     return res.redirect('/');
   }
 };
@@ -135,10 +119,7 @@ exports.register = function(req, res, next) {
   User.findOne({username: req.body.username },
     function(err, user) {
       if (user) {
-        // var message = "User already exists";
-        // req.flash('error', message);
         return res.redirect('/');
-
       } else if (!req.body.username.match(/^[a-zA-Z0-9.\-_$@*!]{5,20}$/)) {
         return res.send({message: 'username invalid'});
       } else if (!user) {
@@ -151,12 +132,6 @@ exports.register = function(req, res, next) {
             req.flash('error', message);
             return res.redirect('/');
           }
-          // req.login(newUser, function(err) {
-          //   if (err) {
-          //    return next(err);
-          //   }
-            
-          // });
         });
         return res.send({user: newUser});
       } else {
@@ -289,7 +264,6 @@ exports.userByID = function(req, res, next, id) {
 };
 
 exports.findBy = function(req, res, next) {
-  console.log( '----------userfindBy---------------req: ', req.query);
   return User.find({ username: new RegExp(req.query.username, "i")}, function( err, users ) {
     if (!err) {
       console.log('userfindBy!');

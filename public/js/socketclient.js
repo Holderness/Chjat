@@ -21,18 +21,18 @@ var ChatClient = function(options) {
 	self.hostname = 'http://' + window.location.host;
 
   // connects to socket, sets response listeners
-	self.connect = function() {
+  self.connect = function() {
     console.log('sc.f.connect');
-		// this io might be a little confusing... where is it coming from?
-		// it's coming from the static middleware on server.js bc everything
-		// in the /public folder has been attached to the server, and visa
-		// versa.
+    // this io might be a little confusing... where is it coming from?
+    // it's coming from the static middleware on server.js bc everything
+    // in the /public folder has been attached to the server, and visa
+    // versa.
 
     // local
-      // self.socket = io.connect(self.hostname);
+      self.socket = io.connect(self.hostname);
 
     // heroku
-      self.socket = io.connect('http://www.chjat.com/', { transports: ['websocket'] } );
+      // self.socket = io.connect('http://www.chjat.com/', { transports: ['websocket'] } );
 
     self.setResponseListeners(self.socket);
   };

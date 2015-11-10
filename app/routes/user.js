@@ -1,5 +1,7 @@
 var users = require('../../app/controllers/user'),
-  passport = require('passport');
+    passport = require('passport'),
+    multer = require('multer'),
+    imgSizeFilter = multer({limits: {fileSize:1024*1024}});
 
 module.exports = function(app) {
   app.route('/users').post(users.create).get(users.list);
@@ -7,7 +9,7 @@ module.exports = function(app) {
   app.route('/searchUsers').get(users.findBy);
   app.route('/allUsers').get(users.allUsers);
 
-  app.route('/updateUserImage').post(users.multerRestrictions, users.updateUserImage);
+  app.route('/updateUserImage').post(imgSizeFilter, users.updateUserImage);
 
   app.route('/users/:userId').get(users.read).put(users.update).delete(users.delete);
 

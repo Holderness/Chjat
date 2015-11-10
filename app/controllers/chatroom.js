@@ -34,23 +34,8 @@ var uploadToS3 = function(file, destFileName, callback) {
     .send(callback);
 };
 
-maxImageSize = 500 * 1000;
-
-exports.multerRestrictions = multer({
-    onFileUploadStart: function(file, req, res){
-      console.log("req>>>>>", req);
-      console.log("file>>>>>", file);
-      if(file.size < maxImageSize) {
-        return res.status(403).send('image too big').end();
-      }
-    }
-});
 
 exports.uploadChatImage = function (req, res, next) {
-
-  console.log('req: ', req);
-  console.log('----------------------------------------------------------------');
-  console.log('req.files.chatImageUpload: ', req.files.chatImageUpload);
 
   if (!req.files || !req.files.chatImageUpload) {
     return res.status(403).send('expect 1 file upload named chatImageUpload').end();
@@ -69,7 +54,7 @@ exports.uploadChatImage = function (req, res, next) {
         .send('failed to upload to s3')
         .end();
     }
-      // console.log('data: ', data);
+
     res.status(200)
       .send({ url: data.Location, ETag: data.ETag, message: '', timestamp: _.now()})
       .end();
@@ -77,10 +62,6 @@ exports.uploadChatImage = function (req, res, next) {
 };
 
 exports.uploadChatroomImage = function (req, res, next) {
-
-  console.log('req: ', req);
-  console.log('----------------------------------------------------------------');
-  console.log('req.files.chatroomImageUpload: ', req.files.chatroomImageUpload);
 
   if (!req.files || !req.files.chatroomImageUpload) {
     return res.status(403).send('expect 1 file upload named chatImageUpload').end();
@@ -100,7 +81,7 @@ exports.uploadChatroomImage = function (req, res, next) {
         .send('failed to upload to s3')
         .end();
     }
-      // console.log('data: ', data);
+
     res.status(200)
       .send({ roomImage: data.Location, ETag: data.ETag, name: '', timestamp: _.now()})
       .end();
@@ -111,7 +92,7 @@ exports.uploadChatroomImage = function (req, res, next) {
 exports.findAllChatrooms = function(req, res, next) {
   return ChatroomModel.find().exec(function(err, chatrooms) {
     if (!err) {
-            console.log('findAllChatrooms!');
+      console.log('findAllChatrooms!');
       return res.send( chatrooms );
     } else {
       return console.log( err );

@@ -3,15 +3,12 @@ var config = require('./config'),
 
 module.exports = function() {
   var db = mongoose.connect(config.db, function(err, db) {
-           console.log("test");
-           if (!err) {
-                   console.log("test");
-           }
-           else {
-                   console.dir(err);
-           throw err;
-           }
-   //  db.close();
+      if (!err) {
+         console.log("mongoose is kickin");
+      } else {
+         console.error(err);
+         throw err;
+      }
    });
 
   require('../app/models/user');

@@ -33,6 +33,17 @@ var app = app || {};
       }
     },
 
+
+    fileSizeError: function() {
+      swal({
+        title: "OH NO OH NO OH NO",
+        text: "Your image. It uh, won't fit. 'Too big. It needs to be less than 1 Mb,' the computer monkeys say. 'And .jpeg, .png, or .gif file'.",
+        type: "error",
+        imageUrl: '/img/scuba-pig.png',
+        confirmButtonColor: "#749CA8",
+      });
+    },
+
     submit: function(e) {
       e.preventDefault();
       this.$form = this.$('#chatImageUploadForm');
@@ -51,14 +62,13 @@ var app = app || {};
           dataType: 'json',
           processData: false,
           contentType: false,
+          xhrFields: {
+            withCredentials: false,
+          },
+          headers: {},
           error: function( xhr ) {
-            swal({
-              title: "OH NO OH NO OH NO",
-              text: "Your image. It uh, won't fit. 'Too big. It needs to be less than 500 Kb,' the computer monkeys say. 'And .jpeg, .png, or .gif file'.",
-              type: "error",
-              imageUrl: '/img/scuba-pig.png',
-              confirmButtonColor: "#749CA8",
-            });
+            _this.fileSizeError();
+            console.log('err:', xhr)
           },
           success: function( response ) {
             console.log('imgUpload response: ', response);
