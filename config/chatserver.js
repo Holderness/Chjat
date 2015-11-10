@@ -24,8 +24,8 @@ var Server = function(options) {
     self.io.on('connection', function(socket){
       //
       // for heroku
-        // self.io.set('transports', ['websocket']);
-        // self.io.set('polling duration', 10);
+        self.io.set('transports', ['websocket']);
+        self.io.set('polling duration', 10);
       //
       self.socket = socket;
       socket.chat = { room: 'Chjat' };
